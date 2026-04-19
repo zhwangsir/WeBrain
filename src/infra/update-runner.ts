@@ -1006,7 +1006,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       const doctorNodePath = await resolveStableNodePath(process.execPath);
       const doctorArgv = [doctorNodePath, doctorEntry, "doctor", "--non-interactive", "--fix"];
       const doctorStep = await runStep(
-        step("openclaw doctor", doctorArgv, gitRoot, { OPENCLAW_UPDATE_IN_PROGRESS: "1" }),
+        step("openclaw doctor", doctorArgv, gitRoot, { WINERYCLAW_UPDATE_IN_PROGRESS: "1" }),
       );
       steps.push(doctorStep);
 

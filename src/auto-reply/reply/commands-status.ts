@@ -13,7 +13,7 @@ import {
 } from "../../agents/tools/sessions-helpers.js";
 import { toAgentModelListLike } from "../../config/model-input.js";
 import type { SessionEntry, SessionScope } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { logVerbose } from "../../globals.js";
 import {
   formatUsageWindowSummary,
@@ -126,7 +126,7 @@ function formatAgentTaskCountsLine(agentId: string): string | undefined {
 }
 
 export async function buildStatusReply(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   command: CommandContext;
   sessionEntry?: SessionEntry;
   sessionKey: string;
@@ -163,7 +163,7 @@ export async function buildStatusReply(params: {
 }
 
 export async function buildStatusText(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionEntry?: SessionEntry;
   sessionKey: string;
   parentSessionKey?: string;

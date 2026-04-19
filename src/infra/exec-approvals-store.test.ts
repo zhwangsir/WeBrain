@@ -28,7 +28,7 @@ let resolveExecApprovalsSocketPath: ExecApprovalsModule["resolveExecApprovalsSoc
 let saveExecApprovals: ExecApprovalsModule["saveExecApprovals"];
 
 const tempDirs: string[] = [];
-const originalOpenClawHome = process.env.OPENCLAW_HOME;
+const originalWineryClawHome = process.env.WINERYCLAW_HOME;
 
 beforeAll(async () => {
   ({
@@ -54,10 +54,10 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.restoreAllMocks();
-  if (originalOpenClawHome === undefined) {
-    delete process.env.OPENCLAW_HOME;
+  if (originalWineryClawHome === undefined) {
+    delete process.env.WINERYCLAW_HOME;
   } else {
-    process.env.OPENCLAW_HOME = originalOpenClawHome;
+    process.env.WINERYCLAW_HOME = originalWineryClawHome;
   }
   for (const dir of tempDirs.splice(0)) {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -67,12 +67,12 @@ afterEach(() => {
 function createHomeDir(): string {
   const dir = makeTempDir();
   tempDirs.push(dir);
-  process.env.OPENCLAW_HOME = dir;
+  process.env.WINERYCLAW_HOME = dir;
   return dir;
 }
 
 function approvalsFilePath(homeDir: string): string {
-  return path.join(homeDir, ".openclaw", "exec-approvals.json");
+  return path.join(homeDir, ".wineryclaw", "exec-approvals.json");
 }
 
 function readApprovalsFile(homeDir: string): ExecApprovalsFile {
@@ -84,10 +84,10 @@ describe("exec approvals store helpers", () => {
     const dir = createHomeDir();
 
     expect(path.normalize(resolveExecApprovalsPath())).toBe(
-      path.normalize(path.join(dir, ".openclaw", "exec-approvals.json")),
+      path.normalize(path.join(dir, ".wineryclaw", "exec-approvals.json")),
     );
     expect(path.normalize(resolveExecApprovalsSocketPath())).toBe(
-      path.normalize(path.join(dir, ".openclaw", "exec-approvals.sock")),
+      path.normalize(path.join(dir, ".wineryclaw", "exec-approvals.sock")),
     );
   });
 
@@ -192,12 +192,12 @@ describe("exec approvals store helpers", () => {
     const linkedHome = `${realHome}-link`;
     tempDirs.push(realHome);
     fs.symlinkSync(realHome, linkedHome);
-    process.env.OPENCLAW_HOME = linkedHome;
+    process.env.WINERYCLAW_HOME = linkedHome;
 
     expect(() =>
       saveExecApprovals({ version: 1, defaults: { security: "full" }, agents: {} }),
     ).toThrow(/Refusing to traverse symlink in exec approvals path/);
-    expect(fs.existsSync(path.join(realHome, ".openclaw"))).toBe(false);
+    expect(fs.existsSync(path.join(realHome, ".wineryclaw"))).toBe(false);
   });
 
   it("adds trimmed allowlist entries once and persists generated ids", () => {

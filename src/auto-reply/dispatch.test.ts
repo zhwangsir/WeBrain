@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { ReplyDispatcher } from "./reply/reply-dispatcher.js";
 import { buildTestCtx } from "./reply/test-ctx.js";
 
@@ -84,7 +84,7 @@ describe("withReplyDispatcher", () => {
 
     await dispatchInboundMessage({
       ctx: buildTestCtx(),
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       dispatcher,
       replyResolver: async () => ({ text: "ok" }),
     });
@@ -154,7 +154,7 @@ describe("withReplyDispatcher", () => {
 
     await dispatchInboundMessageWithBufferedDispatcher({
       ctx: buildTestCtx(),
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       dispatcherOptions: {
         deliver: async () => undefined,
       },

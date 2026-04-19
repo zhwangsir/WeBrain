@@ -1,10 +1,10 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createOperatorApprovalsGatewayClient } from "../gateway/operator-approvals-client.js";
 import { isApprovalNotFoundError } from "./approval-errors.js";
 import type { ExecApprovalDecision } from "./exec-approvals.js";
 
 export type ResolveApprovalOverGatewayParams = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   approvalId: string;
   decision: ExecApprovalDecision;
   senderId?: string | null;

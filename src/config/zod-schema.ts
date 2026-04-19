@@ -230,7 +230,7 @@ const McpConfigSchema = z
   .strict()
   .optional();
 
-export const OpenClawSchema = z
+export const WineryClawSchema = z
   .object({
     $schema: z.string().optional(),
     meta: z

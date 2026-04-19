@@ -29,9 +29,9 @@ spec:
             - sh
             - -c
             - |
-              cp /config/openclaw.json /home/node/.openclaw/openclaw.json
-              mkdir -p /home/node/.openclaw/workspace
-              cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
+              cp /config/wineryclaw.json /home/node/.wineryclaw/wineryclaw.json
+              mkdir -p /home/node/.wineryclaw/workspace
+              cp /config/AGENTS.md /home/node/.wineryclaw/workspace/AGENTS.md
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -63,15 +63,15 @@ spec:
           env:
             - name: HOME
               value: /home/node
-            - name: OPENCLAW_CONFIG_DIR
+            - name: WINERYCLAW_CONFIG_DIR
               value: /home/node/.openclaw
             - name: NODE_ENV
               value: production
-            - name: OPENCLAW_GATEWAY_TOKEN
+            - name: WINERYCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: openclaw-secrets
-                  key: OPENCLAW_GATEWAY_TOKEN
+                  key: WINERYCLAW_GATEWAY_TOKEN
             - name: ANTHROPIC_API_KEY
               valueFrom:
                 secretKeyRef:

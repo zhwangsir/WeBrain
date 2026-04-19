@@ -727,7 +727,7 @@ import re
 import sys
 
 text = pathlib.Path(sys.argv[1]).read_text(errors="replace")
-matches = re.findall(r"OpenClaw [^\r\n]+ \([0-9a-f]{7,}\)", text)
+matches = re.findall(r"WineryClaw [^\r\n]+ \([0-9a-f]{7,}\)", text)
 print(matches[-1] if matches else "")
 PY
 }
@@ -893,7 +893,7 @@ ensure_guest_git() {
   mingit_url_q="$(ps_single_quote "$mingit_url")"
   mingit_name_q="$(ps_single_quote "$MINGIT_ZIP_NAME")"
   guest_powershell "$(cat <<EOF
-\$depsRoot = Join-Path \$env:LOCALAPPDATA 'OpenClaw\deps'
+\$depsRoot = Join-Path \$env:LOCALAPPDATA 'WineryClaw\deps'
 \$portableGit = Join-Path \$depsRoot 'portable-git'
 \$archive = Join-Path \$env:TEMP '${mingit_name_q}'
 if (Test-Path \$portableGit) {
@@ -1085,7 +1085,7 @@ function Invoke-Logged {
 }
 
 try {
-  $portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'OpenClaw\deps') 'portable-git') ''
+  $portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'WineryClaw\deps') 'portable-git') ''
   $env:PATH = "$portableGit\cmd;$portableGit\mingw64\bin;$portableGit\usr\bin;$env:PATH"
   $openclaw = Join-Path $env:APPDATA 'npm\openclaw.cmd'
 
@@ -1595,7 +1595,7 @@ function Invoke-Logged {
 }
 
 try {
-  $portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'OpenClaw\deps') 'portable-git') ''
+  $portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'WineryClaw\deps') 'portable-git') ''
   $shortRoot = 'C:\ocu'
   $shortTemp = Join-Path $shortRoot 'tmp'
   $shimBin = Join-Path $shortRoot 'shims'
@@ -1894,7 +1894,7 @@ function Invoke-Logged {
 }
 
 try {
-  $env:PATH = "$env:LOCALAPPDATA\OpenClaw\deps\portable-git\cmd;$env:LOCALAPPDATA\OpenClaw\deps\portable-git\mingw64\bin;$env:LOCALAPPDATA\OpenClaw\deps\portable-git\usr\bin;$env:PATH"
+  $env:PATH = "$env:LOCALAPPDATA\WineryClaw\deps\portable-git\cmd;$env:LOCALAPPDATA\WineryClaw\deps\portable-git\mingw64\bin;$env:LOCALAPPDATA\WineryClaw\deps\portable-git\usr\bin;$env:PATH"
   $tgz = Join-Path $env:TEMP $TempName
   Remove-Item $tgz, $LogPath, $DonePath -Force -ErrorAction SilentlyContinue
   Write-ProgressLog 'install.start'
@@ -2077,7 +2077,7 @@ verify_dev_channel_update() {
   local status_json pnpm_output
   status_json="$(
     guest_powershell "$(cat <<'EOF'
-$portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'OpenClaw\deps') 'portable-git') ''
+$portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'WineryClaw\deps') 'portable-git') ''
 $env:PATH = "$portableGit\cmd;$portableGit\mingw64\bin;$portableGit\usr\bin;$env:PATH"
 $gitEntry = Join-Path (Join-Path $env:USERPROFILE 'openclaw') 'openclaw.mjs'
 if (-not (Test-Path $gitEntry)) {
@@ -2089,7 +2089,7 @@ EOF
   )"
   pnpm_output="$(
     guest_powershell "$(cat <<'EOF'
-$portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'OpenClaw\deps') 'portable-git') ''
+$portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'WineryClaw\deps') 'portable-git') ''
 $shortRoot = 'C:\ocu'
 $shimBin = Join-Path $shortRoot 'shims'
 $bootstrapBin = Join-Path $shortRoot 'bootstrap\node_modules\.bin'

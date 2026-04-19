@@ -1,6 +1,6 @@
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig, MemorySearchConfig } from "../config/config.js";
+import type { WineryClawConfig, MemorySearchConfig } from "../config/config.js";
 import { resolveStateDir } from "../config/paths.js";
 import type { SecretInput } from "../config/types.secrets.js";
 import {
@@ -377,7 +377,7 @@ function resolveSyncConfig(
 }
 
 export function resolveMemorySearchConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   agentId: string,
 ): ResolvedMemorySearchConfig | null {
   const defaults = cfg.agents?.defaults?.memorySearch;
@@ -421,7 +421,7 @@ export function resolveMemorySearchConfig(
 }
 
 export function resolveMemorySearchSyncConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   agentId: string,
 ): ResolvedMemorySearchSyncConfig | null {
   const defaults = cfg.agents?.defaults?.memorySearch;

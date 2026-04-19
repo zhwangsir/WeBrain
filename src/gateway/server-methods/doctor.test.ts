@@ -2,15 +2,15 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 
-const loadConfig = vi.hoisted(() => vi.fn(() => ({}) as OpenClawConfig));
+const loadConfig = vi.hoisted(() => vi.fn(() => ({}) as WineryClawConfig));
 const resolveDefaultAgentId = vi.hoisted(() => vi.fn(() => "main"));
 const resolveAgentWorkspaceDir = vi.hoisted(() =>
-  vi.fn((_cfg: OpenClawConfig, _agentId: string) => "/tmp/openclaw"),
+  vi.fn((_cfg: WineryClawConfig, _agentId: string) => "/tmp/openclaw"),
 );
 const resolveMemorySearchConfig = vi.hoisted(() =>
-  vi.fn<(_cfg: OpenClawConfig, _agentId: string) => { enabled: boolean } | null>(() => ({
+  vi.fn<(_cfg: WineryClawConfig, _agentId: string) => { enabled: boolean } | null>(() => ({
     enabled: true,
   })),
 );
@@ -419,8 +419,8 @@ describe("doctor.memory.status", () => {
           },
         },
       },
-    } as OpenClawConfig);
-    resolveAgentWorkspaceDir.mockImplementation((cfg: OpenClawConfig, agentId: string) => {
+    } as WineryClawConfig);
+    resolveAgentWorkspaceDir.mockImplementation((cfg: WineryClawConfig, agentId: string) => {
       if (agentId === "alpha") {
         return alphaWorkspaceDir;
       }
@@ -554,7 +554,7 @@ describe("doctor.memory.status", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     const close = vi.fn().mockResolvedValue(undefined);
     getMemorySearchManager.mockResolvedValue({
@@ -612,7 +612,7 @@ describe("doctor.memory.status", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     const close = vi.fn().mockResolvedValue(undefined);
     getMemorySearchManager.mockResolvedValue({
@@ -690,8 +690,8 @@ describe("doctor.memory.status", () => {
           },
         },
       },
-    } as OpenClawConfig);
-    resolveAgentWorkspaceDir.mockImplementation((_cfg: OpenClawConfig, agentId: string) =>
+    } as WineryClawConfig);
+    resolveAgentWorkspaceDir.mockImplementation((_cfg: WineryClawConfig, agentId: string) =>
       agentId === "alpha" ? alphaWorkspaceDir : mainWorkspaceDir,
     );
 

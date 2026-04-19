@@ -14,7 +14,7 @@ import {
 import { DEFAULT_PROVIDER, DEFAULT_MODEL } from "../agents/defaults.js";
 import { parseModelRef } from "../agents/model-selection.js";
 import { runEmbeddedPiAgent } from "../agents/pi-embedded.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 
@@ -25,7 +25,7 @@ const log = createSubsystemLogger("llm-slug-generator");
  */
 export async function generateSlugViaLLM(params: {
   sessionContent: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): Promise<string | null> {
   let tempSessionFile: string | null = null;
 

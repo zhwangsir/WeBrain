@@ -1,6 +1,6 @@
-import OpenClawKit
+import WineryClawKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite struct IOSGatewayChatTransportTests {
     @Test func requestsFailFastWhenGatewayNotConnected() async {

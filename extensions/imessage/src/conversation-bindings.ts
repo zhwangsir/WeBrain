@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   createAccountScopedConversationBindingManager,
   resetAccountScopedConversationBindingsForTests,
@@ -25,7 +25,7 @@ function toIMessageTargetKind(raw: BindingTargetKind): IMessageBindingTargetKind
 
 export function createIMessageConversationBindingManager(params: {
   accountId?: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): IMessageConversationBindingManager {
   return createAccountScopedConversationBindingManager({
     channel: "imessage",

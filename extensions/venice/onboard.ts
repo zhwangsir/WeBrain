@@ -1,6 +1,6 @@
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   buildVeniceModelDefinition,
@@ -13,7 +13,7 @@ export { VENICE_DEFAULT_MODEL_REF };
 
 const venicePresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: VENICE_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: WineryClawConfig) => ({
     providerId: "venice",
     api: "openai-completions",
     baseUrl: VENICE_BASE_URL,
@@ -22,10 +22,10 @@ const venicePresetAppliers = createModelCatalogPresetAppliers({
   }),
 });
 
-export function applyVeniceProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyVeniceProviderConfig(cfg: WineryClawConfig): WineryClawConfig {
   return venicePresetAppliers.applyProviderConfig(cfg);
 }
 
-export function applyVeniceConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyVeniceConfig(cfg: WineryClawConfig): WineryClawConfig {
   return venicePresetAppliers.applyConfig(cfg);
 }

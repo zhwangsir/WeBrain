@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { getSlashCommands, parseCommand } from "./commands.js";
 import {
   createBackspaceDeduper,
@@ -111,7 +111,7 @@ describe("resolveTuiSessionKey", () => {
 });
 
 describe("resolveInitialTuiAgentId", () => {
-  const cfg: OpenClawConfig = {
+  const cfg: WineryClawConfig = {
     agents: {
       list: [
         { id: "main", workspace: "/tmp/openclaw" },

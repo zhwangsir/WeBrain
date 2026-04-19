@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { MIN_AUDIO_FILE_BYTES } from "./defaults.js";
 import { createMediaAttachmentCache, normalizeMediaAttachments } from "./runner.attachments.js";
 import { buildProviderRegistry, runCapability } from "./runner.js";
@@ -74,7 +74,7 @@ const AUDIO_CAPABILITY_CFG = {
       },
     },
   },
-} as unknown as OpenClawConfig;
+} as unknown as WineryClawConfig;
 
 async function runAudioCapabilityWithTranscriber(params: {
   ctx: MsgContext;

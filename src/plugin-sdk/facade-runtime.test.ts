@@ -15,8 +15,8 @@ import {
 import { createPluginSdkTestHarness } from "./test-helpers.js";
 
 const { createTempDirSync } = createPluginSdkTestHarness();
-const originalBundledPluginsDir = process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
-const originalStateDir = process.env.OPENCLAW_STATE_DIR;
+const originalBundledPluginsDir = process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
+const originalStateDir = process.env.WINERYCLAW_STATE_DIR;
 
 function createBundledPluginDir(prefix: string, marker: string): string {
   const rootDir = createTempDirSync(prefix);
@@ -48,14 +48,14 @@ afterEach(() => {
   clearPluginManifestRegistryCache();
   vi.doUnmock("../plugins/manifest-registry.js");
   if (originalBundledPluginsDir === undefined) {
-    delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+    delete process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
   } else {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = originalBundledPluginsDir;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = originalBundledPluginsDir;
   }
   if (originalStateDir === undefined) {
-    delete process.env.OPENCLAW_STATE_DIR;
+    delete process.env.WINERYCLAW_STATE_DIR;
   } else {
-    process.env.OPENCLAW_STATE_DIR = originalStateDir;
+    process.env.WINERYCLAW_STATE_DIR = originalStateDir;
   }
 });
 
@@ -64,7 +64,7 @@ describe("plugin-sdk facade runtime", () => {
     const overrideA = createBundledPluginDir("openclaw-facade-runtime-a-", "override-a");
     const overrideB = createBundledPluginDir("openclaw-facade-runtime-b-", "override-b");
 
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = overrideA;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = overrideA;
     const fromA = __testing.resolveFacadeModuleLocation({
       dirName: "demo",
       artifactBasename: "api.js",
@@ -74,7 +74,7 @@ describe("plugin-sdk facade runtime", () => {
       boundaryRoot: overrideA,
     });
 
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = overrideB;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = overrideB;
     const fromB = __testing.resolveFacadeModuleLocation({
       dirName: "demo",
       artifactBasename: "api.js",
@@ -87,7 +87,7 @@ describe("plugin-sdk facade runtime", () => {
 
   it("returns the same object identity on repeated calls (sentinel consistency)", () => {
     const dir = createBundledPluginDir("openclaw-facade-identity-", "identity-check");
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = dir;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = dir;
     const location = {
       modulePath: path.join(dir, "demo", "api.js"),
       boundaryRoot: dir,
@@ -169,7 +169,7 @@ describe("plugin-sdk facade runtime", () => {
   });
   it("clears the cache on load failure so retries re-execute", () => {
     const dir = createThrowingPluginDir("openclaw-facade-throw-");
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = dir;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = dir;
 
     expect(() =>
       loadBundledPluginPublicSurfaceModuleSync<{ marker: string }>({

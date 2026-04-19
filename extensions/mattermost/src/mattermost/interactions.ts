@@ -7,7 +7,7 @@ import {
 } from "openclaw/plugin-sdk/text-runtime";
 import { getMattermostRuntime } from "../runtime.js";
 import { updateMattermostPost, type MattermostClient, type MattermostPost } from "./client.js";
-import { isTrustedProxyAddress, resolveClientIp, type OpenClawConfig } from "./runtime-api.js";
+import { isTrustedProxyAddress, resolveClientIp, type WineryClawConfig } from "./runtime-api.js";
 
 const INTERACTION_MAX_BODY_BYTES = 64 * 1024;
 const INTERACTION_BODY_TIMEOUT_MS = 10_000;
@@ -64,7 +64,7 @@ export function getInteractionCallbackUrl(accountId: string): string | undefined
   return callbackUrls.get(accountId);
 }
 
-type InteractionCallbackConfig = Pick<OpenClawConfig, "gateway" | "channels"> & {
+type InteractionCallbackConfig = Pick<WineryClawConfig, "gateway" | "channels"> & {
   interactions?: {
     callbackBaseUrl?: string;
   };

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { resolveStorePath, resolveSessionTranscriptsDirForAgent } from "../config/sessions.js";
 import { noteStateIntegrity } from "./doctor-state-integrity.js";
 
@@ -18,17 +18,17 @@ const noteMock = vi.fn();
 
 type EnvSnapshot = {
   HOME?: string;
-  OPENCLAW_HOME?: string;
-  OPENCLAW_STATE_DIR?: string;
-  OPENCLAW_OAUTH_DIR?: string;
+  WINERYCLAW_HOME?: string;
+  WINERYCLAW_STATE_DIR?: string;
+  WINERYCLAW_OAUTH_DIR?: string;
 };
 
 function captureEnv(): EnvSnapshot {
   return {
     HOME: process.env.HOME,
-    OPENCLAW_HOME: process.env.OPENCLAW_HOME,
-    OPENCLAW_STATE_DIR: process.env.OPENCLAW_STATE_DIR,
-    OPENCLAW_OAUTH_DIR: process.env.OPENCLAW_OAUTH_DIR,
+    WINERYCLAW_HOME: process.env.WINERYCLAW_HOME,
+    WINERYCLAW_STATE_DIR: process.env.WINERYCLAW_STATE_DIR,
+    WINERYCLAW_OAUTH_DIR: process.env.WINERYCLAW_OAUTH_DIR,
   };
 }
 
@@ -43,7 +43,7 @@ function restoreEnv(snapshot: EnvSnapshot) {
   }
 }
 
-function setupSessionState(cfg: OpenClawConfig, env: NodeJS.ProcessEnv, homeDir: string) {
+function setupSessionState(cfg: WineryClawConfig, env: NodeJS.ProcessEnv, homeDir: string) {
   const agentId = "main";
   const sessionsDir = resolveSessionTranscriptsDirForAgent(agentId, env, () => homeDir);
   const storePath = resolveStorePath(cfg.session?.store, { agentId });
@@ -59,9 +59,9 @@ function stateIntegrityText(): string {
 }
 
 function createAgentDir(agentId: string, includeNestedAgentDir = true) {
-  const stateDir = process.env.OPENCLAW_STATE_DIR;
+  const stateDir = process.env.WINERYCLAW_STATE_DIR;
   if (!stateDir) {
-    throw new Error("OPENCLAW_STATE_DIR is not set");
+    throw new Error("WINERYCLAW_STATE_DIR is not set");
   }
   const targetDir = includeNestedAgentDir
     ? path.join(stateDir, "agents", agentId, "agent")
@@ -73,7 +73,7 @@ const OAUTH_PROMPT_MATCHER = expect.objectContaining({
   message: expect.stringContaining("Create OAuth dir at"),
 });
 
-async function runStateIntegrity(cfg: OpenClawConfig) {
+async function runStateIntegrity(cfg: WineryClawConfig) {
   setupSessionState(cfg, process.env, process.env.HOME ?? "");
   const confirmRuntimeRepair = vi.fn(async () => false);
   await noteStateIntegrity(cfg, { confirmRuntimeRepair, note: noteMock });
@@ -81,7 +81,7 @@ async function runStateIntegrity(cfg: OpenClawConfig) {
 }
 
 function writeSessionStore(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   sessions: Record<string, { sessionId: string; updatedAt: number }>,
 ) {
   setupSessionState(cfg, process.env, process.env.HOME ?? "");
@@ -89,13 +89,13 @@ function writeSessionStore(
   fs.writeFileSync(storePath, JSON.stringify(sessions, null, 2));
 }
 
-async function runStateIntegrityText(cfg: OpenClawConfig): Promise<string> {
+async function runStateIntegrityText(cfg: WineryClawConfig): Promise<string> {
   await noteStateIntegrity(cfg, { confirmRuntimeRepair: vi.fn(async () => false), note: noteMock });
   return stateIntegrityText();
 }
 
 async function runOrphanTranscriptCheckWithQmdSessions(enabled: boolean, homeDir: string) {
-  const cfg: OpenClawConfig = {
+  const cfg: WineryClawConfig = {
     memory: {
       backend: "qmd",
       qmd: {
@@ -119,10 +119,10 @@ describe("doctor state integrity oauth dir checks", () => {
     envSnapshot = captureEnv();
     tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-state-integrity-"));
     process.env.HOME = tempHome;
-    process.env.OPENCLAW_HOME = tempHome;
-    process.env.OPENCLAW_STATE_DIR = path.join(tempHome, ".openclaw");
-    delete process.env.OPENCLAW_OAUTH_DIR;
-    fs.mkdirSync(process.env.OPENCLAW_STATE_DIR, { recursive: true, mode: 0o700 });
+    process.env.WINERYCLAW_HOME = tempHome;
+    process.env.WINERYCLAW_STATE_DIR = path.join(tempHome, ".wineryclaw");
+    delete process.env.WINERYCLAW_OAUTH_DIR;
+    fs.mkdirSync(process.env.WINERYCLAW_STATE_DIR, { recursive: true, mode: 0o700 });
     noteMock.mockClear();
   });
 
@@ -132,7 +132,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("does not prompt for oauth dir when no whatsapp/pairing config is active", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     const confirmRuntimeRepair = await runStateIntegrity(cfg);
     expect(confirmRuntimeRepair).not.toHaveBeenCalledWith(OAUTH_PROMPT_MATCHER);
     const text = stateIntegrityText();
@@ -141,7 +141,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("does not prompt for oauth dir when whatsapp is configured without persisted auth state", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         whatsapp: {},
       },
@@ -153,7 +153,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("prompts for oauth dir when a channel dmPolicy is pairing", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         telegram: {
           dmPolicy: "pairing",
@@ -164,9 +164,9 @@ describe("doctor state integrity oauth dir checks", () => {
     expect(confirmRuntimeRepair).toHaveBeenCalledWith(OAUTH_PROMPT_MATCHER);
   });
 
-  it("prompts for oauth dir when OPENCLAW_OAUTH_DIR is explicitly configured", async () => {
-    process.env.OPENCLAW_OAUTH_DIR = path.join(tempHome, ".oauth");
-    const cfg: OpenClawConfig = {};
+  it("prompts for oauth dir when WINERYCLAW_OAUTH_DIR is explicitly configured", async () => {
+    process.env.WINERYCLAW_OAUTH_DIR = path.join(tempHome, ".oauth");
+    const cfg: WineryClawConfig = {};
     const confirmRuntimeRepair = await runStateIntegrity(cfg);
     expect(confirmRuntimeRepair).toHaveBeenCalledWith(OAUTH_PROMPT_MATCHER);
     expect(stateIntegrityText()).toContain("CRITICAL: OAuth dir missing");
@@ -250,7 +250,7 @@ describe("doctor state integrity oauth dir checks", () => {
 
     const realpathNative = fs.realpathSync.native.bind(fs.realpathSync);
     const resolvedResearchAgentDir = realpathNative(
-      path.join(process.env.OPENCLAW_STATE_DIR ?? "", "agents", "Research", "agent"),
+      path.join(process.env.WINERYCLAW_STATE_DIR ?? "", "agents", "Research", "agent"),
     );
     const realpathSpy = vi
       .spyOn(fs.realpathSync, "native")
@@ -277,7 +277,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("detects orphan transcripts and offers archival remediation", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     setupSessionState(cfg, process.env, process.env.HOME ?? "");
     const sessionsDir = resolveSessionTranscriptsDirForAgent("main", process.env, () => tempHome);
     fs.writeFileSync(path.join(sessionsDir, "orphan-session.jsonl"), '{"type":"session"}\n');
@@ -317,7 +317,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("prints openclaw-only verification hints when recent sessions are missing transcripts", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     writeSessionStore(cfg, {
       "agent:main:main": {
         sessionId: "missing-transcript",
@@ -336,7 +336,7 @@ describe("doctor state integrity oauth dir checks", () => {
   });
 
   it("ignores slash-routing sessions for recent missing transcript warnings", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     writeSessionStore(cfg, {
       "agent:main:telegram:slash:6790081233": {
         sessionId: "missing-slash-transcript",

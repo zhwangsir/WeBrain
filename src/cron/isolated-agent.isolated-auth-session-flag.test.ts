@@ -29,7 +29,7 @@ describe("isolated cron resolveSessionAuthProfileOverride isNewSession (#62783)"
 
     await withTempCronHome(async (home) => {
       const storePath = await writeSessionStore(home, { lastProvider: "webchat", lastTo: "" });
-      const agentDir = path.join(home, ".openclaw", "agents", "main", "agent");
+      const agentDir = path.join(home, ".wineryclaw", "agents", "main", "agent");
       await fs.mkdir(agentDir, { recursive: true });
       await fs.writeFile(
         path.join(agentDir, "auth-profiles.json"),

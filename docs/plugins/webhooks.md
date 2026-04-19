@@ -9,7 +9,7 @@ title: "Webhooks Plugin"
 # Webhooks (plugin)
 
 The Webhooks plugin adds authenticated HTTP routes that bind external
-automation to OpenClaw TaskFlows.
+automation to WineryClaw TaskFlows.
 
 Use it when you want a trusted system such as Zapier, n8n, a CI job, or an
 internal service to create and drive managed TaskFlows without writing a custom
@@ -40,7 +40,7 @@ Set config under `plugins.entries.webhooks.config`:
               secret: {
                 source: "env",
                 provider: "default",
-                id: "OPENCLAW_WEBHOOK_SECRET",
+                id: "WINERYCLAW_WEBHOOK_SECRET",
               },
               controllerId: "webhooks/zapier",
               description: "Zapier TaskFlow bridge",

@@ -4,7 +4,7 @@ import type {
   SessionAcpMeta,
   SessionEntry,
 } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { AcpRuntimeError } from "../runtime/errors.js";
 import { getAcpRuntimeBackend, requireAcpRuntimeBackend } from "../runtime/registry.js";
 import {
@@ -39,7 +39,7 @@ export type AcpSessionResolution =
     };
 
 export type AcpInitializeSessionInput = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey: string;
   agent: string;
   mode: AcpRuntimeSessionMode;
@@ -54,7 +54,7 @@ export type AcpTurnAttachment = {
 };
 
 export type AcpRunTurnInput = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey: string;
   text: string;
   attachments?: AcpTurnAttachment[];
@@ -65,7 +65,7 @@ export type AcpRunTurnInput = {
 };
 
 export type AcpCloseSessionInput = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey: string;
   reason: string;
   discardPersistentState?: boolean;

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   createAccountScopedConversationBindingManager,
   resetAccountScopedConversationBindingsForTests,
@@ -25,7 +25,7 @@ function toBlueBubblesTargetKind(raw: BindingTargetKind): BlueBubblesBindingTarg
 
 export function createBlueBubblesConversationBindingManager(params: {
   accountId?: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): BlueBubblesConversationBindingManager {
   return createAccountScopedConversationBindingManager({
     channel: "bluebubbles",

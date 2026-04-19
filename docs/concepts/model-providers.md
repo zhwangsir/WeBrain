@@ -21,7 +21,7 @@ For model selection rules, see [/concepts/models](/concepts/models).
 - `models.providers.*.models[].contextWindow` is native model metadata;
   `models.providers.*.models[].contextTokens` is the effective runtime cap.
 - Provider plugins can inject model catalogs via `registerProvider({ catalog })`;
-  OpenClaw merges that output into `models.providers` before writing
+  WineryClaw merges that output into `models.providers` before writing
   `models.json`.
 - Provider manifests can declare `providerAuthEnvVars` and
   `providerAuthAliases` so generic env-based auth probes and provider variants
@@ -53,14 +53,14 @@ For model selection rules, see [/concepts/models](/concepts/models).
 - The bundled `codex` provider is paired with the bundled Codex agent harness.
   Use `codex/gpt-*` when you want Codex-owned login, model discovery, native
   thread resume, and app-server execution. Plain `openai/gpt-*` refs continue
-  to use the OpenAI provider and the normal OpenClaw provider transport.
+  to use the OpenAI provider and the normal WineryClaw provider transport.
   Codex-only deployments can disable automatic PI fallback with
   `agents.defaults.embeddedHarness.fallback: "none"`; see
   [Codex Harness](/plugins/codex-harness).
 
 ## Plugin-owned provider behavior
 
-Provider plugins can now own most provider-specific logic while OpenClaw keeps
+Provider plugins can now own most provider-specific logic while WineryClaw keeps
 the generic inference loop.
 
 Typical split:
@@ -73,11 +73,11 @@ Typical split:
 - `normalizeModelId`: provider normalizes legacy/preview model ids before
   lookup or canonicalization
 - `normalizeTransport`: provider normalizes transport-family `api` / `baseUrl`
-  before generic model assembly; OpenClaw checks the matched provider first,
+  before generic model assembly; WineryClaw checks the matched provider first,
   then other hook-capable provider plugins until one actually changes the
   transport
 - `normalizeConfig`: provider normalizes `models.providers.<id>` config before
-  runtime uses it; OpenClaw checks the matched provider first, then other
+  runtime uses it; WineryClaw checks the matched provider first, then other
   hook-capable provider plugins until one actually changes the config. If no
   provider hook rewrites the config, bundled Google-family helpers still
   normalize supported Google provider entries.
@@ -221,7 +221,7 @@ Current bundled examples:
 The bundled `openai` plugin now owns both provider ids: `openai` and
 `openai-codex`.
 
-That covers providers that still fit OpenClaw's normal transports. A provider
+That covers providers that still fit WineryClaw's normal transports. A provider
 that needs a totally custom request executor is a separate, deeper extension
 surface.
 
@@ -229,7 +229,7 @@ surface.
 
 - Supports generic provider rotation for selected providers.
 - Configure multiple keys via:
-  - `OPENCLAW_LIVE_<PROVIDER>_KEY` (single live override, highest priority)
+  - `WINERYCLAW_LIVE_<PROVIDER>_KEY` (single live override, highest priority)
   - `<PROVIDER>_API_KEYS` (comma or semicolon list)
   - `<PROVIDER>_API_KEY` (primary key)
   - `<PROVIDER>_API_KEY_*` (numbered list, e.g. `<PROVIDER>_API_KEY_1`)
@@ -244,14 +244,14 @@ concurrent requests`, `ThrottlingException`, `concurrency limit reached`,
 
 ## Built-in providers (pi-ai catalog)
 
-OpenClaw ships with the pi‑ai catalog. These providers require **no**
+WineryClaw ships with the pi‑ai catalog. These providers require **no**
 `models.providers` config; just set auth + pick a model.
 
 ### OpenAI
 
 - Provider: `openai`
 - Auth: `OPENAI_API_KEY`
-- Optional rotation: `OPENAI_API_KEYS`, `OPENAI_API_KEY_1`, `OPENAI_API_KEY_2`, plus `OPENCLAW_LIVE_OPENAI_KEY` (single override)
+- Optional rotation: `OPENAI_API_KEYS`, `OPENAI_API_KEY_1`, `OPENAI_API_KEY_2`, plus `WINERYCLAW_LIVE_OPENAI_KEY` (single override)
 - Example models: `openai/gpt-5.4`, `openai/gpt-5.4-pro`
 - CLI: `openclaw onboard --auth-choice openai-api-key`
 - Default transport is `auto` (WebSocket-first, SSE fallback)
@@ -260,12 +260,12 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 - OpenAI priority processing can be enabled via `agents.defaults.models["openai/<model>"].params.serviceTier`
 - `/fast` and `params.fastMode` map direct `openai/*` Responses requests to `service_tier=priority` on `api.openai.com`
 - Use `params.serviceTier` when you want an explicit tier instead of the shared `/fast` toggle
-- Hidden OpenClaw attribution headers (`originator`, `version`,
+- Hidden WineryClaw attribution headers (`originator`, `version`,
   `User-Agent`) apply only on native OpenAI traffic to `api.openai.com`, not
   generic OpenAI-compatible proxies
 - Native OpenAI routes also keep Responses `store`, prompt-cache hints, and
   OpenAI reasoning-compat payload shaping; proxy routes do not
-- `openai/gpt-5.3-codex-spark` is intentionally suppressed in OpenClaw because the live OpenAI API rejects it; Spark is treated as Codex-only
+- `openai/gpt-5.3-codex-spark` is intentionally suppressed in WineryClaw because the live OpenAI API rejects it; Spark is treated as Codex-only
 
 ```json5
 {
@@ -277,12 +277,12 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 
 - Provider: `anthropic`
 - Auth: `ANTHROPIC_API_KEY`
-- Optional rotation: `ANTHROPIC_API_KEYS`, `ANTHROPIC_API_KEY_1`, `ANTHROPIC_API_KEY_2`, plus `OPENCLAW_LIVE_ANTHROPIC_KEY` (single override)
+- Optional rotation: `ANTHROPIC_API_KEYS`, `ANTHROPIC_API_KEY_1`, `ANTHROPIC_API_KEY_2`, plus `WINERYCLAW_LIVE_ANTHROPIC_KEY` (single override)
 - Example model: `anthropic/claude-opus-4-6`
 - CLI: `openclaw onboard --auth-choice apiKey`
-- Direct public Anthropic requests support the shared `/fast` toggle and `params.fastMode`, including API-key and OAuth-authenticated traffic sent to `api.anthropic.com`; OpenClaw maps that to Anthropic `service_tier` (`auto` vs `standard_only`)
-- Anthropic note: Anthropic staff told us OpenClaw-style Claude CLI usage is allowed again, so OpenClaw treats Claude CLI reuse and `claude -p` usage as sanctioned for this integration unless Anthropic publishes a new policy.
-- Anthropic setup-token remains available as a supported OpenClaw token path, but OpenClaw now prefers Claude CLI reuse and `claude -p` when available.
+- Direct public Anthropic requests support the shared `/fast` toggle and `params.fastMode`, including API-key and OAuth-authenticated traffic sent to `api.anthropic.com`; WineryClaw maps that to Anthropic `service_tier` (`auto` vs `standard_only`)
+- Anthropic note: Anthropic staff told us WineryClaw-style Claude CLI usage is allowed again, so WineryClaw treats Claude CLI reuse and `claude -p` usage as sanctioned for this integration unless Anthropic publishes a new policy.
+- Anthropic setup-token remains available as a supported WineryClaw token path, but WineryClaw now prefers Claude CLI reuse and `claude -p` when available.
 
 ```json5
 {
@@ -299,13 +299,13 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 - Default transport is `auto` (WebSocket-first, SSE fallback)
 - Override per model via `agents.defaults.models["openai-codex/<model>"].params.transport` (`"sse"`, `"websocket"`, or `"auto"`)
 - `params.serviceTier` is also forwarded on native Codex Responses requests (`chatgpt.com/backend-api`)
-- Hidden OpenClaw attribution headers (`originator`, `version`,
+- Hidden WineryClaw attribution headers (`originator`, `version`,
   `User-Agent`) are only attached on native Codex traffic to
   `chatgpt.com/backend-api`, not generic OpenAI-compatible proxies
-- Shares the same `/fast` toggle and `params.fastMode` config as direct `openai/*`; OpenClaw maps that to `service_tier=priority`
+- Shares the same `/fast` toggle and `params.fastMode` config as direct `openai/*`; WineryClaw maps that to `service_tier=priority`
 - `openai-codex/gpt-5.3-codex-spark` remains available when the Codex OAuth catalog exposes it; entitlement-dependent
 - `openai-codex/gpt-5.4` keeps native `contextWindow = 1050000` and a default runtime `contextTokens = 272000`; override the runtime cap with `models.providers.openai-codex.models[].contextTokens`
-- Policy note: OpenAI Codex OAuth is explicitly supported for external tools/workflows like OpenClaw.
+- Policy note: OpenAI Codex OAuth is explicitly supported for external tools/workflows like WineryClaw.
 
 ```json5
 {
@@ -349,19 +349,19 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
 
 - Provider: `google`
 - Auth: `GEMINI_API_KEY`
-- Optional rotation: `GEMINI_API_KEYS`, `GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, `GOOGLE_API_KEY` fallback, and `OPENCLAW_LIVE_GEMINI_KEY` (single override)
+- Optional rotation: `GEMINI_API_KEYS`, `GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, `GOOGLE_API_KEY` fallback, and `WINERYCLAW_LIVE_GEMINI_KEY` (single override)
 - Example models: `google/gemini-3.1-pro-preview`, `google/gemini-3-flash-preview`
-- Compatibility: legacy OpenClaw config using `google/gemini-3.1-flash-preview` is normalized to `google/gemini-3-flash-preview`
+- Compatibility: legacy WineryClaw config using `google/gemini-3.1-flash-preview` is normalized to `google/gemini-3-flash-preview`
 - CLI: `openclaw onboard --auth-choice gemini-api-key`
 - Direct Gemini runs also accept `agents.defaults.models["google/<model>"].params.cachedContent`
   (or legacy `cached_content`) to forward a provider-native
-  `cachedContents/...` handle; Gemini cache hits surface as OpenClaw `cacheRead`
+  `cachedContents/...` handle; Gemini cache hits surface as WineryClaw `cacheRead`
 
 ### Google Vertex and Gemini CLI
 
 - Providers: `google-vertex`, `google-gemini-cli`
 - Auth: Vertex uses gcloud ADC; Gemini CLI uses its OAuth flow
-- Caution: Gemini CLI OAuth in OpenClaw is an unofficial integration. Some users have reported Google account restrictions after using third-party clients. Review Google terms and use a non-critical account if you choose to proceed.
+- Caution: Gemini CLI OAuth in WineryClaw is an unofficial integration. Some users have reported Google account restrictions after using third-party clients. Review Google terms and use a non-critical account if you choose to proceed.
 - Gemini CLI OAuth is shipped as part of the bundled `google` plugin.
   - Install Gemini CLI first:
     - `brew install gemini-cli`
@@ -369,11 +369,11 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
   - Enable: `openclaw plugins enable google`
   - Login: `openclaw models auth login --provider google-gemini-cli --set-default`
   - Default model: `google-gemini-cli/gemini-3-flash-preview`
-  - Note: you do **not** paste a client id or secret into `openclaw.json`. The CLI login flow stores
+  - Note: you do **not** paste a client id or secret into `wineryclaw.json`. The CLI login flow stores
     tokens in auth profiles on the gateway host.
   - If requests fail after login, set `GOOGLE_CLOUD_PROJECT` or `GOOGLE_CLOUD_PROJECT_ID` on the gateway host.
   - Gemini CLI JSON replies are parsed from `response`; usage falls back to
-    `stats`, with `stats.cached` normalized into OpenClaw `cacheRead`.
+    `stats`, with `stats.cached` normalized into WineryClaw `cacheRead`.
 
 ### Z.AI (GLM)
 
@@ -402,7 +402,7 @@ OpenClaw ships with the pi‑ai catalog. These providers require **no**
   `https://api.kilo.ai/api/gateway/models` discovery can expand the runtime
   catalog further.
 - Exact upstream routing behind `kilocode/kilo/auto` is owned by Kilo Gateway,
-  not hard-coded in OpenClaw.
+  not hard-coded in WineryClaw.
 
 See [/providers/kilocode](/providers/kilocode) for setup details.
 
@@ -410,7 +410,7 @@ See [/providers/kilocode](/providers/kilocode) for setup details.
 
 - OpenRouter: `openrouter` (`OPENROUTER_API_KEY`)
 - Example model: `openrouter/auto`
-- OpenClaw applies OpenRouter's documented app-attribution headers only when
+- WineryClaw applies OpenRouter's documented app-attribution headers only when
   the request actually targets `openrouter.ai`
 - OpenRouter-specific Anthropic `cache_control` markers are likewise gated to
   verified OpenRouter routes, not arbitrary proxy URLs
@@ -562,7 +562,7 @@ catalog is registered at the same time.
 
 In onboarding/configure model pickers, the Volcengine auth choice prefers both
 `volcengine/*` and `volcengine-plan/*` rows. If those models are not loaded yet,
-OpenClaw falls back to the unfiltered catalog instead of showing an empty
+WineryClaw falls back to the unfiltered catalog instead of showing an empty
 provider-scoped picker.
 
 Available models:
@@ -603,7 +603,7 @@ catalog is registered at the same time.
 
 In onboarding/configure model pickers, the BytePlus auth choice prefers both
 `byteplus/*` and `byteplus-plan/*` rows. If those models are not loaded yet,
-OpenClaw falls back to the unfiltered catalog instead of showing an empty
+WineryClaw falls back to the unfiltered catalog instead of showing an empty
 provider-scoped picker.
 
 Available models:
@@ -661,7 +661,7 @@ MiniMax is configured via `models.providers` because it uses custom endpoints:
 
 See [/providers/minimax](/providers/minimax) for setup details, model options, and config snippets.
 
-On MiniMax's Anthropic-compatible streaming path, OpenClaw disables thinking by
+On MiniMax's Anthropic-compatible streaming path, WineryClaw disables thinking by
 default unless you explicitly set it, and `/fast on` rewrites
 `MiniMax-M2.7` to `MiniMax-M2.7-highspeed`.
 
@@ -792,19 +792,19 @@ Example (OpenAI‑compatible):
 Notes:
 
 - For custom providers, `reasoning`, `input`, `cost`, `contextWindow`, and `maxTokens` are optional.
-  When omitted, OpenClaw defaults to:
+  When omitted, WineryClaw defaults to:
   - `reasoning: false`
   - `input: ["text"]`
   - `cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }`
   - `contextWindow: 200000`
   - `maxTokens: 8192`
 - Recommended: set explicit values that match your proxy/model limits.
-- For `api: "openai-completions"` on non-native endpoints (any non-empty `baseUrl` whose host is not `api.openai.com`), OpenClaw forces `compat.supportsDeveloperRole: false` to avoid provider 400 errors for unsupported `developer` roles.
+- For `api: "openai-completions"` on non-native endpoints (any non-empty `baseUrl` whose host is not `api.openai.com`), WineryClaw forces `compat.supportsDeveloperRole: false` to avoid provider 400 errors for unsupported `developer` roles.
 - Proxy-style OpenAI-compatible routes also skip native OpenAI-only request
   shaping: no `service_tier`, no Responses `store`, no prompt-cache hints, no
-  OpenAI reasoning-compat payload shaping, and no hidden OpenClaw attribution
+  OpenAI reasoning-compat payload shaping, and no hidden WineryClaw attribution
   headers.
-- If `baseUrl` is empty/omitted, OpenClaw keeps the default OpenAI behavior (which resolves to `api.openai.com`).
+- If `baseUrl` is empty/omitted, WineryClaw keeps the default OpenAI behavior (which resolves to `api.openai.com`).
 - For safety, an explicit `compat.supportsDeveloperRole: true` is still overridden on non-native `openai-completions` endpoints.
 
 ## CLI examples

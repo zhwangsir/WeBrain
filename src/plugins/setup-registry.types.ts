@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import type { CliBackendPlugin } from "./cli-backend.types.js";
 
 export type SetupPluginLogger = {
@@ -15,21 +15,21 @@ export type SetupProviderPlugin = {
   resolveConfigApiKey?: (params: {
     provider: string;
     env?: NodeJS.ProcessEnv;
-    cfg?: OpenClawConfig;
+    cfg?: WineryClawConfig;
     workspaceDir?: string;
   }) => string | null | undefined;
 };
 
-export type SetupPluginConfigMigration = (config: OpenClawConfig) =>
+export type SetupPluginConfigMigration = (config: WineryClawConfig) =>
   | {
-      config: OpenClawConfig;
+      config: WineryClawConfig;
       changes: string[];
     }
   | null
   | undefined;
 
 export type SetupPluginAutoEnableContext = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   env: NodeJS.ProcessEnv;
 };
 
@@ -45,7 +45,7 @@ export type SetupOnlyPluginApi = {
   source: string;
   rootDir?: string;
   registrationMode: "setup-only";
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   pluginConfig?: Record<string, unknown>;
   runtime: Record<string, never>;
   logger: SetupPluginLogger;

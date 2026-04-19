@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveOpenClawMetadata, resolveSkillInvocationPolicy } from "./frontmatter.js";
+import { resolveWineryClawMetadata, resolveSkillInvocationPolicy } from "./frontmatter.js";
 
 describe("resolveSkillInvocationPolicy", () => {
   it("defaults to enabled behaviors", () => {
@@ -18,9 +18,9 @@ describe("resolveSkillInvocationPolicy", () => {
   });
 });
 
-describe("resolveOpenClawMetadata install validation", () => {
+describe("resolveWineryClawMetadata install validation", () => {
   function resolveInstall(frontmatter: Record<string, string>) {
-    return resolveOpenClawMetadata(frontmatter)?.install;
+    return resolveWineryClawMetadata(frontmatter)?.install;
   }
 
   it("accepts safe install specs", () => {

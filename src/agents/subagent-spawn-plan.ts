@@ -1,5 +1,5 @@
 import { formatThinkingLevels } from "../auto-reply/thinking.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveSubagentSpawnModelSelection } from "./model-selection.js";
 import { resolveSubagentThinkingOverride } from "./subagent-spawn-thinking.js";
 
@@ -19,7 +19,7 @@ export function splitModelRef(ref?: string) {
 }
 
 export function resolveConfiguredSubagentRunTimeoutSeconds(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   runTimeoutSeconds?: number;
 }) {
   const cfgSubagentTimeout =
@@ -33,7 +33,7 @@ export function resolveConfiguredSubagentRunTimeoutSeconds(params: {
 }
 
 export function resolveSubagentModelAndThinkingPlan(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   targetAgentId: string;
   targetAgentConfig?: unknown;
   modelOverride?: string;

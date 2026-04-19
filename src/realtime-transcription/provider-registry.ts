@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolvePluginCapabilityProviders } from "../plugins/capability-provider-runtime.js";
 import {
   buildCapabilityProviderMaps,
@@ -14,7 +14,7 @@ export function normalizeRealtimeTranscriptionProviderId(
 }
 
 function resolveRealtimeTranscriptionProviderEntries(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): RealtimeTranscriptionProviderPlugin[] {
   return resolvePluginCapabilityProviders({
     key: "realtimeTranscriptionProviders",
@@ -22,7 +22,7 @@ function resolveRealtimeTranscriptionProviderEntries(
   });
 }
 
-function buildProviderMaps(cfg?: OpenClawConfig): {
+function buildProviderMaps(cfg?: WineryClawConfig): {
   canonical: Map<string, RealtimeTranscriptionProviderPlugin>;
   aliases: Map<string, RealtimeTranscriptionProviderPlugin>;
 } {
@@ -30,14 +30,14 @@ function buildProviderMaps(cfg?: OpenClawConfig): {
 }
 
 export function listRealtimeTranscriptionProviders(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): RealtimeTranscriptionProviderPlugin[] {
   return [...buildProviderMaps(cfg).canonical.values()];
 }
 
 export function getRealtimeTranscriptionProvider(
   providerId: string | undefined,
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): RealtimeTranscriptionProviderPlugin | undefined {
   const normalized = normalizeRealtimeTranscriptionProviderId(providerId);
   if (!normalized) {
@@ -48,7 +48,7 @@ export function getRealtimeTranscriptionProvider(
 
 export function canonicalizeRealtimeTranscriptionProviderId(
   providerId: string | undefined,
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): RealtimeTranscriptionProviderId | undefined {
   const normalized = normalizeRealtimeTranscriptionProviderId(providerId);
   if (!normalized) {

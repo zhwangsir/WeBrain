@@ -14,7 +14,7 @@ import {
   resolveStateDir,
   resolveGatewayPort,
 } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { hasConfiguredSecretInput } from "../../config/types.secrets.js";
 import { resolveGatewayAuth } from "../../gateway/auth.js";
 import { defaultGatewayBindMode, isContainerEnvironment } from "../../gateway/net.js";
@@ -115,7 +115,7 @@ const GATEWAY_TAILSCALE_MODES: readonly GatewayTailscaleMode[] = ["off", "serve"
 
 function warnInlinePasswordFlag() {
   defaultRuntime.error(
-    "Warning: --password can be exposed via process listings. Prefer --password-file or OPENCLAW_GATEWAY_PASSWORD.",
+    "Warning: --password can be exposed via process listings. Prefer --password-file or WINERYCLAW_GATEWAY_PASSWORD.",
   );
 }
 
@@ -159,7 +159,7 @@ function formatModeErrorList<T extends string>(modes: readonly T[]): string {
   return `${quoted.slice(0, -1).join(", ")}, or ${quoted[quoted.length - 1]}`;
 }
 
-function maybeLogPendingControlUiBuild(cfg: OpenClawConfig): void {
+function maybeLogPendingControlUiBuild(cfg: WineryClawConfig): void {
   if (cfg.gateway?.controlUi?.enabled === false) {
     return;
   }
@@ -249,7 +249,7 @@ function isHealthyGatewayLockError(err: unknown): boolean {
 }
 
 async function runGatewayCommand(opts: GatewayRunOpts) {
-  const isDevProfile = normalizeOptionalLowercaseString(process.env.OPENCLAW_PROFILE) === "dev";
+  const isDevProfile = normalizeOptionalLowercaseString(process.env.WINERYCLAW_PROFILE) === "dev";
   const devMode = Boolean(opts.dev) || isDevProfile;
   if (opts.reset && !devMode) {
     defaultRuntime.error("Use --reset with --dev.");
@@ -260,7 +260,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
   setVerbose(Boolean(opts.verbose));
   if (opts.cliBackendLogs || opts.claudeCliLogs) {
     setConsoleSubsystemFilter(["agent/cli-backend"]);
-    process.env.OPENCLAW_CLI_BACKEND_LOG_OUTPUT = "1";
+    process.env.WINERYCLAW_CLI_BACKEND_LOG_OUTPUT = "1";
   }
   const wsLogRaw = (opts.compact ? "compact" : opts.wsLog) as string | undefined;
   const wsLogStyle: GatewayWsLogStyle =
@@ -277,11 +277,11 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
   setGatewayWsLogStyle(wsLogStyle);
 
   if (opts.rawStream) {
-    process.env.OPENCLAW_RAW_STREAM = "1";
+    process.env.WINERYCLAW_RAW_STREAM = "1";
   }
   const rawStreamPath = toOptionString(opts.rawStreamPath);
   if (rawStreamPath) {
-    process.env.OPENCLAW_RAW_STREAM_PATH = rawStreamPath;
+    process.env.WINERYCLAW_RAW_STREAM_PATH = rawStreamPath;
   }
 
   // The heaviest part of gateway startup is loading the server module tree
@@ -324,7 +324,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
     return;
   }
   const bindExplicitRaw = bindExplicitRawStr as GatewayBindMode | undefined;
-  if (process.env.OPENCLAW_SERVICE_MARKER?.trim()) {
+  if (process.env.WINERYCLAW_SERVICE_MARKER?.trim()) {
     const stale = cleanStaleGatewayProcessesSync(port);
     if (stale.length > 0) {
       gatewayLog.info(
@@ -380,7 +380,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
   if (opts.token) {
     const token = toOptionString(opts.token);
     if (token) {
-      process.env.OPENCLAW_GATEWAY_TOKEN = token;
+      process.env.WINERYCLAW_GATEWAY_TOKEN = token;
     }
   }
   const authModeRaw = toOptionString(opts.auth);
@@ -489,7 +489,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
     defaultRuntime.error(
       [
         "Gateway auth is set to password, but no password is configured.",
-        "Set gateway.auth.password (or OPENCLAW_GATEWAY_PASSWORD), or pass --password.",
+        "Set gateway.auth.password (or WINERYCLAW_GATEWAY_PASSWORD), or pass --password.",
         ...authHints,
       ]
         .filter(Boolean)
@@ -515,10 +515,10 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
         ...(isContainerEnvironment()
           ? [
               "Container environment detected \u2014 the gateway defaults to bind=auto (0.0.0.0) for port-forwarding compatibility.",
-              "Set OPENCLAW_GATEWAY_TOKEN or OPENCLAW_GATEWAY_PASSWORD, or pass --token/--password to start with auth.",
+              "Set WINERYCLAW_GATEWAY_TOKEN or WINERYCLAW_GATEWAY_PASSWORD, or pass --token/--password to start with auth.",
             ]
           : [
-              "Set gateway.auth.token/password (or OPENCLAW_GATEWAY_TOKEN/OPENCLAW_GATEWAY_PASSWORD) or pass --token/--password.",
+              "Set gateway.auth.token/password (or WINERYCLAW_GATEWAY_TOKEN/WINERYCLAW_GATEWAY_PASSWORD) or pass --token/--password.",
             ]),
         ...authHints,
       ]
@@ -604,7 +604,7 @@ export function addGatewayRunCommand(cmd: Command): Command {
     )
     .option(
       "--token <token>",
-      "Shared token required in connect.params.auth.token (default: OPENCLAW_GATEWAY_TOKEN env if set)",
+      "Shared token required in connect.params.auth.token (default: WINERYCLAW_GATEWAY_TOKEN env if set)",
     )
     .option("--auth <mode>", `Gateway auth mode (${formatModeChoices(GATEWAY_AUTH_MODES)})`)
     .option("--password <password>", "Password for auth mode=password")

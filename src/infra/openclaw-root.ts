@@ -84,7 +84,7 @@ function candidateDirsFromArgv1(argv1: string): string[] {
   return candidates;
 }
 
-export async function resolveOpenClawPackageRoot(opts: {
+export async function resolveWineryClawPackageRoot(opts: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;
@@ -99,7 +99,7 @@ export async function resolveOpenClawPackageRoot(opts: {
   return null;
 }
 
-export function resolveOpenClawPackageRootSync(opts: {
+export function resolveWineryClawPackageRootSync(opts: {
   cwd?: string;
   argv1?: string;
   moduleUrl?: string;

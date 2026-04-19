@@ -5,7 +5,7 @@ const runFfmpegMock = vi.hoisted(() => vi.fn<(...args: unknown[]) => Promise<voi
 
 vi.mock("openclaw/plugin-sdk/temp-path", async () => {
   return {
-    resolvePreferredOpenClawTmpDir: () => "/tmp",
+    resolvePreferredWineryClawTmpDir: () => "/tmp",
   };
 });
 

@@ -3,13 +3,13 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/scripts/lib/live-docker-auth.sh"
-IMAGE_NAME="${OPENCLAW_IMAGE:-openclaw:local}"
-LIVE_IMAGE_NAME="${OPENCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
-CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}"
-WORKSPACE_DIR="${OPENCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
-PROFILE_FILE="${OPENCLAW_PROFILE_FILE:-$HOME/.profile}"
-CLI_TOOLS_DIR="${OPENCLAW_DOCKER_CLI_TOOLS_DIR:-$HOME/.cache/openclaw/docker-cli-tools}"
-ACP_AGENT_LIST_RAW="${OPENCLAW_LIVE_ACP_BIND_AGENTS:-${OPENCLAW_LIVE_ACP_BIND_AGENT:-claude,codex,gemini}}"
+IMAGE_NAME="${WINERYCLAW_IMAGE:-openclaw:local}"
+LIVE_IMAGE_NAME="${WINERYCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
+CONFIG_DIR="${WINERYCLAW_CONFIG_DIR:-$HOME/.openclaw}"
+WORKSPACE_DIR="${WINERYCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
+PROFILE_FILE="${WINERYCLAW_PROFILE_FILE:-$HOME/.profile}"
+CLI_TOOLS_DIR="${WINERYCLAW_DOCKER_CLI_TOOLS_DIR:-$HOME/.cache/openclaw/docker-cli-tools}"
+ACP_AGENT_LIST_RAW="${WINERYCLAW_LIVE_ACP_BIND_AGENTS:-${WINERYCLAW_LIVE_ACP_BIND_AGENT:-claude,codex,gemini}}"
 
 openclaw_live_acp_bind_resolve_auth_provider() {
   case "${1:-}" in
@@ -17,7 +17,7 @@ openclaw_live_acp_bind_resolve_auth_provider() {
     codex) printf '%s\n' "codex-cli" ;;
     gemini) printf '%s\n' "google-gemini-cli" ;;
     *)
-      echo "Unsupported OPENCLAW_LIVE_ACP_BIND agent: ${1:-} (expected claude, codex, or gemini)" >&2
+      echo "Unsupported WINERYCLAW_LIVE_ACP_BIND agent: ${1:-} (expected claude, codex, or gemini)" >&2
       return 1
       ;;
   esac
@@ -25,9 +25,9 @@ openclaw_live_acp_bind_resolve_auth_provider() {
 
 openclaw_live_acp_bind_resolve_agent_command() {
   case "${1:-}" in
-    claude) printf '%s' "${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND_CLAUDE:-${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}}" ;;
-    codex) printf '%s' "${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND_CODEX:-${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}}" ;;
-    gemini) printf '%s' "${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND_GEMINI:-${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}}" ;;
+    claude) printf '%s' "${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND_CLAUDE:-${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}}" ;;
+    codex) printf '%s' "${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND_CODEX:-${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}}" ;;
+    gemini) printf '%s' "${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND_GEMINI:-${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}}" ;;
     *) return 1 ;;
   esac
 }
@@ -43,8 +43,8 @@ read -r -d '' LIVE_TEST_CMD <<'EOF' || true
 set -euo pipefail
 [ -f "$HOME/.profile" ] && source "$HOME/.profile" || true
 export PATH="$HOME/.npm-global/bin:$PATH"
-IFS=',' read -r -a auth_dirs <<<"${OPENCLAW_DOCKER_AUTH_DIRS_RESOLVED:-}"
-IFS=',' read -r -a auth_files <<<"${OPENCLAW_DOCKER_AUTH_FILES_RESOLVED:-}"
+IFS=',' read -r -a auth_dirs <<<"${WINERYCLAW_DOCKER_AUTH_DIRS_RESOLVED:-}"
+IFS=',' read -r -a auth_files <<<"${WINERYCLAW_DOCKER_AUTH_FILES_RESOLVED:-}"
 if ((${#auth_dirs[@]} > 0)); then
   for auth_dir in "${auth_dirs[@]}"; do
     [ -n "$auth_dir" ] || continue
@@ -65,7 +65,7 @@ if ((${#auth_files[@]} > 0)); then
     fi
   done
 fi
-agent="${OPENCLAW_LIVE_ACP_BIND_AGENT:-claude}"
+agent="${WINERYCLAW_LIVE_ACP_BIND_AGENT:-claude}"
 case "$agent" in
   claude)
     if [ ! -x "$HOME/.npm-global/bin/claude" ]; then
@@ -79,11 +79,11 @@ case "$agent" in
       cat > "$HOME/.npm-global/bin/claude" <<WRAP
 #!/usr/bin/env bash
 script_dir="\$(CDPATH= cd -- "\$(dirname -- "\$0")" && pwd)"
-if [ -n "\${OPENCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY:-}" ]; then
-  export ANTHROPIC_API_KEY="\${OPENCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY}"
+if [ -n "\${WINERYCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY:-}" ]; then
+  export ANTHROPIC_API_KEY="\${WINERYCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY}"
 fi
-if [ -n "\${OPENCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY_OLD:-}" ]; then
-  export ANTHROPIC_API_KEY_OLD="\${OPENCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY_OLD}"
+if [ -n "\${WINERYCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY_OLD:-}" ]; then
+  export ANTHROPIC_API_KEY_OLD="\${WINERYCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY_OLD}"
 fi
 exec "\$script_dir/claude-real" "\$@"
 WRAP
@@ -103,7 +103,7 @@ WRAP
     fi
     ;;
   *)
-    echo "Unsupported OPENCLAW_LIVE_ACP_BIND_AGENT: $agent" >&2
+    echo "Unsupported WINERYCLAW_LIVE_ACP_BIND_AGENT: $agent" >&2
     exit 1
     ;;
 esac
@@ -125,7 +125,7 @@ openclaw_live_link_runtime_tree "$tmp_dir"
 openclaw_live_stage_state_dir "$tmp_dir/.openclaw-state"
 openclaw_live_prepare_staged_config
 cd "$tmp_dir"
-export OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND="${OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}"
+export WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND="${WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND:-}"
 pnpm test:live src/gateway/gateway-acp-bind.live.test.ts
 EOF
 
@@ -142,7 +142,7 @@ for token in "${ACP_AGENT_TOKENS[@]}"; do
 done
 
 if ((${#ACP_AGENTS[@]} == 0)); then
-  echo "No ACP bind agents selected. Use OPENCLAW_LIVE_ACP_BIND_AGENTS=claude,codex,gemini." >&2
+  echo "No ACP bind agents selected. Use WINERYCLAW_LIVE_ACP_BIND_AGENTS=claude,codex,gemini." >&2
   exit 1
 fi
 
@@ -152,7 +152,7 @@ for ACP_AGENT in "${ACP_AGENTS[@]}"; do
 
   AUTH_DIRS=()
   AUTH_FILES=()
-  if [[ -n "${OPENCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
+  if [[ -n "${WINERYCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
     while IFS= read -r auth_dir; do
       [[ -n "$auth_dir" ]] || continue
       AUTH_DIRS+=("$auth_dir")
@@ -208,20 +208,20 @@ for ACP_AGENT in "${ACP_AGENTS[@]}"; do
     --entrypoint bash \
     -e ANTHROPIC_API_KEY \
     -e ANTHROPIC_API_KEY_OLD \
-    -e OPENCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}" \
-    -e OPENCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY_OLD="${ANTHROPIC_API_KEY_OLD:-}" \
+    -e WINERYCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}" \
+    -e WINERYCLAW_LIVE_ACP_BIND_ANTHROPIC_API_KEY_OLD="${ANTHROPIC_API_KEY_OLD:-}" \
     -e OPENAI_API_KEY \
     -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
     -e HOME=/home/node \
     -e NODE_OPTIONS=--disable-warning=ExperimentalWarning \
-    -e OPENCLAW_SKIP_CHANNELS=1 \
-    -e OPENCLAW_VITEST_FS_MODULE_CACHE=0 \
-    -e OPENCLAW_DOCKER_AUTH_DIRS_RESOLVED="$AUTH_DIRS_CSV" \
-    -e OPENCLAW_DOCKER_AUTH_FILES_RESOLVED="$AUTH_FILES_CSV" \
-    -e OPENCLAW_LIVE_TEST=1 \
-    -e OPENCLAW_LIVE_ACP_BIND=1 \
-    -e OPENCLAW_LIVE_ACP_BIND_AGENT="$ACP_AGENT" \
-    -e OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND="$AGENT_COMMAND" \
+    -e WINERYCLAW_SKIP_CHANNELS=1 \
+    -e WINERYCLAW_VITEST_FS_MODULE_CACHE=0 \
+    -e WINERYCLAW_DOCKER_AUTH_DIRS_RESOLVED="$AUTH_DIRS_CSV" \
+    -e WINERYCLAW_DOCKER_AUTH_FILES_RESOLVED="$AUTH_FILES_CSV" \
+    -e WINERYCLAW_LIVE_TEST=1 \
+    -e WINERYCLAW_LIVE_ACP_BIND=1 \
+    -e WINERYCLAW_LIVE_ACP_BIND_AGENT="$ACP_AGENT" \
+    -e WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND="$AGENT_COMMAND" \
     -v "$ROOT_DIR":/src:ro \
     -v "$CONFIG_DIR":/home/node/.openclaw \
     -v "$WORKSPACE_DIR":/home/node/.openclaw/workspace \

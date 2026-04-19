@@ -8,7 +8,7 @@ import {
   type ModelRef,
 } from "../agents/model-selection.js";
 import { resolvePluginWebSearchConfig } from "../config/plugin-web-search-config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveManifestContractPluginIds } from "../plugins/manifest-registry.js";
 import { normalizeProviderModelIdWithPlugin } from "../plugins/provider-runtime.js";
@@ -245,7 +245,7 @@ function addProviderModelPair(params: {
 }
 
 function addConfiguredWebSearchPluginModels(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   aliasIndex: ReturnType<typeof buildModelAliasIndex>;
   refs: Map<string, ModelRef>;
 }): void {
@@ -261,7 +261,7 @@ function addConfiguredWebSearchPluginModels(params: {
   }
 }
 
-export function collectConfiguredModelPricingRefs(config: OpenClawConfig): ModelRef[] {
+export function collectConfiguredModelPricingRefs(config: WineryClawConfig): ModelRef[] {
   const refs = new Map<string, ModelRef>();
   const aliasIndex = buildModelAliasIndex({
     cfg: config,
@@ -367,7 +367,7 @@ function resolveCatalogPricingForRef(params: {
   return undefined;
 }
 
-function scheduleRefresh(params: { config: OpenClawConfig; fetchImpl: typeof fetch }): void {
+function scheduleRefresh(params: { config: WineryClawConfig; fetchImpl: typeof fetch }): void {
   clearRefreshTimer();
   refreshTimer = setTimeout(() => {
     refreshTimer = null;
@@ -378,7 +378,7 @@ function scheduleRefresh(params: { config: OpenClawConfig; fetchImpl: typeof fet
 }
 
 export async function refreshGatewayModelPricingCache(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   fetchImpl?: typeof fetch;
 }): Promise<void> {
   if (inFlightRefresh) {
@@ -428,7 +428,7 @@ export async function refreshGatewayModelPricingCache(params: {
 }
 
 export function startGatewayModelPricingRefresh(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   fetchImpl?: typeof fetch;
 }): () => void {
   void refreshGatewayModelPricingCache(params).catch((error: unknown) => {

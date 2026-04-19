@@ -22,7 +22,7 @@ import { resolveDefaultAgentWorkspaceDir } from "../../agents/workspace.js";
 import { formatCliCommand } from "../../cli/command-format.js";
 import { parseDurationMs } from "../../cli/parse-duration.js";
 import { logConfigUpdated } from "../../config/logging.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { applyAuthProfileConfig } from "../../plugins/provider-auth-helpers.js";
 import { resolvePluginProviders } from "../../plugins/providers.runtime.js";
 import type {
@@ -87,7 +87,7 @@ function resolveDefaultTokenProfileId(provider: string): string {
 }
 
 type ResolvedModelsAuthContext = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentDir: string;
   workspaceDir: string;
   providers: ProviderPlugin[];
@@ -279,7 +279,7 @@ async function persistProviderAuthResult(params: {
 }
 
 async function runProviderAuthMethod(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentDir: string;
   workspaceDir: string;
   provider: ProviderPlugin;
@@ -425,9 +425,9 @@ export async function modelsAuthPasteTokenCommand(
   logConfigUpdated(runtime);
   runtime.log(`Auth profile: ${profileId} (${provider}/token)`);
   if (provider === "anthropic") {
-    runtime.log("Anthropic setup-token auth is supported in OpenClaw.");
-    runtime.log("OpenClaw prefers Claude CLI reuse when it is available on the host.");
-    runtime.log("Anthropic staff told us this OpenClaw path is allowed again.");
+    runtime.log("Anthropic setup-token auth is supported in WineryClaw.");
+    runtime.log("WineryClaw prefers Claude CLI reuse when it is available on the host.");
+    runtime.log("Anthropic staff told us this WineryClaw path is allowed again.");
   }
 }
 

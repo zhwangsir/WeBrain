@@ -16,7 +16,7 @@ import {
   classifyOAuthRefreshFailure,
   type OAuthRefreshFailureReason,
 } from "../agents/auth-profiles/oauth-refresh-failure.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { resolvePluginProviders } from "../plugins/providers.runtime.js";
 import { note } from "../terminal/note.js";
@@ -30,9 +30,9 @@ const OPENAI_BASE_URL = "https://api.openai.com/v1";
 const LEGACY_CODEX_APIS = new Set(["openai-responses", "openai-completions"]);
 
 export async function maybeRepairLegacyOAuthProfileIds(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   prompter: DoctorPrompter,
-): Promise<OpenClawConfig> {
+): Promise<WineryClawConfig> {
   const store = ensureAuthProfileStore();
   let nextCfg = cfg;
   const providers = resolvePluginProviders({
@@ -66,7 +66,7 @@ export async function maybeRepairLegacyOAuthProfileIds(
   return nextCfg;
 }
 
-function hasConfiguredCodexOAuthProfile(cfg: OpenClawConfig): boolean {
+function hasConfiguredCodexOAuthProfile(cfg: WineryClawConfig): boolean {
   return Object.values(cfg.auth?.profiles ?? {}).some(
     (profile) => profile.provider === CODEX_PROVIDER_ID && profile.mode === "oauth",
   );
@@ -135,7 +135,7 @@ function buildCodexProviderOverrideWarning(providerOverride: unknown): string {
   return lines.join("\n");
 }
 
-export function noteLegacyCodexProviderOverride(cfg: OpenClawConfig): void {
+export function noteLegacyCodexProviderOverride(cfg: WineryClawConfig): void {
   const providerOverride = cfg.models?.providers?.[CODEX_PROVIDER_ID];
   if (!providerOverride) {
     return;
@@ -208,7 +208,7 @@ export function formatOAuthRefreshFailureDoctorLine(params: {
 
 export async function resolveAuthIssueHint(
   issue: AuthIssue,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   store: ReturnType<typeof ensureAuthProfileStore>,
 ): Promise<string | null> {
   if (issue.reasonCode === "invalid_expires") {
@@ -230,7 +230,7 @@ export async function resolveAuthIssueHint(
 
 async function formatAuthIssueLine(
   issue: AuthIssue,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   store: ReturnType<typeof ensureAuthProfileStore>,
 ): Promise<string> {
   const remaining =
@@ -241,7 +241,7 @@ async function formatAuthIssueLine(
 }
 
 export async function noteAuthProfileHealth(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   prompter: DoctorPrompter;
   allowKeychainPrompt: boolean;
 }): Promise<void> {

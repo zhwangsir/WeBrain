@@ -13,14 +13,14 @@ export type {
 } from "openclaw/plugin-sdk/channel-contract";
 export type {
   ChannelPlugin,
-  OpenClawPluginApi,
+  WineryClawPluginApi,
   PluginRuntime,
 } from "openclaw/plugin-sdk/channel-plugin-common";
 export type {
   DiscordAccountConfig,
   DiscordActionConfig,
   DiscordConfig,
-  OpenClawConfig,
+  WineryClawConfig,
 } from "openclaw/plugin-sdk/config-runtime";
 export {
   jsonResult,

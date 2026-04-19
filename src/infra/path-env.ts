@@ -4,7 +4,7 @@ import path from "node:path";
 import { resolveBrewPathDirs } from "./brew.js";
 import { isTruthyEnvValue } from "./env.js";
 
-type EnsureOpenClawPathOpts = {
+type EnsureWineryClawPathOpts = {
   execPath?: string;
   cwd?: string;
   homeDir?: string;
@@ -49,7 +49,7 @@ function mergePath(params: { existing: string; prepend?: string[]; append?: stri
   return merged.join(path.delimiter);
 }
 
-function candidateBinDirs(opts: EnsureOpenClawPathOpts): { prepend: string[]; append: string[] } {
+function candidateBinDirs(opts: EnsureWineryClawPathOpts): { prepend: string[]; append: string[] } {
   const execPath = opts.execPath ?? process.execPath;
   const cwd = opts.cwd ?? process.cwd();
   const homeDir = opts.homeDir ?? os.homedir();
@@ -59,7 +59,7 @@ function candidateBinDirs(opts: EnsureOpenClawPathOpts): { prepend: string[]; ap
   const append: string[] = [];
 
   // Keep the active runtime directory ahead of PATH hardening so shebang-based
-  // subprocesses keep using the same Node/Bun the current OpenClaw process is on.
+  // subprocesses keep using the same Node/Bun the current WineryClaw process is on.
   try {
     const execDir = path.dirname(execPath);
     if (isExecutable(execPath)) {
@@ -84,7 +84,7 @@ function candidateBinDirs(opts: EnsureOpenClawPathOpts): { prepend: string[]; ap
   // disabled by default; if an operator explicitly enables it, only append (never prepend).
   const allowProjectLocalBin =
     opts.allowProjectLocalBin === true ||
-    isTruthyEnvValue(process.env.OPENCLAW_ALLOW_PROJECT_LOCAL_BIN);
+    isTruthyEnvValue(process.env.WINERYCLAW_ALLOW_PROJECT_LOCAL_BIN);
   if (allowProjectLocalBin) {
     const localBinDir = path.join(cwd, "node_modules", ".bin");
     if (isExecutable(path.join(localBinDir, "openclaw"))) {
@@ -124,11 +124,11 @@ function candidateBinDirs(opts: EnsureOpenClawPathOpts): { prepend: string[]; ap
  * Best-effort PATH bootstrap so skills that require the `openclaw` CLI can run
  * under launchd/minimal environments (and inside the macOS app bundle).
  */
-export function ensureOpenClawCliOnPath(opts: EnsureOpenClawPathOpts = {}) {
-  if (isTruthyEnvValue(process.env.OPENCLAW_PATH_BOOTSTRAPPED)) {
+export function ensureWineryClawCliOnPath(opts: EnsureWineryClawPathOpts = {}) {
+  if (isTruthyEnvValue(process.env.WINERYCLAW_PATH_BOOTSTRAPPED)) {
     return;
   }
-  process.env.OPENCLAW_PATH_BOOTSTRAPPED = "1";
+  process.env.WINERYCLAW_PATH_BOOTSTRAPPED = "1";
 
   const existing = opts.pathEnv ?? process.env.PATH ?? "";
   const { prepend, append } = candidateBinDirs(opts);

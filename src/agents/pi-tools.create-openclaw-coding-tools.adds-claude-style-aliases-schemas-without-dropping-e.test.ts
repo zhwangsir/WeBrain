@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { REQUIRED_PARAM_GROUPS, wrapToolParamValidation } from "./pi-tools.params.js";
 import { cleanToolSchemaForGemini } from "./pi-tools.schema.js";
 
-describe("createOpenClawCodingTools", () => {
+describe("createWineryClawCodingTools", () => {
   describe("Gemini cleanup and strict param validation", () => {
     it("enforces canonical path/content at runtime", async () => {
       const execute = vi.fn(async (_id, args) => args);

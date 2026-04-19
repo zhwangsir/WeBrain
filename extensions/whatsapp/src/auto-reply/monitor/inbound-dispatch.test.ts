@@ -202,7 +202,7 @@ describe("whatsapp inbound dispatch", () => {
             {
               id: "main",
               default: true,
-              identity: { name: "Mainbot", emoji: "🦞", theme: "space lobster" },
+              identity: { name: "Mainbot", emoji: "😋", theme: "space lobster" },
             },
           ],
         },

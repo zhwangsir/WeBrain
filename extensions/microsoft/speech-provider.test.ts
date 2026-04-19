@@ -1,7 +1,7 @@
 import { mkdtempSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildMicrosoftSpeechProvider,
@@ -10,15 +10,15 @@ import {
 } from "./speech-provider.js";
 import * as ttsModule from "./tts.js";
 
-const TEST_CFG = {} as OpenClawConfig;
+const TEST_CFG = {} as WineryClawConfig;
 
 describe("listMicrosoftVoices", () => {
   const originalFetch = globalThis.fetch;
   const proxyEnvKeys = [
-    "OPENCLAW_DEBUG_PROXY_ENABLED",
-    "OPENCLAW_DEBUG_PROXY_DB_PATH",
-    "OPENCLAW_DEBUG_PROXY_BLOB_DIR",
-    "OPENCLAW_DEBUG_PROXY_SESSION_ID",
+    "WINERYCLAW_DEBUG_PROXY_ENABLED",
+    "WINERYCLAW_DEBUG_PROXY_DB_PATH",
+    "WINERYCLAW_DEBUG_PROXY_BLOB_DIR",
+    "WINERYCLAW_DEBUG_PROXY_SESSION_ID",
   ] as const;
   let priorProxyEnv: Partial<Record<(typeof proxyEnvKeys)[number], string | undefined>> = {};
 
@@ -85,10 +85,10 @@ describe("listMicrosoftVoices", () => {
     priorProxyEnv = Object.fromEntries(
       proxyEnvKeys.map((key) => [key, process.env[key]]),
     ) as typeof priorProxyEnv;
-    process.env.OPENCLAW_DEBUG_PROXY_ENABLED = "1";
-    process.env.OPENCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
-    process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
-    process.env.OPENCLAW_DEBUG_PROXY_SESSION_ID = "ms-voices-session";
+    process.env.WINERYCLAW_DEBUG_PROXY_ENABLED = "1";
+    process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
+    process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
+    process.env.WINERYCLAW_DEBUG_PROXY_SESSION_ID = "ms-voices-session";
 
     globalThis.fetch = vi
       .fn()
@@ -98,8 +98,8 @@ describe("listMicrosoftVoices", () => {
 
     const { getDebugProxyCaptureStore } = await import("../../src/proxy-capture/store.sqlite.js");
     const store = getDebugProxyCaptureStore(
-      process.env.OPENCLAW_DEBUG_PROXY_DB_PATH,
-      process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR,
+      process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH,
+      process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR,
     );
     store.upsertSession({
       id: "ms-voices-session",
@@ -107,8 +107,8 @@ describe("listMicrosoftVoices", () => {
       mode: "test",
       sourceScope: "openclaw",
       sourceProcess: "openclaw",
-      dbPath: process.env.OPENCLAW_DEBUG_PROXY_DB_PATH,
-      blobDir: process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR,
+      dbPath: process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH,
+      blobDir: process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR,
     });
 
     await listMicrosoftVoices();
@@ -130,10 +130,10 @@ describe("listMicrosoftVoices", () => {
     priorProxyEnv = Object.fromEntries(
       proxyEnvKeys.map((key) => [key, process.env[key]]),
     ) as typeof priorProxyEnv;
-    process.env.OPENCLAW_DEBUG_PROXY_ENABLED = "1";
-    process.env.OPENCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
-    process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
-    process.env.OPENCLAW_DEBUG_PROXY_SESSION_ID = "ms-voices-global-session";
+    process.env.WINERYCLAW_DEBUG_PROXY_ENABLED = "1";
+    process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
+    process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
+    process.env.WINERYCLAW_DEBUG_PROXY_SESSION_ID = "ms-voices-global-session";
 
     globalThis.fetch = vi.fn(
       async () => new Response(JSON.stringify([{ ShortName: "en-US-AvaNeural" }]), { status: 200 }),
@@ -143,8 +143,8 @@ describe("listMicrosoftVoices", () => {
     const { finalizeDebugProxyCapture, initializeDebugProxyCapture } =
       await import("../../src/proxy-capture/runtime.js");
     const store = getDebugProxyCaptureStore(
-      process.env.OPENCLAW_DEBUG_PROXY_DB_PATH,
-      process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR,
+      process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH,
+      process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR,
     );
     store.upsertSession({
       id: "ms-voices-global-session",
@@ -152,8 +152,8 @@ describe("listMicrosoftVoices", () => {
       mode: "test",
       sourceScope: "openclaw",
       sourceProcess: "openclaw",
-      dbPath: process.env.OPENCLAW_DEBUG_PROXY_DB_PATH,
-      blobDir: process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR,
+      dbPath: process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH,
+      blobDir: process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR,
     });
     initializeDebugProxyCapture("test");
 

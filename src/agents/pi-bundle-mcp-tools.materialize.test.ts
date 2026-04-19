@@ -21,7 +21,7 @@ afterEach(async () => {
 
 async function createBundleProbeRuntime(params?: { reservedToolNames?: string[] }) {
   const workspaceDir = await makeTempDir("openclaw-bundle-mcp-tools-");
-  const pluginRoot = path.join(workspaceDir, ".openclaw", "extensions", "bundle-probe");
+  const pluginRoot = path.join(workspaceDir, ".wineryclaw", "extensions", "bundle-probe");
   const serverScriptPath = path.join(pluginRoot, "servers", "bundle-probe.mjs");
   await writeBundleProbeMcpServer(serverScriptPath);
   await writeClaudeBundle({ pluginRoot, serverScriptPath });

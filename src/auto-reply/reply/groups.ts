@@ -1,6 +1,6 @@
 import { resolveChannelGroupRequireMention } from "../../config/group-policy.js";
 import type { GroupKeyResolution, SessionEntry } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
@@ -38,7 +38,7 @@ async function resolveRuntimeChannelId(raw?: string | null): Promise<string | nu
 }
 
 export async function resolveGroupRequireMention(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   ctx: TemplateContext;
   groupResolution?: GroupKeyResolution;
 }): Promise<boolean> {
@@ -122,7 +122,7 @@ export function buildGroupChatContext(params: { sessionCtx: TemplateContext }): 
 }
 
 export function buildGroupIntro(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionCtx: TemplateContext;
   sessionEntry?: SessionEntry;
   defaultActivation: "always" | "mention";
@@ -136,7 +136,7 @@ export function buildGroupIntro(params: {
       : "Activation: trigger-only (you are invoked only when explicitly mentioned; recent context may be included).";
   const silenceLine =
     activation === "always"
-      ? `If no response is needed, reply with exactly "${params.silentToken}" (and nothing else) so OpenClaw stays silent. Do not add any other words, punctuation, tags, markdown/code blocks, or explanations.`
+      ? `If no response is needed, reply with exactly "${params.silentToken}" (and nothing else) so WineryClaw stays silent. Do not add any other words, punctuation, tags, markdown/code blocks, or explanations.`
       : undefined;
   const cautionLine =
     activation === "always"

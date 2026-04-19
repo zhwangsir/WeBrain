@@ -1,7 +1,7 @@
 import "./test-helpers.js";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { setLoggerOverride } from "openclaw/plugin-sdk/runtime-env";
 import { withEnvAsync } from "openclaw/plugin-sdk/testing";
 import { beforeAll, describe, expect, it, vi } from "vitest";
@@ -409,7 +409,7 @@ describe("web auto-reply connection", () => {
       return { text: "final reply" };
     });
 
-    const mockConfig: OpenClawConfig = {
+    const mockConfig: WineryClawConfig = {
       channels: { whatsapp: { allowFrom: ["*"] } },
     };
 

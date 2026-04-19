@@ -49,13 +49,13 @@ export default definePluginEntry({
 | `name`         | `string`                                                         | Yes      | —                   |
 | `description`  | `string`                                                         | Yes      | —                   |
 | `kind`         | `string`                                                         | No       | —                   |
-| `configSchema` | `OpenClawPluginConfigSchema \| () => OpenClawPluginConfigSchema` | No       | Empty object schema |
-| `register`     | `(api: OpenClawPluginApi) => void`                               | Yes      | —                   |
+| `configSchema` | `WineryClawPluginConfigSchema \| () => WineryClawPluginConfigSchema` | No       | Empty object schema |
+| `register`     | `(api: WineryClawPluginApi) => void`                               | Yes      | —                   |
 
 - `id` must match your `openclaw.plugin.json` manifest.
 - `kind` is for exclusive slots: `"memory"` or `"context-engine"`.
 - `configSchema` can be a function for lazy evaluation.
-- OpenClaw resolves and memoizes that schema on first access, so expensive schema
+- WineryClaw resolves and memoizes that schema on first access, so expensive schema
   builders only run once.
 
 ## `defineChannelPluginEntry`
@@ -90,10 +90,10 @@ export default defineChannelPluginEntry({
 | `name`                | `string`                                                         | Yes      | —                   |
 | `description`         | `string`                                                         | Yes      | —                   |
 | `plugin`              | `ChannelPlugin`                                                  | Yes      | —                   |
-| `configSchema`        | `OpenClawPluginConfigSchema \| () => OpenClawPluginConfigSchema` | No       | Empty object schema |
+| `configSchema`        | `WineryClawPluginConfigSchema \| () => WineryClawPluginConfigSchema` | No       | Empty object schema |
 | `setRuntime`          | `(runtime: PluginRuntime) => void`                               | No       | —                   |
-| `registerCliMetadata` | `(api: OpenClawPluginApi) => void`                               | No       | —                   |
-| `registerFull`        | `(api: OpenClawPluginApi) => void`                               | No       | —                   |
+| `registerCliMetadata` | `(api: WineryClawPluginApi) => void`                               | No       | —                   |
+| `registerFull`        | `(api: WineryClawPluginApi) => void`                               | No       | —                   |
 
 - `setRuntime` is called during registration so you can store the runtime reference
   (typically via `createPluginRuntimeStore`). It is skipped during CLI metadata
@@ -105,7 +105,7 @@ export default defineChannelPluginEntry({
   with full plugin loads.
 - `registerFull` only runs when `api.registrationMode === "full"`. It is skipped
   during setup-only loading.
-- Like `definePluginEntry`, `configSchema` can be a lazy factory and OpenClaw
+- Like `definePluginEntry`, `configSchema` can be a lazy factory and WineryClaw
   memoizes the resolved schema on first access.
 - For plugin-owned root CLI commands, prefer `api.registerCli(..., { descriptors: [...] })`
   when you want the command to stay lazy-loaded without disappearing from the
@@ -129,7 +129,7 @@ import { defineSetupPluginEntry } from "openclaw/plugin-sdk/channel-core";
 export default defineSetupPluginEntry(myChannelPlugin);
 ```
 
-OpenClaw loads this instead of the full entry when a channel is disabled,
+WineryClaw loads this instead of the full entry when a channel is disabled,
 unconfigured, or when deferred loading is enabled. See
 [Setup and Config](/plugins/sdk-setup#setup-entry) for when this matters.
 
@@ -183,14 +183,14 @@ provider/client SDK bootstraps still belong in `"full"`.
 For CLI registrars specifically:
 
 - use `descriptors` when the registrar owns one or more root commands and you
-  want OpenClaw to lazy-load the real CLI module on first invocation
+  want WineryClaw to lazy-load the real CLI module on first invocation
 - make sure those descriptors cover every top-level command root exposed by the
   registrar
 - use `commands` alone only for eager compatibility paths
 
 ## Plugin shapes
 
-OpenClaw classifies loaded plugins by their registration behavior:
+WineryClaw classifies loaded plugins by their registration behavior:
 
 | Shape                 | Description                                        |
 | --------------------- | -------------------------------------------------- |

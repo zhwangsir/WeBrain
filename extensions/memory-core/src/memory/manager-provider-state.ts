@@ -1,5 +1,5 @@
 import type {
-  OpenClawConfig,
+  WineryClawConfig,
   ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import {
@@ -68,7 +68,7 @@ export function applyMemoryFallbackProviderState(params: {
 }
 
 export function resolveMemoryFallbackProviderRequest(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   settings: ResolvedMemorySearchConfig;
   currentProviderId: string | null;
 }): {

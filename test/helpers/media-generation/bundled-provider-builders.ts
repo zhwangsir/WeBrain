@@ -1,9 +1,9 @@
-import type { OpenClawPluginApi } from "../../../src/plugins/types.js";
+import type { WineryClawPluginApi } from "../../../src/plugins/types.js";
 import { loadBundledPluginPublicSurfaceSync } from "../../../src/test-utils/bundled-plugin-public-surface.js";
 
 type BundledPluginEntryModule = {
   default: {
-    register(api: OpenClawPluginApi): void | Promise<void>;
+    register(api: WineryClawPluginApi): void | Promise<void>;
   };
 };
 

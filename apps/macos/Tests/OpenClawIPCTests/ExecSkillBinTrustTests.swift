@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct ExecSkillBinTrustTests {
     @Test func `build trust index resolves skill bin paths`() throws {

@@ -1,6 +1,6 @@
 ---
 title: "QA Channel"
-summary: "Synthetic Slack-class channel plugin for deterministic OpenClaw QA scenarios"
+summary: "Synthetic Slack-class channel plugin for deterministic WineryClaw QA scenarios"
 read_when:
   - You are wiring the synthetic QA transport into a local or CI test run
   - You need the bundled qa-channel config surface
@@ -9,7 +9,7 @@ read_when:
 
 # QA Channel
 
-`qa-channel` is a bundled synthetic message transport for automated OpenClaw QA.
+`qa-channel` is a bundled synthetic message transport for automated WineryClaw QA.
 
 It is not a production channel. It exists to exercise the same channel plugin
 boundary used by real transports while keeping state deterministic and fully
@@ -39,7 +39,7 @@ inspectable.
     "qa-channel": {
       "baseUrl": "http://127.0.0.1:43123",
       "botUserId": "openclaw",
-      "botDisplayName": "OpenClaw QA",
+      "botDisplayName": "WineryClaw QA",
       "allowFrom": ["*"],
       "pollTimeoutMs": 1000
     }
@@ -105,4 +105,4 @@ Follow-up work will add:
 
 - provider/model matrix execution
 - richer scenario discovery
-- OpenClaw-native orchestration later
+- WineryClaw-native orchestration later

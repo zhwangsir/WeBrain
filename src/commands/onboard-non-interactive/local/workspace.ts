@@ -1,10 +1,10 @@
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import { resolveUserPath } from "../../../utils.js";
 import type { OnboardOptions } from "../../onboard-types.js";
 
 export function resolveNonInteractiveWorkspaceDir(params: {
   opts: OnboardOptions;
-  baseConfig: OpenClawConfig;
+  baseConfig: WineryClawConfig;
   defaultWorkspaceDir: string;
 }) {
   const raw = (

@@ -1,7 +1,7 @@
 import type { App } from "@slack/bolt";
 import { formatAllowlistMatchMeta } from "openclaw/plugin-sdk/allow-from";
 import type {
-  OpenClawConfig,
+  WineryClawConfig,
   SlackReactionNotificationMode,
 } from "openclaw/plugin-sdk/config-runtime";
 import type { SessionScope } from "openclaw/plugin-sdk/config-runtime";
@@ -27,7 +27,7 @@ import { isSlackChannelAllowedByPolicy } from "./policy.js";
 export { inferSlackChannelType, normalizeSlackChannelType } from "./channel-type.js";
 
 export type SlackMonitorContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   botToken: string;
   app: App;
@@ -94,7 +94,7 @@ export type SlackMonitorContext = {
 };
 
 export function createSlackMonitorContext(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   botToken: string;
   app: App;

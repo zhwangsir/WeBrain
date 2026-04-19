@@ -1,6 +1,6 @@
 import { finalizeInboundContext } from "../auto-reply/reply/inbound-context.js";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { formatLinkUnderstandingBody } from "./format.js";
 import { runLinkUnderstanding } from "./runner.js";
 
@@ -11,7 +11,7 @@ export type ApplyLinkUnderstandingResult = {
 
 export async function applyLinkUnderstanding(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): Promise<ApplyLinkUnderstandingResult> {
   const result = await runLinkUnderstanding({
     cfg: params.cfg,

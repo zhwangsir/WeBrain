@@ -12,11 +12,11 @@ function appBundledPluginRoot(pluginId: string): string {
   return bundledPluginRootAt(APP_ROOT, pluginId);
 }
 
-const discoverOpenClawPluginsMock = vi.fn();
+const discoverWineryClawPluginsMock = vi.fn();
 const loadPluginManifestMock = vi.fn();
 
 vi.mock("./discovery.js", () => ({
-  discoverOpenClawPlugins: (...args: unknown[]) => discoverOpenClawPluginsMock(...args),
+  discoverWineryClawPlugins: (...args: unknown[]) => discoverWineryClawPluginsMock(...args),
 }));
 
 vi.mock("./manifest.js", () => ({
@@ -42,7 +42,7 @@ function createBundledCandidate(params: {
 }
 
 function setBundledDiscoveryCandidates(candidates: unknown[]) {
-  discoverOpenClawPluginsMock.mockReturnValue({
+  discoverWineryClawPluginsMock.mockReturnValue({
     candidates,
     diagnostics: [],
   });
@@ -122,7 +122,7 @@ function expectBundledSourceLookupCase(params: {
 
 describe("bundled plugin sources", () => {
   beforeEach(() => {
-    discoverOpenClawPluginsMock.mockReset();
+    discoverWineryClawPluginsMock.mockReset();
     loadPluginManifestMock.mockReset();
   });
 
@@ -202,11 +202,11 @@ describe("bundled plugin sources", () => {
       env,
     });
 
-    expect(discoverOpenClawPluginsMock).toHaveBeenNthCalledWith(1, {
+    expect(discoverWineryClawPluginsMock).toHaveBeenNthCalledWith(1, {
       workspaceDir: "/workspace",
       env,
     });
-    expect(discoverOpenClawPluginsMock).toHaveBeenNthCalledWith(2, {
+    expect(discoverWineryClawPluginsMock).toHaveBeenNthCalledWith(2, {
       workspaceDir: "/workspace",
       env,
     });

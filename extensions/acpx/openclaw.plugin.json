@@ -97,7 +97,7 @@
     },
     "pluginToolsMcpBridge": {
       "label": "Plugin Tools MCP Bridge",
-      "help": "Default off. When enabled, inject the built-in OpenClaw plugin-tools MCP server into embedded ACP sessions so ACP agents can call plugin-registered tools.",
+      "help": "Default off. When enabled, inject the built-in WineryClaw plugin-tools MCP server into embedded ACP sessions so ACP agents can call plugin-registered tools.",
       "advanced": true
     },
     "strictWindowsCmdWrapper": {

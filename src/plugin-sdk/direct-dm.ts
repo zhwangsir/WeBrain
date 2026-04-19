@@ -1,7 +1,7 @@
 import type { DispatchReplyWithBufferedBlockDispatcher } from "../auto-reply/reply/provider-dispatcher.types.js";
 import type { FinalizedMsgContext } from "../auto-reply/templating.js";
 import type { ChannelId } from "../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   readStoreAllowFromForDmPolicy,
   resolveDmGroupAccessWithLists,
@@ -12,7 +12,7 @@ import { recordInboundSessionAndDispatchReply } from "./inbound-reply-dispatch.j
 import type { OutboundReplyPayload } from "./reply-payload.js";
 
 export type DirectDmCommandAuthorizationRuntime = {
-  shouldComputeCommandAuthorized: (rawBody: string, cfg: OpenClawConfig) => boolean;
+  shouldComputeCommandAuthorized: (rawBody: string, cfg: WineryClawConfig) => boolean;
   resolveCommandAuthorizedFromAuthorizers: (params: {
     useAccessGroups: boolean;
     authorizers: Array<{ configured: boolean; allowed: boolean }>;
@@ -34,7 +34,7 @@ export type ResolvedInboundDirectDmAccess = {
 
 /** Resolve direct-DM policy, effective allowlists, and optional command auth in one place. */
 export async function resolveInboundDirectDmAccessWithRuntime(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   channel: ChannelId;
   accountId: string;
   dmPolicy?: string | null;
@@ -196,7 +196,7 @@ type DirectDmRuntime = {
   channel: {
     routing: {
       resolveAgentRoute: (params: {
-        cfg: OpenClawConfig;
+        cfg: WineryClawConfig;
         channel: string;
         accountId: string;
         peer: DirectDmRoutePeer;
@@ -212,7 +212,7 @@ type DirectDmRuntime = {
     };
     reply: {
       resolveEnvelopeFormatOptions: (
-        cfg: OpenClawConfig,
+        cfg: WineryClawConfig,
       ) => ReturnType<typeof import("../auto-reply/envelope.js").resolveEnvelopeFormatOptions>;
       formatAgentEnvelope: typeof import("../auto-reply/envelope.js").formatAgentEnvelope;
       finalizeInboundContext: typeof import("../auto-reply/reply/inbound-context.js").finalizeInboundContext;
@@ -223,7 +223,7 @@ type DirectDmRuntime = {
 
 /** Route, envelope, record, and dispatch one direct-DM turn through the standard pipeline. */
 export async function dispatchInboundDirectDmWithRuntime(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   runtime: DirectDmRuntime;
   channel: string;
   channelLabel: string;

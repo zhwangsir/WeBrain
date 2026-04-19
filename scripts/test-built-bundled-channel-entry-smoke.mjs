@@ -6,10 +6,10 @@ import { installProcessWarningFilter } from "./process-warning-filter.mjs";
 
 installProcessWarningFilter();
 
-process.env.OPENCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK ??= "1";
+process.env.WINERYCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK ??= "1";
 
 function parseArgs(argv) {
-  let packageRoot = process.env.OPENCLAW_BUNDLED_CHANNEL_SMOKE_ROOT;
+  let packageRoot = process.env.WINERYCLAW_BUNDLED_CHANNEL_SMOKE_ROOT;
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--package-root") {

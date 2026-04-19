@@ -1,5 +1,5 @@
 import { getApiProvider, type Api, type Model } from "@mariozechner/pi-ai";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createAnthropicVertexStreamFnForModel } from "./anthropic-vertex-stream.js";
 import { ensureCustomApiRegistered } from "./custom-api-registry.js";
 import { registerProviderStreamForModel } from "./provider-stream.js";
@@ -15,7 +15,7 @@ function resolveAnthropicVertexSimpleApi(baseUrl?: string): Api {
 
 export function prepareModelForSimpleCompletion<TApi extends Api>(params: {
   model: Model<TApi>;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
 }): Model<Api> {
   const { model, cfg } = params;
   // Only provider-owned custom APIs need runtime stream registration here.

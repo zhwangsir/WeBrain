@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { PluginManifestRegistry } from "../../plugins/manifest-registry.js";
 import { createTrackedTempDirs } from "../../test-utils/tracked-temp-dirs.js";
 
@@ -140,7 +140,7 @@ describe("resolvePluginSkillDirs", () => {
             helper: { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(dirs).toEqual(expectedDirs({ acpxRoot, helperRoot }));
@@ -167,7 +167,7 @@ describe("resolvePluginSkillDirs", () => {
             helper: { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(dirs).toEqual([path.resolve(pluginRoot, "skills")]);
@@ -198,7 +198,7 @@ describe("resolvePluginSkillDirs", () => {
             helper: { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(dirs).toEqual([]);
@@ -226,7 +226,7 @@ describe("resolvePluginSkillDirs", () => {
             helper: { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(dirs).toEqual([
@@ -256,7 +256,7 @@ describe("resolvePluginSkillDirs", () => {
             "helper-legacy": { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(dirs).toEqual([path.resolve(pluginRoot, "skills")]);

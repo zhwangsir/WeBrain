@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { collectWorkspaceSkillSymlinkEscapeFindings } from "./audit-extra.async.js";
 
 const isWindows = process.platform === "win32";
@@ -44,7 +44,7 @@ describe("security audit workspace skill path escape findings", () => {
               path.join(workspaceDir, "skills", "leak", "SKILL.md"),
             );
             const findings = await collectWorkspaceSkillSymlinkEscapeFindings({
-              cfg: { agents: { defaults: { workspace: workspaceDir } } } satisfies OpenClawConfig,
+              cfg: { agents: { defaults: { workspace: workspaceDir } } } satisfies WineryClawConfig,
             });
             const finding = findings.find(
               (entry) => entry.checkId === "skills.workspace.symlink_escape",
@@ -63,7 +63,7 @@ describe("security audit workspace skill path escape findings", () => {
           "utf-8",
         );
         const findings = await collectWorkspaceSkillSymlinkEscapeFindings({
-          cfg: { agents: { defaults: { workspace: workspaceDir } } } satisfies OpenClawConfig,
+          cfg: { agents: { defaults: { workspace: workspaceDir } } } satisfies WineryClawConfig,
         });
         expect(findings.some((entry) => entry.checkId === "skills.workspace.symlink_escape")).toBe(
           false,

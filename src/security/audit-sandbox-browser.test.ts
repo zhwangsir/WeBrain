@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { collectSandboxBrowserHashLabelFindings } from "./audit-extra.async.js";
 import { collectSandboxDangerousConfigFindings } from "./audit-extra.sync.js";
 
@@ -114,7 +114,7 @@ describe("security audit sandbox browser findings", () => {
           },
         },
       },
-    } satisfies OpenClawConfig);
+    } satisfies WineryClawConfig);
     expect(findings.some((f) => f.checkId === "sandbox.browser_cdp_bridge_unrestricted")).toBe(
       false,
     );

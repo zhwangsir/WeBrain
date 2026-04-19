@@ -17,7 +17,7 @@ import type {
   ChannelPlugin,
 } from "../../channels/plugins/types.public.js";
 import { inspectReadOnlyChannelAccount } from "../../channels/read-only-account-inspect.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { sha256HexPrefix } from "../../logging/redact-identifier.js";
 import { asRecord } from "../../shared/record-coerce.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
@@ -41,8 +41,8 @@ type ChannelAccountRow = {
 
 type ResolvedChannelAccountRowParams = {
   plugin: ChannelPlugin;
-  cfg: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  cfg: WineryClawConfig;
+  sourceConfig: WineryClawConfig;
   accountId: string;
 };
 
@@ -92,7 +92,7 @@ function formatTokenHint(token: string, opts: { showSecrets: boolean }): string 
 
 async function inspectChannelAccount(
   plugin: ChannelPlugin,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
 ) {
   return (
@@ -159,7 +159,7 @@ const formatAccountLabel = (params: { accountId: string; name?: string }) => {
 
 const buildAccountNotes = (params: {
   plugin: ChannelPlugin;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   entry: ChannelAccountRow;
 }) => {
   const { plugin, cfg, entry } = params;
@@ -258,7 +258,7 @@ function collectMissingPaths(accounts: ChannelAccountRow[]): string[] {
 
 function summarizeTokenConfig(params: {
   plugin: ChannelPlugin;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accounts: ChannelAccountRow[];
   showSecrets: boolean;
 }): { state: "ok" | "setup" | "warn" | null; detail: string | null } {
@@ -469,8 +469,8 @@ function summarizeTokenConfig(params: {
 // `status --all` channels table.
 // Keep this generic: channel-specific rules belong in the channel plugin.
 export async function buildChannelsTable(
-  cfg: OpenClawConfig,
-  opts?: { showSecrets?: boolean; sourceConfig?: OpenClawConfig },
+  cfg: WineryClawConfig,
+  opts?: { showSecrets?: boolean; sourceConfig?: WineryClawConfig },
 ): Promise<{
   rows: ChannelRow[];
   details: Array<{

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../src/config/config.js";
+import type { WineryClawConfig } from "../../src/config/config.js";
 import { buildPluginApi } from "../../src/plugins/api-builder.js";
 import type { PluginRuntime } from "../../src/plugins/runtime/types.js";
 import { registerSingleProviderPlugin } from "../../test/helpers/plugins/plugin-registration.js";
@@ -20,7 +20,7 @@ async function registerWithConfig(
     name: "Amazon Bedrock Provider",
     source: "test",
     registrationMode: "full",
-    config: {} as OpenClawConfig,
+    config: {} as WineryClawConfig,
     pluginConfig,
     runtime: {} as PluginRuntime,
     logger: noopLogger,

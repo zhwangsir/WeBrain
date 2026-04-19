@@ -1,4 +1,4 @@
-## OpenClaw Android App
+## WineryClaw Android App
 
 Status: **extremely alpha**. The app is actively being rebuilt from the ground up.
 
@@ -210,7 +210,7 @@ Why these matter:
 - Review usually involves a `Permissions Declaration Form`, policy justification, and demo video evidence in Play Console.
 - If we want a Play-safe build, these should be the first permissions removed behind a dedicated product flavor / variant.
 
-Current OpenClaw Android implication:
+Current WineryClaw Android implication:
 
 - APK / sideload build can keep SMS and Call Log features.
 - Google Play build should exclude SMS send/search and Call Log search unless the product is intentionally positioned and approved as a default-handler exception case.
@@ -250,7 +250,7 @@ Pre-req checklist:
 4) Open the app **Screen** tab and keep it active during the run (canvas/A2UI commands require the canvas WebView attached there).
 5) Grant runtime permissions for capabilities you expect to pass (camera/mic/location/notification listener/location, etc.).
 6) No interactive system dialogs should be pending before test start.
-7) Canvas host is enabled and reachable from the device (do not run gateway with `OPENCLAW_SKIP_CANVAS_HOST=1`; startup logs should include `canvas host mounted at .../__openclaw__/`).
+7) Canvas host is enabled and reachable from the device (do not run gateway with `WINERYCLAW_SKIP_CANVAS_HOST=1`; startup logs should include `canvas host mounted at .../__openclaw__/`).
 8) Local operator test client pairing is approved. If first run fails with `pairing required`, approve latest pending device pairing request, then rerun:
 9) For A2UI checks, keep the app on **Screen** tab; the node now auto-refreshes canvas capability once on first A2UI reachability failure (TTL-safe retry).
 
@@ -267,10 +267,10 @@ pnpm android:test:integration
 
 Optional overrides:
 
-- `OPENCLAW_ANDROID_GATEWAY_URL=ws://...` (default: from your local OpenClaw config)
-- `OPENCLAW_ANDROID_GATEWAY_TOKEN=...`
-- `OPENCLAW_ANDROID_GATEWAY_PASSWORD=...`
-- `OPENCLAW_ANDROID_NODE_ID=...` or `OPENCLAW_ANDROID_NODE_NAME=...`
+- `WINERYCLAW_ANDROID_GATEWAY_URL=ws://...` (default: from your local WineryClaw config)
+- `WINERYCLAW_ANDROID_GATEWAY_TOKEN=...`
+- `WINERYCLAW_ANDROID_GATEWAY_PASSWORD=...`
+- `WINERYCLAW_ANDROID_NODE_ID=...` or `WINERYCLAW_ANDROID_NODE_NAME=...`
 
 What it does:
 

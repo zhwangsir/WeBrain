@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { tryResolveLoadedOutboundTarget } from "./targets-loaded.js";
 
 const mocks = vi.hoisted(() => ({
@@ -22,7 +22,7 @@ describe("tryResolveLoadedOutboundTarget", () => {
   });
 
   it("uses loaded plugin config defaultTo fallback", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: { telegram: { defaultTo: "123456789" } },
     };
     mocks.getLoadedChannelPlugin.mockReturnValue({
@@ -30,7 +30,7 @@ describe("tryResolveLoadedOutboundTarget", () => {
       meta: { label: "Telegram" },
       capabilities: {},
       config: {
-        resolveDefaultTo: ({ cfg }: { cfg: OpenClawConfig }) => cfg.channels?.telegram?.defaultTo,
+        resolveDefaultTo: ({ cfg }: { cfg: WineryClawConfig }) => cfg.channels?.telegram?.defaultTo,
       },
       outbound: {},
       messaging: {},

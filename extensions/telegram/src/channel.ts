@@ -14,7 +14,7 @@ import {
   projectCredentialSnapshotFields,
   resolveConfiguredFromCredentialStatuses,
 } from "openclaw/plugin-sdk/channel-status";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { createChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import {
@@ -145,7 +145,7 @@ function resolveTelegramTokenHelper() {
 }
 
 function buildTelegramSendOptions(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   mediaUrl?: string | null;
   mediaLocalRoots?: readonly string[] | null;
   accountId?: string | null;
@@ -172,7 +172,7 @@ function buildTelegramSendOptions(params: {
 }
 
 async function sendTelegramOutbound(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   to: string;
   text: string;
   mediaUrl?: string | null;
@@ -439,7 +439,7 @@ function shouldStripTelegramThreadFromAnnounceOrigin(params: {
 }
 
 function buildTelegramBaseSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   accountId?: string | null;
   peer: RoutePeer;
@@ -448,7 +448,7 @@ function buildTelegramBaseSessionKey(params: {
 }
 
 function resolveTelegramOutboundSessionRoute(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   accountId?: string | null;
   target: string;
@@ -499,7 +499,7 @@ function resolveTelegramOutboundSessionRoute(params: {
 }
 
 async function resolveTelegramTargets(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   inputs: string[];
   kind: "user" | "group";
@@ -913,7 +913,7 @@ export const telegramPlugin = createChatChannelPlugin({
       },
       logoutAccount: async ({ accountId, cfg }) => {
         const envToken = process.env.TELEGRAM_BOT_TOKEN?.trim() ?? "";
-        const nextCfg = { ...cfg } as OpenClawConfig;
+        const nextCfg = { ...cfg } as WineryClawConfig;
         const nextTelegram = cfg.channels?.telegram ? { ...cfg.channels.telegram } : undefined;
         let cleared = false;
         let changed = false;

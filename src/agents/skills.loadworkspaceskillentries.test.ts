@@ -52,7 +52,7 @@ async function setupWorkspaceWithProsePlugin() {
   const workspaceDir = await createTempWorkspaceDir();
   const managedDir = path.join(workspaceDir, ".managed");
   const bundledDir = path.join(workspaceDir, ".bundled");
-  const pluginRoot = path.join(workspaceDir, ".openclaw", "extensions", "open-prose");
+  const pluginRoot = path.join(workspaceDir, ".wineryclaw", "extensions", "open-prose");
 
   await writePluginWithSkill({
     pluginRoot,
@@ -68,7 +68,7 @@ async function setupWorkspaceWithDiffsPlugin() {
   const workspaceDir = await createTempWorkspaceDir();
   const managedDir = path.join(workspaceDir, ".managed");
   const bundledDir = path.join(workspaceDir, ".bundled");
-  const pluginRoot = path.join(workspaceDir, ".openclaw", "extensions", "diffs");
+  const pluginRoot = path.join(workspaceDir, ".wineryclaw", "extensions", "diffs");
 
   await writePluginWithSkill({
     pluginRoot,

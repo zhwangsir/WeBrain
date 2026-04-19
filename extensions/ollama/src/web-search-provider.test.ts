@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createOllamaWebSearchProvider as createContractOllamaWebSearchProvider } from "../web-search-contract-api.js";
 import {
@@ -20,11 +20,11 @@ type OllamaProviderConfigOverride = Partial<{
   apiKey: string;
   baseUrl: string;
   models: NonNullable<
-    NonNullable<NonNullable<OpenClawConfig["models"]>["providers"]>[string]
+    NonNullable<NonNullable<WineryClawConfig["models"]>["providers"]>[string]
   >["models"];
 }>;
 
-function createOllamaConfig(provider: OllamaProviderConfigOverride = {}): OpenClawConfig {
+function createOllamaConfig(provider: OllamaProviderConfigOverride = {}): WineryClawConfig {
   return {
     models: {
       providers: {
@@ -97,7 +97,7 @@ describe("ollama web search provider", () => {
         JSON.stringify({
           results: [
             {
-              title: "OpenClaw",
+              title: "WineryClaw",
               url: "https://openclaw.ai/docs",
               content: "Gateway docs and setup details",
             },

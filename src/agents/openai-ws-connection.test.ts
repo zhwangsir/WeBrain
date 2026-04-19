@@ -235,7 +235,7 @@ describe("OpenAIWebSocketManager", () => {
       await connectPromise;
     });
 
-    it("adds OpenClaw attribution headers on the native OpenAI websocket", async () => {
+    it("adds WineryClaw attribution headers on the native OpenAI websocket", async () => {
       const manager = buildManager();
       const connectPromise = manager.connect("sk-test-key");
 

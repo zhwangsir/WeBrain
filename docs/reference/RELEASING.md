@@ -8,7 +8,7 @@ read_when:
 
 # Release Policy
 
-OpenClaw has three public release lanes:
+WineryClaw has three public release lanes:
 
 - stable: tagged releases that publish to npm `beta` by default, or to npm `latest` when explicitly requested
 - beta: prerelease tags that publish to npm `beta`
@@ -26,7 +26,7 @@ OpenClaw has three public release lanes:
 - `latest` means the current promoted stable npm release
 - `beta` means the current beta install target
 - Stable and stable correction releases publish to npm `beta` by default; release operators can target `latest` explicitly, or promote a vetted beta build later
-- Every OpenClaw release ships the npm package and macOS app together
+- Every WineryClaw release ships the npm package and macOS app together
 
 ## Release cadence
 
@@ -42,7 +42,7 @@ OpenClaw has three public release lanes:
   validation step
 - Run `pnpm release:check` before every tagged release
 - Release checks now run in a separate manual workflow:
-  `OpenClaw Release Checks`
+  `WineryClaw Release Checks`
 - This split is intentional: keep the real npm release path short,
   deterministic, and artifact-focused, while slower live checks stay in their
   own lane so they do not stall or block publish
@@ -52,7 +52,7 @@ OpenClaw has three public release lanes:
   40-character `main` commit SHA
 - In commit-SHA mode it only accepts the current `origin/main` HEAD; use a
   release tag for older release commits
-- `OpenClaw NPM Release` validation-only preflight also accepts the current
+- `WineryClaw NPM Release` validation-only preflight also accepts the current
   full 40-character `main` commit SHA without requiring a pushed tag
 - That SHA path is validation-only and cannot be promoted into a real publish
 - In SHA mode the workflow synthesizes `v<package.json version>` only for the
@@ -61,7 +61,7 @@ OpenClaw has three public release lanes:
   runners, while the non-mutating validation path can use the larger
   Blacksmith Linux runners
 - That workflow runs
-  `OPENCLAW_LIVE_TEST=1 OPENCLAW_LIVE_CACHE_TEST=1 pnpm test:live:cache`
+  `WINERYCLAW_LIVE_TEST=1 WINERYCLAW_LIVE_CACHE_TEST=1 pnpm test:live:cache`
   using both `OPENAI_API_KEY` and `ANTHROPIC_API_KEY` workflow secrets
 - npm release preflight no longer waits on the separate release checks lane
 - Run `RELEASE_TAG=vYYYY.M.D node --import tsx scripts/openclaw-npm-release-check.ts`
@@ -74,7 +74,7 @@ OpenClaw has three public release lanes:
   - real npm publish must pass a successful npm `preflight_run_id`
   - stable npm releases default to `beta`
   - stable npm publish can target `latest` explicitly via workflow input
-  - stable npm promotion from `beta` to `latest` is still available as an explicit manual mode on the trusted `OpenClaw NPM Release` workflow
+  - stable npm promotion from `beta` to `latest` is still available as an explicit manual mode on the trusted `WineryClaw NPM Release` workflow
   - that promotion mode still needs a valid `NPM_TOKEN` in the `npm-release` environment because npm `dist-tag` management is separate from trusted publishing
   - public `macOS Release` is validation-only
   - real private mac publish must pass successful private mac
@@ -101,7 +101,7 @@ OpenClaw has three public release lanes:
 
 ## NPM workflow inputs
 
-`OpenClaw NPM Release` accepts these operator-controlled inputs:
+`WineryClaw NPM Release` accepts these operator-controlled inputs:
 
 - `tag`: required release tag such as `v2026.4.2`, `v2026.4.2-1`, or
   `v2026.4.2-beta.1`; when `preflight_only=true`, it may also be the current
@@ -114,7 +114,7 @@ OpenClaw has three public release lanes:
 - `promote_beta_to_latest`: `true` to skip publish and move an already-published
   stable `beta` build onto `latest`
 
-`OpenClaw Release Checks` accepts these operator-controlled inputs:
+`WineryClaw Release Checks` accepts these operator-controlled inputs:
 
 - `ref`: existing release tag or the current full 40-character `main` commit
   SHA to validate
@@ -136,19 +136,19 @@ Rules:
 
 When cutting a stable npm release:
 
-1. Run `OpenClaw NPM Release` with `preflight_only=true`
+1. Run `WineryClaw NPM Release` with `preflight_only=true`
    - Before a tag exists, you may use the current full `main` commit SHA for a
      validation-only dry run of the preflight workflow
 2. Choose `npm_dist_tag=beta` for the normal beta-first flow, or `latest` only
    when you intentionally want a direct stable publish
-3. Run `OpenClaw Release Checks` separately with the same tag or the
+3. Run `WineryClaw Release Checks` separately with the same tag or the
    full current `main` commit SHA when you want live prompt cache coverage
    - This is separate on purpose so live coverage stays available without
      recoupling long-running or flaky checks to the publish workflow
 4. Save the successful `preflight_run_id`
-5. Run `OpenClaw NPM Release` again with `preflight_only=false`, the same
+5. Run `WineryClaw NPM Release` again with `preflight_only=false`, the same
    `tag`, the same `npm_dist_tag`, and the saved `preflight_run_id`
-6. If the release landed on `beta`, run `OpenClaw NPM Release` later with the
+6. If the release landed on `beta`, run `WineryClaw NPM Release` later with the
    same stable `tag`, `promote_beta_to_latest=true`, `preflight_only=false`,
    `preflight_run_id` empty, and `npm_dist_tag=beta` when you want to move that
    published build to `latest`

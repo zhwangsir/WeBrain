@@ -1,11 +1,11 @@
 /**
- * Synology Chat Channel Plugin for OpenClaw.
+ * Synology Chat Channel Plugin for WineryClaw.
  *
  * Implements the ChannelPlugin interface following the LINE pattern.
  */
 
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/account-resolution";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/account-resolution";
 import {
   createHybridChannelConfigAdapter,
   createScopedDmSecurityResolver,
@@ -47,7 +47,7 @@ const resolveSynologyChatDmPolicy = createScopedDmSecurityResolver<ResolvedSynol
 });
 
 type SynologyChannelGatewayContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   abortSignal: AbortSignal;
   log?: {
@@ -57,7 +57,7 @@ type SynologyChannelGatewayContext = {
   };
 };
 type SynologyChannelOutboundContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   to: string;
   text?: string;
   mediaUrl?: string;
@@ -66,7 +66,7 @@ type SynologyChannelOutboundContext = {
 type SynologyChannelSendTextContext = SynologyChannelOutboundContext & { text: string };
 type _SynologyChannelSendMediaContext = SynologyChannelOutboundContext & { mediaUrl: string };
 type SynologySecurityWarningContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   account: ResolvedSynologyChatAccount;
 };
 
@@ -133,16 +133,16 @@ type SynologyChatPlugin = Omit<
   pairing: {
     idLabel: string;
     normalizeAllowEntry?: (entry: string) => string;
-    notifyApproval: (params: { cfg: OpenClawConfig; id: string }) => Promise<void>;
+    notifyApproval: (params: { cfg: WineryClawConfig; id: string }) => Promise<void>;
   };
   security: {
-    resolveDmPolicy: (params: { cfg: OpenClawConfig; account: ResolvedSynologyChatAccount }) => {
+    resolveDmPolicy: (params: { cfg: WineryClawConfig; account: ResolvedSynologyChatAccount }) => {
       policy: string | null | undefined;
       allowFrom?: Array<string | number>;
       normalizeEntry?: (raw: string) => string;
     } | null;
     collectWarnings: (params: {
-      cfg: OpenClawConfig;
+      cfg: WineryClawConfig;
       account: ResolvedSynologyChatAccount;
     }) => string[];
   };
@@ -175,7 +175,7 @@ type SynologyChatPlugin = Omit<
 
 const collectSynologyChatRoutingWarnings = projectAccountConfigWarningCollector<
   ResolvedSynologyChatAccount,
-  OpenClawConfig,
+  WineryClawConfig,
   SynologySecurityWarningContext
 >(
   (cfg) => cfg,
@@ -183,7 +183,7 @@ const collectSynologyChatRoutingWarnings = projectAccountConfigWarningCollector<
 );
 
 function resolveOutboundAccount(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId?: string | null,
 ): ResolvedSynologyChatAccount {
   return resolveAccount(cfg ?? {}, accountId);
@@ -206,7 +206,7 @@ export function createSynologyChatPlugin(): SynologyChatPlugin {
         selectionLabel: "Synology Chat (Webhook)",
         detailLabel: "Synology Chat (Webhook)",
         docsPath: "/channels/synology-chat",
-        blurb: "Connect your Synology NAS Chat to OpenClaw",
+        blurb: "Connect your Synology NAS Chat to WineryClaw",
         order: 90,
       },
       capabilities: {
@@ -307,7 +307,7 @@ export function createSynologyChatPlugin(): SynologyChatPlugin {
     pairing: {
       text: {
         idLabel: "synologyChatUserId",
-        message: "OpenClaw: your access has been approved.",
+        message: "WineryClaw: your access has been approved.",
         normalizeAllowEntry: (entry: string) => normalizeLowercaseStringOrEmpty(entry),
         notify: async ({ cfg, id, message }) => {
           const account = resolveAccount(cfg);

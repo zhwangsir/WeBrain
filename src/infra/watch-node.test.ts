@@ -105,10 +105,10 @@ describe("watch-node script", () => {
           stdio: "inherit",
           env: expect.objectContaining({
             PATH: "/usr/bin",
-            OPENCLAW_WATCH_MODE: "1",
-            OPENCLAW_WATCH_SESSION: "1700000000000-4242",
-            OPENCLAW_NO_RESPAWN: "1",
-            OPENCLAW_WATCH_COMMAND: "gateway --force",
+            WINERYCLAW_WATCH_MODE: "1",
+            WINERYCLAW_WATCH_SESSION: "1700000000000-4242",
+            WINERYCLAW_NO_RESPAWN: "1",
+            WINERYCLAW_WATCH_COMMAND: "gateway --force",
           }),
         }),
       );
@@ -236,7 +236,7 @@ describe("watch-node script", () => {
       expect.objectContaining({
         env: expect.objectContaining({
           LAUNCH_JOB_LABEL: "ai.openclaw.gateway",
-          OPENCLAW_NO_RESPAWN: "1",
+          WINERYCLAW_NO_RESPAWN: "1",
         }),
       }),
     );

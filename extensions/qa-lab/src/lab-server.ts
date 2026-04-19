@@ -35,7 +35,7 @@ import {
   createQaRunOutputDir,
   normalizeQaRunSelection,
 } from "./run-config.js";
-import { qaChannelPlugin, setQaChannelRuntime, type OpenClawConfig } from "./runtime-api.js";
+import { qaChannelPlugin, setQaChannelRuntime, type WineryClawConfig } from "./runtime-api.js";
 import { readQaBootstrapScenarioCatalog } from "./scenario-catalog.js";
 import { runQaSelfCheckAgainstState, type QaSelfCheckResult } from "./self-check.js";
 
@@ -510,7 +510,7 @@ function tryResolveUiAsset(
   return fs.existsSync(fallback) ? fallback : null;
 }
 
-function createQaLabConfig(baseUrl: string): OpenClawConfig {
+function createQaLabConfig(baseUrl: string): WineryClawConfig {
   return createQaChannelGatewayConfig({ baseUrl });
 }
 
@@ -575,7 +575,7 @@ export async function startQaLabServer(
   let controlUiToken = params?.controlUiToken?.trim() || null;
   let gateway:
     | {
-        cfg: OpenClawConfig;
+        cfg: WineryClawConfig;
         stop: () => Promise<void>;
       }
     | undefined;

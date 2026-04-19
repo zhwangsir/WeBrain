@@ -1,6 +1,6 @@
 import { Type } from "@sinclair/typebox";
 import { loadConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { parseImageGenerationModelRef } from "../../image-generation/model-ref.js";
 import {
   generateImage,
@@ -79,7 +79,7 @@ const ImageGenerateToolSchema = Type.Object({
   filename: Type.Optional(
     Type.String({
       description:
-        "Optional output filename hint. OpenClaw preserves the basename and saves under its managed media directory.",
+        "Optional output filename hint. WineryClaw preserves the basename and saves under its managed media directory.",
     }),
   ),
   size: Type.Optional(
@@ -114,7 +114,7 @@ function getImageGenerationProviderAuthEnvVars(providerId: string): string[] {
 }
 
 export function resolveImageGenerationModelConfigForTool(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   agentDir?: string;
 }): ToolModelConfig | null {
   return resolveCapabilityModelConfigForTool({
@@ -178,7 +178,7 @@ function normalizeReferenceImages(args: Record<string, unknown>): string[] {
   });
 }
 
-function pickConfiguredMediaMaxBytes(cfg?: OpenClawConfig): number | undefined {
+function pickConfiguredMediaMaxBytes(cfg?: WineryClawConfig): number | undefined {
   const configured = cfg?.agents?.defaults?.mediaMaxMb;
   if (typeof configured === "number" && Number.isFinite(configured) && configured > 0) {
     return Math.floor(configured * 1024 * 1024);
@@ -187,7 +187,7 @@ function pickConfiguredMediaMaxBytes(cfg?: OpenClawConfig): number | undefined {
 }
 
 function resolveSelectedImageGenerationProvider(params: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   imageGenerationModelConfig: ToolModelConfig;
   modelOverride?: string;
 }): ImageGenerationProvider | undefined {
@@ -367,7 +367,7 @@ async function inferResolutionFromInputImages(
 }
 
 export function createImageGenerateTool(options?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   agentDir?: string;
   workspaceDir?: string;
   sandbox?: ImageGenerateSandboxConfig;

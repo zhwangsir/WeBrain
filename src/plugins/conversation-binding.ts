@@ -29,7 +29,7 @@ import { getActivePluginRegistry } from "./runtime.js";
 
 const log = createSubsystemLogger("plugins/binding");
 
-const APPROVALS_PATH = "~/.openclaw/plugin-binding-approvals.json";
+const APPROVALS_PATH = "~/.wineryclaw/plugin-binding-approvals.json";
 const PLUGIN_BINDING_CUSTOM_ID_PREFIX = "pluginbind";
 const PLUGIN_BINDING_OWNER = "plugin";
 const PLUGIN_BINDING_SESSION_PREFIX = "plugin-binding";
@@ -634,7 +634,7 @@ function buildDetachHintSuffix(detachHint?: string): string {
 }
 
 export function buildPluginBindingUnavailableText(binding: PluginConversationBinding): string {
-  return `The bound plugin ${resolvePluginBindingDisplayName(binding)} is not currently loaded. Routing this message to OpenClaw instead.${buildDetachHintSuffix(binding.detachHint)}`;
+  return `The bound plugin ${resolvePluginBindingDisplayName(binding)} is not currently loaded. Routing this message to WineryClaw instead.${buildDetachHintSuffix(binding.detachHint)}`;
 }
 
 export function buildPluginBindingDeclinedText(binding: PluginConversationBinding): string {

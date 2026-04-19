@@ -3,10 +3,10 @@ import {
   resolveChannelGroupToolsPolicy,
   type GroupToolPolicyConfig,
 } from "openclaw/plugin-sdk/channel-policy";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 
 type WhatsAppGroupContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   groupId?: string | null;
   senderId?: string | null;

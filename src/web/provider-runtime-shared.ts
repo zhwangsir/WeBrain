@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { normalizeSecretInputString, resolveSecretInputRef } from "../config/types.secrets.js";
 import { normalizeSecretInput } from "../utils/normalize-secret-input.js";
 
@@ -15,7 +15,7 @@ type ProviderWithCredential = {
 export function resolveWebProviderConfig<
   TKind extends "search" | "fetch",
   TConfig extends Record<string, unknown>,
->(cfg: OpenClawConfig | undefined, kind: TKind): TConfig | undefined {
+>(cfg: WineryClawConfig | undefined, kind: TKind): TConfig | undefined {
   const webConfig = cfg?.tools?.web;
   if (!webConfig || typeof webConfig !== "object") {
     return undefined;
@@ -51,11 +51,11 @@ export function hasWebProviderEntryCredential<
   TConfig extends Record<string, unknown> | undefined,
 >(params: {
   provider: TProvider;
-  config: OpenClawConfig | undefined;
+  config: WineryClawConfig | undefined;
   toolConfig: TConfig;
   resolveRawValue: (params: {
     provider: TProvider;
-    config: OpenClawConfig | undefined;
+    config: WineryClawConfig | undefined;
     toolConfig: TConfig;
   }) => unknown;
   resolveEnvValue: (params: {
@@ -95,7 +95,7 @@ export function resolveWebProviderDefinition<
   TRuntimeMetadata extends RuntimeWebProviderMetadata,
   TDefinition,
 >(params: {
-  config: OpenClawConfig | undefined;
+  config: WineryClawConfig | undefined;
   toolConfig: TConfig;
   runtimeMetadata: TRuntimeMetadata | undefined;
   sandboxed?: boolean;
@@ -103,19 +103,19 @@ export function resolveWebProviderDefinition<
   providers: TProvider[];
   resolveEnabled: (params: { toolConfig: TConfig; sandboxed?: boolean }) => boolean;
   resolveAutoProviderId: (params: {
-    config: OpenClawConfig | undefined;
+    config: WineryClawConfig | undefined;
     toolConfig: TConfig;
     providers: TProvider[];
   }) => string;
   resolveFallbackProviderId?: (params: {
-    config: OpenClawConfig | undefined;
+    config: WineryClawConfig | undefined;
     toolConfig: TConfig;
     providers: TProvider[];
     providerId: string;
   }) => string | undefined;
   createTool: (params: {
     provider: TProvider;
-    config: OpenClawConfig | undefined;
+    config: WineryClawConfig | undefined;
     toolConfig: TConfig;
     runtimeMetadata: TRuntimeMetadata | undefined;
   }) => TDefinition | null;

@@ -32,26 +32,26 @@ describe("formatSystemRunAllowlistMissMessage", () => {
 });
 
 describe("handleSystemRunInvoke mac app exec host routing", () => {
-  let testOpenClawHome = "";
-  let previousOpenClawHome: string | undefined;
+  let testWineryClawHome = "";
+  let previousWineryClawHome: string | undefined;
 
   beforeEach(() => {
-    previousOpenClawHome = process.env.OPENCLAW_HOME;
-    testOpenClawHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-node-host-home-"));
-    process.env.OPENCLAW_HOME = testOpenClawHome;
+    previousWineryClawHome = process.env.WINERYCLAW_HOME;
+    testWineryClawHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-node-host-home-"));
+    process.env.WINERYCLAW_HOME = testWineryClawHome;
     clearRuntimeConfigSnapshot();
   });
 
   afterEach(() => {
     clearRuntimeConfigSnapshot();
-    if (previousOpenClawHome === undefined) {
-      delete process.env.OPENCLAW_HOME;
+    if (previousWineryClawHome === undefined) {
+      delete process.env.WINERYCLAW_HOME;
     } else {
-      process.env.OPENCLAW_HOME = previousOpenClawHome;
+      process.env.WINERYCLAW_HOME = previousWineryClawHome;
     }
-    if (testOpenClawHome) {
-      fs.rmSync(testOpenClawHome, { recursive: true, force: true });
-      testOpenClawHome = "";
+    if (testWineryClawHome) {
+      fs.rmSync(testWineryClawHome, { recursive: true, force: true });
+      testWineryClawHome = "";
     }
   });
 
@@ -239,16 +239,16 @@ describe("handleSystemRunInvoke mac app exec host routing", () => {
     run: (ctx: { tempHome: string }) => Promise<T>;
   }): Promise<T> {
     const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-exec-approvals-"));
-    const previousOpenClawHome = process.env.OPENCLAW_HOME;
-    process.env.OPENCLAW_HOME = tempHome;
+    const previousWineryClawHome = process.env.WINERYCLAW_HOME;
+    process.env.WINERYCLAW_HOME = tempHome;
     saveExecApprovals(params.approvals);
     try {
       return await params.run({ tempHome });
     } finally {
-      if (previousOpenClawHome === undefined) {
-        delete process.env.OPENCLAW_HOME;
+      if (previousWineryClawHome === undefined) {
+        delete process.env.WINERYCLAW_HOME;
       } else {
-        process.env.OPENCLAW_HOME = previousOpenClawHome;
+        process.env.WINERYCLAW_HOME = previousWineryClawHome;
       }
       fs.rmSync(tempHome, { recursive: true, force: true });
     }

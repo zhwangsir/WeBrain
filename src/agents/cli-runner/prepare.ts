@@ -39,9 +39,9 @@ const prepareDeps = {
   getActiveMcpLoopbackRuntime,
   ensureMcpLoopbackServer,
   createMcpLoopbackServerConfig,
-  resolveOpenClawDocsPath: async (
-    params: Parameters<typeof import("../docs-path.js").resolveOpenClawDocsPath>[0],
-  ) => (await import("../docs-path.js")).resolveOpenClawDocsPath(params),
+  resolveWineryClawDocsPath: async (
+    params: Parameters<typeof import("../docs-path.js").resolveWineryClawDocsPath>[0],
+  ) => (await import("../docs-path.js")).resolveWineryClawDocsPath(params),
 };
 
 export function setCliRunnerPrepareTestDeps(overrides: Partial<typeof prepareDeps>): void {
@@ -138,12 +138,12 @@ export async function prepareCliRunContext(
       : undefined,
     env: mcpLoopbackRuntime
       ? {
-          OPENCLAW_MCP_TOKEN: mcpLoopbackRuntime.token,
-          OPENCLAW_MCP_AGENT_ID: sessionAgentId ?? "",
-          OPENCLAW_MCP_ACCOUNT_ID: params.agentAccountId ?? "",
-          OPENCLAW_MCP_SESSION_KEY: params.sessionKey ?? "",
-          OPENCLAW_MCP_MESSAGE_CHANNEL: params.messageProvider ?? "",
-          OPENCLAW_MCP_SENDER_IS_OWNER: params.senderIsOwner === true ? "true" : "false",
+          WINERYCLAW_MCP_TOKEN: mcpLoopbackRuntime.token,
+          WINERYCLAW_MCP_AGENT_ID: sessionAgentId ?? "",
+          WINERYCLAW_MCP_ACCOUNT_ID: params.agentAccountId ?? "",
+          WINERYCLAW_MCP_SESSION_KEY: params.sessionKey ?? "",
+          WINERYCLAW_MCP_MESSAGE_CHANNEL: params.messageProvider ?? "",
+          WINERYCLAW_MCP_SENDER_IS_OWNER: params.senderIsOwner === true ? "true" : "false",
         }
       : undefined,
     warn: (message) => cliBackendLog.warn(message),
@@ -169,7 +169,7 @@ export async function prepareCliRunContext(
     agentId: sessionAgentId,
     defaultAgentId,
   });
-  const docsPath = await prepareDeps.resolveOpenClawDocsPath({
+  const docsPath = await prepareDeps.resolveWineryClawDocsPath({
     workspaceDir,
     argv1: process.argv[1],
     cwd: process.cwd(),

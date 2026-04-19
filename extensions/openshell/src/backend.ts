@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type {
   CreateSandboxBackendParams,
-  OpenClawConfig,
+  WineryClawConfig,
   SandboxBackendCommandParams,
   SandboxBackendCommandResult,
   SandboxBackendFactory,
@@ -12,7 +12,7 @@ import type {
 import {
   createRemoteShellSandboxFsBridge,
   disposeSshSandboxSession,
-  resolvePreferredOpenClawTmpDir,
+  resolvePreferredWineryClawTmpDir,
   runSshSandboxCommand,
   sanitizeEnvVars,
 } from "openclaw/plugin-sdk/sandbox";
@@ -487,7 +487,7 @@ class OpenShellSandboxBackendImpl {
 }
 
 function resolveOpenShellPluginConfigFromConfig(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   fallback: ResolvedOpenShellPluginConfig,
 ): ResolvedOpenShellPluginConfig {
   const pluginConfig = config.plugins?.entries?.openshell?.config;
@@ -511,5 +511,5 @@ function buildOpenShellSandboxName(scopeKey: string): string {
 }
 
 function resolveOpenShellTmpRoot(): string {
-  return path.resolve(resolvePreferredOpenClawTmpDir());
+  return path.resolve(resolvePreferredWineryClawTmpDir());
 }

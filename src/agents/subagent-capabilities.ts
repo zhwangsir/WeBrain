@@ -1,6 +1,6 @@
 import { DEFAULT_SUBAGENT_MAX_SPAWN_DEPTH } from "../config/agent-limits.js";
 import { loadSessionStore, resolveStorePath } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { isSubagentSessionKey, parseAgentSessionKey } from "../routing/session-key.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { getSubagentDepthFromSessionStore } from "./subagent-depth.js";
@@ -56,7 +56,7 @@ function findEntryBySessionId(
 
 function resolveSessionCapabilityEntry(params: {
   sessionKey: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   store?: Record<string, SessionCapabilityEntry>;
 }): SessionCapabilityEntry | undefined {
   if (params.store) {
@@ -110,7 +110,7 @@ export function resolveSubagentCapabilities(params: { depth: number; maxSpawnDep
 export function resolveStoredSubagentCapabilities(
   sessionKey: string | undefined | null,
   opts?: {
-    cfg?: OpenClawConfig;
+    cfg?: WineryClawConfig;
     store?: Record<string, SessionCapabilityEntry>;
   },
 ) {

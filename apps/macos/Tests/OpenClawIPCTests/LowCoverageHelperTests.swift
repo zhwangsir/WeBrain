@@ -1,12 +1,12 @@
 import AppKit
 import Foundation
-import OpenClawProtocol
+import WineryClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite(.serialized)
 struct LowCoverageHelperTests {
-    private typealias ProtoAnyCodable = OpenClawProtocol.AnyCodable
+    private typealias ProtoAnyCodable = WineryClawProtocol.AnyCodable
 
     @Test func `any codable helper accessors`() throws {
         let payload: [String: ProtoAnyCodable] = [

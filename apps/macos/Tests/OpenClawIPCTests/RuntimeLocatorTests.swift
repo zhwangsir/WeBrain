@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct RuntimeLocatorTests {
     private func makeTempExecutable(contents: String) throws -> URL {

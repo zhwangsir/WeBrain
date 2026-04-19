@@ -2,13 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { withTempHome } from "../../test/helpers/temp-home.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { resolveStatusTtsSnapshot } from "./status-config.js";
 
 describe("resolveStatusTtsSnapshot", () => {
   it("uses prefs overrides without loading speech providers", async () => {
     await withTempHome(async (home) => {
-      const prefsPath = path.join(home, ".openclaw", "settings", "tts.json");
+      const prefsPath = path.join(home, ".wineryclaw", "settings", "tts.json");
       fs.mkdirSync(path.dirname(prefsPath), { recursive: true });
       fs.writeFileSync(
         prefsPath,
@@ -30,7 +30,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 prefsPath,
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -51,7 +51,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 auto: "always",
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
         }),
       ).toEqual({
         autoMode: "always",
@@ -62,7 +62,7 @@ describe("resolveStatusTtsSnapshot", () => {
     });
   });
 
-  it("derives the default prefs path from OPENCLAW_CONFIG_PATH when set", async () => {
+  it("derives the default prefs path from WINERYCLAW_CONFIG_PATH when set", async () => {
     await withTempHome(
       async (home) => {
         const stateDir = path.join(home, ".openclaw-dev");
@@ -78,7 +78,7 @@ describe("resolveStatusTtsSnapshot", () => {
           }),
         );
 
-        vi.stubEnv("OPENCLAW_CONFIG_PATH", path.join(stateDir, "openclaw.json"));
+        vi.stubEnv("WINERYCLAW_CONFIG_PATH", path.join(stateDir, "wineryclaw.json"));
         try {
           expect(
             resolveStatusTtsSnapshot({
@@ -86,7 +86,7 @@ describe("resolveStatusTtsSnapshot", () => {
                 messages: {
                   tts: {},
                 },
-              } as OpenClawConfig,
+              } as WineryClawConfig,
             }),
           ).toEqual({
             autoMode: "always",
@@ -98,7 +98,7 @@ describe("resolveStatusTtsSnapshot", () => {
           vi.unstubAllEnvs();
         }
       },
-      { env: { OPENCLAW_STATE_DIR: undefined } },
+      { env: { WINERYCLAW_STATE_DIR: undefined } },
     );
   });
 });

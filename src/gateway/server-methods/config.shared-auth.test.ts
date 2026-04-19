@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import {
   createConfigHandlerHarness,
   createConfigWriteSnapshot,
@@ -47,7 +47,7 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  validateConfigObjectWithPluginsMock.mockImplementation((config: OpenClawConfig) => ({
+  validateConfigObjectWithPluginsMock.mockImplementation((config: WineryClawConfig) => ({
     ok: true,
     config,
   }));
@@ -56,7 +56,7 @@ beforeEach(() => {
 
 describe("config shared auth disconnects", () => {
   it("does not disconnect shared-auth clients for config.set auth writes without restart", async () => {
-    const prevConfig: OpenClawConfig = {
+    const prevConfig: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -64,7 +64,7 @@ describe("config shared auth disconnects", () => {
         },
       },
     };
-    const nextConfig: OpenClawConfig = {
+    const nextConfig: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -91,7 +91,7 @@ describe("config shared auth disconnects", () => {
   });
 
   it("lets the config reloader own hybrid-mode auth restarts", async () => {
-    const prevConfig: OpenClawConfig = {
+    const prevConfig: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -118,7 +118,7 @@ describe("config shared auth disconnects", () => {
   });
 
   it("does not disconnect shared-auth clients when config.patch changes only inactive password auth", async () => {
-    const prevConfig: OpenClawConfig = {
+    const prevConfig: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -145,7 +145,7 @@ describe("config shared auth disconnects", () => {
   });
 
   it("still schedules a direct restart for hot mode when the reloader cannot apply the change", async () => {
-    const prevConfig: OpenClawConfig = {
+    const prevConfig: WineryClawConfig = {
       gateway: {
         reload: {
           mode: "hot",

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { readStringValue } from "openclaw/plugin-sdk/text-runtime";
 import { runFirecrawlScrape } from "./src/firecrawl-client.js";
 
@@ -26,7 +26,7 @@ export type FetchFirecrawlContentResult = {
 export async function fetchFirecrawlContent(
   params: FetchFirecrawlContentParams,
 ): Promise<FetchFirecrawlContentResult> {
-  const cfg: OpenClawConfig = {
+  const cfg: WineryClawConfig = {
     plugins: {
       entries: {
         firecrawl: {

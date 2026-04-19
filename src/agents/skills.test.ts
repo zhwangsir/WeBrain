@@ -4,7 +4,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "../config/config.js";
 import { withPathResolutionEnv } from "../test-utils/env.js";
 import { createFixtureSuite } from "../test-utils/fixture-suite.js";
@@ -79,7 +79,7 @@ beforeAll(async () => {
   await fixtureSuite.setup();
   tempHome = await createTempHomeEnv("openclaw-skills-home-");
   skillsHomeEnv = setMockSkillsHomeEnv(tempHome.home);
-  await fs.mkdir(path.join(tempHome.home, ".openclaw", "agents", "main", "sessions"), {
+  await fs.mkdir(path.join(tempHome.home, ".wineryclaw", "agents", "main", "sessions"), {
     recursive: true,
   });
 });
@@ -211,9 +211,9 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
     expect(commands.map((entry) => entry.skillName)).toEqual(["alpha-skill"]);
   });
 
-  it("includes enabled Claude bundle markdown commands as native OpenClaw slash commands", async () => {
+  it("includes enabled Claude bundle markdown commands as native WineryClaw slash commands", async () => {
     const workspaceDir = await makeWorkspace();
-    const pluginRoot = path.join(tempHome!.home, ".openclaw", "extensions", "compound-bundle");
+    const pluginRoot = path.join(tempHome!.home, ".wineryclaw", "extensions", "compound-bundle");
     await fs.mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
     await fs.mkdir(path.join(pluginRoot, "commands"), { recursive: true });
     await fs.writeFile(
@@ -451,7 +451,7 @@ describe("applySkillEnvOverrides", () => {
     await writeEnvSkill(workspaceDir);
 
     const entries = loadWorkspaceSkillEntries(workspaceDir, resolveTestSkillDirs(workspaceDir));
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: WineryClawConfig = {
       skills: {
         entries: {
           "env-skill": {
@@ -464,7 +464,7 @@ describe("applySkillEnvOverrides", () => {
         },
       },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: WineryClawConfig = {
       skills: {
         entries: {
           "env-skill": {
@@ -495,7 +495,7 @@ describe("applySkillEnvOverrides", () => {
     await writeEnvSkill(workspaceDir);
 
     const entries = loadWorkspaceSkillEntries(workspaceDir, resolveTestSkillDirs(workspaceDir));
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: WineryClawConfig = {
       skills: {
         entries: {
           "env-skill": {
@@ -508,7 +508,7 @@ describe("applySkillEnvOverrides", () => {
         },
       },
     };
-    const callerConfig: OpenClawConfig = {
+    const callerConfig: WineryClawConfig = {
       skills: {
         entries: {
           "env-skill": {

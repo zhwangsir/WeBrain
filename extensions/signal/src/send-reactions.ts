@@ -2,14 +2,14 @@
  * Signal reactions via signal-cli JSON-RPC API
  */
 
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/text-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 import { signalRpcRequest } from "./client.js";
 import { resolveSignalRpcContext } from "./rpc-context.js";
 
 export type SignalReactionOpts = {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   baseUrl?: string;
   account?: string;
   accountId?: string;

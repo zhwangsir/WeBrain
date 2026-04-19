@@ -21,7 +21,7 @@ import {
   resetBlueBubblesParticipantContactNameCacheForTest,
   setBlueBubblesParticipantContactDepsForTest,
 } from "./participant-contact-names.js";
-import type { OpenClawConfig, PluginRuntime } from "./runtime-api.js";
+import type { WineryClawConfig, PluginRuntime } from "./runtime-api.js";
 import {
   createBlueBubblesMonitorTestRuntime,
   EMPTY_DISPATCH_RESULT,
@@ -227,7 +227,7 @@ describe("BlueBubbles webhook monitor", () => {
 
   function setupWebhookTarget(params?: {
     account?: ReturnType<typeof createMockAccount>;
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     core?: PluginRuntime;
   }) {
     const registration = trackWebhookRegistrationForTest(
@@ -1009,7 +1009,7 @@ describe("BlueBubbles webhook monitor", () => {
               contextVisibility: "allowlist",
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
       });
 
       const payload = createTimestampedNewMessagePayloadForTest({
@@ -1046,7 +1046,7 @@ describe("BlueBubbles webhook monitor", () => {
               contextVisibility: "allowlist_quote",
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
       });
 
       const payload = createTimestampedNewMessagePayloadForTest({

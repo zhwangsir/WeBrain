@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { runDoctorRepairSequence } from "./repair-sequencing.js";
 
 vi.mock("./shared/channel-doctor.js", () => ({
-  collectChannelDoctorRepairMutations: ({ cfg }: { cfg: OpenClawConfig }) => {
+  collectChannelDoctorRepairMutations: ({ cfg }: { cfg: WineryClawConfig }) => {
     const allowFrom = cfg.channels?.discord?.allowFrom as unknown[] | undefined;
     if (allowFrom?.[0] === 123) {
       return [
@@ -39,42 +39,42 @@ vi.mock("./shared/channel-doctor.js", () => ({
 }));
 
 vi.mock("./shared/empty-allowlist-scan.js", () => ({
-  scanEmptyAllowlistPolicyWarnings: (cfg: OpenClawConfig) =>
+  scanEmptyAllowlistPolicyWarnings: (cfg: WineryClawConfig) =>
     cfg.channels?.signal
       ? ["channels.signal.accounts.ops\u001B[31m-team\u001B[0m\r\nnext.dmPolicy warning"]
       : [],
 }));
 
 vi.mock("./shared/allowlist-policy-repair.js", () => ({
-  maybeRepairAllowlistPolicyAllowFrom: async (cfg: OpenClawConfig) => ({
+  maybeRepairAllowlistPolicyAllowFrom: async (cfg: WineryClawConfig) => ({
     config: cfg,
     changes: [],
   }),
 }));
 
 vi.mock("./shared/bundled-plugin-load-paths.js", () => ({
-  maybeRepairBundledPluginLoadPaths: (cfg: OpenClawConfig) => ({
+  maybeRepairBundledPluginLoadPaths: (cfg: WineryClawConfig) => ({
     config: cfg,
     changes: [],
   }),
 }));
 
 vi.mock("./shared/open-policy-allowfrom.js", () => ({
-  maybeRepairOpenPolicyAllowFrom: (cfg: OpenClawConfig) => ({
+  maybeRepairOpenPolicyAllowFrom: (cfg: WineryClawConfig) => ({
     config: cfg,
     changes: [],
   }),
 }));
 
 vi.mock("./shared/stale-plugin-config.js", () => ({
-  maybeRepairStalePluginConfig: (cfg: OpenClawConfig) => ({
+  maybeRepairStalePluginConfig: (cfg: WineryClawConfig) => ({
     config: cfg,
     changes: [],
   }),
 }));
 
 vi.mock("./shared/legacy-tools-by-sender.js", () => ({
-  maybeRepairLegacyToolsBySenderKeys: (cfg: OpenClawConfig) => {
+  maybeRepairLegacyToolsBySenderKeys: (cfg: WineryClawConfig) => {
     const channels = cfg.channels as Record<string, unknown> | undefined;
     const tools = channels?.tools as
       | { exec?: { toolsBySender?: Record<string, unknown> } }
@@ -111,7 +111,7 @@ vi.mock("./shared/legacy-tools-by-sender.js", () => ({
 }));
 
 vi.mock("./shared/exec-safe-bins.js", () => ({
-  maybeRepairExecSafeBinProfiles: (cfg: OpenClawConfig) => ({
+  maybeRepairExecSafeBinProfiles: (cfg: WineryClawConfig) => ({
     config: cfg,
     changes: [],
   }),
@@ -141,7 +141,7 @@ describe("doctor repair sequencing", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as WineryClawConfig,
         candidate: {
           channels: {
             discord: {
@@ -162,7 +162,7 @@ describe("doctor repair sequencing", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as WineryClawConfig,
         pendingChanges: false,
         fixHints: [],
       },
@@ -200,14 +200,14 @@ describe("doctor repair sequencing", () => {
               allowFrom: [106232522769186816],
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as WineryClawConfig,
         candidate: {
           channels: {
             discord: {
               allowFrom: [106232522769186816],
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as WineryClawConfig,
         pendingChanges: false,
         fixHints: [],
       },

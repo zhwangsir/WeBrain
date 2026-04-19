@@ -9,7 +9,7 @@ vi.mock("./openclaw-root.js", async () => {
   const actual = await vi.importActual<typeof import("./openclaw-root.js")>("./openclaw-root.js");
   return {
     ...actual,
-    resolveOpenClawPackageRoot: vi.fn(),
+    resolveWineryClawPackageRoot: vi.fn(),
   };
 });
 
@@ -48,7 +48,7 @@ describe("update-startup", () => {
   let tempDir: string;
   let envSnapshot: ReturnType<typeof captureEnv>;
 
-  let resolveOpenClawPackageRoot: (typeof import("./openclaw-root.js"))["resolveOpenClawPackageRoot"];
+  let resolveWineryClawPackageRoot: (typeof import("./openclaw-root.js"))["resolveWineryClawPackageRoot"];
   let checkUpdateStatus: (typeof import("./update-check.js"))["checkUpdateStatus"];
   let resolveNpmChannelTag: (typeof import("./update-check.js"))["resolveNpmChannelTag"];
   let runCommandWithTimeout: (typeof import("../process/exec.js"))["runCommandWithTimeout"];
@@ -66,8 +66,8 @@ describe("update-startup", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-01-17T10:00:00Z"));
     tempDir = await suiteRootTracker.make("case");
-    envSnapshot = captureEnv(["OPENCLAW_STATE_DIR", "NODE_ENV", "VITEST"]);
-    process.env.OPENCLAW_STATE_DIR = tempDir;
+    envSnapshot = captureEnv(["WINERYCLAW_STATE_DIR", "NODE_ENV", "VITEST"]);
+    process.env.WINERYCLAW_STATE_DIR = tempDir;
 
     process.env.NODE_ENV = "test";
 
@@ -76,7 +76,7 @@ describe("update-startup", () => {
 
     // Perf: load mocked modules once (after timers/env are set up).
     if (!loaded) {
-      ({ resolveOpenClawPackageRoot } = await import("./openclaw-root.js"));
+      ({ resolveWineryClawPackageRoot } = await import("./openclaw-root.js"));
       ({ checkUpdateStatus, resolveNpmChannelTag } = await import("./update-check.js"));
       ({ runCommandWithTimeout } = await import("../process/exec.js"));
       ({
@@ -87,7 +87,7 @@ describe("update-startup", () => {
       } = await import("./update-startup.js"));
       loaded = true;
     }
-    vi.mocked(resolveOpenClawPackageRoot).mockClear();
+    vi.mocked(resolveWineryClawPackageRoot).mockClear();
     vi.mocked(checkUpdateStatus).mockClear();
     vi.mocked(resolveNpmChannelTag).mockClear();
     vi.mocked(runCommandWithTimeout).mockClear();
@@ -110,7 +110,7 @@ describe("update-startup", () => {
   }
 
   function mockPackageInstallStatus() {
-    vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue("/opt/openclaw");
+    vi.mocked(resolveWineryClawPackageRoot).mockResolvedValue("/opt/openclaw");
     vi.mocked(checkUpdateStatus).mockResolvedValue({
       root: "/opt/openclaw",
       installKind: "package",
@@ -401,7 +401,7 @@ describe("update-startup", () => {
       expect.objectContaining({
         timeoutMs: 45 * 60 * 1000,
         env: expect.objectContaining({
-          OPENCLAW_AUTO_UPDATE: "1",
+          WINERYCLAW_AUTO_UPDATE: "1",
         }),
       }),
     );

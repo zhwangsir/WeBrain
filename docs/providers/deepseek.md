@@ -2,7 +2,7 @@
 title: "DeepSeek"
 summary: "DeepSeek setup (auth + model selection)"
 read_when:
-  - You want to use DeepSeek with OpenClaw
+  - You want to use DeepSeek with WineryClaw
   - You need the API key env var or CLI auth choice
 ---
 
@@ -56,7 +56,7 @@ read_when:
 
 <Warning>
 If the Gateway runs as a daemon (launchd/systemd), make sure `DEEPSEEK_API_KEY`
-is available to that process (for example, in `~/.openclaw/.env` or via
+is available to that process (for example, in `~/.wineryclaw/.env` or via
 `env.shellEnv`).
 </Warning>
 

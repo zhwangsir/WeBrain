@@ -1,11 +1,11 @@
 import { ensureAuthProfileStore } from "../../agents/auth-profiles.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
 
 export function resolveProfileOverride(params: {
   rawProfile?: string;
   provider: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentDir?: string;
 }): { profileId?: string; error?: string } {
   const raw = normalizeOptionalString(params.rawProfile);

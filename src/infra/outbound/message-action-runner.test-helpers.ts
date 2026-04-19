@@ -5,7 +5,7 @@ import type {
   ChannelOutboundAdapter,
   ChannelPlugin,
 } from "../../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { createChannelTestPluginBase } from "../../test-utils/channel-plugins.js";
 import { runMessageAction } from "./message-action-runner.js";
 
@@ -16,7 +16,7 @@ export const slackConfig = {
       appToken: "xapp-test",
     },
   },
-} as OpenClawConfig;
+} as WineryClawConfig;
 
 export const whatsappConfig = {
   channels: {
@@ -24,12 +24,12 @@ export const whatsappConfig = {
       allowFrom: ["*"],
     },
   },
-} as OpenClawConfig;
+} as WineryClawConfig;
 
 export const directOutbound: ChannelOutboundAdapter = { deliveryMode: "direct" };
 
 export const runDryAction = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   action: ChannelMessageActionName;
   actionParams: Record<string, unknown>;
   toolContext?: Record<string, unknown>;
@@ -47,7 +47,7 @@ export const runDryAction = (params: {
   });
 
 export const runDrySend = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   actionParams: Record<string, unknown>;
   toolContext?: Record<string, unknown>;
   abortSignal?: AbortSignal;
@@ -83,7 +83,7 @@ export function normalizeSlackTarget(raw: string): string {
 
 export function createConfiguredTestPlugin(params: {
   id: "slack" | "telegram" | "whatsapp";
-  isConfigured: (cfg: OpenClawConfig) => boolean;
+  isConfigured: (cfg: WineryClawConfig) => boolean;
   normalizeTarget: (raw: string) => string | undefined;
   resolveTarget: (input: string) => ResolvedTestTarget | null;
 }): ChannelPlugin {

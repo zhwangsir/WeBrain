@@ -1,5 +1,5 @@
 ---
-summary: "Use Qianfan's unified API to access many models in OpenClaw"
+summary: "Use Qianfan's unified API to access many models in WineryClaw"
 read_when:
   - You want a single API key for many LLMs
   - You need Baidu Qianfan setup guidance
@@ -122,7 +122,7 @@ The default bundled model ref is `qianfan/deepseek-v3.2`. You only need to overr
     Choosing providers, model refs, and failover behavior.
   </Card>
   <Card title="Configuration reference" href="/gateway/configuration" icon="gear">
-    Full OpenClaw configuration reference.
+    Full WineryClaw configuration reference.
   </Card>
   <Card title="Agent setup" href="/concepts/agent" icon="robot">
     Configuring agent defaults and model assignments.

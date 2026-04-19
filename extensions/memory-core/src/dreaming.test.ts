@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/memory-core";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/memory-core";
 import { describe, expect, it, vi } from "vitest";
 import {
   clearInternalHooks,
@@ -27,7 +27,7 @@ type CronAddInput = Parameters<CronParam["add"]>[0];
 type CronPatch = Parameters<CronParam["update"]>[1];
 type DreamingPluginApi = Parameters<typeof registerShortTermPromotionDreaming>[0];
 type DreamingPluginApiTestDouble = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   pluginConfig: Record<string, unknown>;
   logger: ReturnType<typeof createLogger>;
   runtime: unknown;
@@ -162,7 +162,7 @@ describe("short-term dreaming config", () => {
           userTimezone: "America/Los_Angeles",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const resolved = resolveShortTermPromotionDreamingConfig({
       pluginConfig: {},
       cfg,
@@ -744,7 +744,7 @@ describe("gateway startup reconciliation", () => {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           deps: { cron: harness.cron },
         }),
       );
@@ -821,7 +821,7 @@ describe("gateway startup reconciliation", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       const beforeAgentReply = getBeforeAgentReplyHandler(onMock);
       await beforeAgentReply(
@@ -912,7 +912,7 @@ describe("gateway startup reconciliation", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       const beforeAgentReply = getBeforeAgentReplyHandler(onMock);
       await beforeAgentReply(
@@ -1502,7 +1502,7 @@ describe("short-term dreaming trigger", () => {
             },
           ],
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       config: {
         enabled: true,
         cron: constants.DEFAULT_DREAMING_CRON_EXPR,

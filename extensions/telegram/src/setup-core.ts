@@ -5,7 +5,7 @@ import {
   patchChannelConfigForAccount,
   promptResolvedAllowFrom,
   splitSetupEntries,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type WizardPrompter,
 } from "openclaw/plugin-sdk/setup-runtime";
 import { formatCliCommand, formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
@@ -75,7 +75,7 @@ export async function resolveTelegramAllowFromEntries(params: {
 }
 
 export async function promptTelegramAllowFromForAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   prompter: WizardPrompter;
   accountId?: string;
 }) {

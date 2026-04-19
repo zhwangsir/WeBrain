@@ -11,9 +11,9 @@ export {
 } from "./onboard.js";
 
 export function applyOpencodeGoModelDefault(
-  cfg: import("openclaw/plugin-sdk/provider-onboard").OpenClawConfig,
+  cfg: import("openclaw/plugin-sdk/provider-onboard").WineryClawConfig,
 ): {
-  next: import("openclaw/plugin-sdk/provider-onboard").OpenClawConfig;
+  next: import("openclaw/plugin-sdk/provider-onboard").WineryClawConfig;
   changed: boolean;
 } {
   const current = resolveAgentModelPrimaryValue(cfg.agents?.defaults?.model);

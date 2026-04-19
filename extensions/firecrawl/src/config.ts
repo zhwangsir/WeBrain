@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   normalizeResolvedSecretInputString,
   normalizeSecretInput,
@@ -9,13 +9,13 @@ export const DEFAULT_FIRECRAWL_SEARCH_TIMEOUT_SECONDS = 30;
 export const DEFAULT_FIRECRAWL_SCRAPE_TIMEOUT_SECONDS = 60;
 export const DEFAULT_FIRECRAWL_MAX_AGE_MS = 172_800_000;
 
-type WebSearchConfig = NonNullable<OpenClawConfig["tools"]>["web"] extends infer Web
+type WebSearchConfig = NonNullable<WineryClawConfig["tools"]>["web"] extends infer Web
   ? Web extends { search?: infer Search }
     ? Search
     : undefined
   : undefined;
 
-type WebFetchConfig = NonNullable<OpenClawConfig["tools"]>["web"] extends infer Web
+type WebFetchConfig = NonNullable<WineryClawConfig["tools"]>["web"] extends infer Web
   ? Web extends { fetch?: infer Fetch }
     ? Fetch
     : undefined
@@ -54,7 +54,7 @@ type FirecrawlFetchConfig =
     }
   | undefined;
 
-function resolveSearchConfig(cfg?: OpenClawConfig): WebSearchConfig {
+function resolveSearchConfig(cfg?: WineryClawConfig): WebSearchConfig {
   const search = cfg?.tools?.web?.search;
   if (!search || typeof search !== "object") {
     return undefined;
@@ -62,7 +62,7 @@ function resolveSearchConfig(cfg?: OpenClawConfig): WebSearchConfig {
   return search;
 }
 
-function resolveFetchConfig(cfg?: OpenClawConfig): WebFetchConfig {
+function resolveFetchConfig(cfg?: WineryClawConfig): WebFetchConfig {
   const fetch = cfg?.tools?.web?.fetch;
   if (!fetch || typeof fetch !== "object") {
     return undefined;
@@ -70,7 +70,7 @@ function resolveFetchConfig(cfg?: OpenClawConfig): WebFetchConfig {
   return fetch;
 }
 
-export function resolveFirecrawlSearchConfig(cfg?: OpenClawConfig): FirecrawlSearchConfig {
+export function resolveFirecrawlSearchConfig(cfg?: WineryClawConfig): FirecrawlSearchConfig {
   const pluginConfig = cfg?.plugins?.entries?.firecrawl?.config as PluginEntryConfig;
   const pluginWebSearch = pluginConfig?.webSearch;
   if (pluginWebSearch && typeof pluginWebSearch === "object" && !Array.isArray(pluginWebSearch)) {
@@ -87,7 +87,7 @@ export function resolveFirecrawlSearchConfig(cfg?: OpenClawConfig): FirecrawlSea
   return firecrawl as FirecrawlSearchConfig;
 }
 
-export function resolveFirecrawlFetchConfig(cfg?: OpenClawConfig): FirecrawlFetchConfig {
+export function resolveFirecrawlFetchConfig(cfg?: WineryClawConfig): FirecrawlFetchConfig {
   const pluginConfig = cfg?.plugins?.entries?.firecrawl?.config as PluginEntryConfig;
   const pluginWebFetch = pluginConfig?.webFetch;
   if (pluginWebFetch && typeof pluginWebFetch === "object" && !Array.isArray(pluginWebFetch)) {
@@ -113,7 +113,7 @@ function normalizeConfiguredSecret(value: unknown, path: string): string | undef
   );
 }
 
-export function resolveFirecrawlApiKey(cfg?: OpenClawConfig): string | undefined {
+export function resolveFirecrawlApiKey(cfg?: WineryClawConfig): string | undefined {
   const pluginConfig = cfg?.plugins?.entries?.firecrawl?.config as PluginEntryConfig;
   const search = resolveFirecrawlSearchConfig(cfg);
   const fetch = resolveFirecrawlFetchConfig(cfg);
@@ -133,7 +133,7 @@ export function resolveFirecrawlApiKey(cfg?: OpenClawConfig): string | undefined
   );
 }
 
-export function resolveFirecrawlBaseUrl(cfg?: OpenClawConfig): string {
+export function resolveFirecrawlBaseUrl(cfg?: WineryClawConfig): string {
   const search = resolveFirecrawlSearchConfig(cfg);
   const fetch = resolveFirecrawlFetchConfig(cfg);
   const configured =
@@ -144,7 +144,7 @@ export function resolveFirecrawlBaseUrl(cfg?: OpenClawConfig): string {
   return configured || DEFAULT_FIRECRAWL_BASE_URL;
 }
 
-export function resolveFirecrawlOnlyMainContent(cfg?: OpenClawConfig, override?: boolean): boolean {
+export function resolveFirecrawlOnlyMainContent(cfg?: WineryClawConfig, override?: boolean): boolean {
   if (typeof override === "boolean") {
     return override;
   }
@@ -155,7 +155,7 @@ export function resolveFirecrawlOnlyMainContent(cfg?: OpenClawConfig, override?:
   return true;
 }
 
-export function resolveFirecrawlMaxAgeMs(cfg?: OpenClawConfig, override?: number): number {
+export function resolveFirecrawlMaxAgeMs(cfg?: WineryClawConfig, override?: number): number {
   if (typeof override === "number" && Number.isFinite(override) && override >= 0) {
     return Math.floor(override);
   }
@@ -171,7 +171,7 @@ export function resolveFirecrawlMaxAgeMs(cfg?: OpenClawConfig, override?: number
 }
 
 export function resolveFirecrawlScrapeTimeoutSeconds(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
   override?: number,
 ): number {
   if (typeof override === "number" && Number.isFinite(override) && override > 0) {

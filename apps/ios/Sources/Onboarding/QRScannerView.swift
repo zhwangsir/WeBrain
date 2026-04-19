@@ -1,4 +1,4 @@
-import OpenClawKit
+import WineryClawKit
 import SwiftUI
 import VisionKit
 

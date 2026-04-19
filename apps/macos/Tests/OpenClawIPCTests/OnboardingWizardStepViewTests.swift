@@ -1,9 +1,9 @@
-import OpenClawProtocol
+import WineryClawProtocol
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
-private typealias ProtoAnyCodable = OpenClawProtocol.AnyCodable
+private typealias ProtoAnyCodable = WineryClawProtocol.AnyCodable
 
 @Suite(.serialized)
 @MainActor

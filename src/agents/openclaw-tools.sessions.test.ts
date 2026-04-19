@@ -1,7 +1,7 @@
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChannelMessagingAdapter } from "../channels/plugins/types.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { createTestRegistry } from "../test-utils/channel-plugins.js";
 
 const callGatewayMock = vi.fn();
@@ -48,7 +48,7 @@ const TEST_CONFIG = {
     sessions: { visibility: "all" },
     agentToAgent: { enabled: true },
   },
-} as OpenClawConfig;
+} as WineryClawConfig;
 
 const resolveSessionConversationStub: NonNullable<
   ChannelMessagingAdapter["resolveSessionConversation"]
@@ -115,11 +115,11 @@ function installMessagingTestRegistry() {
   );
 }
 
-function createOpenClawTools(options?: {
+function createWineryClawTools(options?: {
   agentSessionKey?: string;
   agentChannel?: string;
   sandboxed?: boolean;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 }) {
   const config = options?.config ?? TEST_CONFIG;
   const gatewayCall = (opts: unknown) => callGatewayMock(opts);
@@ -171,7 +171,7 @@ describe("sessions tools", () => {
   });
 
   it("uses number (not integer) in tool schemas for Gemini compatibility", () => {
-    const tools = createOpenClawTools();
+    const tools = createWineryClawTools();
     const byName = (name: string) => {
       const tool = tools.find((candidate) => candidate.name === name);
       expect(tool).toBeDefined();
@@ -273,7 +273,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_list");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_list");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_list tool");
@@ -340,7 +340,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_list");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_list");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_list tool");
@@ -375,7 +375,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -424,7 +424,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -488,7 +488,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -537,7 +537,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -578,7 +578,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -616,7 +616,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -644,7 +644,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools().find((candidate) => candidate.name === "sessions_history");
+    const tool = createWineryClawTools().find((candidate) => candidate.name === "sessions_history");
     expect(tool).toBeDefined();
     if (!tool) {
       throw new Error("missing sessions_history tool");
@@ -717,7 +717,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createWineryClawTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -822,7 +822,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createWineryClawTools({
       agentSessionKey: "main",
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -913,7 +913,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createWineryClawTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");
@@ -1059,7 +1059,7 @@ describe("sessions tools", () => {
       return {};
     });
 
-    const tool = createOpenClawTools({
+    const tool = createWineryClawTools({
       agentSessionKey: requesterKey,
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_send");

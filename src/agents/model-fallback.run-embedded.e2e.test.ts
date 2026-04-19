@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { AuthProfileFailureReason } from "./auth-profiles.js";
 import { runWithModelFallback } from "./model-fallback.js";
 import type { EmbeddedRunAttemptResult } from "./pi-embedded-runner/run/types.js";
@@ -49,7 +49,7 @@ vi.mock("./models-config.js", async () => {
   const mod = await vi.importActual<typeof import("./models-config.js")>("./models-config.js");
   return {
     ...mod,
-    ensureOpenClawModelsJson: vi.fn(async () => ({ wrote: false })),
+    ensureWineryClawModelsJson: vi.fn(async () => ({ wrote: false })),
   };
 });
 
@@ -103,7 +103,7 @@ const OVERLOADED_ERROR_PAYLOAD =
 const RATE_LIMIT_ERROR_MESSAGE = "rate limit exceeded";
 const NO_ENDPOINTS_FOUND_ERROR_MESSAGE = "404 No endpoints found for deepseek/deepseek-r1:free.";
 
-function makeConfig(): OpenClawConfig {
+function makeConfig(): WineryClawConfig {
   const apiKeyField = ["api", "Key"].join("");
   return {
     agents: {
@@ -150,7 +150,7 @@ function makeConfig(): OpenClawConfig {
         },
       },
     },
-  } satisfies OpenClawConfig;
+  } satisfies WineryClawConfig;
 }
 
 async function withAgentWorkspace<T>(
@@ -243,7 +243,7 @@ async function runEmbeddedFallback(params: {
   sessionKey: string;
   runId: string;
   abortSignal?: AbortSignal;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 }) {
   const cfg = params.config ?? makeConfig();
   return await runWithModelFallback({

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { buildPluginConfigSchema, type OpenClawPluginConfigSchema } from "openclaw/plugin-sdk/core";
+import { buildPluginConfigSchema, type WineryClawPluginConfigSchema } from "openclaw/plugin-sdk/core";
 import { z } from "openclaw/plugin-sdk/zod";
 
 export type OpenShellPluginConfig = {
@@ -128,7 +128,7 @@ export function normalizeOpenShellRemotePath(
   return normalized;
 }
 
-export function createOpenShellPluginConfigSchema(): OpenClawPluginConfigSchema {
+export function createOpenShellPluginConfigSchema(): WineryClawPluginConfigSchema {
   return buildPluginConfigSchema(OpenShellPluginConfigSchema, {
     safeParse(value) {
       if (value === undefined) {

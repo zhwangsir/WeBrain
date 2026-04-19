@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   createGatewayCredentialPlan,
   type GatewayCredentialPlan,
@@ -37,7 +37,7 @@ export class GatewaySecretRefUnavailableError extends Error {
     super(
       [
         `${path} is configured as a secret reference but is unavailable in this command path.`,
-        "Fix: set OPENCLAW_GATEWAY_TOKEN/OPENCLAW_GATEWAY_PASSWORD, pass explicit --token/--password,",
+        "Fix: set WINERYCLAW_GATEWAY_TOKEN/WINERYCLAW_GATEWAY_PASSWORD, pass explicit --token/--password,",
         "or run a gateway command path that resolves secret references before credential selection.",
       ].join("\n"),
     );
@@ -80,8 +80,8 @@ export function resolveGatewayCredentialsFromValues(params: {
   passwordPrecedence?: GatewayCredentialPrecedence;
 }): ResolvedGatewayCredentials {
   const env = params.env ?? process.env;
-  const envToken = trimToUndefined(env.OPENCLAW_GATEWAY_TOKEN);
-  const envPassword = trimToUndefined(env.OPENCLAW_GATEWAY_PASSWORD);
+  const envToken = trimToUndefined(env.WINERYCLAW_GATEWAY_TOKEN);
+  const envPassword = trimToUndefined(env.WINERYCLAW_GATEWAY_PASSWORD);
   const configToken = trimCredentialToUndefined(params.configToken);
   const configPassword = trimCredentialToUndefined(params.configPassword);
   const tokenPrecedence = params.tokenPrecedence ?? "env-first";
@@ -243,7 +243,7 @@ function resolveRemoteGatewayCredentials(params: {
 }
 
 export function resolveGatewayCredentialsFromConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   explicitAuth?: ExplicitGatewayAuth;
   urlOverride?: string;
@@ -283,7 +283,7 @@ export function resolveGatewayCredentialsFromConfig(params: {
 
   const localTokenPrecedence =
     params.localTokenPrecedence ??
-    (env.OPENCLAW_SERVICE_KIND === "gateway" ? "config-first" : "env-first");
+    (env.WINERYCLAW_SERVICE_KIND === "gateway" ? "config-first" : "env-first");
   const localPasswordPrecedence = params.localPasswordPrecedence ?? "env-first";
 
   if (mode === "local") {
@@ -310,7 +310,7 @@ export function resolveGatewayCredentialsFromConfig(params: {
 }
 
 export function resolveGatewayProbeCredentialsFromConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   mode: GatewayCredentialMode;
   env?: NodeJS.ProcessEnv;
   explicitAuth?: ExplicitGatewayAuth;
@@ -325,7 +325,7 @@ export function resolveGatewayProbeCredentialsFromConfig(params: {
 }
 
 export function resolveGatewayDriftCheckCredentialsFromConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): ResolvedGatewayCredentials {
   return resolveGatewayCredentialsFromConfig({
     cfg: params.cfg,

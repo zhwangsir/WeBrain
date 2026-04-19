@@ -11,8 +11,8 @@ import { makeBrowserServerState, mockLaunchedChrome } from "./server-context.tes
 function setupEnsureBrowserAvailableHarness() {
   vi.useFakeTimers();
 
-  const launchOpenClawChrome = vi.mocked(chromeModule.launchOpenClawChrome);
-  const stopOpenClawChrome = vi.mocked(chromeModule.stopOpenClawChrome);
+  const launchWineryClawChrome = vi.mocked(chromeModule.launchWineryClawChrome);
+  const stopWineryClawChrome = vi.mocked(chromeModule.stopWineryClawChrome);
   const isChromeReachable = vi.mocked(chromeModule.isChromeReachable);
   const isChromeCdpReady = vi.mocked(chromeModule.isChromeCdpReady);
   isChromeReachable.mockResolvedValue(false);
@@ -21,7 +21,7 @@ function setupEnsureBrowserAvailableHarness() {
   const ctx = createBrowserRouteContext({ getState: () => state });
   const profile = ctx.forProfile("openclaw");
 
-  return { launchOpenClawChrome, stopOpenClawChrome, isChromeCdpReady, profile };
+  return { launchWineryClawChrome, stopWineryClawChrome, isChromeCdpReady, profile };
 }
 
 afterEach(() => {
@@ -32,37 +32,37 @@ afterEach(() => {
 
 describe("browser server-context ensureBrowserAvailable", () => {
   it("waits for CDP readiness after launching to avoid follow-up PortInUseError races (#21149)", async () => {
-    const { launchOpenClawChrome, stopOpenClawChrome, isChromeCdpReady, profile } =
+    const { launchWineryClawChrome, stopWineryClawChrome, isChromeCdpReady, profile } =
       setupEnsureBrowserAvailableHarness();
     isChromeCdpReady.mockResolvedValueOnce(false).mockResolvedValue(true);
-    mockLaunchedChrome(launchOpenClawChrome, 123);
+    mockLaunchedChrome(launchWineryClawChrome, 123);
 
     const promise = profile.ensureBrowserAvailable();
     await vi.advanceTimersByTimeAsync(100);
     await expect(promise).resolves.toBeUndefined();
 
-    expect(launchOpenClawChrome).toHaveBeenCalledTimes(1);
+    expect(launchWineryClawChrome).toHaveBeenCalledTimes(1);
     expect(isChromeCdpReady).toHaveBeenCalled();
-    expect(stopOpenClawChrome).not.toHaveBeenCalled();
+    expect(stopWineryClawChrome).not.toHaveBeenCalled();
   });
 
   it("stops launched chrome when CDP readiness never arrives", async () => {
-    const { launchOpenClawChrome, stopOpenClawChrome, isChromeCdpReady, profile } =
+    const { launchWineryClawChrome, stopWineryClawChrome, isChromeCdpReady, profile } =
       setupEnsureBrowserAvailableHarness();
     isChromeCdpReady.mockResolvedValue(false);
-    mockLaunchedChrome(launchOpenClawChrome, 321);
+    mockLaunchedChrome(launchWineryClawChrome, 321);
 
     const promise = profile.ensureBrowserAvailable();
     const rejected = expect(promise).rejects.toThrow("not reachable after start");
     await vi.advanceTimersByTimeAsync(8100);
     await rejected;
 
-    expect(launchOpenClawChrome).toHaveBeenCalledTimes(1);
-    expect(stopOpenClawChrome).toHaveBeenCalledTimes(1);
+    expect(launchWineryClawChrome).toHaveBeenCalledTimes(1);
+    expect(stopWineryClawChrome).toHaveBeenCalledTimes(1);
   });
 
   it("reuses a pre-existing loopback browser after an initial short probe miss", async () => {
-    const { launchOpenClawChrome, stopOpenClawChrome, isChromeCdpReady, profile } =
+    const { launchWineryClawChrome, stopWineryClawChrome, isChromeCdpReady, profile } =
       setupEnsureBrowserAvailableHarness();
     const isChromeReachable = vi.mocked(chromeModule.isChromeReachable);
 
@@ -87,12 +87,12 @@ describe("browser server-context ensureBrowserAvailable", () => {
         allowPrivateNetwork: true,
       },
     );
-    expect(launchOpenClawChrome).not.toHaveBeenCalled();
-    expect(stopOpenClawChrome).not.toHaveBeenCalled();
+    expect(launchWineryClawChrome).not.toHaveBeenCalled();
+    expect(stopWineryClawChrome).not.toHaveBeenCalled();
   });
 
   it("retries remote CDP websocket reachability once before failing", async () => {
-    const { launchOpenClawChrome, stopOpenClawChrome, isChromeCdpReady } =
+    const { launchWineryClawChrome, stopWineryClawChrome, isChromeCdpReady } =
       setupEnsureBrowserAvailableHarness();
     const isChromeReachable = vi.mocked(chromeModule.isChromeReachable);
 
@@ -131,7 +131,7 @@ describe("browser server-context ensureBrowserAvailable", () => {
         allowPrivateNetwork: true,
       },
     );
-    expect(launchOpenClawChrome).not.toHaveBeenCalled();
-    expect(stopOpenClawChrome).not.toHaveBeenCalled();
+    expect(launchWineryClawChrome).not.toHaveBeenCalled();
+    expect(stopWineryClawChrome).not.toHaveBeenCalled();
   });
 });

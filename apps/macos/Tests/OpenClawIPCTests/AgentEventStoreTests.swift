@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawProtocol
+import WineryClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @MainActor
 struct AgentEventStoreTests {
@@ -15,7 +15,7 @@ struct AgentEventStoreTests {
             seq: 1,
             stream: "test",
             ts: 0,
-            data: [:] as [String: OpenClawProtocol.AnyCodable],
+            data: [:] as [String: WineryClawProtocol.AnyCodable],
             summary: nil))
         #expect(store.events.count == 1)
 
@@ -32,7 +32,7 @@ struct AgentEventStoreTests {
                 seq: i,
                 stream: "test",
                 ts: Double(i),
-                data: [:] as [String: OpenClawProtocol.AnyCodable],
+                data: [:] as [String: WineryClawProtocol.AnyCodable],
                 summary: nil))
         }
 

@@ -9,7 +9,7 @@ import {
 } from "../agents/model-selection.js";
 import { resolveModelAsync } from "../agents/pi-embedded-runner/model.js";
 import { prepareModelForSimpleCompletion } from "../agents/simple-completion-transport.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
@@ -88,7 +88,7 @@ type SummaryModelSelection = {
 };
 
 function resolveSummaryModelRef(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   config: ResolvedTtsConfig,
 ): SummaryModelSelection {
   const defaultRef = resolveDefaultModelForAgent({ cfg });
@@ -117,7 +117,7 @@ export async function summarizeText(
   params: {
     text: string;
     targetLength: number;
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     config: ResolvedTtsConfig;
     timeoutMs: number;
   },

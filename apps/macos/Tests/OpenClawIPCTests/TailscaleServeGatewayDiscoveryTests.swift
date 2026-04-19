@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawDiscovery
+@testable import WineryClawDiscovery
 
 struct TailscaleServeGatewayDiscoveryTests {
     @Test func `discovers serve gateway from tailnet peers`() async {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { loadValidConfigOrThrow, updateConfig } from "./shared.js";
 
 const mocks = vi.hoisted(() => ({
@@ -19,7 +19,7 @@ describe("models/shared", () => {
   });
 
   it("returns config when snapshot is valid", async () => {
-    const cfg = { providers: {} } as unknown as OpenClawConfig;
+    const cfg = { providers: {} } as unknown as WineryClawConfig;
     mocks.readConfigFileSnapshot.mockResolvedValue({
       valid: true,
       runtimeConfig: cfg,
@@ -42,7 +42,7 @@ describe("models/shared", () => {
   });
 
   it("updateConfig writes mutated config", async () => {
-    const cfg = { update: { channel: "stable" } } as unknown as OpenClawConfig;
+    const cfg = { update: { channel: "stable" } } as unknown as WineryClawConfig;
     mocks.readConfigFileSnapshot.mockResolvedValue({
       valid: true,
       hash: "config-1",

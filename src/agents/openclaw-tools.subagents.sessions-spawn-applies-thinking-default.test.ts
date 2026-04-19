@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { resolveSubagentThinkingOverride } from "./subagent-spawn-thinking.js";
 
 type ThinkingLevel = "high" | "medium" | "low";
@@ -8,7 +8,7 @@ function resolveThinkingPlan(input: { expected: ThinkingLevel; thinkingOverrideR
   const cfg = {
     session: { mainKey: "main", scope: "per-sender" },
     agents: { defaults: { subagents: { thinking: "high" } } },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 
   const plan = resolveSubagentThinkingOverride({
     cfg,

@@ -1,6 +1,6 @@
 import { normalizeProviderId } from "../agents/model-selection.js";
 import type { ModelProviderConfig } from "../config/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import type { ProviderDiscoveryOrder, ProviderPlugin } from "./types.js";
 
 const DISCOVERY_ORDER: readonly ProviderDiscoveryOrder[] = ["simple", "profile", "paired", "late"];
@@ -16,7 +16,7 @@ function resolveProviderCatalogHook(provider: ProviderPlugin) {
 }
 
 export async function resolvePluginDiscoveryProviders(params: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   onlyPluginIds?: string[];
@@ -90,7 +90,7 @@ export function normalizePluginDiscoveryResult(params: {
 
 export function runProviderCatalog(params: {
   provider: ProviderPlugin;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentDir?: string;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;

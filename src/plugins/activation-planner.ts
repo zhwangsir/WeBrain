@@ -1,5 +1,5 @@
 import { normalizeProviderId } from "../agents/provider-id.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { loadPluginManifestRegistry, type PluginManifestRecord } from "./manifest-registry.js";
 import type { PluginManifestActivationCapability } from "./manifest.js";
@@ -15,7 +15,7 @@ export type PluginActivationPlannerTrigger =
 
 export function resolveManifestActivationPluginIds(params: {
   trigger: PluginActivationPlannerTrigger;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   cache?: boolean;

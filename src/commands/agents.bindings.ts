@@ -3,7 +3,7 @@ import { getChannelPlugin, normalizeChannelId } from "../channels/plugins/index.
 import type { ChannelId } from "../channels/plugins/types.public.js";
 import { isRouteBinding, listRouteBindings } from "../config/bindings.js";
 import type { AgentRouteBinding } from "../config/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { DEFAULT_ACCOUNT_ID, normalizeAgentId } from "../routing/session-key.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import { normalizeStringEntries } from "../shared/string-normalization.js";
@@ -68,10 +68,10 @@ export function describeBinding(binding: AgentRouteBinding) {
 }
 
 export function applyAgentBindings(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   bindings: AgentRouteBinding[],
 ): {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   added: AgentRouteBinding[];
   updated: AgentRouteBinding[];
   skipped: AgentRouteBinding[];
@@ -154,10 +154,10 @@ export function applyAgentBindings(
 }
 
 export function removeAgentBindings(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   bindings: AgentRouteBinding[],
 ): {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   removed: AgentRouteBinding[];
   missing: AgentRouteBinding[];
   conflicts: Array<{ binding: AgentRouteBinding; existingAgentId: string }>;
@@ -221,7 +221,7 @@ export function removeAgentBindings(
   };
 }
 
-function resolveDefaultAccountId(cfg: OpenClawConfig, provider: ChannelId): string {
+function resolveDefaultAccountId(cfg: WineryClawConfig, provider: ChannelId): string {
   const plugin = getChannelPlugin(provider);
   if (!plugin) {
     return DEFAULT_ACCOUNT_ID;
@@ -231,7 +231,7 @@ function resolveDefaultAccountId(cfg: OpenClawConfig, provider: ChannelId): stri
 
 function resolveBindingAccountId(params: {
   channel: ChannelId;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentId: string;
   explicitAccountId?: string;
 }): string | undefined {
@@ -259,7 +259,7 @@ function resolveBindingAccountId(params: {
 export function buildChannelBindings(params: {
   agentId: string;
   selection: ChannelChoice[];
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   accountIds?: Partial<Record<ChannelChoice, string>>;
 }): AgentRouteBinding[] {
   const bindings: AgentRouteBinding[] = [];
@@ -283,7 +283,7 @@ export function buildChannelBindings(params: {
 export function parseBindingSpecs(params: {
   agentId: string;
   specs?: string[];
-  config: OpenClawConfig;
+  config: WineryClawConfig;
 }): { bindings: AgentRouteBinding[]; errors: string[] } {
   const bindings: AgentRouteBinding[] = [];
   const errors: string[] = [];

@@ -1,4 +1,4 @@
-import { discoverOpenClawPlugins } from "./discovery.js";
+import { discoverWineryClawPlugins } from "./discovery.js";
 import {
   loadPluginManifest,
   type PluginPackageChannel,
@@ -23,7 +23,7 @@ export function listChannelCatalogEntries(
     env?: NodeJS.ProcessEnv;
   } = {},
 ): PluginChannelCatalogEntry[] {
-  return discoverOpenClawPlugins({
+  return discoverWineryClawPlugins({
     workspaceDir: params.workspaceDir,
     env: params.env,
   }).candidates.flatMap((candidate) => {

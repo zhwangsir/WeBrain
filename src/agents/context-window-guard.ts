@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { findNormalizedProviderValue } from "./provider-id.js";
 
 export const CONTEXT_WINDOW_HARD_MIN_TOKENS = 16_000;
@@ -20,7 +20,7 @@ function normalizePositiveInt(value: unknown): number | null {
 }
 
 export function resolveContextWindowInfo(params: {
-  cfg: OpenClawConfig | undefined;
+  cfg: WineryClawConfig | undefined;
   provider: string;
   modelId: string;
   modelContextTokens?: number;

@@ -2,10 +2,10 @@ import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
 } from "openclaw/plugin-sdk/channel-entry-contract";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
+import type { WineryClawPluginApi } from "openclaw/plugin-sdk/channel-entry-contract";
 
-function registerSlackPluginHttpRoutes(api: OpenClawPluginApi): void {
-  const register = loadBundledEntryExportSync<(api: OpenClawPluginApi) => void>(import.meta.url, {
+function registerSlackPluginHttpRoutes(api: WineryClawPluginApi): void {
+  const register = loadBundledEntryExportSync<(api: WineryClawPluginApi) => void>(import.meta.url, {
     specifier: "./runtime-api.js",
     exportName: "registerSlackPluginHttpRoutes",
   });

@@ -57,7 +57,7 @@ export const baseStatusOverviewScanFields = {
 export const baseStatusGatewayService = {
   label: "LaunchAgent",
   installed: true,
-  managedByOpenClaw: true,
+  managedByWineryClaw: true,
   loadedText: "loaded",
   runtimeShort: "running",
 };

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type {
   DmPolicy,
   GroupPolicy,
@@ -77,7 +77,7 @@ export type SignalReceivePayload = {
 
 export type SignalEventHandlerDeps = {
   runtime: RuntimeEnv;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   baseUrl: string;
   account?: string;
   accountUuid?: string;

@@ -1,9 +1,9 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 import { resolveAgentExecutionContract, resolveSessionAgentIds } from "./agent-scope.js";
 
 export function isStrictAgenticExecutionContractActive(params: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   sessionKey?: string;
   agentId?: string | null;
   provider?: string | null;

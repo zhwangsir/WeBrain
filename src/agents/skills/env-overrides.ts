@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { normalizeResolvedSecretInputString } from "../../config/types.secrets.js";
 import {
   isDangerousHostEnvOverrideVarName,
@@ -216,7 +216,7 @@ function createEnvReverter(updates: EnvUpdate[]) {
   };
 }
 
-export function applySkillEnvOverrides(params: { skills: SkillEntry[]; config?: OpenClawConfig }) {
+export function applySkillEnvOverrides(params: { skills: SkillEntry[]; config?: WineryClawConfig }) {
   const { skills } = params;
   const config = resolveSkillRuntimeConfig(params.config);
   const updates: EnvUpdate[] = [];
@@ -242,7 +242,7 @@ export function applySkillEnvOverrides(params: { skills: SkillEntry[]; config?: 
 
 export function applySkillEnvOverridesFromSnapshot(params: {
   snapshot?: SkillSnapshot;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 }) {
   const { snapshot } = params;
   const config = resolveSkillRuntimeConfig(params.config);

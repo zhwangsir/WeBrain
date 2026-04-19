@@ -1,14 +1,14 @@
 import { createCapturedPluginRegistration } from "../plugins/captured-registration.js";
-import type { OpenClawPluginApi, ProviderPlugin } from "../plugins/types.js";
+import type { WineryClawPluginApi, ProviderPlugin } from "../plugins/types.js";
 
 export { createCapturedPluginRegistration };
 
 type RegistrablePlugin = {
-  register(api: OpenClawPluginApi): void | Promise<void>;
+  register(api: WineryClawPluginApi): void | Promise<void>;
 };
 
 export async function registerSingleProviderPlugin(params: {
-  register(api: OpenClawPluginApi): void | Promise<void>;
+  register(api: WineryClawPluginApi): void | Promise<void>;
 }): Promise<ProviderPlugin> {
   const captured = createCapturedPluginRegistration();
   await params.register(captured.api);

@@ -2,7 +2,7 @@ import { ChannelType, type Client } from "@buape/carbon";
 import { Routes, type APIAttachment, type APIStickerItem } from "discord-api-types/v10";
 import {
   resolveChannelModelOverride,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type ReplyToMode,
 } from "openclaw/plugin-sdk/config-runtime";
 import { createReplyReferencePlanner } from "openclaw/plugin-sdk/reply-reference";
@@ -436,7 +436,7 @@ type MaybeCreateDiscordAutoThreadParams = {
   channelDescription?: string;
   baseText: string;
   combinedBody: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   agentId?: string;
 };
 
@@ -445,7 +445,7 @@ export async function resolveDiscordAutoThreadReplyPlan(
     replyToMode: ReplyToMode;
     agentId: string;
     channel: string;
-    cfg?: OpenClawConfig;
+    cfg?: WineryClawConfig;
   },
 ): Promise<DiscordAutoThreadReplyPlan> {
   const messageChannelId = resolveTrimmedDiscordMessageChannelId(params);
@@ -584,7 +584,7 @@ export async function maybeCreateDiscordAutoThread(
 }
 
 function resolveDiscordThreadTitleModelRef(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   channel?: string;
   agentId: string;
   threadId: string;
@@ -623,7 +623,7 @@ async function maybeRenameDiscordAutoThread(params: {
   modelRef?: string;
   channelName?: string;
   channelDescription?: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
 }): Promise<void> {
   try {

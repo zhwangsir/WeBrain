@@ -6,7 +6,7 @@ import {
   pathExists,
   splitSetupEntries,
   type DmPolicy,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/setup";
 import type { ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
 import { formatCliCommand, formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
@@ -20,15 +20,15 @@ import { whatsappSetupAdapter } from "./setup-core.js";
 
 type SetupPrompter = Parameters<NonNullable<ChannelSetupWizard["finalize"]>>[0]["prompter"];
 type SetupRuntime = Parameters<NonNullable<ChannelSetupWizard["finalize"]>>[0]["runtime"];
-type WhatsAppConfig = NonNullable<NonNullable<OpenClawConfig["channels"]>["whatsapp"]>;
+type WhatsAppConfig = NonNullable<NonNullable<WineryClawConfig["channels"]>["whatsapp"]>;
 type WhatsAppAccountConfig = NonNullable<NonNullable<WhatsAppConfig["accounts"]>[string]>;
 
 function mergeWhatsAppConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   patch: Partial<WhatsAppAccountConfig>,
   options?: { unsetOnUndefined?: string[] },
-): OpenClawConfig {
+): WineryClawConfig {
   const channelConfig: WhatsAppConfig = { ...cfg.channels?.whatsapp };
   const mutableChannelConfig = channelConfig as Record<string, unknown>;
   if (accountId === DEFAULT_ACCOUNT_ID) {
@@ -77,31 +77,31 @@ function mergeWhatsAppConfig(
 }
 
 function setWhatsAppDmPolicy(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   dmPolicy: DmPolicy,
-): OpenClawConfig {
+): WineryClawConfig {
   return mergeWhatsAppConfig(cfg, accountId, { dmPolicy });
 }
 
 function setWhatsAppAllowFrom(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   allowFrom?: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   return mergeWhatsAppConfig(cfg, accountId, { allowFrom }, { unsetOnUndefined: ["allowFrom"] });
 }
 
 function setWhatsAppSelfChatMode(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   selfChatMode: boolean,
-): OpenClawConfig {
+): WineryClawConfig {
   return mergeWhatsAppConfig(cfg, accountId, { selfChatMode });
 }
 
 export async function detectWhatsAppLinked(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
 ): Promise<boolean> {
   const { authDir } = resolveWhatsAppAuthDir({ cfg, accountId });
@@ -116,7 +116,7 @@ async function promptWhatsAppOwnerAllowFrom(params: {
   const { prompter, existingAllowFrom } = params;
 
   await prompter.note(
-    "We need the sender/owner number so OpenClaw can allowlist you.",
+    "We need the sender/owner number so WineryClaw can allowlist you.",
     "WhatsApp number",
   );
   const entry = await prompter.text({
@@ -148,13 +148,13 @@ async function promptWhatsAppOwnerAllowFrom(params: {
 }
 
 async function applyWhatsAppOwnerAllowlist(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   existingAllowFrom: string[];
   messageLines: string[];
   prompter: SetupPrompter;
   title: string;
-}): Promise<OpenClawConfig> {
+}): Promise<WineryClawConfig> {
   const { normalized, allowFrom } = await promptWhatsAppOwnerAllowFrom({
     prompter: params.prompter,
     existingAllowFrom: params.existingAllowFrom,
@@ -190,11 +190,11 @@ function parseWhatsAppAllowFromEntries(raw: string): { entries: string[]; invali
 }
 
 async function promptWhatsAppDmAccess(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   forceAllowFrom: boolean;
   prompter: SetupPrompter;
-}): Promise<OpenClawConfig> {
+}): Promise<WineryClawConfig> {
   const accountId = params.accountId.trim() || DEFAULT_ACCOUNT_ID;
   const account = resolveWhatsAppAccount({ cfg: params.cfg, accountId });
   const existingPolicy = account.dmPolicy ?? "pairing";
@@ -238,7 +238,7 @@ async function promptWhatsAppDmAccess(params: {
     message: "WhatsApp phone setup",
     options: [
       { value: "personal", label: "This is my personal phone number" },
-      { value: "separate", label: "Separate phone just for OpenClaw" },
+      { value: "separate", label: "Separate phone just for WineryClaw" },
     ],
   });
 
@@ -331,7 +331,7 @@ async function promptWhatsAppDmAccess(params: {
 }
 
 export async function finalizeWhatsAppSetup(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   forceAllowFrom: boolean;
   prompter: SetupPrompter;

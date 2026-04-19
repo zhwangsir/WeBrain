@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { collectFeishuSecurityAuditFindings } from "../../test/helpers/channels/security-audit-contract.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 describe("security audit Feishu doc risk findings", () => {
   it.each([
@@ -13,7 +13,7 @@ describe("security audit Feishu doc risk findings", () => {
             appSecret: "secret_test",
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies WineryClawConfig,
       expectedFinding: "channels.feishu.doc_owner_open_id",
     },
     {
@@ -29,7 +29,7 @@ describe("security audit Feishu doc risk findings", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies WineryClawConfig,
       expectedFinding: "channels.feishu.doc_owner_open_id",
     },
     {
@@ -42,7 +42,7 @@ describe("security audit Feishu doc risk findings", () => {
             tools: { doc: false },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies WineryClawConfig,
       expectedNoFinding: "channels.feishu.doc_owner_open_id",
     },
   ])("$name", ({ cfg, expectedFinding, expectedNoFinding }) => {

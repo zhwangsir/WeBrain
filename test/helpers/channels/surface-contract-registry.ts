@@ -4,7 +4,7 @@ import {
   setBundledChannelRuntime,
 } from "../../../src/channels/plugins/bundled.js";
 import type { ChannelPlugin } from "../../../src/channels/plugins/types.js";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 import {
   listLineAccountIds,
   resolveDefaultLineAccountId,
@@ -42,7 +42,7 @@ type DirectoryContractEntry = {
   id: string;
   plugin: Pick<ChannelPlugin, "id" | "directory">;
   coverage: "lookups" | "presence";
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   accountId?: string;
 };
 
@@ -58,7 +58,7 @@ setBundledChannelRuntime("line", {
     line: {
       listLineAccountIds,
       resolveDefaultLineAccountId,
-      resolveLineAccount: ({ cfg, accountId }: { cfg: OpenClawConfig; accountId?: string }) =>
+      resolveLineAccount: ({ cfg, accountId }: { cfg: WineryClawConfig; accountId?: string }) =>
         resolveLineAccount({ cfg, accountId }),
     },
   },

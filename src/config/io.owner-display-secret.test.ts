@@ -3,7 +3,7 @@ import {
   type OwnerDisplaySecretPersistState,
   persistGeneratedOwnerDisplaySecret,
 } from "./io.owner-display-secret.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { WineryClawConfig } from "./types.openclaw.js";
 
 function createState(): OwnerDisplaySecretPersistState {
   return {
@@ -31,7 +31,7 @@ describe("persistGeneratedOwnerDisplaySecret", () => {
         ownerDisplay: "hash",
         ownerDisplaySecret: "generated-owner-secret",
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const persistConfig = vi.fn(async () => undefined);
 
     const result = persistGeneratedOwnerDisplaySecret({
@@ -66,7 +66,7 @@ describe("persistGeneratedOwnerDisplaySecret", () => {
         ownerDisplay: "hash",
         ownerDisplaySecret: "generated-owner-secret",
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const warn = vi.fn();
     const persistConfig = vi.fn(async () => {
       throw new Error("disk full");
@@ -115,7 +115,7 @@ describe("persistGeneratedOwnerDisplaySecret", () => {
         ownerDisplay: "hash",
         ownerDisplaySecret: "existing-secret",
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const result = persistGeneratedOwnerDisplaySecret({
       config,

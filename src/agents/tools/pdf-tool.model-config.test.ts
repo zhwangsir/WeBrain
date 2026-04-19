@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { resolvePdfModelConfigForTool } from "./pdf-tool.model-config.js";
 import { resetPdfToolAuthEnv, withTempPdfAgentDir } from "./pdf-tool.test-support.js";
 
 const ANTHROPIC_PDF_MODEL = "anthropic/claude-opus-4-6";
 
-function withDefaultModel(primary: string): OpenClawConfig {
+function withDefaultModel(primary: string): WineryClawConfig {
   return {
     agents: { defaults: { model: { primary } } },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 describe("resolvePdfModelConfigForTool", () => {
@@ -36,7 +36,7 @@ describe("resolvePdfModelConfigForTool", () => {
             pdfModel: { primary: ANTHROPIC_PDF_MODEL },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
       expect(resolvePdfModelConfigForTool({ cfg, agentDir })).toEqual({
         primary: ANTHROPIC_PDF_MODEL,
       });
@@ -52,7 +52,7 @@ describe("resolvePdfModelConfigForTool", () => {
             imageModel: { primary: "openai/gpt-5.4-mini" },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
       expect(resolvePdfModelConfigForTool({ cfg, agentDir })).toEqual({
         primary: "openai/gpt-5.4-mini",
       });

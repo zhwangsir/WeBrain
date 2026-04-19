@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-# Reset OpenClaw like Trimmy: kill running instances, rebuild, repackage, relaunch, verify.
+# Reset WineryClaw like Trimmy: kill running instances, rebuild, repackage, relaunch, verify.
 
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_BUNDLE="${OPENCLAW_APP_BUNDLE:-}"
-APP_PROCESS_PATTERN="OpenClaw.app/Contents/MacOS/OpenClaw"
-DEBUG_PROCESS_PATTERN="${ROOT_DIR}/apps/macos/.build/debug/OpenClaw"
-LOCAL_PROCESS_PATTERN="${ROOT_DIR}/apps/macos/.build-local/debug/OpenClaw"
-RELEASE_PROCESS_PATTERN="${ROOT_DIR}/apps/macos/.build/release/OpenClaw"
+APP_BUNDLE="${WINERYCLAW_APP_BUNDLE:-}"
+APP_PROCESS_PATTERN="WineryClaw.app/Contents/MacOS/WineryClaw"
+DEBUG_PROCESS_PATTERN="${ROOT_DIR}/apps/macos/.build/debug/WineryClaw"
+LOCAL_PROCESS_PATTERN="${ROOT_DIR}/apps/macos/.build-local/debug/WineryClaw"
+RELEASE_PROCESS_PATTERN="${ROOT_DIR}/apps/macos/.build/release/WineryClaw"
 LAUNCH_AGENT="${HOME}/Library/LaunchAgents/ai.openclaw.mac.plist"
 LOCK_KEY="$(printf '%s' "${ROOT_DIR}" | shasum -a 256 | cut -c1-8)"
 LOCK_DIR="${TMPDIR:-/tmp}/openclaw-restart-${LOCK_KEY}"
 LOCK_PID_FILE="${LOCK_DIR}/pid"
 WAIT_FOR_LOCK=0
-LOG_PATH="${OPENCLAW_RESTART_LOG:-/tmp/openclaw-restart.log}"
+LOG_PATH="${WINERYCLAW_RESTART_LOG:-/tmp/openclaw-restart.log}"
 NO_SIGN=0
 SIGN=0
 AUTO_DETECT_SIGNING=1
-GATEWAY_WAIT_SECONDS="${OPENCLAW_GATEWAY_WAIT_SECONDS:-0}"
+GATEWAY_WAIT_SECONDS="${WINERYCLAW_GATEWAY_WAIT_SECONDS:-0}"
 LAUNCHAGENT_DISABLE_MARKER="${HOME}/.openclaw/disable-launchagent"
 ATTACH_ONLY=1
 
@@ -93,7 +93,7 @@ for arg in "$@"; do
       log "  --no-attach-only Launch app without attach-only override"
       log ""
       log "Env:"
-      log "  OPENCLAW_GATEWAY_WAIT_SECONDS=0  Wait time before gateway port check (unsigned only)"
+      log "  WINERYCLAW_GATEWAY_WAIT_SECONDS=0  Wait time before gateway port check (unsigned only)"
       log ""
       log "Unsigned recovery:"
       log "  node openclaw.mjs daemon install --force --runtime node"
@@ -132,12 +132,12 @@ kill_all_openclaw() {
     pkill -f "${DEBUG_PROCESS_PATTERN}" 2>/dev/null || true
     pkill -f "${LOCAL_PROCESS_PATTERN}" 2>/dev/null || true
     pkill -f "${RELEASE_PROCESS_PATTERN}" 2>/dev/null || true
-    pkill -x "OpenClaw" 2>/dev/null || true
+    pkill -x "WineryClaw" 2>/dev/null || true
     if ! pgrep -f "${APP_PROCESS_PATTERN}" >/dev/null 2>&1 \
        && ! pgrep -f "${DEBUG_PROCESS_PATTERN}" >/dev/null 2>&1 \
        && ! pgrep -f "${LOCAL_PROCESS_PATTERN}" >/dev/null 2>&1 \
        && ! pgrep -f "${RELEASE_PROCESS_PATTERN}" >/dev/null 2>&1 \
-       && ! pgrep -x "OpenClaw" >/dev/null 2>&1; then
+       && ! pgrep -x "WineryClaw" >/dev/null 2>&1; then
       return 0
     fi
     sleep 0.3
@@ -149,7 +149,7 @@ stop_launch_agent() {
 }
 
 # 1) Kill all running instances first.
-log "==> Killing existing OpenClaw instances"
+log "==> Killing existing WineryClaw instances"
 kill_all_openclaw
 stop_launch_agent
 
@@ -158,7 +158,7 @@ run_step "bundle canvas a2ui" bash -lc "cd '${ROOT_DIR}' && pnpm canvas:a2ui:bun
 
 # 2) Rebuild into the same path the packager consumes (.build).
 run_step "clean build cache" bash -lc "cd '${ROOT_DIR}/apps/macos' && rm -rf .build .build-swift .swiftpm 2>/dev/null || true"
-run_step "swift build" bash -lc "cd '${ROOT_DIR}/apps/macos' && swift build -q --product OpenClaw"
+run_step "swift build" bash -lc "cd '${ROOT_DIR}/apps/macos' && swift build -q --product WineryClaw"
 
 if [ "$AUTO_DETECT_SIGNING" -eq 1 ]; then
   if check_signing_keys; then
@@ -191,20 +191,20 @@ choose_app_bundle() {
     return 0
   fi
 
-  if [[ -d "/Applications/OpenClaw.app" ]]; then
-    APP_BUNDLE="/Applications/OpenClaw.app"
+  if [[ -d "/Applications/WineryClaw.app" ]]; then
+    APP_BUNDLE="/Applications/WineryClaw.app"
     return 0
   fi
 
-  if [[ -d "${ROOT_DIR}/dist/OpenClaw.app" ]]; then
-    APP_BUNDLE="${ROOT_DIR}/dist/OpenClaw.app"
+  if [[ -d "${ROOT_DIR}/dist/WineryClaw.app" ]]; then
+    APP_BUNDLE="${ROOT_DIR}/dist/WineryClaw.app"
     if [[ ! -d "${APP_BUNDLE}/Contents/Frameworks/Sparkle.framework" ]]; then
-      fail "dist/OpenClaw.app missing Sparkle after packaging"
+      fail "dist/WineryClaw.app missing Sparkle after packaging"
     fi
     return 0
   fi
 
-  fail "App bundle not found. Set OPENCLAW_APP_BUNDLE to your installed OpenClaw.app"
+  fail "App bundle not found. Set WINERYCLAW_APP_BUNDLE to your installed WineryClaw.app"
 }
 
 choose_app_bundle
@@ -259,7 +259,7 @@ run_step "launch app" env -i \
 # 5) Verify the app is alive.
 sleep 1.5
 if pgrep -f "${APP_PROCESS_PATTERN}" >/dev/null 2>&1; then
-  log "OK: OpenClaw is running."
+  log "OK: WineryClaw is running."
 else
   fail "App exited immediately. Check ${LOG_PATH} or Console.app (User Reports)."
 fi

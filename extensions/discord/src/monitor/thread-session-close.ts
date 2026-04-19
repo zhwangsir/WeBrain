@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { resolveStorePath, updateSessionStore } from "openclaw/plugin-sdk/config-runtime";
 import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/text-runtime";
 
@@ -12,7 +12,7 @@ import { normalizeOptionalLowercaseString } from "openclaw/plugin-sdk/text-runti
  * any on-disk transcript history.
  */
 export async function closeDiscordThreadSessions(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   threadId: string;
 }): Promise<number> {

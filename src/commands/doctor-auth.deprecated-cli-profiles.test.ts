@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { ProviderPlugin } from "../plugins/types.js";
 import { captureEnv } from "../test-utils/env.js";
 import { maybeRepairLegacyOAuthProfileIds } from "./doctor-auth.js";
@@ -41,9 +41,9 @@ function makePrompter(confirmValue: boolean): DoctorPrompter {
 }
 
 beforeEach(() => {
-  envSnapshot = captureEnv(["OPENCLAW_AGENT_DIR", "PI_CODING_AGENT_DIR"]);
+  envSnapshot = captureEnv(["WINERYCLAW_AGENT_DIR", "PI_CODING_AGENT_DIR"]);
   tempAgentDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-"));
-  process.env.OPENCLAW_AGENT_DIR = tempAgentDir;
+  process.env.WINERYCLAW_AGENT_DIR = tempAgentDir;
   process.env.PI_CODING_AGENT_DIR = tempAgentDir;
   resolvePluginProvidersMock.mockReset();
   resolvePluginProvidersMock.mockReturnValue([]);
@@ -109,7 +109,7 @@ describe("maybeRepairLegacyOAuthProfileIds", () => {
             anthropic: ["anthropic:default"],
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       makePrompter(true),
     );
 

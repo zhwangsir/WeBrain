@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveBrewExecutable } from "../infra/brew.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import {
@@ -28,7 +28,7 @@ export type SkillInstallRequest = InstallSafetyOverrides & {
   skillName: string;
   installId: string;
   timeoutMs?: number;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 };
 export type { SkillInstallResult } from "./skills-install.types.js";
 

@@ -9,7 +9,7 @@ import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import { ParentBasedSampler, TraceIdRatioBasedSampler } from "@opentelemetry/sdk-trace-base";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
-import type { DiagnosticEventPayload, OpenClawPluginService } from "../api.js";
+import type { DiagnosticEventPayload, WineryClawPluginService } from "../api.js";
 import { onDiagnosticEvent, redactSensitiveText, registerLogTransport } from "../api.js";
 
 const DEFAULT_SERVICE_NAME = "openclaw";
@@ -62,7 +62,7 @@ function redactOtelAttributes(attributes: Record<string, string | number | boole
   return redactedAttributes;
 }
 
-export function createDiagnosticsOtelService(): OpenClawPluginService {
+export function createDiagnosticsOtelService(): WineryClawPluginService {
   let sdk: NodeSDK | null = null;
   let logProvider: LoggerProvider | null = null;
   let stopLogTransport: (() => void) | null = null;
@@ -674,5 +674,5 @@ export function createDiagnosticsOtelService(): OpenClawPluginService {
         sdk = null;
       }
     },
-  } satisfies OpenClawPluginService;
+  } satisfies WineryClawPluginService;
 }

@@ -28,7 +28,7 @@ import type {
 } from "../commands/channel-setup/types.js";
 import type { ChannelChoice } from "../commands/onboard-types.js";
 import { isChannelConfigured } from "../config/channel-configured.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { enablePluginInConfig } from "../plugins/enable.js";
 import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "../routing/session-key.js";
@@ -65,7 +65,7 @@ export function createChannelOnboardingPostWriteHookCollector() {
 
 export async function runCollectedChannelOnboardingPostWriteHooks(params: {
   hooks: ChannelOnboardingPostWriteHook[];
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   runtime: RuntimeEnv;
 }): Promise<void> {
   for (const hook of params.hooks) {
@@ -84,7 +84,7 @@ export function createChannelOnboardingPostWriteHook(params: {
   accountId?: string;
   adapter?: Pick<ChannelSetupWizardAdapter, "afterConfigWritten">;
   channel: ChannelChoice;
-  previousCfg: OpenClawConfig;
+  previousCfg: WineryClawConfig;
 }): ChannelOnboardingPostWriteHook | undefined {
   if (!params.accountId || !params.adapter?.afterConfigWritten) {
     return undefined;
@@ -105,11 +105,11 @@ export function createChannelOnboardingPostWriteHook(params: {
 // Channel-specific prompts moved into setup flow adapters.
 
 export async function setupChannels(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   runtime: RuntimeEnv,
   prompter: WizardPrompter,
   options?: SetupChannelsOptions,
-): Promise<OpenClawConfig> {
+): Promise<WineryClawConfig> {
   let next = cfg;
   const forceAllowFromChannels = new Set(options?.forceAllowFromChannels ?? []);
   const accountOverrides: Partial<Record<ChannelChoice, string>> = {

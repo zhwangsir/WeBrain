@@ -62,7 +62,7 @@ fun CanvasScreen(viewModel: MainViewModel, visible: Boolean, modifier: Modifier 
           disableForceDarkIfSupported(settings)
         }
         if (isDebuggable) {
-          Log.d("OpenClawWebView", "userAgent: ${settings.userAgentString}")
+          Log.d("WineryClawWebView", "userAgent: ${settings.userAgentString}")
         }
         isScrollContainer = true
         overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
@@ -84,7 +84,7 @@ fun CanvasScreen(viewModel: MainViewModel, visible: Boolean, modifier: Modifier 
               error: WebResourceError,
             ) {
               if (!isDebuggable || !request.isForMainFrame) return
-              Log.e("OpenClawWebView", "onReceivedError: ${error.errorCode} ${error.description} ${request.url}")
+              Log.e("WineryClawWebView", "onReceivedError: ${error.errorCode} ${error.description} ${request.url}")
             }
 
             override fun onReceivedHttpError(
@@ -94,7 +94,7 @@ fun CanvasScreen(viewModel: MainViewModel, visible: Boolean, modifier: Modifier 
             ) {
               if (!isDebuggable || !request.isForMainFrame) return
               Log.e(
-                "OpenClawWebView",
+                "WineryClawWebView",
                 "onReceivedHttpError: ${errorResponse.statusCode} ${errorResponse.reasonPhrase} ${request.url}",
               )
             }
@@ -102,7 +102,7 @@ fun CanvasScreen(viewModel: MainViewModel, visible: Boolean, modifier: Modifier 
             override fun onPageFinished(view: WebView, url: String?) {
               currentPageUrlRef.set(url)
               if (isDebuggable) {
-                Log.d("OpenClawWebView", "onPageFinished: $url")
+                Log.d("WineryClawWebView", "onPageFinished: $url")
               }
               viewModel.canvas.onPageFinished()
             }
@@ -113,7 +113,7 @@ fun CanvasScreen(viewModel: MainViewModel, visible: Boolean, modifier: Modifier 
             ): Boolean {
               if (isDebuggable) {
                 Log.e(
-                  "OpenClawWebView",
+                  "WineryClawWebView",
                   "onRenderProcessGone didCrash=${detail.didCrash()} priorityAtExit=${detail.rendererPriorityAtExit()}",
                 )
               }
@@ -126,7 +126,7 @@ fun CanvasScreen(viewModel: MainViewModel, visible: Boolean, modifier: Modifier 
               if (!isDebuggable) return false
               val msg = consoleMessage ?: return false
               Log.d(
-                "OpenClawWebView",
+                "WineryClawWebView",
                 "console ${msg.messageLevel()} @ ${msg.sourceId()}:${msg.lineNumber()} ${msg.message()}",
               )
               return false

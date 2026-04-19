@@ -15,16 +15,16 @@ vi.mock("./schtasks-exec.js", () => ({
 // Real content from the openclaw-gateway.service unit file (the canonical gateway unit).
 const GATEWAY_SERVICE_CONTENTS = `\
 [Unit]
-Description=OpenClaw Gateway (v2026.3.8)
+Description=WineryClaw Gateway (v2026.3.8)
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 ExecStart=/usr/bin/node /home/openclaw/.npm-global/lib/node_modules/openclaw/dist/entry.js gateway --port 18789
 Restart=always
-Environment=OPENCLAW_SERVICE_MARKER=openclaw
-Environment=OPENCLAW_SERVICE_KIND=gateway
-Environment=OPENCLAW_SERVICE_VERSION=2026.3.8
+Environment=WINERYCLAW_SERVICE_MARKER=openclaw
+Environment=WINERYCLAW_SERVICE_KIND=gateway
+Environment=WINERYCLAW_SERVICE_VERSION=2026.3.8
 
 [Install]
 WantedBy=default.target
@@ -33,7 +33,7 @@ WantedBy=default.target
 // Real content from the openclaw-test.service unit file (a non-gateway openclaw service).
 const TEST_SERVICE_CONTENTS = `\
 [Unit]
-Description=OpenClaw test service
+Description=WineryClaw test service
 After=default.target
 
 [Service]
@@ -176,8 +176,8 @@ describe("findExtraGatewayServices (win32)", () => {
     execSchtasksMock.mockResolvedValueOnce({
       code: 0,
       stdout: [
-        "TaskName: OpenClaw Gateway",
-        "Task To Run: C:\\Program Files\\OpenClaw\\openclaw.exe gateway run",
+        "TaskName: WineryClaw Gateway",
+        "Task To Run: C:\\Program Files\\WineryClaw\\openclaw.exe gateway run",
         "",
         "TaskName: Clawdbot Legacy",
         "Task To Run: C:\\clawdbot\\clawdbot.exe run",

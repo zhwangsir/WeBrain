@@ -15,10 +15,10 @@ import {
 } from "./restart-sentinel.js";
 
 async function withRestartSentinelStateDir(run: () => Promise<void>): Promise<void> {
-  const envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
+  const envSnapshot = captureEnv(["WINERYCLAW_STATE_DIR"]);
   try {
     await withTempDir({ prefix: "openclaw-sentinel-" }, async (tempDir) => {
-      process.env.OPENCLAW_STATE_DIR = tempDir;
+      process.env.WINERYCLAW_STATE_DIR = tempDir;
       await run();
     });
   } finally {

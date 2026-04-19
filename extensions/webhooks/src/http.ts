@@ -12,7 +12,7 @@ import {
   withResolvedWebhookRequestPipeline,
   WEBHOOK_IN_FLIGHT_DEFAULTS,
   WEBHOOK_RATE_LIMIT_DEFAULTS,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type WebhookInFlightLimiter,
 } from "../runtime-api.js";
 
@@ -531,7 +531,7 @@ function describeWebhookOutcome(params: { action: WebhookAction; result: unknown
 async function executeWebhookAction(params: {
   action: WebhookAction;
   target: TaskFlowWebhookTarget;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): Promise<unknown> {
   const { action, target } = params;
   switch (action.action) {
@@ -660,7 +660,7 @@ async function executeWebhookAction(params: {
 }
 
 export function createTaskFlowWebhookRequestHandler(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   targetsByPath: Map<string, TaskFlowWebhookTarget[]>;
   inFlightLimiter?: WebhookInFlightLimiter;
 }): (req: IncomingMessage, res: ServerResponse) => Promise<boolean> {

@@ -6,7 +6,7 @@ type PluginManifestShape = {
   id?: unknown;
 };
 
-type OpenClawPackageShape = {
+type WineryClawPackageShape = {
   name?: unknown;
   openclaw?: {
     install?: {
@@ -65,7 +65,7 @@ function readBundledPluginRecords(): BundledPluginRecord[] {
       }
 
       const manifest = readJsonFile<PluginManifestShape>(manifestPath);
-      const pkg = readJsonFile<OpenClawPackageShape>(packagePath);
+      const pkg = readJsonFile<WineryClawPackageShape>(packagePath);
       const manifestId = normalizeText(manifest.id);
       const packageName = normalizeText(pkg.name);
       if (!manifestId || !packageName) {

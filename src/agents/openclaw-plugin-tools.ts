@@ -1,15 +1,15 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolvePluginTools } from "../plugins/tools.js";
 import { getActiveSecretsRuntimeSnapshot } from "../secrets/runtime.js";
 import { normalizeDeliveryContext } from "../utils/delivery-context.js";
 import {
-  resolveOpenClawPluginToolInputs,
-  type OpenClawPluginToolOptions,
+  resolveWineryClawPluginToolInputs,
+  type WineryClawPluginToolOptions,
 } from "./openclaw-tools.plugin-context.js";
 import { applyPluginToolDeliveryDefaults } from "./plugin-tool-delivery-defaults.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
-type ResolveOpenClawPluginToolsOptions = OpenClawPluginToolOptions & {
+type ResolveWineryClawPluginToolsOptions = WineryClawPluginToolOptions & {
   pluginToolAllowlist?: string[];
   currentChannelId?: string;
   currentThreadTs?: string;
@@ -24,9 +24,9 @@ type ResolveOpenClawPluginToolsOptions = OpenClawPluginToolOptions & {
   disablePluginTools?: boolean;
 };
 
-export function resolveOpenClawPluginToolsForOptions(params: {
-  options?: ResolveOpenClawPluginToolsOptions;
-  resolvedConfig?: OpenClawConfig;
+export function resolveWineryClawPluginToolsForOptions(params: {
+  options?: ResolveWineryClawPluginToolsOptions;
+  resolvedConfig?: WineryClawConfig;
   existingToolNames?: Set<string>;
 }): AnyAgentTool[] {
   if (params.options?.disablePluginTools) {
@@ -42,7 +42,7 @@ export function resolveOpenClawPluginToolsForOptions(params: {
   });
 
   const pluginTools = resolvePluginTools({
-    ...resolveOpenClawPluginToolInputs({
+    ...resolveWineryClawPluginToolInputs({
       options: params.options,
       resolvedConfig: params.resolvedConfig,
       runtimeConfig: runtimeSnapshot?.config,

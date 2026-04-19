@@ -8,7 +8,7 @@ import type {
 } from "openclaw/plugin-sdk/approval-handler-runtime";
 import { createChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-runtime";
 import { buildChannelApprovalNativeTargetKey } from "openclaw/plugin-sdk/approval-native-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   buildApprovalInteractiveReplyFromActionDescriptors,
   type ExecApprovalRequest,
@@ -33,7 +33,7 @@ type SlackPendingDelivery = {
 };
 
 type SlackExecApprovalConfig = NonNullable<
-  NonNullable<NonNullable<OpenClawConfig["channels"]>["slack"]>["execApprovals"]
+  NonNullable<NonNullable<WineryClawConfig["channels"]>["slack"]>["execApprovals"]
 >;
 
 export type SlackApprovalHandlerContext = {

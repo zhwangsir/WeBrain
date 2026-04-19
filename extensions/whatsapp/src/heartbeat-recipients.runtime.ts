@@ -5,5 +5,5 @@ export { normalizeChannelId } from "openclaw/plugin-sdk/channel-targets";
 export {
   loadSessionStore,
   resolveStorePath,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/config-runtime";

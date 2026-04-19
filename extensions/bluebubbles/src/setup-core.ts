@@ -6,17 +6,17 @@ import {
   prepareScopedSetupConfig,
   type ChannelSetupAdapter,
   type DmPolicy,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/setup";
 import { applyBlueBubblesConnectionConfig } from "./config-apply.js";
 
 const channel = "bluebubbles" as const;
 
 export function setBlueBubblesDmPolicy(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   dmPolicy: DmPolicy,
-): OpenClawConfig {
+): WineryClawConfig {
   const resolvedAccountId = normalizeAccountId(accountId);
   const existingAllowFrom =
     resolvedAccountId === "default"
@@ -40,10 +40,10 @@ export function setBlueBubblesDmPolicy(
 }
 
 export function setBlueBubblesAllowFrom(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   allowFrom: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   return patchScopedAccountConfig({
     cfg,
     channelKey: channel,

@@ -4,10 +4,10 @@ import {
   type ChannelPluginCatalogEntry,
 } from "../../channels/plugins/catalog.js";
 import { applyPluginAutoEnable } from "../../config/plugin-auto-enable.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { normalizePluginsConfig, resolveEnableState } from "../../plugins/config-state.js";
 
-function resolveEffectiveTrustConfig(cfg: OpenClawConfig, env?: NodeJS.ProcessEnv): OpenClawConfig {
+function resolveEffectiveTrustConfig(cfg: WineryClawConfig, env?: NodeJS.ProcessEnv): WineryClawConfig {
   return applyPluginAutoEnable({
     config: cfg,
     env: env ?? process.env,
@@ -16,7 +16,7 @@ function resolveEffectiveTrustConfig(cfg: OpenClawConfig, env?: NodeJS.ProcessEn
 
 function isTrustedWorkspaceChannelCatalogEntry(
   entry: ChannelPluginCatalogEntry | undefined,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   env?: NodeJS.ProcessEnv,
 ): boolean {
   if (entry?.origin !== "workspace") {
@@ -36,7 +36,7 @@ function isTrustedWorkspaceChannelCatalogEntry(
 export function getTrustedChannelPluginCatalogEntry(
   channelId: string,
   params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
   },
@@ -54,7 +54,7 @@ export function getTrustedChannelPluginCatalogEntry(
 }
 
 export function listTrustedChannelPluginCatalogEntries(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ChannelPluginCatalogEntry[] {
@@ -77,7 +77,7 @@ export function listTrustedChannelPluginCatalogEntries(params: {
 }
 
 export function listSetupDiscoveryChannelPluginCatalogEntries(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ChannelPluginCatalogEntry[] {

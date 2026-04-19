@@ -3,7 +3,7 @@ import type { ChannelAccountSnapshot } from "openclaw/plugin-sdk/status-helpers"
 import {
   createAccountStatusSink,
   runPassiveAccountLifecycle,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type ResolvedGoogleChatAccount,
 } from "./channel.deps.runtime.js";
 import type { GoogleChatRuntimeEnv } from "./monitor-types.js";
@@ -15,7 +15,7 @@ const loadGoogleChatChannelRuntime = createLazyRuntimeNamedExport(
 
 export async function startGoogleChatGatewayAccount(ctx: {
   account: ResolvedGoogleChatAccount;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   runtime: GoogleChatRuntimeEnv;
   abortSignal: AbortSignal;
   setStatus: (next: ChannelAccountSnapshot) => void;

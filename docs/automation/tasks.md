@@ -126,9 +126,9 @@ Transitions happen automatically — when the associated agent run ends, the tas
 
 ## Delivery and notifications
 
-When a task reaches a terminal state, OpenClaw notifies you. There are two delivery paths:
+When a task reaches a terminal state, WineryClaw notifies you. There are two delivery paths:
 
-**Direct delivery** — if the task has a channel target (the `requesterOrigin`), the completion message goes straight to that channel (Telegram, Discord, Slack, etc.). For subagent completions, OpenClaw also preserves bound thread/topic routing when available and can fill a missing `to` / account from the requester session's stored route (`lastChannel` / `lastTo` / `lastAccountId`) before giving up on direct delivery.
+**Direct delivery** — if the task has a channel target (the `requesterOrigin`), the completion message goes straight to that channel (Telegram, Discord, Slack, etc.). For subagent completions, WineryClaw also preserves bound thread/topic routing when available and can fill a missing `to` / account from the requester session's stored route (`lastChannel` / `lastTo` / `lastAccountId`) before giving up on direct delivery.
 
 **Session-queued delivery** — if direct delivery fails or no origin is set, the update is queued as a system event in the requester's session and surfaces on the next heartbeat.
 
@@ -276,7 +276,7 @@ remains. This keeps the status card focused on what matters right now.
 Task records persist in SQLite at:
 
 ```
-$OPENCLAW_STATE_DIR/tasks/runs.sqlite
+$WINERYCLAW_STATE_DIR/tasks/runs.sqlite
 ```
 
 The registry loads into memory at gateway start and syncs writes to SQLite for durability across restarts.
@@ -301,7 +301,7 @@ See [Task Flow](/automation/taskflow) for details.
 
 ### Tasks and cron
 
-A cron job **definition** lives in `~/.openclaw/cron/jobs.json`. **Every** cron execution creates a task record — both main-session and isolated. Main-session cron tasks default to `silent` notify policy so they track without generating notifications.
+A cron job **definition** lives in `~/.wineryclaw/cron/jobs.json`. **Every** cron execution creates a task record — both main-session and isolated. Main-session cron tasks default to `silent` notify policy so they track without generating notifications.
 
 See [Cron Jobs](/automation/cron-jobs).
 

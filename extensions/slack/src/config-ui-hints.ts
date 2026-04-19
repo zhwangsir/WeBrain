@@ -51,7 +51,7 @@ export const slackChannelConfigUiHints = {
   },
   execApprovals: {
     label: "Slack Exec Approvals",
-    help: "Slack-native exec approval routing and approver authorization. When unset, OpenClaw auto-enables DM-first native approvals if approvers can be resolved for this workspace account.",
+    help: "Slack-native exec approval routing and approver authorization. When unset, WineryClaw auto-enables DM-first native approvals if approvers can be resolved for this workspace account.",
   },
   "execApprovals.enabled": {
     label: "Slack Exec Approvals Enabled",
@@ -59,7 +59,7 @@ export const slackChannelConfigUiHints = {
   },
   "execApprovals.approvers": {
     label: "Slack Exec Approval Approvers",
-    help: "Slack user IDs allowed to approve exec requests for this workspace account. Use Slack user IDs or user targets such as `U123`, `user:U123`, or `<@U123>`. If you leave this unset, OpenClaw falls back to commands.ownerAllowFrom when possible.",
+    help: "Slack user IDs allowed to approve exec requests for this workspace account. Use Slack user IDs or user targets such as `U123`, `user:U123`, or `<@U123>`. If you leave this unset, WineryClaw falls back to commands.ownerAllowFrom when possible.",
   },
   "execApprovals.agentFilter": {
     label: "Slack Exec Approval Agent Filter",

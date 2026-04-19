@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   clearActiveMcpLoopbackRuntime,
   createMcpLoopbackServerConfig,
@@ -18,7 +18,7 @@ const NATIVE_TOOL_EXCLUDE = new Set(["read", "write", "edit", "apply_patch", "ex
 type CachedScopedTools = {
   tools: McpLoopbackTool[];
   toolSchema: McpToolSchemaEntry[];
-  configRef: OpenClawConfig;
+  configRef: WineryClawConfig;
   time: number;
 };
 
@@ -26,7 +26,7 @@ export class McpLoopbackToolCache {
   #entries = new Map<string, CachedScopedTools>();
 
   resolve(params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     sessionKey: string;
     messageProvider: string | undefined;
     accountId: string | undefined;

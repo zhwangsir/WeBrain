@@ -11,9 +11,9 @@ import {
 describe("qqbot local media path remapping", () => {
   const createdPaths: string[] = [];
 
-  function createOpenClawTestRoot() {
+  function createWineryClawTestRoot() {
     const actualHome = getHomeDir();
-    const openclawDir = path.join(actualHome, ".openclaw");
+    const openclawDir = path.join(actualHome, ".wineryclaw");
     fs.mkdirSync(openclawDir, { recursive: true });
     const testRoot = fs.mkdtempSync(path.join(openclawDir, "qqbot-platform-test-"));
     createdPaths.push(testRoot);
@@ -21,10 +21,10 @@ describe("qqbot local media path remapping", () => {
   }
 
   function createQqbotMediaFile(fileName: string) {
-    const { actualHome, testRootName } = createOpenClawTestRoot();
+    const { actualHome, testRootName } = createWineryClawTestRoot();
     const mediaFile = path.join(
       actualHome,
-      ".openclaw",
+      ".wineryclaw",
       "media",
       "qqbot",
       "downloads",
@@ -49,7 +49,7 @@ describe("qqbot local media path remapping", () => {
 
     const missingWorkspacePath = path.join(
       actualHome,
-      ".openclaw",
+      ".wineryclaw",
       "workspace",
       "qqbot",
       "downloads",
@@ -79,7 +79,7 @@ describe("qqbot local media path remapping", () => {
   it("blocks structured payload paths that escape QQ Bot media via '..'", () => {
     const escapedPath = path.join(
       getHomeDir(),
-      ".openclaw",
+      ".wineryclaw",
       "media",
       "qqbot",
       "..",
@@ -97,11 +97,11 @@ describe("qqbot local media path remapping", () => {
   });
 
   it("blocks structured payload files inside the QQ Bot data directory", () => {
-    const { actualHome, testRootName } = createOpenClawTestRoot();
+    const { actualHome, testRootName } = createWineryClawTestRoot();
 
     const dataFile = path.join(
       actualHome,
-      ".openclaw",
+      ".wineryclaw",
       "qqbot",
       "sessions",
       testRootName,
@@ -119,7 +119,7 @@ describe("qqbot local media path remapping", () => {
 
     const missingWorkspacePath = path.join(
       actualHome,
-      ".openclaw",
+      ".wineryclaw",
       "workspace",
       "qqbot",
       "downloads",

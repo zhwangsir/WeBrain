@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import type { Mock } from "vitest";
 import { beforeEach, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import type { requestHeartbeatNow } from "../infra/heartbeat-wake.js";
 import type { enqueueSystemEvent } from "../infra/system-events.js";
 import type { CliBackendPlugin } from "../plugin-sdk/cli-backend.js";
@@ -69,7 +69,7 @@ setCliRunnerExecuteTestDeps({
 setCliRunnerPrepareTestDeps({
   makeBootstrapWarn: () => () => {},
   resolveBootstrapContextForRun: hoisted.resolveBootstrapContextForRunMock,
-  resolveOpenClawDocsPath: async () => null,
+  resolveWineryClawDocsPath: async () => null,
 });
 
 type MockRunExit = {
@@ -328,7 +328,7 @@ export const EXISTING_CODEX_CONFIG = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies WineryClawConfig;
 
 export async function setupCliRunnerTestModule() {
   setupCliRunnerTestRegistry();
@@ -381,7 +381,7 @@ export function restoreCliRunnerPrepareTestDeps() {
   setCliRunnerPrepareTestDeps({
     makeBootstrapWarn: () => () => {},
     resolveBootstrapContextForRun: hoisted.resolveBootstrapContextForRunMock,
-    resolveOpenClawDocsPath: async () => null,
+    resolveWineryClawDocsPath: async () => null,
   });
 }
 
@@ -402,7 +402,7 @@ export async function runCliAgentWithBackendConfig(params: {
           },
         },
       },
-    } satisfies OpenClawConfig,
+    } satisfies WineryClawConfig,
     prompt: "hi",
     provider: "codex-cli",
     model: "gpt-5.4",

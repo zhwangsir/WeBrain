@@ -3,7 +3,7 @@ import type {
   ChannelOutboundAdapter,
   ChannelPlugin,
 } from "../../channels/plugins/types.public.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { normalizeLowercaseStringOrEmpty } from "../../shared/string-coerce.js";
 import { createTestRegistry } from "../../test-utils/channel-plugins.js";
 
@@ -98,7 +98,7 @@ export function createTestChannelPlugin(params: {
   label?: string;
   outbound?: ChannelOutboundAdapter;
   messaging?: ChannelMessagingAdapter;
-  resolveDefaultTo?: (params: { cfg: OpenClawConfig }) => string | undefined;
+  resolveDefaultTo?: (params: { cfg: WineryClawConfig }) => string | undefined;
 }): ChannelPlugin {
   return {
     id: params.id,

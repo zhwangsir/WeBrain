@@ -19,7 +19,7 @@ import type {
   PluginApprovalResolvedView,
 } from "openclaw/plugin-sdk/approval-handler-runtime";
 import { createChannelApprovalNativeRuntimeAdapter } from "openclaw/plugin-sdk/approval-handler-runtime";
-import type { DiscordExecApprovalConfig, OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { DiscordExecApprovalConfig, WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type {
   ExecApprovalActionDescriptor,
   ExecApprovalDecision,
@@ -61,7 +61,7 @@ function resolveHandlerContext(params: ChannelApprovalCapabilityHandlerContext):
 
 class ExecApprovalContainer extends DiscordUiContainer {
   constructor(params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     title: string;
     description?: string;
@@ -182,7 +182,7 @@ function resolveCommandPreviews(
 
 function createExecApprovalRequestContainer(params: {
   view: ExecApprovalPendingView;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   actionRow?: Row<Button>;
 }): ExecApprovalContainer {
@@ -210,7 +210,7 @@ function createExecApprovalRequestContainer(params: {
 
 function createPluginApprovalRequestContainer(params: {
   view: PluginApprovalPendingView;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   actionRow?: Row<Button>;
 }): ExecApprovalContainer {
@@ -234,7 +234,7 @@ function createPluginApprovalRequestContainer(params: {
 
 function createExecResolvedContainer(params: {
   view: ExecApprovalResolvedView;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
 }): ExecApprovalContainer {
   const { commandPreview, commandSecondaryPreview } = resolveCommandPreviews(
@@ -271,7 +271,7 @@ function createExecResolvedContainer(params: {
 
 function createPluginResolvedContainer(params: {
   view: PluginApprovalResolvedView;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
 }): ExecApprovalContainer {
   const decisionLabel =
@@ -302,7 +302,7 @@ function createPluginResolvedContainer(params: {
 
 function createExecExpiredContainer(params: {
   view: ExecApprovalExpiredView;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
 }): ExecApprovalContainer {
   const { commandPreview, commandSecondaryPreview } = resolveCommandPreviews(
@@ -326,7 +326,7 @@ function createExecExpiredContainer(params: {
 
 function createPluginExpiredContainer(params: {
   view: PluginApprovalExpiredView;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
 }): ExecApprovalContainer {
   return new ExecApprovalContainer({
@@ -350,7 +350,7 @@ export function buildExecApprovalCustomId(
 }
 
 async function updateMessage(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   token: string;
   channelId: string;
@@ -376,7 +376,7 @@ async function updateMessage(params: {
 }
 
 async function finalizeMessage(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   token: string;
   cleanupAfterResolve?: boolean;

@@ -1,5 +1,5 @@
 import type { ButtonInteraction, ComponentData } from "@buape/carbon";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const resolveApprovalOverGatewayMock = vi.hoisted(() => vi.fn());
@@ -22,8 +22,8 @@ import {
 } from "./exec-approvals.js";
 
 function buildConfig(
-  execApprovals?: NonNullable<NonNullable<OpenClawConfig["channels"]>["discord"]>["execApprovals"],
-): OpenClawConfig {
+  execApprovals?: NonNullable<NonNullable<WineryClawConfig["channels"]>["discord"]>["execApprovals"],
+): WineryClawConfig {
   return {
     channels: {
       discord: {
@@ -31,7 +31,7 @@ function buildConfig(
         execApprovals,
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createInteraction(overrides?: Partial<ButtonInteraction>): ButtonInteraction {

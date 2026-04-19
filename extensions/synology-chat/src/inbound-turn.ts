@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/core";
 import { sendMessage } from "./client.js";
 import { buildSynologyChatInboundContext, type SynologyInboundMessage } from "./inbound-context.js";
 import { getSynologyRuntime } from "./runtime.js";
@@ -12,7 +12,7 @@ type SynologyChannelLog = {
 };
 
 function resolveSynologyChatInboundRoute(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   account: ResolvedSynologyChatAccount;
   userId: string;
 }) {

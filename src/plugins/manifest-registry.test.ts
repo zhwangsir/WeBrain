@@ -6,7 +6,7 @@ import {
   clearPluginManifestRegistryCache,
   loadPluginManifestRegistry,
 } from "./manifest-registry.js";
-import type { OpenClawPackageManifest } from "./manifest.js";
+import type { WineryClawPackageManifest } from "./manifest.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 vi.unmock("../version.js");
@@ -63,7 +63,7 @@ function createPluginCandidate(params: {
   origin: "bundled" | "global" | "workspace" | "config";
   format?: "openclaw" | "bundle";
   bundleFormat?: "codex" | "claude" | "cursor";
-  packageManifest?: OpenClawPackageManifest;
+  packageManifest?: WineryClawPackageManifest;
   packageDir?: string;
   bundledManifest?: PluginCandidate["bundledManifest"];
   bundledManifestPath?: string;
@@ -91,9 +91,9 @@ function loadRegistry(candidates: PluginCandidate[]) {
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-    OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-    OPENCLAW_VERSION: undefined,
+    WINERYCLAW_BUNDLED_PLUGINS_DIR: undefined,
+    WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+    WINERYCLAW_VERSION: undefined,
     VITEST: "true",
     ...overrides,
   };
@@ -686,8 +686,8 @@ describe("loadPluginManifestRegistry", () => {
     {
       name: "skips plugins whose minHostVersion is newer than the current host",
       minHostVersion: ">=2026.3.22",
-      env: { OPENCLAW_VERSION: "2026.3.21" } as NodeJS.ProcessEnv,
-      expectedMessage: "plugin requires OpenClaw >=2026.3.22, but this host is 2026.3.21",
+      env: { WINERYCLAW_VERSION: "2026.3.21" } as NodeJS.ProcessEnv,
+      expectedMessage: "plugin requires WineryClaw >=2026.3.22, but this host is 2026.3.21",
       expectWarn: false,
     },
     {
@@ -699,7 +699,7 @@ describe("loadPluginManifestRegistry", () => {
     {
       name: "warns distinctly when host version cannot be determined",
       minHostVersion: ">=2026.3.22",
-      env: { OPENCLAW_VERSION: "unknown" } as NodeJS.ProcessEnv,
+      env: { WINERYCLAW_VERSION: "unknown" } as NodeJS.ProcessEnv,
       expectedMessage: "host version could not be determined",
       expectWarn: true,
     },
@@ -1010,13 +1010,13 @@ describe("loadPluginManifestRegistry", () => {
     const first = loadPluginManifestRegistry({
       cache: true,
       env: hermeticEnv({
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledA,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledA,
       }),
     });
     const second = loadPluginManifestRegistry({
       cache: true,
       env: hermeticEnv({
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledB,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledB,
       }),
     });
 
@@ -1058,8 +1058,8 @@ describe("loadPluginManifestRegistry", () => {
       config,
       env: hermeticEnv({
         HOME: homeA,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_STATE_DIR: path.join(homeA, ".state"),
+        WINERYCLAW_HOME: undefined,
+        WINERYCLAW_STATE_DIR: path.join(homeA, ".state"),
       }),
     });
     const second = loadPluginManifestRegistry({
@@ -1067,8 +1067,8 @@ describe("loadPluginManifestRegistry", () => {
       config,
       env: hermeticEnv({
         HOME: homeB,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_STATE_DIR: path.join(homeB, ".state"),
+        WINERYCLAW_HOME: undefined,
+        WINERYCLAW_STATE_DIR: path.join(homeB, ".state"),
       }),
     });
 
@@ -1104,14 +1104,14 @@ describe("loadPluginManifestRegistry", () => {
       cache: true,
       candidates,
       env: hermeticEnv({
-        OPENCLAW_VERSION: "2026.3.21",
+        WINERYCLAW_VERSION: "2026.3.21",
       }),
     });
     const newerHost = loadPluginManifestRegistry({
       cache: true,
       candidates,
       env: hermeticEnv({
-        OPENCLAW_VERSION: "2026.3.22",
+        WINERYCLAW_VERSION: "2026.3.22",
       }),
     });
 

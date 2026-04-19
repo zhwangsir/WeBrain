@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import type { App } from "@slack/bolt";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
 import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
@@ -32,7 +32,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
     const slackCtx = createInboundSlackCtx({
       cfg: {
         channels: { slack: { enabled: true } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
     slackCtx.resolveUserName = async () => ({ name: "Alice" }) as any;
     return slackCtx;
@@ -82,7 +82,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
     });
   }
 
-  function createThreadSlackCtx(params: { cfg: OpenClawConfig; replies: unknown }) {
+  function createThreadSlackCtx(params: { cfg: WineryClawConfig; replies: unknown }) {
     return createInboundSlackCtx({
       cfg: params.cfg,
       appClient: { conversations: { replies: params.replies } } as App["client"],
@@ -124,7 +124,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
       cfg: {
         channels: { slack: { enabled: true } },
         session: { dmScope: "main" },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
     slackCtx.resolveUserName = async () => ({ name: "Alice" }) as any;
     // Simulate API returning correct type for DM channel
@@ -170,7 +170,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
             ...(params?.groupPolicy ? { groupPolicy: params.groupPolicy } : {}),
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       replyToMode: "all",
       ...(params?.defaultRequireMention === undefined
         ? {}
@@ -207,7 +207,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
           statusReactions: { enabled: true },
         },
         channels: { slack: { enabled: true } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
     slackCtx.resolveUserName = async () => ({ name: "Alice" }) as any;
 
@@ -283,7 +283,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
         channels: {
           slack: { enabled: true },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       defaultRequireMention: false,
     });
     slackCtx.resolveUserName = async () => ({ name: "Bot" }) as any;
@@ -314,7 +314,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
             enabled: true,
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       defaultRequireMention: false,
       channelsConfig: {
         C123: { systemPrompt: "Config prompt" },
@@ -457,7 +457,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
       cfg: {
         session: { store: storePath },
         channels: { slack: { enabled: true, replyToMode: "all", groupPolicy: "open" } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       replies,
     });
     slackCtx.resolveUserName = async (id: string) => ({
@@ -483,7 +483,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
     const cfg = {
       session: { store: storePath },
       channels: { slack: { enabled: true, replyToMode: "all", groupPolicy: "open" } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const route = resolveAgentRoute({
       cfg,
       channel: "slack",
@@ -572,7 +572,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
       cfg: {
         session: { store: storePath },
         channels: { slack: { enabled: true, replyToMode: "all" } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       replyToMode: "all",
     });
     slackCtx.resolveUserName = async () => ({ name: "Alice" }) as any;
@@ -717,7 +717,7 @@ describe("slack thread.requireExplicitMention", () => {
       cfg: {
         channels: { slack: { enabled: true } },
         session: {},
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       threadRequireExplicitMention: requireExplicitMention,
     });
     ctx.resolveUserName = async () => ({ name: "Alice" }) as any;

@@ -23,7 +23,7 @@ export type { AgentApprovalEventData } from "../infra/agent-events.js";
 export type { ExecApprovalDecision } from "../infra/exec-approvals.js";
 export type { NormalizedUsage } from "../agents/usage.js";
 
-export { VERSION as OPENCLAW_VERSION } from "../version.js";
+export { VERSION as WINERYCLAW_VERSION } from "../version.js";
 export { formatErrorMessage } from "../infra/errors.js";
 export { log as embeddedAgentLog } from "../agents/pi-embedded-runner/logger.js";
 export { resolveEmbeddedAgentRuntime } from "../agents/pi-embedded-runner/runtime.js";
@@ -35,7 +35,7 @@ export {
   filterToolResultMediaUrls,
 } from "../agents/pi-embedded-subscribe.tools.js";
 export { normalizeUsage } from "../agents/usage.js";
-export { resolveOpenClawAgentDir } from "../agents/agent-paths.js";
+export { resolveWineryClawAgentDir } from "../agents/agent-paths.js";
 export { resolveSessionAgentIds } from "../agents/agent-scope.js";
 export { resolveModelAuthMode } from "../agents/model-auth.js";
 export { supportsModelTools } from "../agents/model-tool-support.js";
@@ -49,7 +49,7 @@ export {
 } from "../agents/pi-embedded-runner/runs.js";
 export { disposeRegisteredAgentHarnesses } from "../agents/harness/registry.js";
 export { normalizeProviderToolSchemas } from "../agents/pi-embedded-runner/tool-schema-runtime.js";
-export { createOpenClawCodingTools } from "../agents/pi-tools.js";
+export { createWineryClawCodingTools } from "../agents/pi-tools.js";
 export { resolveSandboxContext } from "../agents/sandbox.js";
 export { isSubagentSessionKey } from "../routing/session-key.js";
 export { acquireSessionWriteLock } from "../agents/session-write-lock.js";

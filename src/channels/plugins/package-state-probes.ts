@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import {
@@ -13,7 +13,7 @@ import {
 } from "./module-loader.js";
 
 type ChannelPackageStateChecker = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
 }) => boolean;
 
@@ -115,7 +115,7 @@ export function listBundledChannelIdsForPackageState(
 export function hasBundledChannelPackageState(params: {
   metadataKey: ChannelPackageStateMetadataKey;
   channelId: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
 }): boolean {
   const registry = getChannelPackageStateRegistry(params.metadataKey);

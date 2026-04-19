@@ -68,10 +68,10 @@ async function withExecDryRunConfigHarness(
   }) => Promise<void>,
 ) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
-  const configPath = path.join(tempDir, "openclaw.json");
+  const configPath = path.join(tempDir, "wineryclaw.json");
   const batchPath = path.join(tempDir, "batch.json");
   const markerPath = path.join(tempDir, "marker.txt");
-  const envSnapshot = captureEnv(["OPENCLAW_CONFIG_PATH", "OPENCLAW_TEST_FAST"]);
+  const envSnapshot = captureEnv(["WINERYCLAW_CONFIG_PATH", "WINERYCLAW_TEST_FAST"]);
   try {
     fs.writeFileSync(
       configPath,
@@ -90,8 +90,8 @@ async function withExecDryRunConfigHarness(
       "utf8",
     );
 
-    process.env.OPENCLAW_TEST_FAST = "1";
-    process.env.OPENCLAW_CONFIG_PATH = configPath;
+    process.env.WINERYCLAW_TEST_FAST = "1";
+    process.env.WINERYCLAW_CONFIG_PATH = configPath;
     clearConfigCache();
     clearRuntimeConfigSnapshot();
 
@@ -112,11 +112,11 @@ async function withExecDryRunConfigHarness(
 describe("config cli integration", () => {
   it("supports batch-file dry-run and then writes real config changes", async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-config-cli-int-"));
-    const configPath = path.join(tempDir, "openclaw.json");
+    const configPath = path.join(tempDir, "wineryclaw.json");
     const batchPath = path.join(tempDir, "batch.json");
     const envSnapshot = captureEnv([
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_TEST_FAST",
+      "WINERYCLAW_CONFIG_PATH",
+      "WINERYCLAW_TEST_FAST",
       "DISCORD_BOT_TOKEN",
     ]);
     try {
@@ -154,8 +154,8 @@ describe("config cli integration", () => {
         "utf8",
       );
 
-      process.env.OPENCLAW_TEST_FAST = "1";
-      process.env.OPENCLAW_CONFIG_PATH = configPath;
+      process.env.WINERYCLAW_TEST_FAST = "1";
+      process.env.WINERYCLAW_CONFIG_PATH = configPath;
       process.env.DISCORD_BOT_TOKEN = "test-token";
       clearConfigCache();
       clearRuntimeConfigSnapshot();
@@ -201,10 +201,10 @@ describe("config cli integration", () => {
 
   it("keeps file unchanged when real-file dry-run fails and reports JSON error payload", async () => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-config-cli-int-fail-"));
-    const configPath = path.join(tempDir, "openclaw.json");
+    const configPath = path.join(tempDir, "wineryclaw.json");
     const envSnapshot = captureEnv([
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_TEST_FAST",
+      "WINERYCLAW_CONFIG_PATH",
+      "WINERYCLAW_TEST_FAST",
       "MISSING_TEST_SECRET",
     ]);
     try {
@@ -225,8 +225,8 @@ describe("config cli integration", () => {
         "utf8",
       );
 
-      process.env.OPENCLAW_TEST_FAST = "1";
-      process.env.OPENCLAW_CONFIG_PATH = configPath;
+      process.env.WINERYCLAW_TEST_FAST = "1";
+      process.env.WINERYCLAW_CONFIG_PATH = configPath;
       delete process.env.MISSING_TEST_SECRET;
       clearConfigCache();
       clearRuntimeConfigSnapshot();

@@ -5,12 +5,12 @@ import {
 import { resolveSlackAccount } from "./accounts.js";
 import { createSlackWebClient } from "./client.js";
 import { normalizeAllowListLower } from "./monitor/allow-list.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 
 const SLACK_CHANNEL_TYPE_CACHE = new Map<string, "channel" | "group" | "dm" | "unknown">();
 
 export async function resolveSlackChannelType(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   channelId: string;
 }): Promise<"channel" | "group" | "dm" | "unknown"> {

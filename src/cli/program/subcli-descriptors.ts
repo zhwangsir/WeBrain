@@ -80,7 +80,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "docs",
-    description: "Search the live OpenClaw docs",
+    description: "Search the live WineryClaw docs",
     hasSubcommands: false,
   },
   {
@@ -90,7 +90,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "proxy",
-    description: "Run the OpenClaw debug proxy and inspect captured traffic",
+    description: "Run the WineryClaw debug proxy and inspect captured traffic",
     hasSubcommands: true,
   },
   {
@@ -120,7 +120,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "plugins",
-    description: "Manage OpenClaw plugins and extensions",
+    description: "Manage WineryClaw plugins and extensions",
     hasSubcommands: true,
   },
   {
@@ -150,7 +150,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "update",
-    description: "Update OpenClaw and inspect update channel status",
+    description: "Update WineryClaw and inspect update channel status",
     hasSubcommands: true,
   },
   {

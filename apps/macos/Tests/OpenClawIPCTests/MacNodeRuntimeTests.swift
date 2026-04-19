@@ -1,8 +1,8 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import WineryClawKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct MacNodeRuntimeTests {
     @Test func `handle invoke rejects unknown command`() async {
@@ -14,21 +14,21 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke rejects empty system run`() async throws {
         let runtime = MacNodeRuntime()
-        let params = OpenClawSystemRunParams(command: [])
+        let params = WineryClawSystemRunParams(command: [])
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-2", command: OpenClawSystemCommand.run.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-2", command: WineryClawSystemCommand.run.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
     @Test func `handle invoke rejects blocked system run env override before execution`() async throws {
         let runtime = MacNodeRuntime()
-        let params = OpenClawSystemRunParams(
+        let params = WineryClawSystemRunParams(
             command: ["/bin/sh", "-lc", "echo ok"],
             env: ["CLASSPATH": "/tmp/evil-classpath"])
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-2c", command: OpenClawSystemCommand.run.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-2c", command: WineryClawSystemCommand.run.rawValue, paramsJSON: json))
         #expect(response.ok == false)
         #expect(response.error?.message.contains("SYSTEM_RUN_DENIED: environment override rejected") == true)
         #expect(response.error?.message.contains("CLASSPATH") == true)
@@ -36,12 +36,12 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke rejects invalid system run env override key before execution`() async throws {
         let runtime = MacNodeRuntime()
-        let params = OpenClawSystemRunParams(
+        let params = WineryClawSystemRunParams(
             command: ["/bin/sh", "-lc", "echo ok"],
             env: ["BAD-KEY": "x"])
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-2d", command: OpenClawSystemCommand.run.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-2d", command: WineryClawSystemCommand.run.rawValue, paramsJSON: json))
         #expect(response.ok == false)
         #expect(response.error?.message.contains("SYSTEM_RUN_DENIED: environment override rejected") == true)
         #expect(response.error?.message.contains("BAD-KEY") == true)
@@ -49,19 +49,19 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke rejects empty system which`() async throws {
         let runtime = MacNodeRuntime()
-        let params = OpenClawSystemWhichParams(bins: [])
+        let params = WineryClawSystemWhichParams(bins: [])
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-2b", command: OpenClawSystemCommand.which.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-2b", command: WineryClawSystemCommand.which.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
     @Test func `handle invoke rejects empty notification`() async throws {
         let runtime = MacNodeRuntime()
-        let params = OpenClawSystemNotifyParams(title: "", body: "")
+        let params = WineryClawSystemNotifyParams(title: "", body: "")
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-3", command: OpenClawSystemCommand.notify.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-3", command: WineryClawSystemCommand.notify.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
@@ -69,7 +69,7 @@ struct MacNodeRuntimeTests {
         await TestIsolation.withUserDefaultsValues([cameraEnabledKey: false]) {
             let runtime = MacNodeRuntime()
             let response = await runtime.handleInvoke(
-                BridgeInvokeRequest(id: "req-4", command: OpenClawCameraCommand.list.rawValue))
+                BridgeInvokeRequest(id: "req-4", command: WineryClawCameraCommand.list.rawValue))
             #expect(response.ok == false)
             #expect(response.error?.message.contains("CAMERA_DISABLED") == true)
         }
@@ -100,7 +100,7 @@ struct MacNodeRuntimeTests {
             }
 
             func currentLocation(
-                desiredAccuracy: OpenClawLocationAccuracy,
+                desiredAccuracy: WineryClawLocationAccuracy,
                 maxAgeMs: Int?,
                 timeoutMs: Int?) async throws -> CLLocation
             {
@@ -136,7 +136,7 @@ struct MacNodeRuntimeTests {
         let response = await runtime.handleInvoke(
             BridgeInvokeRequest(
                 id: "req-browser",
-                command: OpenClawBrowserCommand.proxy.rawValue,
+                command: WineryClawBrowserCommand.proxy.rawValue,
                 paramsJSON: paramsJSON))
 
         #expect(response.ok == true)
@@ -145,7 +145,7 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke browser proxy rejects disabled browser control`() async throws {
         let override = TestIsolation.tempConfigPath()
-        try await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        try await TestIsolation.withEnvValues(["WINERYCLAW_CONFIG_PATH": override]) {
             try JSONSerialization.data(withJSONObject: ["browser": ["enabled": false]])
                 .write(to: URL(fileURLWithPath: override))
 
@@ -156,7 +156,7 @@ struct MacNodeRuntimeTests {
             let response = await runtime.handleInvoke(
                 BridgeInvokeRequest(
                     id: "req-browser-disabled",
-                    command: OpenClawBrowserCommand.proxy.rawValue,
+                    command: WineryClawBrowserCommand.proxy.rawValue,
                     paramsJSON: #"{"method":"GET","path":"/tabs"}"#))
 
             #expect(response.ok == false)

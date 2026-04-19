@@ -14,8 +14,8 @@ import {
 import type { PluginConfigUiHint } from "./manifest-types.js";
 import type { PluginKind } from "./plugin-kind.types.js";
 
-export const PLUGIN_MANIFEST_FILENAME = "openclaw.plugin.json";
-export const PLUGIN_MANIFEST_FILENAMES = [PLUGIN_MANIFEST_FILENAME] as const;
+export const PLUGIN_MANIFEST_FILENAME = "wineryclaw.plugin.json";
+export const PLUGIN_MANIFEST_FILENAMES = [PLUGIN_MANIFEST_FILENAME, "openclaw.plugin.json"] as const;
 
 export type PluginManifestChannelConfig = {
   schema: Record<string, unknown>;
@@ -764,7 +764,7 @@ export type PluginPackageInstall = {
   allowInvalidConfigRecovery?: boolean;
 };
 
-export type OpenClawPackageStartup = {
+export type WineryClawPackageStartup = {
   /**
    * Opt-in for channel plugins whose `setupEntry` fully covers the gateway
    * startup surface needed before the server starts listening.
@@ -772,12 +772,12 @@ export type OpenClawPackageStartup = {
   deferConfiguredChannelFullLoadUntilAfterListen?: boolean;
 };
 
-export type OpenClawPackageManifest = {
+export type WineryClawPackageManifest = {
   extensions?: string[];
   setupEntry?: string;
   channel?: PluginPackageChannel;
   install?: PluginPackageInstall;
-  startup?: OpenClawPackageStartup;
+  startup?: WineryClawPackageStartup;
 };
 
 export const DEFAULT_PLUGIN_ENTRY_CANDIDATES = [
@@ -798,11 +798,11 @@ export type PackageManifest = {
   name?: string;
   version?: string;
   description?: string;
-} & Partial<Record<ManifestKey, OpenClawPackageManifest>>;
+} & Partial<Record<ManifestKey, WineryClawPackageManifest>>;
 
 export function getPackageManifestMetadata(
   manifest: PackageManifest | undefined,
-): OpenClawPackageManifest | undefined {
+): WineryClawPackageManifest | undefined {
   if (!manifest) {
     return undefined;
   }

@@ -87,7 +87,7 @@ describe("matrix client storage paths", () => {
     },
   ): string {
     const homeDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-matrix-storage-"));
-    const stateDir = path.join(homeDir, ".openclaw");
+    const stateDir = path.join(homeDir, ".wineryclaw");
     fs.mkdirSync(stateDir, { recursive: true });
     tempDirs.push(homeDir);
     installMatrixTestRuntime({
@@ -107,9 +107,9 @@ describe("matrix client storage paths", () => {
   function createMigrationEnv(stateDir: string): NodeJS.ProcessEnv {
     return {
       HOME: path.dirname(stateDir),
-      OPENCLAW_HOME: path.dirname(stateDir),
-      OPENCLAW_STATE_DIR: stateDir,
-      OPENCLAW_TEST_FAST: "1",
+      WINERYCLAW_HOME: path.dirname(stateDir),
+      WINERYCLAW_STATE_DIR: stateDir,
+      WINERYCLAW_TEST_FAST: "1",
     } as NodeJS.ProcessEnv;
   }
 

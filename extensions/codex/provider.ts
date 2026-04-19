@@ -21,7 +21,7 @@ const CODEX_BASE_URL = "https://chatgpt.com/backend-api";
 const DEFAULT_CONTEXT_WINDOW = 272_000;
 const DEFAULT_MAX_TOKENS = 128_000;
 const DEFAULT_DISCOVERY_TIMEOUT_MS = 2500;
-const LIVE_DISCOVERY_ENV = "OPENCLAW_CODEX_DISCOVERY_LIVE";
+const LIVE_DISCOVERY_ENV = "WINERYCLAW_CODEX_DISCOVERY_LIVE";
 
 type CodexModelLister = (options: {
   timeoutMs: number;

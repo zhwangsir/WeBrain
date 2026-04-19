@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 const note = vi.hoisted(() => vi.fn());
 const pluginRegistry = vi.hoisted(() => ({ list: [] as unknown[] }));
@@ -25,23 +25,23 @@ describe("noteSecurityWarnings gateway exposure", () => {
   beforeEach(() => {
     note.mockClear();
     pluginRegistry.list = [];
-    prevToken = process.env.OPENCLAW_GATEWAY_TOKEN;
-    prevPassword = process.env.OPENCLAW_GATEWAY_PASSWORD;
+    prevToken = process.env.WINERYCLAW_GATEWAY_TOKEN;
+    prevPassword = process.env.WINERYCLAW_GATEWAY_PASSWORD;
     prevHome = process.env.HOME;
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
-    delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+    delete process.env.WINERYCLAW_GATEWAY_TOKEN;
+    delete process.env.WINERYCLAW_GATEWAY_PASSWORD;
   });
 
   afterEach(() => {
     if (prevToken === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_TOKEN;
+      delete process.env.WINERYCLAW_GATEWAY_TOKEN;
     } else {
-      process.env.OPENCLAW_GATEWAY_TOKEN = prevToken;
+      process.env.WINERYCLAW_GATEWAY_TOKEN = prevToken;
     }
     if (prevPassword === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+      delete process.env.WINERYCLAW_GATEWAY_PASSWORD;
     } else {
-      process.env.OPENCLAW_GATEWAY_PASSWORD = prevPassword;
+      process.env.WINERYCLAW_GATEWAY_PASSWORD = prevPassword;
     }
     if (prevHome === undefined) {
       delete process.env.HOME;
@@ -58,9 +58,9 @@ describe("noteSecurityWarnings gateway exposure", () => {
   ): Promise<void> {
     const home = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-doctor-security-"));
     process.env.HOME = home;
-    await fs.mkdir(path.join(home, ".openclaw"), { recursive: true });
+    await fs.mkdir(path.join(home, ".wineryclaw"), { recursive: true });
     await fs.writeFile(
-      path.join(home, ".openclaw", "exec-approvals.json"),
+      path.join(home, ".wineryclaw", "exec-approvals.json"),
       JSON.stringify(file, null, 2),
     );
     await run();
@@ -99,7 +99,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
               },
             ],
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -110,7 +110,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
   }
 
   it("warns when exposed without auth", async () => {
-    const cfg = { gateway: { bind: "lan" } } as OpenClawConfig;
+    const cfg = { gateway: { bind: "lan" } } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("CRITICAL");
@@ -120,8 +120,8 @@ describe("noteSecurityWarnings gateway exposure", () => {
   });
 
   it("uses env token to avoid critical warning", async () => {
-    process.env.OPENCLAW_GATEWAY_TOKEN = "token-123";
-    const cfg = { gateway: { bind: "lan" } } as OpenClawConfig;
+    process.env.WINERYCLAW_GATEWAY_TOKEN = "token-123";
+    const cfg = { gateway: { bind: "lan" } } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("WARNING");
@@ -134,10 +134,10 @@ describe("noteSecurityWarnings gateway exposure", () => {
         bind: "lan",
         auth: {
           mode: "token",
-          token: { source: "env", provider: "default", id: "OPENCLAW_GATEWAY_TOKEN" },
+          token: { source: "env", provider: "default", id: "WINERYCLAW_GATEWAY_TOKEN" },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("WARNING");
@@ -147,14 +147,14 @@ describe("noteSecurityWarnings gateway exposure", () => {
   it("treats whitespace token as missing", async () => {
     const cfg = {
       gateway: { bind: "lan", auth: { mode: "token", token: "   " } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("CRITICAL");
   });
 
   it("skips warning for loopback bind", async () => {
-    const cfg = { gateway: { bind: "loopback" } } as OpenClawConfig;
+    const cfg = { gateway: { bind: "loopback" } } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("No channel security warnings detected");
@@ -162,7 +162,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
   });
 
   it("treats unset bind as loopback for host-side doctor checks", async () => {
-    const cfg = { gateway: {} } as OpenClawConfig;
+    const cfg = { gateway: {} } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("No channel security warnings detected");
@@ -190,7 +190,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
         },
       },
     ];
-    const cfg = { session: { dmScope: "main" } } as OpenClawConfig;
+    const cfg = { session: { dmScope: "main" } } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain('config set session.dmScope "per-channel-peer"');
@@ -203,7 +203,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
           enabled: false,
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("disables approval forwarding only");
@@ -228,7 +228,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
               ask: "off",
             },
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -257,7 +257,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
               ask: "on-miss",
             },
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -279,7 +279,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
               ask: "always",
             },
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -314,7 +314,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
           agents: {
             list: [{ id: "runner" }],
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -349,7 +349,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
           agents: {
             list: [{ id: "runner" }],
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -384,7 +384,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
               ask: "always",
             },
           },
-        } as OpenClawConfig);
+        } as WineryClawConfig);
       },
     );
 
@@ -401,7 +401,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain("Heartbeat defaults");
@@ -421,7 +421,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).toContain('Heartbeat agent "ops"');
@@ -448,7 +448,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
       },
     ];
 
-    await noteSecurityWarnings({} as OpenClawConfig);
+    await noteSecurityWarnings({} as WineryClawConfig);
     const message = lastMessage();
     expect(message).toContain("[secrets]");
     expect(message).toContain("failed to resolve account");
@@ -473,7 +473,7 @@ describe("noteSecurityWarnings gateway exposure", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await noteSecurityWarnings(cfg);
     const message = lastMessage();
     expect(message).not.toContain("Heartbeat defaults");

@@ -36,7 +36,7 @@ describe("security audit filesystem Windows findings", () => {
         const tmp = await makeTmpDir("win");
         const stateDir = path.join(tmp, "state");
         await fs.mkdir(stateDir, { recursive: true });
-        const configPath = path.join(stateDir, "openclaw.json");
+        const configPath = path.join(stateDir, "wineryclaw.json");
         await fs.writeFile(configPath, "{}\n", "utf-8");
         const findings = await collectFilesystemFindings({
           stateDir,
@@ -67,7 +67,7 @@ describe("security audit filesystem Windows findings", () => {
         const tmp = await makeTmpDir("win-open");
         const stateDir = path.join(tmp, "state");
         await fs.mkdir(stateDir, { recursive: true });
-        const configPath = path.join(stateDir, "openclaw.json");
+        const configPath = path.join(stateDir, "wineryclaw.json");
         await fs.writeFile(configPath, "{}\n", "utf-8");
         const findings = await collectFilesystemFindings({
           stateDir,

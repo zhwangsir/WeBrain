@@ -8,7 +8,7 @@ import {
 } from "../auto-reply/reply/subagents-utils.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { loadSessionStore, resolveStorePath, updateSessionStore } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { callGateway } from "../gateway/call.js";
 import { logVerbose } from "../globals.js";
 import { formatErrorMessage } from "../infra/errors.js";
@@ -81,7 +81,7 @@ export {
 };
 
 export function resolveSubagentController(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentSessionKey?: string;
 }): ResolvedSubagentController {
   const { mainKey, alias } = resolveMainSessionAlias(params.cfg);
@@ -138,7 +138,7 @@ function ensureControllerOwnsRun(params: {
 }
 
 async function killSubagentRun(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   entry: SubagentRunRecord;
   cache: Map<string, Record<string, SessionEntry>>;
 }): Promise<{ killed: boolean; sessionId?: string }> {
@@ -186,7 +186,7 @@ async function killSubagentRun(params: {
 }
 
 async function cascadeKillChildren(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   parentChildSessionKey: string;
   cache: Map<string, Record<string, SessionEntry>>;
   seenChildSessionKeys?: Set<string>;
@@ -250,7 +250,7 @@ async function cascadeKillChildren(params: {
 }
 
 export async function killAllControlledSubagentRuns(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   controller: ResolvedSubagentController;
   runs: SubagentRunRecord[];
 }) {
@@ -298,7 +298,7 @@ export async function killAllControlledSubagentRuns(params: {
 }
 
 export async function killControlledSubagentRun(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   controller: ResolvedSubagentController;
   entry: SubagentRunRecord;
 }) {
@@ -373,7 +373,7 @@ export async function killControlledSubagentRun(params: {
   };
 }
 
-export async function killSubagentRunAdmin(params: { cfg: OpenClawConfig; sessionKey: string }) {
+export async function killSubagentRunAdmin(params: { cfg: WineryClawConfig; sessionKey: string }) {
   const targetSessionKey = params.sessionKey.trim();
   if (!targetSessionKey) {
     return { found: false as const, killed: false };
@@ -408,7 +408,7 @@ export async function killSubagentRunAdmin(params: { cfg: OpenClawConfig; sessio
 }
 
 export async function steerControlledSubagentRun(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   controller: ResolvedSubagentController;
   entry: SubagentRunRecord;
   message: string;
@@ -595,7 +595,7 @@ export async function steerControlledSubagentRun(params: {
 }
 
 export async function sendControlledSubagentMessage(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   controller: ResolvedSubagentController;
   entry: SubagentRunRecord;
   message: string;

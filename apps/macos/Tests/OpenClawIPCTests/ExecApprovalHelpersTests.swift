@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct ExecApprovalHelpersTests {
     @Test func `parse decision trims and rejects invalid`() {

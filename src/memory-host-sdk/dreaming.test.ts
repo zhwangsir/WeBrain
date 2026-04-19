@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 const resolveDefaultAgentId = vi.hoisted(() => vi.fn(() => "main"));
 const resolveAgentWorkspaceDir = vi.hoisted(() =>
-  vi.fn((_cfg: OpenClawConfig, agentId: string) => `/workspace/${agentId}`),
+  vi.fn((_cfg: WineryClawConfig, agentId: string) => `/workspace/${agentId}`),
 );
 
 vi.mock("../agents/agent-scope.js", () => ({
@@ -71,7 +71,7 @@ describe("memory dreaming host helpers", () => {
           userTimezone: "America/Los_Angeles",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const resolved = resolveMemoryDreamingConfig({
       pluginConfig: {},
@@ -107,7 +107,7 @@ describe("memory dreaming host helpers", () => {
   });
 
   it("dedupes shared workspaces across all configured agents", () => {
-    resolveAgentWorkspaceDir.mockImplementation((_cfg: OpenClawConfig, agentId: string) => {
+    resolveAgentWorkspaceDir.mockImplementation((_cfg: WineryClawConfig, agentId: string) => {
       if (agentId === "alpha") {
         return "/workspace/shared";
       }
@@ -121,7 +121,7 @@ describe("memory dreaming host helpers", () => {
       agents: {
         list: [{ id: "alpha" }, { id: "beta" }, { id: "gamma" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(resolveMemoryDreamingWorkspaces(cfg)).toEqual([
       {
@@ -137,7 +137,7 @@ describe("memory dreaming host helpers", () => {
 
   it("uses default agent fallback and timezone-aware day helpers", () => {
     resolveDefaultAgentId.mockReturnValue("fallback");
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as WineryClawConfig;
 
     expect(resolveMemoryDreamingWorkspaces(cfg)).toEqual([
       {
@@ -166,7 +166,7 @@ describe("memory dreaming host helpers", () => {
             memory: "memos-local-openclaw-plugin",
           },
         },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
     ).toBe("memos-local-openclaw-plugin");
   });
 
@@ -187,7 +187,7 @@ describe("memory dreaming host helpers", () => {
             },
           },
         },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
     ).toEqual({
       dreaming: {
         enabled: true,
@@ -213,7 +213,7 @@ describe("memory dreaming host helpers", () => {
             },
           },
         },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
     ).toEqual({
       dreaming: {
         enabled: true,
@@ -236,7 +236,7 @@ describe("memory dreaming host helpers", () => {
             },
           },
         },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
     ).toEqual({
       dreaming: {
         enabled: true,
@@ -252,7 +252,7 @@ describe("memory dreaming host helpers", () => {
             memory: "none",
           },
         },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
     ).toBe("memory-core");
 
     expect(
@@ -271,7 +271,7 @@ describe("memory dreaming host helpers", () => {
             },
           },
         },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
     ).toEqual({
       dreaming: {
         enabled: true,

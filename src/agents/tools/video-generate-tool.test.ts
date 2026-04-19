@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import * as mediaStore from "../../media/store.js";
 import * as videoGenerationRuntime from "../../video-generation/runtime.js";
 import * as videoGenerateBackground from "./video-generate-background.js";
@@ -19,8 +19,8 @@ const taskExecutorMocks = vi.hoisted(() => ({
 vi.mock("../../tasks/runtime-internal.js", () => taskRuntimeInternalMocks);
 vi.mock("../../tasks/task-executor.js", () => taskExecutorMocks);
 
-function asConfig(value: unknown): OpenClawConfig {
-  return value as OpenClawConfig;
+function asConfig(value: unknown): WineryClawConfig {
+  return value as WineryClawConfig;
 }
 
 function mockVideoPluginProvider(capabilities: Record<string, unknown> = {}) {

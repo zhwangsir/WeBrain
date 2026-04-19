@@ -4,7 +4,7 @@ import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { stageBundledPluginRuntime } from "../../scripts/stage-bundled-plugin-runtime.mjs";
 import { bundledDistPluginFile } from "../../test/helpers/bundled-plugin-paths.js";
-import { discoverOpenClawPlugins } from "./discovery.js";
+import { discoverWineryClawPlugins } from "./discovery.js";
 import { loadPluginManifestRegistry } from "./manifest-registry.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
@@ -334,10 +334,10 @@ describe("stageBundledPluginRuntime", () => {
 
     const env = {
       ...process.env,
-      OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
-      OPENCLAW_BUNDLED_PLUGINS_DIR: runtimeExtensionsDir,
+      WINERYCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+      WINERYCLAW_BUNDLED_PLUGINS_DIR: runtimeExtensionsDir,
     };
-    const discovery = discoverOpenClawPlugins({
+    const discovery = discoverWineryClawPlugins({
       env,
       cache: false,
     });

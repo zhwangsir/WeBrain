@@ -7,8 +7,8 @@ import {
   type RegisterSlackModalHandler,
 } from "./interactions.modal.js";
 
-// Prefix for OpenClaw-generated action IDs to scope our handler
-const OPENCLAW_ACTION_PREFIX = "openclaw:";
+// Prefix for WineryClaw-generated action IDs to scope our handler
+const WINERYCLAW_ACTION_PREFIX = "openclaw:";
 const SLACK_INTERACTION_EVENT_PREFIX = "Slack interaction: ";
 const REDACTED_INTERACTION_VALUE = "[redacted]";
 const SLACK_INTERACTION_EVENT_MAX_CHARS = 2400;
@@ -185,9 +185,9 @@ export function registerSlackInteractionEvents(params: { ctx: SlackMonitorContex
   if (typeof ctx.app.view !== "function") {
     return;
   }
-  const modalMatcher = new RegExp(`^${OPENCLAW_ACTION_PREFIX}`);
+  const modalMatcher = new RegExp(`^${WINERYCLAW_ACTION_PREFIX}`);
 
-  // Handle OpenClaw modal submissions with callback_ids scoped by our prefix.
+  // Handle WineryClaw modal submissions with callback_ids scoped by our prefix.
   registerModalLifecycleHandler({
     register: (matcher, handler) => ctx.app.view(matcher, handler),
     matcher: modalMatcher,

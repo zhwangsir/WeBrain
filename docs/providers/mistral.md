@@ -1,14 +1,14 @@
 ---
-summary: "Use Mistral models and Voxtral transcription with OpenClaw"
+summary: "Use Mistral models and Voxtral transcription with WineryClaw"
 read_when:
-  - You want to use Mistral models in OpenClaw
+  - You want to use Mistral models in WineryClaw
   - You need Mistral API key onboarding and model refs
 title: "Mistral"
 ---
 
 # Mistral
 
-OpenClaw supports Mistral for both text/image model routing (`mistral/...`) and
+WineryClaw supports Mistral for both text/image model routing (`mistral/...`) and
 audio transcription via Voxtral in media understanding.
 Mistral can also be used for memory embeddings (`memorySearch.provider = "mistral"`).
 
@@ -51,7 +51,7 @@ Mistral can also be used for memory embeddings (`memorySearch.provider = "mistra
 
 ## Built-in LLM catalog
 
-OpenClaw currently ships this bundled Mistral catalog:
+WineryClaw currently ships this bundled Mistral catalog:
 
 | Model ref                        | Input       | Context | Max output | Notes                                                            |
 | -------------------------------- | ----------- | ------- | ---------- | ---------------------------------------------------------------- |
@@ -90,9 +90,9 @@ The media transcription path uses `/v1/audio/transcriptions`. The default audio 
   <Accordion title="Adjustable reasoning (mistral-small-latest)">
     `mistral/mistral-small-latest` maps to Mistral Small 4 and supports [adjustable reasoning](https://docs.mistral.ai/capabilities/reasoning/adjustable) on the Chat Completions API via `reasoning_effort` (`none` minimizes extra thinking in the output; `high` surfaces full thinking traces before the final answer).
 
-    OpenClaw maps the session **thinking** level to Mistral's API:
+    WineryClaw maps the session **thinking** level to Mistral's API:
 
-    | OpenClaw thinking level                          | Mistral `reasoning_effort` |
+    | WineryClaw thinking level                          | Mistral `reasoning_effort` |
     | ------------------------------------------------ | -------------------------- |
     | **off** / **minimal**                            | `none`                     |
     | **low** / **medium** / **high** / **xhigh** / **adaptive** | `high`             |

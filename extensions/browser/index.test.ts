@@ -6,7 +6,7 @@ import {
   browserSecurityAuditCollectors,
   registerBrowserPlugin,
 } from "./plugin-registration.js";
-import type { OpenClawPluginApi } from "./runtime-api.js";
+import type { WineryClawPluginApi } from "./runtime-api.js";
 
 const runtimeApiMocks = vi.hoisted(() => ({
   createBrowserPluginService: vi.fn(() => ({ id: "browser-control", start: vi.fn() })),
@@ -42,7 +42,7 @@ function createApi() {
     name: "Browser",
     source: "test",
     config: {},
-    runtime: {} as OpenClawPluginApi["runtime"],
+    runtime: {} as WineryClawPluginApi["runtime"],
     registerCli,
     registerGatewayMethod,
     registerService,

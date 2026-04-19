@@ -1,7 +1,7 @@
 import type { StreamFn } from "@mariozechner/pi-agent-core";
 import { streamSimple } from "@mariozechner/pi-ai";
 import { DEFAULT_LLM_IDLE_TIMEOUT_SECONDS } from "../../../config/agent-timeout-defaults.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import type { EmbeddedRunTrigger } from "./params.js";
 
 /**
@@ -19,7 +19,7 @@ const MAX_SAFE_TIMEOUT_MS = 2_147_000_000;
  * @returns Idle timeout in milliseconds, or 0 to disable
  */
 export function resolveLlmIdleTimeoutMs(params?: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   trigger?: EmbeddedRunTrigger;
   runTimeoutMs?: number;
 }): number {

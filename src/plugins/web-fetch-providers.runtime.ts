@@ -1,4 +1,4 @@
-import { loadOpenClawPlugins } from "./loader.js";
+import { loadWineryClawPlugins } from "./loader.js";
 import type { PluginLoadOptions } from "./loader.js";
 import { type PluginManifestRecord } from "./manifest-registry.js";
 import type { PluginWebFetchProviderEntry } from "./types.js";
@@ -45,7 +45,7 @@ function resolveWebFetchCandidatePluginIds(params: {
 }
 
 function mapRegistryWebFetchProviders(params: {
-  registry: ReturnType<typeof loadOpenClawPlugins>;
+  registry: ReturnType<typeof loadWineryClawPlugins>;
   onlyPluginIds?: readonly string[];
 }): PluginWebFetchProviderEntry[] {
   return mapRegistryProviders({

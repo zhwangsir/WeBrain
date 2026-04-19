@@ -330,7 +330,7 @@ Follow-up:
 
     const report = renderQaAgenticParityMarkdownReport(comparison);
 
-    expect(report).toContain("# OpenClaw GPT-5.4 / Opus 4.6 Agentic Parity Report");
+    expect(report).toContain("# WineryClaw GPT-5.4 / Opus 4.6 Agentic Parity Report");
     expect(report).toContain("| Completion rate | 100.0% | 100.0% |");
     expect(report).toContain("### Approval turn tool followthrough");
     expect(report).toContain("- Verdict: pass");

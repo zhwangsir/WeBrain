@@ -3,7 +3,7 @@ import {
   getRequiredHookHandler,
   registerHookHandlersForTest,
 } from "../../../test/helpers/plugins/subagent-hooks.js";
-import type { ClawdbotConfig, OpenClawPluginApi } from "../runtime-api.js";
+import type { ClawdbotConfig, WineryClawPluginApi } from "../runtime-api.js";
 import { registerFeishuSubagentHooks } from "./subagent-hooks.js";
 import {
   createFeishuThreadBindingManager,
@@ -16,7 +16,7 @@ const baseConfig: ClawdbotConfig = {
 };
 
 function registerHandlersForTest(config: Record<string, unknown> = baseConfig) {
-  return registerHookHandlersForTest<OpenClawPluginApi>({
+  return registerHookHandlersForTest<WineryClawPluginApi>({
     config,
     register: registerFeishuSubagentHooks,
   });

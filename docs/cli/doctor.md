@@ -39,9 +39,9 @@ openclaw doctor --generate-gateway-token
 Notes:
 
 - Interactive prompts (like keychain/OAuth fixes) only run when stdin is a TTY and `--non-interactive` is **not** set. Headless runs (cron, Telegram, no terminal) will skip prompts.
-- `--fix` (alias for `--repair`) writes a backup to `~/.openclaw/openclaw.json.bak` and drops unknown config keys, listing each removal.
+- `--fix` (alias for `--repair`) writes a backup to `~/.wineryclaw/wineryclaw.json.bak` and drops unknown config keys, listing each removal.
 - State integrity checks now detect orphan transcript files in the sessions directory and can archive them as `.deleted.<timestamp>` to reclaim space safely.
-- Doctor also scans `~/.openclaw/cron/jobs.json` (or `cron.store`) for legacy cron job shapes and can rewrite them in place before the scheduler has to auto-normalize them at runtime.
+- Doctor also scans `~/.wineryclaw/cron/jobs.json` (or `cron.store`) for legacy cron job shapes and can rewrite them in place before the scheduler has to auto-normalize them at runtime.
 - Doctor auto-migrates legacy flat Talk config (`talk.voiceId`, `talk.modelId`, and friends) into `talk.provider` + `talk.providers.<provider>`.
 - Repeat `doctor --fix` runs no longer report/apply Talk normalization when the only difference is object key order.
 - Doctor includes a memory-search readiness check and can recommend `openclaw configure --section model` when embedding credentials are missing.
@@ -52,12 +52,12 @@ Notes:
 
 ## macOS: `launchctl` env overrides
 
-If you previously ran `launchctl setenv OPENCLAW_GATEWAY_TOKEN ...` (or `...PASSWORD`), that value overrides your config file and can cause persistent “unauthorized” errors.
+If you previously ran `launchctl setenv WINERYCLAW_GATEWAY_TOKEN ...` (or `...PASSWORD`), that value overrides your config file and can cause persistent “unauthorized” errors.
 
 ```bash
-launchctl getenv OPENCLAW_GATEWAY_TOKEN
-launchctl getenv OPENCLAW_GATEWAY_PASSWORD
+launchctl getenv WINERYCLAW_GATEWAY_TOKEN
+launchctl getenv WINERYCLAW_GATEWAY_PASSWORD
 
-launchctl unsetenv OPENCLAW_GATEWAY_TOKEN
-launchctl unsetenv OPENCLAW_GATEWAY_PASSWORD
+launchctl unsetenv WINERYCLAW_GATEWAY_TOKEN
+launchctl unsetenv WINERYCLAW_GATEWAY_PASSWORD
 ```

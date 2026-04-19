@@ -1,11 +1,11 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { WineryClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import {
   mergeImplicitMantleProvider,
   resolveImplicitMantleProvider,
   resolveMantleBearerToken,
 } from "./discovery.js";
 
-export function registerBedrockMantlePlugin(api: OpenClawPluginApi): void {
+export function registerBedrockMantlePlugin(api: WineryClawPluginApi): void {
   const providerId = "amazon-bedrock-mantle";
 
   api.registerProvider({

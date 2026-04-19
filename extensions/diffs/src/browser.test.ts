@@ -4,8 +4,8 @@ import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { createMockServerResponse } from "../../../test/helpers/plugins/mock-http-response.js";
 import { createTestPluginApi } from "../../../test/helpers/plugins/plugin-api.js";
-import type { OpenClawConfig } from "../api.js";
-import type { OpenClawPluginApi, OpenClawPluginToolContext } from "../api.js";
+import type { WineryClawConfig } from "../api.js";
+import type { WineryClawPluginApi, WineryClawPluginToolContext } from "../api.js";
 import { registerDiffsPlugin } from "./plugin.js";
 import { createTempDiffRoot } from "./test-helpers.js";
 
@@ -200,10 +200,10 @@ describe("diffs plugin registration", () => {
       req: IncomingMessage,
       res: ServerResponse,
     ) => boolean | Promise<boolean>;
-    type RegisteredHttpRouteParams = Parameters<OpenClawPluginApi["registerHttpRoute"]>[0];
+    type RegisteredHttpRouteParams = Parameters<WineryClawPluginApi["registerHttpRoute"]>[0];
 
     let registeredToolFactory:
-      | ((ctx: OpenClawPluginToolContext) => RegisteredTool | RegisteredTool[] | null | undefined)
+      | ((ctx: WineryClawPluginToolContext) => RegisteredTool | RegisteredTool[] | null | undefined)
       | undefined;
     let registeredHttpRouteHandler: HttpRouteHandler | undefined;
     const on = vi.fn();
@@ -234,7 +234,7 @@ describe("diffs plugin registration", () => {
         },
       },
       runtime: {} as never,
-      registerTool(tool: Parameters<OpenClawPluginApi["registerTool"]>[0]) {
+      registerTool(tool: Parameters<WineryClawPluginApi["registerTool"]>[0]) {
         registeredToolFactory = typeof tool === "function" ? tool : () => tool;
       },
       registerHttpRoute(params: RegisteredHttpRouteParams) {
@@ -243,7 +243,7 @@ describe("diffs plugin registration", () => {
       on,
     });
 
-    registerDiffsPlugin(api as unknown as OpenClawPluginApi);
+    registerDiffsPlugin(api as unknown as WineryClawPluginApi);
 
     expect(on).toHaveBeenCalledTimes(1);
     expect(on.mock.calls[0]?.[0]).toBe("before_prompt_build");
@@ -310,12 +310,12 @@ describe("diffs plugin registration", () => {
   });
 });
 
-function createConfig(): OpenClawConfig {
+function createConfig(): WineryClawConfig {
   return {
     browser: {
       executablePath: process.execPath,
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function localReq(input: {

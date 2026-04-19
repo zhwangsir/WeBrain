@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig, PluginRuntime, RuntimeEnv } from "../runtime-api.js";
+import type { WineryClawConfig, PluginRuntime, RuntimeEnv } from "../runtime-api.js";
 import {
   type MSTeamsActivityHandler,
   type MSTeamsMessageHandlerDeps,
@@ -44,11 +44,11 @@ function createRuntimeStub(stateDir?: string): PluginRuntime {
     },
     state: {
       resolveStateDir: (env?: NodeJS.ProcessEnv) => {
-        const override = env?.OPENCLAW_STATE_DIR?.trim();
+        const override = env?.WINERYCLAW_STATE_DIR?.trim();
         if (override) {
           return override;
         }
-        return stateDir ?? path.join(os.homedir(), ".openclaw");
+        return stateDir ?? path.join(os.homedir(), ".wineryclaw");
       },
     },
   } as unknown as PluginRuntime;
@@ -58,7 +58,7 @@ const runtimeStub: PluginRuntime = createRuntimeStub();
 
 function createDeps(): MSTeamsMessageHandlerDeps {
   return createMSTeamsMessageHandlerDeps({
-    cfg: {} as OpenClawConfig,
+    cfg: {} as WineryClawConfig,
     runtime: {
       error: vi.fn(),
     } as unknown as RuntimeEnv,
@@ -317,9 +317,9 @@ describe("msteams file consent invoke FS fallback", () => {
   let originalStateDir: string | undefined;
 
   beforeEach(async () => {
-    originalStateDir = process.env.OPENCLAW_STATE_DIR;
+    originalStateDir = process.env.WINERYCLAW_STATE_DIR;
     tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "openclaw-msteams-invoke-"));
-    process.env.OPENCLAW_STATE_DIR = tmpDir;
+    process.env.WINERYCLAW_STATE_DIR = tmpDir;
     setMSTeamsRuntime(createRuntimeStub(tmpDir));
     clearPendingUploads();
     fileConsentMockState.uploadToConsentUrl.mockReset();
@@ -328,9 +328,9 @@ describe("msteams file consent invoke FS fallback", () => {
 
   afterEach(async () => {
     if (originalStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.WINERYCLAW_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = originalStateDir;
+      process.env.WINERYCLAW_STATE_DIR = originalStateDir;
     }
     try {
       await fs.promises.rm(tmpDir, { recursive: true, force: true });

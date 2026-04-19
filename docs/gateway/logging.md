@@ -10,7 +10,7 @@ title: "Gateway Logging"
 
 For a user-facing overview (CLI + Control UI + config), see [/logging](/logging).
 
-OpenClaw has two log “surfaces”:
+WineryClaw has two log “surfaces”:
 
 - **Console output** (what you see in the terminal / Debug UI).
 - **File logs** (JSON lines) written by the gateway logger.
@@ -19,7 +19,7 @@ OpenClaw has two log “surfaces”:
 
 - Default rolling log file is under `/tmp/openclaw/` (one file per day): `openclaw-YYYY-MM-DD.log`
   - Date uses the gateway host's local timezone.
-- The log file path and level can be configured via `~/.openclaw/openclaw.json`:
+- The log file path and level can be configured via `~/.wineryclaw/wineryclaw.json`:
   - `logging.file`
   - `logging.level`
 

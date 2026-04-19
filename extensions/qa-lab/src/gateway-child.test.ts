@@ -42,19 +42,19 @@ describe("buildQaRuntimeEnv", () => {
       providerMode: "mock-openai",
     });
 
-    expect(env.OPENCLAW_TEST_FAST).toBe("1");
-    expect(env.OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER).toBe("1");
-    expect(env.OPENCLAW_ALLOW_SLOW_REPLY_TESTS).toBe("1");
-    expect(env.OPENCLAW_BUNDLED_PLUGINS_DIR).toBe("/tmp/openclaw-qa/bundled-plugins");
-    expect(env.OPENCLAW_COMPATIBILITY_HOST_VERSION).toBe("2026.4.8");
+    expect(env.WINERYCLAW_TEST_FAST).toBe("1");
+    expect(env.WINERYCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER).toBe("1");
+    expect(env.WINERYCLAW_ALLOW_SLOW_REPLY_TESTS).toBe("1");
+    expect(env.WINERYCLAW_BUNDLED_PLUGINS_DIR).toBe("/tmp/openclaw-qa/bundled-plugins");
+    expect(env.WINERYCLAW_COMPATIBILITY_HOST_VERSION).toBe("2026.4.8");
   });
 
   it("maps live frontier key aliases into provider env vars", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
-        OPENCLAW_LIVE_OPENAI_KEY: "openai-live",
-        OPENCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
-        OPENCLAW_LIVE_GEMINI_KEY: "gemini-live",
+        WINERYCLAW_LIVE_OPENAI_KEY: "openai-live",
+        WINERYCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
+        WINERYCLAW_LIVE_GEMINI_KEY: "gemini-live",
       }),
       providerMode: "live-frontier",
     });
@@ -68,7 +68,7 @@ describe("buildQaRuntimeEnv", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
         OPENAI_API_KEY: "openai-explicit",
-        OPENCLAW_LIVE_OPENAI_KEY: "openai-live",
+        WINERYCLAW_LIVE_OPENAI_KEY: "openai-live",
       }),
       providerMode: "live-frontier",
     });
@@ -76,7 +76,7 @@ describe("buildQaRuntimeEnv", () => {
     expect(env.OPENAI_API_KEY).toBe("openai-explicit");
   });
 
-  it("preserves Codex CLI auth home for live frontier runs while sandboxing OpenClaw home", async () => {
+  it("preserves Codex CLI auth home for live frontier runs while sandboxing WineryClaw home", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -92,11 +92,11 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe("/tmp/openclaw-qa/home");
-    expect(env.OPENCLAW_HOME).toBe("/tmp/openclaw-qa/home");
+    expect(env.WINERYCLAW_HOME).toBe("/tmp/openclaw-qa/home");
     expect(env.CODEX_HOME).toBe(codexHome);
   });
 
-  it("forwards host HOME for live Claude CLI runs while keeping OpenClaw home sandboxed", async () => {
+  it("forwards host HOME for live Claude CLI runs while keeping WineryClaw home sandboxed", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -111,8 +111,8 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe(hostHome);
-    expect(env.OPENCLAW_HOME).toBe("/tmp/openclaw-qa/home");
-    expect(env.OPENCLAW_STATE_DIR).toBe("/tmp/openclaw-qa/state");
+    expect(env.WINERYCLAW_HOME).toBe("/tmp/openclaw-qa/home");
+    expect(env.WINERYCLAW_STATE_DIR).toBe("/tmp/openclaw-qa/state");
   });
 
   it("preserves the live Anthropic key for live Claude CLI runs without writing it into config", async () => {
@@ -124,8 +124,8 @@ describe("buildQaRuntimeEnv", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
         HOME: hostHome,
-        OPENCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
-        OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP"]',
+        WINERYCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
+        WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP"]',
       }),
       providerMode: "live-frontier",
       forwardHostHomeForClaudeCli: true,
@@ -133,8 +133,8 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.ANTHROPIC_API_KEY).toBe("anthropic-live");
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP","ANTHROPIC_API_KEY"]');
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_AUTH_MODE).toBe("api-key");
+    expect(env.WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP","ANTHROPIC_API_KEY"]');
+    expect(env.WINERYCLAW_LIVE_CLI_BACKEND_AUTH_MODE).toBe("api-key");
   });
 
   it("removes preserved Anthropic keys for live Claude CLI subscription runs", async () => {
@@ -147,7 +147,7 @@ describe("buildQaRuntimeEnv", () => {
       ...createParams({
         HOME: hostHome,
         ANTHROPIC_API_KEY: "anthropic-live",
-        OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP","ANTHROPIC_API_KEY"]',
+        WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV: '["SAFE_KEEP","ANTHROPIC_API_KEY"]',
       }),
       providerMode: "live-frontier",
       forwardHostHomeForClaudeCli: true,
@@ -155,21 +155,21 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.ANTHROPIC_API_KEY).toBe("anthropic-live");
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP"]');
-    expect(env.OPENCLAW_LIVE_CLI_BACKEND_AUTH_MODE).toBe("subscription");
+    expect(env.WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV).toBe('["SAFE_KEEP"]');
+    expect(env.WINERYCLAW_LIVE_CLI_BACKEND_AUTH_MODE).toBe("subscription");
   });
 
   it("does not pass QA setup-token values to the gateway child env", () => {
     const env = buildQaRuntimeEnv({
       ...createParams({
-        OPENCLAW_LIVE_SETUP_TOKEN_VALUE: `sk-ant-oat01-${"a".repeat(80)}`,
-        OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN: `sk-ant-oat01-${"b".repeat(80)}`,
+        WINERYCLAW_LIVE_SETUP_TOKEN_VALUE: `sk-ant-oat01-${"a".repeat(80)}`,
+        WINERYCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN: `sk-ant-oat01-${"b".repeat(80)}`,
       }),
       providerMode: "live-frontier",
     });
 
-    expect(env.OPENCLAW_LIVE_SETUP_TOKEN_VALUE).toBeUndefined();
-    expect(env.OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN).toBeUndefined();
+    expect(env.WINERYCLAW_LIVE_SETUP_TOKEN_VALUE).toBeUndefined();
+    expect(env.WINERYCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN).toBeUndefined();
   });
 
   it("requires an Anthropic key for live Claude CLI API-key mode", async () => {
@@ -213,10 +213,10 @@ describe("buildQaRuntimeEnv", () => {
         OPENAI_API_KEY: "openai-live",
         OPENAI_API_KEYS: "openai-a,openai-b",
         CODEX_HOME: "/host/.codex",
-        OPENCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
-        OPENCLAW_LIVE_ANTHROPIC_KEYS: "anthropic-a,anthropic-b",
-        OPENCLAW_LIVE_GEMINI_KEY: "gemini-live",
-        OPENCLAW_LIVE_OPENAI_KEY: "openai-live",
+        WINERYCLAW_LIVE_ANTHROPIC_KEY: "anthropic-live",
+        WINERYCLAW_LIVE_ANTHROPIC_KEYS: "anthropic-a,anthropic-b",
+        WINERYCLAW_LIVE_GEMINI_KEY: "gemini-live",
+        WINERYCLAW_LIVE_OPENAI_KEY: "openai-live",
       }),
       providerMode: "mock-openai",
     });
@@ -229,10 +229,10 @@ describe("buildQaRuntimeEnv", () => {
     expect(env.GEMINI_API_KEY).toBeUndefined();
     expect(env.GEMINI_API_KEYS).toBeUndefined();
     expect(env.GOOGLE_API_KEY).toBeUndefined();
-    expect(env.OPENCLAW_LIVE_OPENAI_KEY).toBeUndefined();
-    expect(env.OPENCLAW_LIVE_ANTHROPIC_KEY).toBeUndefined();
-    expect(env.OPENCLAW_LIVE_ANTHROPIC_KEYS).toBeUndefined();
-    expect(env.OPENCLAW_LIVE_GEMINI_KEY).toBeUndefined();
+    expect(env.WINERYCLAW_LIVE_OPENAI_KEY).toBeUndefined();
+    expect(env.WINERYCLAW_LIVE_ANTHROPIC_KEY).toBeUndefined();
+    expect(env.WINERYCLAW_LIVE_ANTHROPIC_KEYS).toBeUndefined();
+    expect(env.WINERYCLAW_LIVE_GEMINI_KEY).toBeUndefined();
   });
 
   it("treats restart socket closures as retryable gateway call errors", () => {
@@ -257,7 +257,7 @@ describe("buildQaRuntimeEnv", () => {
       cfg: {},
       stateDir,
       env: {
-        OPENCLAW_LIVE_SETUP_TOKEN_VALUE: token,
+        WINERYCLAW_LIVE_SETUP_TOKEN_VALUE: token,
       },
     });
 
@@ -417,7 +417,7 @@ describe("buildQaRuntimeEnv", () => {
     await mkdir(path.dirname(artifactDir), { recursive: true });
     await writeFile(
       stdoutLogPath,
-      'OPENCLAW_GATEWAY_TOKEN=qa-suite-token\nOPENAI_API_KEY="openai-live"\nurl=http://127.0.0.1:18789/#token=abc123',
+      'WINERYCLAW_GATEWAY_TOKEN=qa-suite-token\nOPENAI_API_KEY="openai-live"\nurl=http://127.0.0.1:18789/#token=abc123',
       "utf8",
     );
     await writeFile(stderrLogPath, "Authorization: Bearer secret+/token=123456", "utf8");
@@ -438,7 +438,7 @@ describe("buildQaRuntimeEnv", () => {
       "gateway.stdout.log",
     ]);
     await expect(readFile(path.join(artifactDir, "gateway.stdout.log"), "utf8")).resolves.toBe(
-      "OPENCLAW_GATEWAY_TOKEN=<redacted>\nOPENAI_API_KEY=<redacted>\nurl=http://127.0.0.1:18789/#token=<redacted>",
+      "WINERYCLAW_GATEWAY_TOKEN=<redacted>\nOPENAI_API_KEY=<redacted>\nurl=http://127.0.0.1:18789/#token=<redacted>",
     );
     await expect(readFile(path.join(artifactDir, "gateway.stderr.log"), "utf8")).resolves.toBe(
       "Authorization: Bearer <redacted>",
@@ -480,7 +480,7 @@ describe("buildQaRuntimeEnv", () => {
       await rm(stagedRoot, { recursive: true, force: true });
     });
 
-    await writeFile(path.join(tempRoot, "openclaw.json"), "{}", "utf8");
+    await writeFile(path.join(tempRoot, "wineryclaw.json"), "{}", "utf8");
     await writeFile(path.join(stagedRoot, "marker.txt"), "x", "utf8");
 
     await __testing.cleanupQaGatewayTempRoots({
@@ -665,7 +665,7 @@ describe("qa bundled plugin dir", () => {
   it("copies selected live provider configs from the host config", async () => {
     const configPath = path.join(
       await mkdtemp(path.join(os.tmpdir(), "qa-provider-config-")),
-      "openclaw.json",
+      "wineryclaw.json",
     );
     cleanups.push(async () => {
       await rm(path.dirname(configPath), { recursive: true, force: true });
@@ -705,7 +705,7 @@ describe("qa bundled plugin dir", () => {
     await expect(
       __testing.readQaLiveProviderConfigOverrides({
         providerIds: ["custom-openai"],
-        env: { OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
+        env: { WINERYCLAW_QA_LIVE_PROVIDER_CONFIG_PATH: configPath },
       }),
     ).resolves.toEqual({
       "custom-openai": expect.objectContaining({

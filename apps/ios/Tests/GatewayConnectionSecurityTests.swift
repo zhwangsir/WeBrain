@@ -1,8 +1,8 @@
 import Foundation
 import Network
-import OpenClawKit
+import WineryClawKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite(.serialized) struct GatewayConnectionSecurityTests {
     @MainActor

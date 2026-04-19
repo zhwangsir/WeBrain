@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { WineryClawConfig } from "../../../config/config.js";
 import {
   collectLegacyToolsBySenderWarnings,
   maybeRepairLegacyToolsBySenderKeys,
@@ -22,7 +22,7 @@ describe("doctor legacy toolsBySender helpers", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     expect(hits).toEqual([
       {
@@ -49,7 +49,7 @@ describe("doctor legacy toolsBySender helpers", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     expect(result.changes).toEqual([
       expect.stringContaining("migrated 1 legacy key to typed id: entries"),

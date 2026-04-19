@@ -93,7 +93,7 @@ async function waitForReachableMatrixBaseUrl(params: {
 
 function resolveMatrixQaHarnessImage(image?: string) {
   return (
-    image?.trim() || process.env.OPENCLAW_QA_MATRIX_TUWUNEL_IMAGE?.trim() || MATRIX_QA_DEFAULT_IMAGE
+    image?.trim() || process.env.WINERYCLAW_QA_MATRIX_TUWUNEL_IMAGE?.trim() || MATRIX_QA_DEFAULT_IMAGE
   );
 }
 

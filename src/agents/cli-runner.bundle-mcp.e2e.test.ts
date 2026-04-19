@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { captureEnv } from "../test-utils/env.js";
 import {
   writeBundleProbeMcpServer,
@@ -42,13 +42,13 @@ describe("runCliAgent bundle MCP e2e", () => {
       const binDir = path.join(tempHome, "bin");
       const serverScriptPath = path.join(tempHome, "mcp", "bundle-probe.mjs");
       const fakeClaudePath = path.join(binDir, "fake-claude.mjs");
-      const pluginRoot = path.join(tempHome, ".openclaw", "extensions", "bundle-probe");
+      const pluginRoot = path.join(tempHome, ".wineryclaw", "extensions", "bundle-probe");
       await fs.mkdir(workspaceDir, { recursive: true });
       await writeBundleProbeMcpServer(serverScriptPath);
       await writeFakeClaudeCli(fakeClaudePath);
       await writeClaudeBundle({ pluginRoot, serverScriptPath });
 
-      const config: OpenClawConfig = {
+      const config: WineryClawConfig = {
         agents: {
           defaults: {
             workspace: workspaceDir,

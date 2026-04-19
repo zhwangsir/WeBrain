@@ -1,0 +1,4 @@
+#!/bin/bash
+cd "/Users/wangzhenyu/Documents/WineryClaw"
+export PATH="/usr/local/bin:/opt/homebrew/bin:/Users/wangzhenyu/.local/bin:/Users/wangzhenyu/Library/pnpm:$PATH"
+osascript -e 'tell application "Terminal" to do script "cd \"/Users/wangzhenyu/Documents/WineryClaw\" && pnpm gateway:dev"'

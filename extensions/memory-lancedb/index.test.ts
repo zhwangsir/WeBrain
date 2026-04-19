@@ -415,7 +415,7 @@ describe("lancedb runtime loader", () => {
         `${runtimeDir}/node_modules/@lancedb/lancedb/index.js`,
     );
     const loader = createRuntimeLoader({
-      env: { OPENCLAW_NIX_MODE: "1" } as NodeJS.ProcessEnv,
+      env: { WINERYCLAW_NIX_MODE: "1" } as NodeJS.ProcessEnv,
       installRuntime,
     });
 

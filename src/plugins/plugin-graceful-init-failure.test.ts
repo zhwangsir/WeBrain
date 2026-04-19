@@ -48,10 +48,10 @@ function readPluginId(pluginPath: string): string {
 }
 
 async function loadPlugins(pluginPaths: string[], warnings?: string[]) {
-  const { loadOpenClawPlugins, clearPluginLoaderCache } = await import("./loader.js");
+  const { loadWineryClawPlugins, clearPluginLoaderCache } = await import("./loader.js");
   clearPluginLoaderCache();
   const allow = pluginPaths.map((pluginPath) => readPluginId(pluginPath));
-  return loadOpenClawPlugins({
+  return loadWineryClawPlugins({
     cache: false,
     config: {
       plugins: {

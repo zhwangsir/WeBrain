@@ -4,13 +4,13 @@ set -euo pipefail
 # Build the mac app bundle, then create a zip (Sparkle) + styled DMG (humans).
 #
 # Output:
-# - dist/OpenClaw.app
-# - dist/OpenClaw-<version>.zip
-# - dist/OpenClaw-<version>.dmg
+# - dist/WineryClaw.app
+# - dist/WineryClaw-<version>.zip
+# - dist/WineryClaw-<version>.dmg
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD_ROOT="$ROOT_DIR/apps/macos/.build"
-PRODUCT="OpenClaw"
+PRODUCT="WineryClaw"
 BUILD_CONFIG="${BUILD_CONFIG:-release}"
 APP_VERSION_INPUT="${APP_VERSION:-$(cd "$ROOT_DIR" && node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")}"
 
@@ -37,7 +37,7 @@ fi
 
 "$ROOT_DIR/scripts/package-mac-app.sh"
 
-APP="$ROOT_DIR/dist/OpenClaw.app"
+APP="$ROOT_DIR/dist/WineryClaw.app"
 if [[ ! -d "$APP" ]]; then
   echo "Error: missing app bundle at $APP" >&2
   exit 1
@@ -47,10 +47,10 @@ VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$APP/Co
 BUNDLE_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "$APP/Contents/Info.plist" 2>/dev/null || echo "")
 ACTUAL_BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$APP/Contents/Info.plist" 2>/dev/null || echo "")
 ACTUAL_FEED_URL=$(/usr/libexec/PlistBuddy -c "Print SUFeedURL" "$APP/Contents/Info.plist" 2>/dev/null || echo "")
-ZIP="$ROOT_DIR/dist/OpenClaw-$VERSION.zip"
-DMG="$ROOT_DIR/dist/OpenClaw-$VERSION.dmg"
-NOTARY_ZIP="$ROOT_DIR/dist/OpenClaw-$VERSION.notary.zip"
-DSYM_ZIP="$ROOT_DIR/dist/OpenClaw-$VERSION.dSYM.zip"
+ZIP="$ROOT_DIR/dist/WineryClaw-$VERSION.zip"
+DMG="$ROOT_DIR/dist/WineryClaw-$VERSION.dmg"
+NOTARY_ZIP="$ROOT_DIR/dist/WineryClaw-$VERSION.notary.zip"
+DSYM_ZIP="$ROOT_DIR/dist/WineryClaw-$VERSION.dSYM.zip"
 SKIP_NOTARIZE="${SKIP_NOTARIZE:-0}"
 NOTARIZE=1
 SKIP_DSYM="${SKIP_DSYM:-0}"

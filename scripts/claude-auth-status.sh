@@ -1,11 +1,11 @@
 #!/bin/bash
 # Claude Code Authentication Status Checker
-# Checks both Claude Code and OpenClaw auth status
+# Checks both Claude Code and WineryClaw auth status
 
 set -euo pipefail
 
 CLAUDE_CREDS="$HOME/.claude/.credentials.json"
-OPENCLAW_AUTH="$HOME/.openclaw/agents/main/agent/auth-profiles.json"
+WINERYCLAW_AUTH="$HOME/.openclaw/agents/main/agent/auth-profiles.json"
 
 # Colors for terminal output
 RED='\033[0;31m'
@@ -122,7 +122,7 @@ check_openclaw_auth() {
         return $?
     fi
 
-    if [ ! -f "$OPENCLAW_AUTH" ]; then
+    if [ ! -f "$WINERYCLAW_AUTH" ]; then
         echo "MISSING"
         return 1
     fi
@@ -131,7 +131,7 @@ check_openclaw_auth() {
     expires=$(jq -r '
         [.profiles | to_entries[] | select(.value.provider == "anthropic") | .value.expires]
         | max // 0
-    ' "$OPENCLAW_AUTH" 2>/dev/null || echo "0")
+    ' "$WINERYCLAW_AUTH" 2>/dev/null || echo "0")
 
     calc_status_from_expires "$expires"
 }
@@ -148,7 +148,7 @@ if [ "$OUTPUT_MODE" = "json" ]; then
         openclaw_expires=$(json_expires_for_anthropic_any)
     else
         claude_expires=$(jq -r '.claudeAiOauth.expiresAt // 0' "$CLAUDE_CREDS" 2>/dev/null || echo "0")
-        openclaw_expires=$(jq -r '.profiles["anthropic:default"].expires // 0' "$OPENCLAW_AUTH" 2>/dev/null || echo "0")
+        openclaw_expires=$(jq -r '.profiles["anthropic:default"].expires // 0' "$WINERYCLAW_AUTH" 2>/dev/null || echo "0")
     fi
 
     jq -n \
@@ -173,13 +173,13 @@ if [ "$OUTPUT_MODE" = "simple" ]; then
         echo "CLAUDE_EXPIRED"
         exit 1
     elif [[ "$openclaw_status" == EXPIRED* ]] || [[ "$openclaw_status" == MISSING* ]]; then
-        echo "OPENCLAW_EXPIRED"
+        echo "WINERYCLAW_EXPIRED"
         exit 1
     elif [[ "$claude_status" == EXPIRING* ]]; then
         echo "CLAUDE_EXPIRING"
         exit 2
     elif [[ "$openclaw_status" == EXPIRING* ]]; then
-        echo "OPENCLAW_EXPIRING"
+        echo "WINERYCLAW_EXPIRING"
         exit 2
     else
         echo "OK"
@@ -228,7 +228,7 @@ else
 fi
 
 echo ""
-echo "OpenClaw Auth (~/.openclaw/agents/main/agent/auth-profiles.json):"
+echo "WineryClaw Auth (~/.openclaw/agents/main/agent/auth-profiles.json):"
 if [ "$USE_JSON" -eq 1 ]; then
     best_profile=$(json_best_anthropic_profile)
     expires=$(json_expires_for_anthropic_any)
@@ -239,11 +239,11 @@ else
         | map(select(.value.provider == "anthropic"))
         | sort_by(.value.expires) | reverse
         | .[0].key // "none"
-    ' "$OPENCLAW_AUTH" 2>/dev/null || echo "none")
+    ' "$WINERYCLAW_AUTH" 2>/dev/null || echo "none")
     expires=$(jq -r '
         [.profiles | to_entries[] | select(.value.provider == "anthropic") | .value.expires]
         | max // 0
-    ' "$OPENCLAW_AUTH" 2>/dev/null || echo "0")
+    ' "$WINERYCLAW_AUTH" 2>/dev/null || echo "0")
     api_keys=0
 fi
 
@@ -274,7 +274,7 @@ fi
 echo ""
 echo "=== Service Status ==="
 if systemctl --user is-active openclaw >/dev/null 2>&1; then
-    echo -e "OpenClaw service: ${GREEN}running${NC}"
+    echo -e "WineryClaw service: ${GREEN}running${NC}"
 else
-    echo -e "OpenClaw service: ${RED}NOT running${NC}"
+    echo -e "WineryClaw service: ${RED}NOT running${NC}"
 fi

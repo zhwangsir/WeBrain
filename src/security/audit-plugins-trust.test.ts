@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { createPathResolutionEnv, withEnvAsync } from "../test-utils/env.js";
 import { collectPluginsTrustFindings } from "./audit-extra.async.js";
 
@@ -17,7 +17,7 @@ describe("security audit install metadata findings", () => {
     return dir;
   };
 
-  const runInstallMetadataAudit = async (cfg: OpenClawConfig, stateDir: string) => {
+  const runInstallMetadataAudit = async (cfg: WineryClawConfig, stateDir: string) => {
     return await collectPluginsTrustFindings({ cfg, stateDir });
   };
 
@@ -188,14 +188,14 @@ describe("security audit extension tool reachability findings", () => {
     "USERPROFILE",
     "HOMEDRIVE",
     "HOMEPATH",
-    "OPENCLAW_HOME",
-    "OPENCLAW_STATE_DIR",
-    "OPENCLAW_BUNDLED_PLUGINS_DIR",
+    "WINERYCLAW_HOME",
+    "WINERYCLAW_STATE_DIR",
+    "WINERYCLAW_BUNDLED_PLUGINS_DIR",
   ] as const;
   const previousPathResolutionEnv: Partial<Record<(typeof pathResolutionEnvKeys)[number], string>> =
     {};
 
-  const runSharedExtensionsAudit = async (config: OpenClawConfig) => {
+  const runSharedExtensionsAudit = async (config: WineryClawConfig) => {
     return await collectPluginsTrustFindings({
       cfg: config,
       stateDir: sharedExtensionsStateDir,
@@ -207,7 +207,7 @@ describe("security audit extension tool reachability findings", () => {
     const vitestModule = await import("vitest");
     fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-security-extensions-"));
     isolatedHome = path.join(fixtureRoot, "home");
-    const isolatedEnv = createPathResolutionEnv(isolatedHome, { OPENCLAW_HOME: isolatedHome });
+    const isolatedEnv = createPathResolutionEnv(isolatedHome, { WINERYCLAW_HOME: isolatedHome });
     for (const key of pathResolutionEnvKeys) {
       previousPathResolutionEnv[key] = process.env[key];
       const value = isolatedEnv[key];
@@ -247,7 +247,7 @@ describe("security audit extension tool reachability findings", () => {
     const cases = [
       {
         name: "flags extensions without plugins.allow",
-        cfg: {} satisfies OpenClawConfig,
+        cfg: {} satisfies WineryClawConfig,
         assert: (findings: Awaited<ReturnType<typeof runSharedExtensionsAudit>>) => {
           expect(
             findings.some(
@@ -262,7 +262,7 @@ describe("security audit extension tool reachability findings", () => {
         name: "flags enabled extensions when tool policy can expose plugin tools",
         cfg: {
           plugins: { allow: ["some-plugin"] },
-        } satisfies OpenClawConfig,
+        } satisfies WineryClawConfig,
         assert: (findings: Awaited<ReturnType<typeof runSharedExtensionsAudit>>) => {
           expect(
             findings.some(
@@ -278,7 +278,7 @@ describe("security audit extension tool reachability findings", () => {
         cfg: {
           plugins: { allow: ["some-plugin"] },
           tools: { profile: "coding" },
-        } satisfies OpenClawConfig,
+        } satisfies WineryClawConfig,
         assert: (findings: Awaited<ReturnType<typeof runSharedExtensionsAudit>>) => {
           expect(
             findings.some(
@@ -293,7 +293,7 @@ describe("security audit extension tool reachability findings", () => {
           channels: {
             discord: { enabled: true, token: "t" },
           },
-        } satisfies OpenClawConfig,
+        } satisfies WineryClawConfig,
         assert: (findings: Awaited<ReturnType<typeof runSharedExtensionsAudit>>) => {
           expect(
             findings.some(
@@ -317,7 +317,7 @@ describe("security audit extension tool reachability findings", () => {
               } as unknown as string,
             },
           },
-        } satisfies OpenClawConfig,
+        } satisfies WineryClawConfig,
         assert: (findings: Awaited<ReturnType<typeof runSharedExtensionsAudit>>) => {
           expect(
             findings.some(

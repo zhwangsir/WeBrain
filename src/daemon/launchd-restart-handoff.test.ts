@@ -23,7 +23,7 @@ describe("scheduleDetachedLaunchdRestartHandoff", () => {
   it("waits for the caller pid before kickstarting launchd", () => {
     const env = {
       HOME: "/Users/test",
-      OPENCLAW_PROFILE: "default",
+      WINERYCLAW_PROFILE: "default",
     };
     spawnMock.mockReturnValue({ pid: 4242, unref: unrefMock });
 
@@ -55,7 +55,7 @@ describe("scheduleDetachedLaunchdRestartHandoff", () => {
     scheduleDetachedLaunchdRestartHandoff({
       env: {
         HOME: "/Users/test",
-        OPENCLAW_PROFILE: "default",
+        WINERYCLAW_PROFILE: "default",
       },
       mode: "start-after-exit",
     });
@@ -71,7 +71,7 @@ describe("scheduleDetachedLaunchdRestartHandoff", () => {
       scheduleDetachedLaunchdRestartHandoff({
         env: {
           HOME: "/Users/test",
-          OPENCLAW_LAUNCHD_LABEL: "../evil/\n\u001b[31mlabel\u001b[0m",
+          WINERYCLAW_LAUNCHD_LABEL: "../evil/\n\u001b[31mlabel\u001b[0m",
         },
         mode: "kickstart",
       });

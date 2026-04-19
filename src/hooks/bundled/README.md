@@ -1,6 +1,6 @@
 # Bundled Hooks
 
-This directory contains hooks that ship with OpenClaw. These hooks are automatically discovered and can be enabled/disabled via CLI or configuration.
+This directory contains hooks that ship with WineryClaw. These hooks are automatically discovered and can be enabled/disabled via CLI or configuration.
 
 ## Available Hooks
 
@@ -10,7 +10,7 @@ Automatically saves session context to memory when you issue `/new` or `/reset`.
 
 **Events**: `command:new`, `command:reset`
 **What it does**: Creates a dated memory file with LLM-generated slug based on conversation content.
-**Output**: `<workspace>/memory/YYYY-MM-DD-slug.md` (defaults to `~/.openclaw/workspace`)
+**Output**: `<workspace>/memory/YYYY-MM-DD-slug.md` (defaults to `~/.wineryclaw/workspace`)
 
 **Enable**:
 
@@ -38,7 +38,7 @@ Logs all command events to a centralized audit file.
 
 **Events**: `command` (all commands)
 **What it does**: Appends JSONL entries to command log file.
-**Output**: `~/.openclaw/logs/commands.log`
+**Output**: `~/.wineryclaw/logs/commands.log`
 
 **Enable**:
 
@@ -107,7 +107,7 @@ Documentation goes here...
 To create your own hooks, place them in:
 
 - **Workspace hooks**: `<workspace>/hooks/` (highest precedence)
-- **Managed hooks**: `~/.openclaw/hooks/` (shared across workspaces)
+- **Managed hooks**: `~/.wineryclaw/hooks/` (shared across workspaces)
 
 Custom hooks follow the same structure as bundled hooks.
 
@@ -140,7 +140,7 @@ openclaw hooks disable command-logger
 
 ## Configuration
 
-Hooks can be configured in `~/.openclaw/openclaw.json`:
+Hooks can be configured in `~/.wineryclaw/wineryclaw.json`:
 
 ```json
 {

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { buildPluginApi } from "./api-builder.js";
 import type { MemoryEmbeddingProviderAdapter } from "./memory-embedding-providers.js";
 import type { PluginRuntime } from "./runtime/types.js";
@@ -9,9 +9,9 @@ import type {
   ImageGenerationProviderPlugin,
   MediaUnderstandingProviderPlugin,
   MusicGenerationProviderPlugin,
-  OpenClawPluginApi,
-  OpenClawPluginCliCommandDescriptor,
-  OpenClawPluginCliRegistrar,
+  WineryClawPluginApi,
+  WineryClawPluginCliCommandDescriptor,
+  WineryClawPluginCliRegistrar,
   PluginTextTransformRegistration,
   ProviderPlugin,
   RealtimeTranscriptionProviderPlugin,
@@ -23,13 +23,13 @@ import type {
 } from "./types.js";
 
 type CapturedPluginCliRegistration = {
-  register: OpenClawPluginCliRegistrar;
+  register: WineryClawPluginCliRegistrar;
   commands: string[];
-  descriptors: OpenClawPluginCliCommandDescriptor[];
+  descriptors: WineryClawPluginCliCommandDescriptor[];
 };
 
 export type CapturedPluginRegistration = {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   providers: ProviderPlugin[];
   agentHarnesses: AgentHarness[];
   cliRegistrars: CapturedPluginCliRegistration[];
@@ -49,8 +49,8 @@ export type CapturedPluginRegistration = {
 };
 
 export function createCapturedPluginRegistration(params?: {
-  config?: OpenClawConfig;
-  registrationMode?: OpenClawPluginApi["registrationMode"];
+  config?: WineryClawConfig;
+  registrationMode?: WineryClawPluginApi["registrationMode"];
 }): CapturedPluginRegistration {
   const providers: ProviderPlugin[] = [];
   const agentHarnesses: AgentHarness[] = [];
@@ -97,7 +97,7 @@ export function createCapturedPluginRegistration(params?: {
       name: "Captured Plugin Registration",
       source: "captured-plugin-registration",
       registrationMode: params?.registrationMode ?? "full",
-      config: params?.config ?? ({} as OpenClawConfig),
+      config: params?.config ?? ({} as WineryClawConfig),
       runtime: {} as PluginRuntime,
       logger: noopLogger,
       resolvePath: (input) => input,
@@ -178,7 +178,7 @@ export function createCapturedPluginRegistration(params?: {
 }
 
 export function capturePluginRegistration(params: {
-  register(api: OpenClawPluginApi): void;
+  register(api: WineryClawPluginApi): void;
 }): CapturedPluginRegistration {
   const captured = createCapturedPluginRegistration();
   params.register(captured.api);

@@ -42,7 +42,7 @@ vi.mock("../../plugin-sdk/qa-lab.js", () => ({ isQaLabCliAvailable, registerQaLa
 
 describe("registerSubCliCommands", () => {
   const originalArgv = process.argv;
-  const originalDisableLazySubcommands = process.env.OPENCLAW_DISABLE_LAZY_SUBCOMMANDS;
+  const originalDisableLazySubcommands = process.env.WINERYCLAW_DISABLE_LAZY_SUBCOMMANDS;
 
   const createRegisteredProgram = (argv: string[], name?: string) => {
     process.argv = argv;
@@ -56,9 +56,9 @@ describe("registerSubCliCommands", () => {
 
   beforeEach(() => {
     if (originalDisableLazySubcommands === undefined) {
-      delete process.env.OPENCLAW_DISABLE_LAZY_SUBCOMMANDS;
+      delete process.env.WINERYCLAW_DISABLE_LAZY_SUBCOMMANDS;
     } else {
-      process.env.OPENCLAW_DISABLE_LAZY_SUBCOMMANDS = originalDisableLazySubcommands;
+      process.env.WINERYCLAW_DISABLE_LAZY_SUBCOMMANDS = originalDisableLazySubcommands;
     }
     registerAcpCli.mockClear();
     acpAction.mockClear();
@@ -73,9 +73,9 @@ describe("registerSubCliCommands", () => {
   afterEach(() => {
     process.argv = originalArgv;
     if (originalDisableLazySubcommands === undefined) {
-      delete process.env.OPENCLAW_DISABLE_LAZY_SUBCOMMANDS;
+      delete process.env.WINERYCLAW_DISABLE_LAZY_SUBCOMMANDS;
     } else {
-      process.env.OPENCLAW_DISABLE_LAZY_SUBCOMMANDS = originalDisableLazySubcommands;
+      process.env.WINERYCLAW_DISABLE_LAZY_SUBCOMMANDS = originalDisableLazySubcommands;
     }
   });
 

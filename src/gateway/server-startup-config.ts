@@ -3,7 +3,7 @@ import {
   type ConfigFileSnapshot,
   type GatewayAuthConfig,
   type GatewayTailscaleConfig,
-  type OpenClawConfig,
+  type WineryClawConfig,
   applyConfigOverrides,
   isNixMode,
   readConfigFileSnapshot,
@@ -35,7 +35,7 @@ type GatewayStartupLog = {
 type GatewaySecretsStateEventCode = "SECRETS_RELOADER_DEGRADED" | "SECRETS_RELOADER_RECOVERED";
 
 export type ActivateRuntimeSecrets = (
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   params: { reason: "startup" | "reload" | "restart-check"; activate: boolean },
 ) => Promise<Awaited<ReturnType<typeof prepareSecretsRuntimeSnapshot>>>;
 
@@ -87,7 +87,7 @@ export function createRuntimeSecretsActivator(params: {
   emitStateEvent: (
     code: GatewaySecretsStateEventCode,
     message: string,
-    cfg: OpenClawConfig,
+    cfg: WineryClawConfig,
   ) => void;
   prepareRuntimeSecretsSnapshot?: PrepareRuntimeSecretsSnapshot;
   activateRuntimeSecretsSnapshot?: ActivateRuntimeSecretsSnapshot;
@@ -228,10 +228,10 @@ export async function prepareGatewayStartupConfig(params: {
   };
 }
 
-function pruneSkippedStartupSecretSurfaces(config: OpenClawConfig): OpenClawConfig {
+function pruneSkippedStartupSecretSurfaces(config: WineryClawConfig): WineryClawConfig {
   const skipChannels =
-    isTruthyEnvValue(process.env.OPENCLAW_SKIP_CHANNELS) ||
-    isTruthyEnvValue(process.env.OPENCLAW_SKIP_PROVIDERS);
+    isTruthyEnvValue(process.env.WINERYCLAW_SKIP_CHANNELS) ||
+    isTruthyEnvValue(process.env.WINERYCLAW_SKIP_PROVIDERS);
   if (!skipChannels || !config.channels) {
     return config;
   }
@@ -243,7 +243,7 @@ function pruneSkippedStartupSecretSurfaces(config: OpenClawConfig): OpenClawConf
 
 function logGatewayAuthSurfaceDiagnostics(
   prepared: {
-    sourceConfig: OpenClawConfig;
+    sourceConfig: WineryClawConfig;
     warnings: Array<{ code: string; path: string; message: string }>;
   },
   logSecrets: GatewayStartupLog,
@@ -274,9 +274,9 @@ function logGatewayAuthSurfaceDiagnostics(
 }
 
 function applyGatewayAuthOverridesForStartupPreflight(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   overrides: GatewayStartupConfigOverrides,
-): OpenClawConfig {
+): WineryClawConfig {
   if (!overrides.auth && !overrides.tailscale) {
     return config;
   }

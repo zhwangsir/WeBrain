@@ -682,7 +682,7 @@ describe("trigger handling", () => {
       if (!storePath) {
         throw new Error("missing session store path");
       }
-      const authDir = join(home, ".openclaw", "agents", "main", "agent");
+      const authDir = join(home, ".wineryclaw", "agents", "main", "agent");
       await fs.mkdir(authDir, { recursive: true });
       await fs.writeFile(
         join(authDir, "auth-profiles.json"),

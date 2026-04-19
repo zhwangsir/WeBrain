@@ -1,5 +1,5 @@
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { DEFAULT_ACCOUNT_ID, type OpenClawConfig } from "openclaw/plugin-sdk/setup";
+import { DEFAULT_ACCOUNT_ID, type WineryClawConfig } from "openclaw/plugin-sdk/setup";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createPluginSetupWizardStatus,
@@ -26,7 +26,7 @@ import {
 } from "./setup-test-helpers.js";
 
 const hoisted = vi.hoisted(() => ({
-  detectWhatsAppLinked: vi.fn<(cfg: OpenClawConfig, accountId: string) => Promise<boolean>>(
+  detectWhatsAppLinked: vi.fn<(cfg: WineryClawConfig, accountId: string) => Promise<boolean>>(
     async () => false,
   ),
   loginWeb: vi.fn(async () => {}),
@@ -106,13 +106,13 @@ function createSeparatePhoneHarness(params: { selectValues: string[]; textValues
 }
 
 function expectFinalizeResult(result: Awaited<ReturnType<typeof runFinalizeWithHarness>>): {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 } {
   expect(result).toBeDefined();
   if (!result || typeof result !== "object" || !("cfg" in result) || !result.cfg) {
     throw new Error("Expected WhatsApp finalize result with cfg");
   }
-  return result as { cfg: OpenClawConfig };
+  return result as { cfg: WineryClawConfig };
 }
 
 async function runSeparatePhoneFlow(params: { selectValues: string[]; textValues?: string[] }) {
@@ -172,7 +172,7 @@ describe("whatsapp setup wizard", () => {
       await runFinalizeWithHarness({
         harness,
         accountId: "work",
-        cfg: createWhatsAppWorkAccountConfig() as OpenClawConfig,
+        cfg: createWhatsAppWorkAccountConfig() as WineryClawConfig,
       }),
     );
 
@@ -192,7 +192,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       accountOverrides: {
         whatsapp: "work",
       },
@@ -204,7 +204,7 @@ describe("whatsapp setup wizard", () => {
 
   it("uses configured defaultAccount for omitted-account setup status", async () => {
     hoisted.detectWhatsAppLinked.mockImplementation(
-      async (_cfg: OpenClawConfig, accountId: string) => accountId === "work",
+      async (_cfg: WineryClawConfig, accountId: string) => accountId === "work",
     );
 
     const status = await whatsappGetStatus({
@@ -222,7 +222,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       accountOverrides: {},
     });
 
@@ -245,7 +245,7 @@ describe("whatsapp setup wizard", () => {
       await runFinalizeWithHarness({
         harness,
         accountId: "",
-        cfg: createWhatsAppWorkAccountConfig({ defaultAccount: "work" }) as OpenClawConfig,
+        cfg: createWhatsAppWorkAccountConfig({ defaultAccount: "work" }) as WineryClawConfig,
       }),
     );
 
@@ -281,7 +281,7 @@ describe("whatsapp setup wizard", () => {
     const result = expectFinalizeResult(
       await runFinalizeWithHarness({
         harness,
-        cfg: createWhatsAppRootAllowFromConfig() as OpenClawConfig,
+        cfg: createWhatsAppRootAllowFromConfig() as WineryClawConfig,
       }),
     );
 

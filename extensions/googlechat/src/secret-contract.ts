@@ -22,7 +22,7 @@ export const secretTargetRegistryEntries = [
     id: "channels.googlechat.accounts.*.serviceAccount",
     targetType: "channels.googlechat.serviceAccount",
     targetTypeAliases: ["channels.googlechat.accounts.*.serviceAccount"],
-    configFile: "openclaw.json",
+    configFile: "wineryclaw.json",
     pathPattern: "channels.googlechat.accounts.*.serviceAccount",
     refPathPattern: "channels.googlechat.accounts.*.serviceAccountRef",
     secretShape: "sibling_ref",
@@ -35,7 +35,7 @@ export const secretTargetRegistryEntries = [
   {
     id: "channels.googlechat.serviceAccount",
     targetType: "channels.googlechat.serviceAccount",
-    configFile: "openclaw.json",
+    configFile: "wineryclaw.json",
     pathPattern: "channels.googlechat.serviceAccount",
     refPathPattern: "channels.googlechat.serviceAccountRef",
     secretShape: "sibling_ref",

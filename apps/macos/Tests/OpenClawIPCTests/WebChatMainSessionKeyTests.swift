@@ -1,12 +1,12 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct WebChatMainSessionKeyTests {
     @Test func `config get snapshot main key falls back to main when missing`() throws {
         let json = """
         {
-          "path": "/Users/pete/.openclaw/openclaw.json",
+          "path": "/Users/pete/.wineryclaw/wineryclaw.json",
           "exists": true,
           "raw": null,
           "parsed": {},
@@ -22,7 +22,7 @@ struct WebChatMainSessionKeyTests {
     @Test func `config get snapshot main key trims and uses value`() throws {
         let json = """
         {
-          "path": "/Users/pete/.openclaw/openclaw.json",
+          "path": "/Users/pete/.wineryclaw/wineryclaw.json",
           "exists": true,
           "raw": null,
           "parsed": {},

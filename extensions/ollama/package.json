@@ -2,7 +2,7 @@
   "name": "@openclaw/ollama-provider",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Ollama provider plugin",
+  "description": "WineryClaw Ollama provider plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

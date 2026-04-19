@@ -30,7 +30,7 @@ export function registerDefaultAuthTokenSuite(): void {
     let port: number;
     const testsWithoutDefaultServer = new Set([
       "closes silent handshakes after timeout",
-      "prefers OPENCLAW_HANDSHAKE_TIMEOUT_MS and falls back on empty string",
+      "prefers WINERYCLAW_HANDSHAKE_TIMEOUT_MS and falls back on empty string",
     ]);
 
     beforeEach(async (context) => {
@@ -86,8 +86,8 @@ export function registerDefaultAuthTokenSuite(): void {
 
     test("closes silent handshakes after timeout", async () => {
       vi.useRealTimers();
-      const prevHandshakeTimeout = process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
-      process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS = "20";
+      const prevHandshakeTimeout = process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
+      process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS = "20";
       try {
         await withGatewayServer(async ({ port: isolatedPort }) => {
           const ws = await openWs(isolatedPort);
@@ -97,32 +97,32 @@ export function registerDefaultAuthTokenSuite(): void {
         });
       } finally {
         if (prevHandshakeTimeout === undefined) {
-          delete process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
+          delete process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
         } else {
-          process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS = prevHandshakeTimeout;
+          process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS = prevHandshakeTimeout;
         }
       }
     });
 
-    test("prefers OPENCLAW_HANDSHAKE_TIMEOUT_MS and falls back on empty string", () => {
-      const prevHandshakeTimeout = process.env.OPENCLAW_HANDSHAKE_TIMEOUT_MS;
-      const prevTestHandshakeTimeout = process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
-      process.env.OPENCLAW_HANDSHAKE_TIMEOUT_MS = "75";
-      process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS = "20";
+    test("prefers WINERYCLAW_HANDSHAKE_TIMEOUT_MS and falls back on empty string", () => {
+      const prevHandshakeTimeout = process.env.WINERYCLAW_HANDSHAKE_TIMEOUT_MS;
+      const prevTestHandshakeTimeout = process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
+      process.env.WINERYCLAW_HANDSHAKE_TIMEOUT_MS = "75";
+      process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS = "20";
       try {
         expect(getPreauthHandshakeTimeoutMsFromEnv()).toBe(75);
-        process.env.OPENCLAW_HANDSHAKE_TIMEOUT_MS = "";
+        process.env.WINERYCLAW_HANDSHAKE_TIMEOUT_MS = "";
         expect(getPreauthHandshakeTimeoutMsFromEnv()).toBe(20);
       } finally {
         if (prevHandshakeTimeout === undefined) {
-          delete process.env.OPENCLAW_HANDSHAKE_TIMEOUT_MS;
+          delete process.env.WINERYCLAW_HANDSHAKE_TIMEOUT_MS;
         } else {
-          process.env.OPENCLAW_HANDSHAKE_TIMEOUT_MS = prevHandshakeTimeout;
+          process.env.WINERYCLAW_HANDSHAKE_TIMEOUT_MS = prevHandshakeTimeout;
         }
         if (prevTestHandshakeTimeout === undefined) {
-          delete process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
+          delete process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS;
         } else {
-          process.env.OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS = prevTestHandshakeTimeout;
+          process.env.WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS = prevTestHandshakeTimeout;
         }
       }
     });
@@ -151,24 +151,24 @@ export function registerDefaultAuthTokenSuite(): void {
       for (const testCase of [
         {
           env: {
-            OPENCLAW_VERSION: " ",
-            OPENCLAW_SERVICE_VERSION: "2.4.6-service",
+            WINERYCLAW_VERSION: " ",
+            WINERYCLAW_SERVICE_VERSION: "2.4.6-service",
             npm_package_version: "1.0.0-package",
           },
           expectedVersion: VERSION,
         },
         {
           env: {
-            OPENCLAW_VERSION: "9.9.9-cli",
-            OPENCLAW_SERVICE_VERSION: "2.4.6-service",
+            WINERYCLAW_VERSION: "9.9.9-cli",
+            WINERYCLAW_SERVICE_VERSION: "2.4.6-service",
             npm_package_version: "1.0.0-package",
           },
           expectedVersion: "9.9.9-cli",
         },
         {
           env: {
-            OPENCLAW_VERSION: " ",
-            OPENCLAW_SERVICE_VERSION: "\t",
+            WINERYCLAW_VERSION: " ",
+            WINERYCLAW_SERVICE_VERSION: "\t",
             npm_package_version: "1.0.0-package",
           },
           expectedVersion: VERSION,

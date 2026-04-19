@@ -2,7 +2,7 @@
   "name": "@openclaw/browser-plugin",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw browser tool plugin",
+  "description": "WineryClaw browser tool plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

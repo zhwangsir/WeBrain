@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../runtime-api.js";
+import type { WineryClawConfig } from "../../runtime-api.js";
 import { _resetThreadParentContextCachesForTest } from "../thread-parent-context.js";
 import { createMSTeamsMessageHandler } from "./message-handler.js";
 import {
@@ -66,9 +66,9 @@ describe("msteams thread parent context injection", () => {
     runtimeApiMockState.dispatchReplyFromConfigWithSettledDispatcher.mockClear();
   });
 
-  const cfg: OpenClawConfig = {
+  const cfg: WineryClawConfig = {
     channels: { msteams: { groupPolicy: "open" } },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 
   it("enqueues a Replying to @sender system event on the first thread reply", async () => {
     fetchChannelMessageMock.mockResolvedValueOnce({
@@ -160,7 +160,7 @@ describe("msteams thread parent context injection", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
     const handler = createMSTeamsMessageHandler(deps);
 
     await handler({
@@ -199,7 +199,7 @@ describe("msteams thread parent context injection", () => {
     });
     const { deps, enqueueSystemEvent } = createMessageHandlerDeps({
       channels: { msteams: { allowFrom: ["*"] } },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
     const handler = createMSTeamsMessageHandler(deps);
 
     await handler({

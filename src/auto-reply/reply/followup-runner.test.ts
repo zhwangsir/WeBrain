@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
 import type { FollowupRun, QueueSettings } from "./queue.js";
 
@@ -23,7 +23,7 @@ let sessionRunAccounting: typeof import("./session-run-accounting.js");
 let setRuntimeConfigSnapshot: typeof import("../../config/config.js").setRuntimeConfigSnapshot;
 let createMockFollowupRun: typeof import("./test-helpers.js").createMockFollowupRun;
 let createMockTypingController: typeof import("./test-helpers.js").createMockTypingController;
-const FOLLOWUP_DEBUG = process.env.OPENCLAW_DEBUG_FOLLOWUP_RUNNER_TEST === "1";
+const FOLLOWUP_DEBUG = process.env.WINERYCLAW_DEBUG_FOLLOWUP_RUNNER_TEST === "1";
 const FOLLOWUP_TEST_QUEUES = new Map<
   string,
   {
@@ -395,7 +395,7 @@ function createAsyncReplySpy() {
 
 describe("createFollowupRunner runtime config", () => {
   it("uses the active runtime snapshot for queued embedded followup runs", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: WineryClawConfig = {
       models: {
         providers: {
           openai: {
@@ -410,7 +410,7 @@ describe("createFollowupRunner runtime config", () => {
         },
       },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: WineryClawConfig = {
       models: {
         providers: {
           openai: {
@@ -452,7 +452,7 @@ describe("createFollowupRunner runtime config", () => {
   });
 
   it("resolves queued embedded followups before preflight helpers read config", async () => {
-    const sourceConfig: OpenClawConfig = {
+    const sourceConfig: WineryClawConfig = {
       skills: {
         entries: {
           whisper: {
@@ -465,7 +465,7 @@ describe("createFollowupRunner runtime config", () => {
         },
       },
     };
-    const runtimeConfig: OpenClawConfig = {
+    const runtimeConfig: WineryClawConfig = {
       skills: {
         entries: {
           whisper: {
@@ -1145,7 +1145,7 @@ describe("createFollowupRunner messaging tool dedupe", () => {
                   },
                 },
               },
-            } as OpenClawConfig,
+            } as WineryClawConfig,
           },
         }),
       ),

@@ -1,6 +1,6 @@
 # @openclaw/memory-wiki
 
-Persistent wiki compiler and Obsidian-friendly knowledge vault for **OpenClaw**.
+Persistent wiki compiler and Obsidian-friendly knowledge vault for **WineryClaw**.
 
 This plugin is separate from the active memory plugin. The active memory plugin still handles recall, promotion, and dreaming. `memory-wiki` compiles durable knowledge into a navigable markdown vault with deterministic indexes, provenance, structured claim/evidence metadata, and optional Obsidian CLI workflows.
 
@@ -23,14 +23,14 @@ Put config under `plugins.entries.memory-wiki.config`:
   vaultMode: "isolated",
 
   vault: {
-    path: "~/.openclaw/wiki/main",
+    path: "~/.wineryclaw/wiki/main",
     renderMode: "obsidian", // or "native"
   },
 
   obsidian: {
     enabled: true,
     useOfficialCli: true,
-    vaultName: "OpenClaw Wiki",
+    vaultName: "WineryClaw Wiki",
     openAfterWrites: false,
   },
 

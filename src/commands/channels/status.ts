@@ -12,7 +12,7 @@ import { resolveCommandConfigWithSecrets } from "../../cli/command-config-resolu
 import { formatCliCommand } from "../../cli/command-format.js";
 import { getChannelsCommandSecretTargetIds } from "../../cli/command-secret-targets.js";
 import { withProgress } from "../../cli/progress.js";
-import { type OpenClawConfig, readConfigFileSnapshot } from "../../config/config.js";
+import { type WineryClawConfig, readConfigFileSnapshot } from "../../config/config.js";
 import { callGateway } from "../../gateway/call.js";
 import { collectChannelStatusIssues } from "../../infra/channels-status-issues.js";
 import { formatTimeAgo } from "../../infra/format-time/format-relative.ts";
@@ -211,9 +211,9 @@ export function formatGatewayChannelsStatusLines(payload: Record<string, unknown
 }
 
 export async function formatConfigChannelsStatusLines(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   meta: { path?: string; mode?: "local" | "remote" },
-  opts?: { sourceConfig?: OpenClawConfig },
+  opts?: { sourceConfig?: WineryClawConfig },
 ): Promise<string[]> {
   const lines: string[] = [];
   lines.push(theme.warn("Gateway not reachable; showing config-only status."));

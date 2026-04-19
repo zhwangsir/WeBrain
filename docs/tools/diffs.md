@@ -197,7 +197,7 @@ Mode behavior summary:
 
 ## Plugin defaults
 
-Set plugin-wide defaults in `~/.openclaw/openclaw.json`:
+Set plugin-wide defaults in `~/.wineryclaw/wineryclaw.json`:
 
 ```json5
 {
@@ -362,9 +362,9 @@ File rendering hardening:
 
 Resolution order:
 
-1. `browser.executablePath` in OpenClaw config.
+1. `browser.executablePath` in WineryClaw config.
 2. Environment variables:
-   - `OPENCLAW_BROWSER_EXECUTABLE_PATH`
+   - `WINERYCLAW_BROWSER_EXECUTABLE_PATH`
    - `BROWSER_EXECUTABLE_PATH`
    - `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`
 3. Platform command/path discovery fallback.

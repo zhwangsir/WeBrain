@@ -1,5 +1,5 @@
 import { resolveSendableOutboundReplyParts } from "openclaw/plugin-sdk/reply-payload";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { PollInput } from "../../polls.js";
 import { normalizePollInput } from "../../polls.js";
 import {
@@ -72,7 +72,7 @@ type MessageSendParams = {
   dryRun?: boolean;
   bestEffort?: boolean;
   deps?: OutboundSendDeps;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   gateway?: MessageGatewayOptions;
   idempotencyKey?: string;
   mirror?: OutboundMirror;
@@ -103,7 +103,7 @@ type MessagePollParams = {
   silent?: boolean;
   isAnonymous?: boolean;
   dryRun?: boolean;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   gateway?: MessageGatewayOptions;
   idempotencyKey?: string;
 };
@@ -154,7 +154,7 @@ function buildMessagePollResult(params: {
 }
 
 async function resolveRequiredChannel(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   channel?: string;
 }): Promise<string> {
   return (
@@ -165,7 +165,7 @@ async function resolveRequiredChannel(params: {
   ).channel;
 }
 
-function resolveRequiredPlugin(channel: string, cfg: OpenClawConfig) {
+function resolveRequiredPlugin(channel: string, cfg: WineryClawConfig) {
   const plugin = resolveOutboundChannelPlugin({ channel, cfg });
   if (!plugin) {
     throw new Error(`Unknown channel: ${channel}`);
@@ -213,7 +213,7 @@ async function callMessageGateway<T>(params: {
   });
 }
 
-async function resolveMessageConfig(cfg?: OpenClawConfig): Promise<OpenClawConfig> {
+async function resolveMessageConfig(cfg?: WineryClawConfig): Promise<WineryClawConfig> {
   if (cfg) {
     return cfg;
   }

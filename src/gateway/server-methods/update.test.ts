@@ -38,7 +38,7 @@ vi.mock("../../infra/openclaw-root.js", async () => {
   );
   return {
     ...actual,
-    resolveOpenClawPackageRoot: async () => "/tmp/openclaw",
+    resolveWineryClawPackageRoot: async () => "/tmp/openclaw",
   };
 });
 

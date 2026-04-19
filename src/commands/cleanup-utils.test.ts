@@ -1,6 +1,6 @@
 import path from "node:path";
 import { describe, expect, it, test, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { applyAgentDefaultPrimaryModel } from "../plugins/provider-model-primary.js";
 import type { RuntimeEnv } from "../runtime.js";
 import {
@@ -19,9 +19,9 @@ describe("buildCleanupPlan", () => {
       },
     };
     const plan = buildCleanupPlan({
-      cfg: cfg as unknown as OpenClawConfig,
+      cfg: cfg as unknown as WineryClawConfig,
       stateDir: path.join(tmpRoot, "openclaw-state"),
-      configPath: path.join(tmpRoot, "openclaw-state", "openclaw.json"),
+      configPath: path.join(tmpRoot, "openclaw-state", "wineryclaw.json"),
       oauthDir: path.join(tmpRoot, "openclaw-oauth"),
     });
 
@@ -38,14 +38,14 @@ describe("buildCleanupPlan", () => {
 
 describe("applyAgentDefaultPrimaryModel", () => {
   it("does not mutate when already set", () => {
-    const cfg = { agents: { defaults: { model: { primary: "a/b" } } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: { primary: "a/b" } } } } as WineryClawConfig;
     const result = applyAgentDefaultPrimaryModel({ cfg, model: "a/b" });
     expect(result.changed).toBe(false);
     expect(result.next).toBe(cfg);
   });
 
   it("normalizes legacy models", () => {
-    const cfg = { agents: { defaults: { model: { primary: "legacy" } } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: { primary: "legacy" } } } } as WineryClawConfig;
     const result = applyAgentDefaultPrimaryModel({
       cfg,
       model: "a/b",
@@ -73,7 +73,7 @@ describe("cleanup path removals", () => {
     await removeStateAndLinkedPaths(
       {
         stateDir: path.join(tmpRoot, "state"),
-        configPath: path.join(tmpRoot, "state", "openclaw.json"),
+        configPath: path.join(tmpRoot, "state", "wineryclaw.json"),
         oauthDir: path.join(tmpRoot, "oauth"),
         configInsideState: true,
         oauthInsideState: false,
@@ -87,7 +87,7 @@ describe("cleanup path removals", () => {
       .join("\n");
     expect(joinedLogs).toContain("/tmp/openclaw-cleanup/state");
     expect(joinedLogs).toContain("/tmp/openclaw-cleanup/oauth");
-    expect(joinedLogs).not.toContain("openclaw.json");
+    expect(joinedLogs).not.toContain("wineryclaw.json");
   });
 
   it("removes every workspace directory", async () => {

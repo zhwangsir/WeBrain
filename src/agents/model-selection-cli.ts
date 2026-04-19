@@ -1,9 +1,9 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveRuntimeCliBackends } from "../plugins/cli-backends.runtime.js";
 import { resolvePluginSetupCliBackendRuntime } from "../plugins/setup-registry.runtime.js";
 import { normalizeProviderId } from "./model-selection-normalize.js";
 
-export function isCliProvider(provider: string, cfg?: OpenClawConfig): boolean {
+export function isCliProvider(provider: string, cfg?: WineryClawConfig): boolean {
   const normalized = normalizeProviderId(provider);
   const cliBackends = resolveRuntimeCliBackends();
   if (cliBackends.some((backend) => normalizeProviderId(backend.id) === normalized)) {

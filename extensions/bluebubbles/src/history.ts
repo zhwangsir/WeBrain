@@ -1,5 +1,5 @@
 import { resolveBlueBubblesServerAccount } from "./account-resolve.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 import { blueBubblesFetchWithTimeout, buildBlueBubblesApiUrl } from "./types.js";
 
 export type BlueBubblesHistoryEntry = {
@@ -37,7 +37,7 @@ export type BlueBubblesChatOpts = {
   password?: string;
   accountId?: string;
   timeoutMs?: number;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
 };
 
 function resolveAccount(params: BlueBubblesChatOpts) {

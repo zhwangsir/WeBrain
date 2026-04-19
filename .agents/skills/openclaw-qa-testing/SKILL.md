@@ -1,9 +1,9 @@
 ---
 name: openclaw-qa-testing
-description: Run, watch, debug, and extend OpenClaw QA testing with qa-lab and qa-channel. Use when Codex needs to execute the repo-backed QA suite, inspect live QA artifacts, debug failing scenarios, add new QA scenarios, or explain the OpenClaw QA workflow. Prefer the live OpenAI lane with regular openai/gpt-5.4 in fast mode; do not use gpt-5.4-pro or gpt-5.4-mini unless the user explicitly overrides that policy.
+description: Run, watch, debug, and extend WineryClaw QA testing with qa-lab and qa-channel. Use when Codex needs to execute the repo-backed QA suite, inspect live QA artifacts, debug failing scenarios, add new QA scenarios, or explain the WineryClaw QA workflow. Prefer the live OpenAI lane with regular openai/gpt-5.4 in fast mode; do not use gpt-5.4-pro or gpt-5.4-mini unless the user explicitly overrides that policy.
 ---
 
-# OpenClaw QA Testing
+# WineryClaw QA Testing
 
 Use this skill for `qa-lab` / `qa-channel` work. Repo-local QA only.
 
@@ -35,7 +35,7 @@ Use this skill for `qa-lab` / `qa-channel` work. Repo-local QA only.
 3. For live OpenAI, use:
 
 ```bash
-OPENCLAW_LIVE_OPENAI_KEY="${OPENAI_API_KEY}" \
+WINERYCLAW_LIVE_OPENAI_KEY="${OPENAI_API_KEY}" \
 pnpm openclaw qa suite \
   --provider-mode live-openai \
   --model openai/gpt-5.4 \
@@ -80,7 +80,7 @@ pnpm openclaw qa character-eval \
 - Report includes judge ranking, run stats, durations, and full transcripts; do not include raw judge replies. Duration is benchmark context, not a grading signal.
 - Candidate and judge concurrency default to 16. Use `--concurrency <n>` and `--judge-concurrency <n>` to override when local gateways or provider limits need a gentler lane.
 - Scenario source should stay markdown-driven under `qa/scenarios/`.
-- For isolated character/persona evals, write the persona into `SOUL.md` and blank `IDENTITY.md` in the scenario flow. Use `SOUL.md + IDENTITY.md` only when intentionally testing how the normal OpenClaw identity combines with the character.
+- For isolated character/persona evals, write the persona into `SOUL.md` and blank `IDENTITY.md` in the scenario flow. Use `SOUL.md + IDENTITY.md` only when intentionally testing how the normal WineryClaw identity combines with the character.
 - Keep prompts natural and task-shaped. The candidate model should receive character setup through `SOUL.md`, then normal user turns such as chat, workspace help, and small file tasks; do not ask "how would you react?" or tell the model it is in an eval.
 - Prefer at least one real task, such as creating or editing a tiny workspace artifact, so the transcript captures character under normal tool use instead of pure roleplay.
 
@@ -106,7 +106,7 @@ pnpm openclaw qa manual \
 ```
 
 - Treat the concrete Codex model name as user/config input; do not hardcode it in source, docs examples, or scenarios.
-- Live QA preserves `CODEX_HOME` so Codex CLI auth/config works while keeping `HOME` and `OPENCLAW_HOME` sandboxed.
+- Live QA preserves `CODEX_HOME` so Codex CLI auth/config works while keeping `HOME` and `WINERYCLAW_HOME` sandboxed.
 - Mock QA should scrub `CODEX_HOME`.
 - If Codex returns fallback/auth text every turn, first check `CODEX_HOME`, `~/.profile`, and gateway child logs before changing scenario assertions.
 - For model comparison, include `codex-cli/<codex-model>` as another candidate in `qa character-eval`; the report should label it as an opaque model name.

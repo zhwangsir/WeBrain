@@ -1,6 +1,6 @@
 import type { Mock } from "vitest";
 import { vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 
 type UnknownMock = Mock<(...args: unknown[]) => unknown>;
 type ResolveConfigPathMock = Mock<() => string>;
@@ -248,14 +248,14 @@ export async function loadStatusScanModuleForTest(
   return await import("./status.scan.js");
 }
 
-export function createStatusScanConfig<T extends object = OpenClawConfig>(
+export function createStatusScanConfig<T extends object = WineryClawConfig>(
   overrides: T = {} as T,
-): OpenClawConfig & T {
+): WineryClawConfig & T {
   return {
     session: {},
     gateway: {},
     ...overrides,
-  } as OpenClawConfig & T;
+  } as WineryClawConfig & T;
 }
 
 export function createStatusSummary(
@@ -335,7 +335,7 @@ export function createStatusGatewayProbeFailure() {
   };
 }
 
-export function createStatusMemorySearchConfig(): OpenClawConfig {
+export function createStatusMemorySearchConfig(): WineryClawConfig {
   return createStatusScanConfig({
     agents: {
       defaults: {
@@ -363,8 +363,8 @@ export function applyStatusScanDefaults(
   mocks: StatusScanSharedMocks,
   options: {
     hasConfiguredChannels?: boolean;
-    sourceConfig?: OpenClawConfig;
-    resolvedConfig?: OpenClawConfig;
+    sourceConfig?: WineryClawConfig;
+    resolvedConfig?: WineryClawConfig;
     summary?: ReturnType<typeof createStatusSummary>;
     update?: ReturnType<typeof createStatusUpdateResult> | false;
     gatewayProbe?: ReturnType<typeof createStatusGatewayProbeFailure> | false;

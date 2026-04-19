@@ -1,7 +1,7 @@
 import { resolveDefaultAgentWorkspaceDir } from "../agents/workspace.js";
 import { loadConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
-import { normalizeOpenClawVersionBase } from "../config/version.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
+import { normalizeWineryClawVersionBase } from "../config/version.js";
 import { listImportedBundledPluginFacadeIds } from "../plugin-sdk/facade-runtime.js";
 import { resolveCompatibilityHostVersion } from "../version.js";
 import { inspectBundleLspRuntimeSupport } from "./bundle-lsp.js";
@@ -11,7 +11,7 @@ import {
   withBundledPluginEnablementCompat,
 } from "./bundled-compat.js";
 import { normalizePluginsConfig } from "./config-state.js";
-import { loadOpenClawPlugins } from "./loader.js";
+import { loadWineryClawPlugins } from "./loader.js";
 import type { PluginDiagnostic } from "./manifest-types.js";
 import { resolveBundledProviderCompatPluginIds } from "./providers.js";
 import type { PluginRegistry } from "./registry.js";
@@ -137,14 +137,14 @@ function resolveReportedPluginVersion(
     return plugin.version;
   }
   return (
-    normalizeOpenClawVersionBase(resolveCompatibilityHostVersion(env)) ??
-    normalizeOpenClawVersionBase(plugin.version) ??
+    normalizeWineryClawVersionBase(resolveCompatibilityHostVersion(env)) ??
+    normalizeWineryClawVersionBase(plugin.version) ??
     plugin.version
   );
 }
 
 type PluginReportParams = {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   /** Use an explicit env when plugin roots should resolve independently from process.env. */
   env?: NodeJS.ProcessEnv;
@@ -191,7 +191,7 @@ function buildPluginReport(
   });
 
   const registry = loadModules
-    ? loadOpenClawPlugins(
+    ? loadWineryClawPlugins(
         buildPluginRuntimeLoadOptions(context, {
           config: runtimeCompatConfig,
           activationSourceConfig: rawConfig,
@@ -286,7 +286,7 @@ function deriveInspectShape(params: {
 
 export function buildPluginInspectReport(params: {
   id: string;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   report?: PluginStatusReport;
@@ -424,7 +424,7 @@ export function buildPluginInspectReport(params: {
 }
 
 export function buildAllPluginInspectReports(params?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   report?: PluginStatusReport;
@@ -450,7 +450,7 @@ export function buildAllPluginInspectReports(params?: {
 }
 
 export function buildPluginCompatibilityWarnings(params?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   report?: PluginStatusReport;
@@ -459,7 +459,7 @@ export function buildPluginCompatibilityWarnings(params?: {
 }
 
 export function buildPluginCompatibilityNotices(params?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   report?: PluginStatusReport;

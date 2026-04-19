@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { SessionEntry } from "../config/sessions.js";
 import {
   parseRawSessionConversationRef,
@@ -64,16 +64,16 @@ const baseRequest: ExecApprovalRequest = {
 function writeStoreFile(
   storePath: string,
   entries: Record<string, Partial<SessionEntry>>,
-): OpenClawConfig {
+): WineryClawConfig {
   fs.mkdirSync(path.dirname(storePath), { recursive: true });
   fs.writeFileSync(storePath, JSON.stringify(entries), "utf-8");
   return {
     session: { store: storePath },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function expectResolvedSessionTarget(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   request: ExecApprovalRequest,
 ): ReturnType<typeof resolveExecApprovalSessionTarget> {
   return resolveExecApprovalSessionTarget({ cfg, request });
@@ -284,7 +284,7 @@ describe("exec approval session target", () => {
   });
 
   it("prefers explicit turn-source account bindings when session store is missing", () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as WineryClawConfig;
     const request = buildRequest({
       turnSourceChannel: "slack",
       turnSourceAccountId: "Work",
@@ -311,7 +311,7 @@ describe("exec approval session target", () => {
   });
 
   it("rejects mismatched channel bindings before account checks", () => {
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as WineryClawConfig;
     const request = buildRequest({
       turnSourceChannel: "discord",
       turnSourceAccountId: "work",
@@ -480,7 +480,7 @@ describe("exec approval session target", () => {
 
   it("falls back to a legacy origin target when no turn-source or session target exists", () => {
     const target = resolveApprovalRequestOriginTarget({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       request: buildPluginRequest({ sessionKey: "agent:main:missing" }),
       channel: "discord",
       accountId: "default",

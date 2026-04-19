@@ -1,5 +1,5 @@
 import type { App } from "@slack/bolt";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { describe, expect, it } from "vitest";
 import { createSlackMonitorContext } from "./context.js";
@@ -9,7 +9,7 @@ function createTestContext() {
     cfg: {
       channels: { slack: { enabled: true } },
       session: { dmScope: "main" },
-    } as OpenClawConfig,
+    } as WineryClawConfig,
     accountId: "default",
     botToken: "xoxb-test",
     app: { client: {} } as App,

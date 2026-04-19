@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct ExecHostRequestEvaluatorTests {
     @Test func `validate request rejects empty command`() {

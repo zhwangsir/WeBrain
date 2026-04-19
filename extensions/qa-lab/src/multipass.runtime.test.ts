@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
 const execFileMock = vi.hoisted(() => vi.fn());
@@ -147,7 +147,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("forwards live key list and numbered key env shapes", () => {
-    vi.stubEnv("OPENCLAW_LIVE_ANTHROPIC_KEYS", "anthropic-a anthropic-b");
+    vi.stubEnv("WINERYCLAW_LIVE_ANTHROPIC_KEYS", "anthropic-a anthropic-b");
     vi.stubEnv("OPENAI_API_KEY_1", "openai-one");
     vi.stubEnv("GEMINI_API_KEY_2", "gemini-two");
     const plan = createQaMultipassPlan({
@@ -157,7 +157,7 @@ describe("qa multipass runtime", () => {
       scenarioIds: ["channel-chat-baseline"],
     });
 
-    expect(plan.forwardedEnv.OPENCLAW_LIVE_ANTHROPIC_KEYS).toBe("anthropic-a anthropic-b");
+    expect(plan.forwardedEnv.WINERYCLAW_LIVE_ANTHROPIC_KEYS).toBe("anthropic-a anthropic-b");
     expect(plan.forwardedEnv.OPENAI_API_KEY_1).toBe("openai-one");
     expect(plan.forwardedEnv.GEMINI_API_KEY_2).toBe("gemini-two");
   });
@@ -215,7 +215,7 @@ describe("qa multipass runtime", () => {
       scenarioIds: ["channel-chat-baseline"],
     }).vmName;
     const expectedTransferDir = path.join(
-      resolvePreferredOpenClawTmpDir(),
+      resolvePreferredWineryClawTmpDir(),
       `${expectedVmName}-qa-suite-`,
     );
 
@@ -228,7 +228,7 @@ describe("qa multipass runtime", () => {
     ).rejects.toThrow("Multipass is not installed on this host.");
 
     const tempEntries = fs
-      .readdirSync(resolvePreferredOpenClawTmpDir())
+      .readdirSync(resolvePreferredWineryClawTmpDir())
       .filter((entry) => entry.startsWith(path.basename(expectedTransferDir)));
     expect(tempEntries).toEqual([]);
     fs.rmSync(outputDir, { recursive: true, force: true });

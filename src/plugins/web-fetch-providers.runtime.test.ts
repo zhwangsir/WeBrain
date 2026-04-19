@@ -10,7 +10,7 @@ type WebFetchProvidersSharedModule = typeof import("./web-fetch-providers.shared
 let loaderModule: LoaderModule;
 let manifestRegistryModule: ManifestRegistryModule;
 let webFetchProvidersSharedModule: WebFetchProvidersSharedModule;
-let loadOpenClawPluginsMock: ReturnType<typeof vi.fn>;
+let loadWineryClawPluginsMock: ReturnType<typeof vi.fn>;
 let setActivePluginRegistry: RuntimeModule["setActivePluginRegistry"];
 let resolvePluginWebFetchProviders: WebFetchProvidersRuntimeModule["resolvePluginWebFetchProviders"];
 let resetWebFetchProviderSnapshotCacheForTests: WebFetchProvidersRuntimeModule["__testing"]["resetWebFetchProviderSnapshotCacheForTests"];
@@ -19,7 +19,7 @@ const DEFAULT_WORKSPACE = "/tmp/workspace";
 
 function createWebFetchEnv(overrides?: Partial<NodeJS.ProcessEnv>) {
   return {
-    OPENCLAW_HOME: "/tmp/openclaw-home",
+    WINERYCLAW_HOME: "/tmp/openclaw-home",
     ...overrides,
   } as NodeJS.ProcessEnv;
 }
@@ -109,8 +109,8 @@ describe("resolvePluginWebFetchProviders", () => {
         ? R
         : never,
     );
-    loadOpenClawPluginsMock = vi
-      .spyOn(loaderModule, "loadOpenClawPlugins")
+    loadWineryClawPluginsMock = vi
+      .spyOn(loaderModule, "loadWineryClawPlugins")
       .mockImplementation(() => {
         const registry = createEmptyPluginRegistry();
         registry.webFetchProviders = [createRuntimeWebFetchProvider()];
@@ -130,14 +130,14 @@ describe("resolvePluginWebFetchProviders", () => {
     expect(providers.map((provider) => `${provider.pluginId}:${provider.id}`)).toEqual([
       "firecrawl:firecrawl",
     ]);
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(1);
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledTimes(1);
   });
 
   it("does not force a fresh snapshot load when the same web-provider load is already in flight", () => {
     const inFlightSpy = vi
       .spyOn(loaderModule, "isPluginRegistryLoadInFlight")
       .mockReturnValue(true);
-    loadOpenClawPluginsMock.mockImplementation(() => {
+    loadWineryClawPluginsMock.mockImplementation(() => {
       throw new Error("resolvePluginWebFetchProviders should not bypass the in-flight guard");
     });
 
@@ -157,7 +157,7 @@ describe("resolvePluginWebFetchProviders", () => {
         workspaceDir: DEFAULT_WORKSPACE,
       }),
     );
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadWineryClawPluginsMock).not.toHaveBeenCalled();
   });
 
   it("reuses a compatible active registry for snapshot resolution when config is provided", () => {
@@ -193,7 +193,7 @@ describe("resolvePluginWebFetchProviders", () => {
     expect(providers.map((provider) => `${provider.pluginId}:${provider.id}`)).toEqual([
       "firecrawl:firecrawl",
     ]);
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadWineryClawPluginsMock).not.toHaveBeenCalled();
   });
 
   it("inherits workspaceDir from the active registry for compatible web-fetch snapshot reuse", () => {
@@ -229,7 +229,7 @@ describe("resolvePluginWebFetchProviders", () => {
     expect(providers.map((provider) => `${provider.pluginId}:${provider.id}`)).toEqual([
       "firecrawl:firecrawl",
     ]);
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadWineryClawPluginsMock).not.toHaveBeenCalled();
   });
 
   it("uses the active registry workspace for candidate discovery and snapshot loads when workspaceDir is omitted", () => {
@@ -254,7 +254,7 @@ describe("resolvePluginWebFetchProviders", () => {
         workspaceDir: "/tmp/runtime-workspace",
       }),
     );
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         workspaceDir: "/tmp/runtime-workspace",
         onlyPluginIds: ["firecrawl"],
@@ -280,6 +280,6 @@ describe("resolvePluginWebFetchProviders", () => {
       env,
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 });

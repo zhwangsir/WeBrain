@@ -3,7 +3,7 @@ import path from "node:path";
 import { GoogleGenAI } from "@google/genai";
 import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
 import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import type {
   GeneratedVideoAsset,
@@ -125,7 +125,7 @@ async function downloadGeneratedVideo(params: {
   index: number;
 }): Promise<GeneratedVideoAsset> {
   const tempDir = await mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "openclaw-google-video-"),
+    path.join(resolvePreferredWineryClawTmpDir(), "openclaw-google-video-"),
   );
   const downloadPath = path.join(tempDir, `video-${params.index + 1}.mp4`);
   try {

@@ -6,7 +6,7 @@ import CryptoKit
 import EventKit
 import Foundation
 import Darwin
-import OpenClawKit
+import WineryClawKit
 import Network
 import Observation
 import os
@@ -802,32 +802,32 @@ final class GatewayConnectionController {
     }
 
     private func currentCaps() -> [String] {
-        var caps = [OpenClawCapability.canvas.rawValue, OpenClawCapability.screen.rawValue]
+        var caps = [WineryClawCapability.canvas.rawValue, WineryClawCapability.screen.rawValue]
 
         // Default-on: if the key doesn't exist yet, treat it as enabled.
         let cameraEnabled =
             UserDefaults.standard.object(forKey: "camera.enabled") == nil
                 ? true
                 : UserDefaults.standard.bool(forKey: "camera.enabled")
-        if cameraEnabled { caps.append(OpenClawCapability.camera.rawValue) }
+        if cameraEnabled { caps.append(WineryClawCapability.camera.rawValue) }
 
         let voiceWakeEnabled = UserDefaults.standard.bool(forKey: VoiceWakePreferences.enabledKey)
-        if voiceWakeEnabled { caps.append(OpenClawCapability.voiceWake.rawValue) }
+        if voiceWakeEnabled { caps.append(WineryClawCapability.voiceWake.rawValue) }
 
         let locationModeRaw = UserDefaults.standard.string(forKey: "location.enabledMode") ?? "off"
-        let locationMode = OpenClawLocationMode(rawValue: locationModeRaw) ?? .off
-        if locationMode != .off { caps.append(OpenClawCapability.location.rawValue) }
+        let locationMode = WineryClawLocationMode(rawValue: locationModeRaw) ?? .off
+        if locationMode != .off { caps.append(WineryClawCapability.location.rawValue) }
 
-        caps.append(OpenClawCapability.device.rawValue)
+        caps.append(WineryClawCapability.device.rawValue)
         if WatchMessagingService.isSupportedOnDevice() {
-            caps.append(OpenClawCapability.watch.rawValue)
+            caps.append(WineryClawCapability.watch.rawValue)
         }
-        caps.append(OpenClawCapability.photos.rawValue)
-        caps.append(OpenClawCapability.contacts.rawValue)
-        caps.append(OpenClawCapability.calendar.rawValue)
-        caps.append(OpenClawCapability.reminders.rawValue)
+        caps.append(WineryClawCapability.photos.rawValue)
+        caps.append(WineryClawCapability.contacts.rawValue)
+        caps.append(WineryClawCapability.calendar.rawValue)
+        caps.append(WineryClawCapability.reminders.rawValue)
         if Self.motionAvailable() {
-            caps.append(OpenClawCapability.motion.rawValue)
+            caps.append(WineryClawCapability.motion.rawValue)
         }
 
         return caps
@@ -835,58 +835,58 @@ final class GatewayConnectionController {
 
     private func currentCommands() -> [String] {
         var commands: [String] = [
-            OpenClawCanvasCommand.present.rawValue,
-            OpenClawCanvasCommand.hide.rawValue,
-            OpenClawCanvasCommand.navigate.rawValue,
-            OpenClawCanvasCommand.evalJS.rawValue,
-            OpenClawCanvasCommand.snapshot.rawValue,
-            OpenClawCanvasA2UICommand.push.rawValue,
-            OpenClawCanvasA2UICommand.pushJSONL.rawValue,
-            OpenClawCanvasA2UICommand.reset.rawValue,
-            OpenClawScreenCommand.record.rawValue,
-            OpenClawSystemCommand.notify.rawValue,
-            OpenClawChatCommand.push.rawValue,
-            OpenClawTalkCommand.pttStart.rawValue,
-            OpenClawTalkCommand.pttStop.rawValue,
-            OpenClawTalkCommand.pttCancel.rawValue,
-            OpenClawTalkCommand.pttOnce.rawValue,
+            WineryClawCanvasCommand.present.rawValue,
+            WineryClawCanvasCommand.hide.rawValue,
+            WineryClawCanvasCommand.navigate.rawValue,
+            WineryClawCanvasCommand.evalJS.rawValue,
+            WineryClawCanvasCommand.snapshot.rawValue,
+            WineryClawCanvasA2UICommand.push.rawValue,
+            WineryClawCanvasA2UICommand.pushJSONL.rawValue,
+            WineryClawCanvasA2UICommand.reset.rawValue,
+            WineryClawScreenCommand.record.rawValue,
+            WineryClawSystemCommand.notify.rawValue,
+            WineryClawChatCommand.push.rawValue,
+            WineryClawTalkCommand.pttStart.rawValue,
+            WineryClawTalkCommand.pttStop.rawValue,
+            WineryClawTalkCommand.pttCancel.rawValue,
+            WineryClawTalkCommand.pttOnce.rawValue,
         ]
 
         let caps = Set(self.currentCaps())
-        if caps.contains(OpenClawCapability.camera.rawValue) {
-            commands.append(OpenClawCameraCommand.list.rawValue)
-            commands.append(OpenClawCameraCommand.snap.rawValue)
-            commands.append(OpenClawCameraCommand.clip.rawValue)
+        if caps.contains(WineryClawCapability.camera.rawValue) {
+            commands.append(WineryClawCameraCommand.list.rawValue)
+            commands.append(WineryClawCameraCommand.snap.rawValue)
+            commands.append(WineryClawCameraCommand.clip.rawValue)
         }
-        if caps.contains(OpenClawCapability.location.rawValue) {
-            commands.append(OpenClawLocationCommand.get.rawValue)
+        if caps.contains(WineryClawCapability.location.rawValue) {
+            commands.append(WineryClawLocationCommand.get.rawValue)
         }
-        if caps.contains(OpenClawCapability.device.rawValue) {
-            commands.append(OpenClawDeviceCommand.status.rawValue)
-            commands.append(OpenClawDeviceCommand.info.rawValue)
+        if caps.contains(WineryClawCapability.device.rawValue) {
+            commands.append(WineryClawDeviceCommand.status.rawValue)
+            commands.append(WineryClawDeviceCommand.info.rawValue)
         }
-        if caps.contains(OpenClawCapability.watch.rawValue) {
-            commands.append(OpenClawWatchCommand.status.rawValue)
-            commands.append(OpenClawWatchCommand.notify.rawValue)
+        if caps.contains(WineryClawCapability.watch.rawValue) {
+            commands.append(WineryClawWatchCommand.status.rawValue)
+            commands.append(WineryClawWatchCommand.notify.rawValue)
         }
-        if caps.contains(OpenClawCapability.photos.rawValue) {
-            commands.append(OpenClawPhotosCommand.latest.rawValue)
+        if caps.contains(WineryClawCapability.photos.rawValue) {
+            commands.append(WineryClawPhotosCommand.latest.rawValue)
         }
-        if caps.contains(OpenClawCapability.contacts.rawValue) {
-            commands.append(OpenClawContactsCommand.search.rawValue)
-            commands.append(OpenClawContactsCommand.add.rawValue)
+        if caps.contains(WineryClawCapability.contacts.rawValue) {
+            commands.append(WineryClawContactsCommand.search.rawValue)
+            commands.append(WineryClawContactsCommand.add.rawValue)
         }
-        if caps.contains(OpenClawCapability.calendar.rawValue) {
-            commands.append(OpenClawCalendarCommand.events.rawValue)
-            commands.append(OpenClawCalendarCommand.add.rawValue)
+        if caps.contains(WineryClawCapability.calendar.rawValue) {
+            commands.append(WineryClawCalendarCommand.events.rawValue)
+            commands.append(WineryClawCalendarCommand.add.rawValue)
         }
-        if caps.contains(OpenClawCapability.reminders.rawValue) {
-            commands.append(OpenClawRemindersCommand.list.rawValue)
-            commands.append(OpenClawRemindersCommand.add.rawValue)
+        if caps.contains(WineryClawCapability.reminders.rawValue) {
+            commands.append(WineryClawRemindersCommand.list.rawValue)
+            commands.append(WineryClawRemindersCommand.add.rawValue)
         }
-        if caps.contains(OpenClawCapability.motion.rawValue) {
-            commands.append(OpenClawMotionCommand.activity.rawValue)
-            commands.append(OpenClawMotionCommand.pedometer.rawValue)
+        if caps.contains(WineryClawCapability.motion.rawValue) {
+            commands.append(WineryClawMotionCommand.activity.rawValue)
+            commands.append(WineryClawMotionCommand.pedometer.rawValue)
         }
 
         return commands

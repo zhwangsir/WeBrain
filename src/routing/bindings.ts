@@ -2,7 +2,7 @@ import { resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { normalizeChatChannelId } from "../channels/ids.js";
 import { listRouteBindings } from "../config/bindings.js";
 import type { AgentRouteBinding } from "../config/types.agents.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 import { normalizeAccountId, normalizeAgentId } from "./session-key.js";
 
@@ -15,7 +15,7 @@ function normalizeBindingChannelId(raw?: string | null): string | null {
   return fallback || null;
 }
 
-export function listBindings(cfg: OpenClawConfig): AgentRouteBinding[] {
+export function listBindings(cfg: WineryClawConfig): AgentRouteBinding[] {
   return listRouteBindings(cfg);
 }
 
@@ -46,7 +46,7 @@ function resolveNormalizedBindingMatch(binding: AgentRouteBinding): {
   };
 }
 
-export function listBoundAccountIds(cfg: OpenClawConfig, channelId: string): string[] {
+export function listBoundAccountIds(cfg: WineryClawConfig, channelId: string): string[] {
   const normalizedChannel = normalizeBindingChannelId(channelId);
   if (!normalizedChannel) {
     return [];
@@ -63,7 +63,7 @@ export function listBoundAccountIds(cfg: OpenClawConfig, channelId: string): str
 }
 
 export function resolveDefaultAgentBoundAccountId(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   channelId: string,
 ): string | null {
   const normalizedChannel = normalizeBindingChannelId(channelId);
@@ -85,7 +85,7 @@ export function resolveDefaultAgentBoundAccountId(
   return null;
 }
 
-export function buildChannelAccountBindings(cfg: OpenClawConfig) {
+export function buildChannelAccountBindings(cfg: WineryClawConfig) {
   const map = new Map<string, Map<string, string[]>>();
   for (const binding of listBindings(cfg)) {
     const resolved = resolveNormalizedBindingMatch(binding);

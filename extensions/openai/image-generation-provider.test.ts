@@ -128,7 +128,7 @@ describe("openai image generation provider", () => {
       },
       release: vi.fn(async () => {}),
     });
-    vi.stubEnv("OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER", "1");
+    vi.stubEnv("WINERYCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER", "1");
 
     const provider = buildOpenAIImageGenerationProvider();
     const result = await provider.generateImage({

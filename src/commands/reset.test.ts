@@ -33,14 +33,14 @@ describe("resetCommand", () => {
     vi.clearAllMocks();
     resolveCleanupPlanFromDisk.mockReturnValue({
       stateDir: "/tmp/.openclaw",
-      configPath: "/tmp/.openclaw/openclaw.json",
-      oauthDir: "/tmp/.openclaw/credentials",
+      configPath: "/tmp/.wineryclaw/openclaw.json",
+      oauthDir: "/tmp/.wineryclaw/credentials",
       configInsideState: true,
       oauthInsideState: true,
-      workspaceDirs: ["/tmp/.openclaw/workspace"],
+      workspaceDirs: ["/tmp/.wineryclaw/workspace"],
     });
     removePath.mockResolvedValue({ ok: true });
-    listAgentSessionDirs.mockResolvedValue(["/tmp/.openclaw/agents/main/sessions"]);
+    listAgentSessionDirs.mockResolvedValue(["/tmp/.wineryclaw/agents/main/sessions"]);
     removeStateAndLinkedPaths.mockResolvedValue(undefined);
     removeWorkspaceDirs.mockResolvedValue(undefined);
     vi.spyOn(runtime, "log").mockImplementation(() => {});

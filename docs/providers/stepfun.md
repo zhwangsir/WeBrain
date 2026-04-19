@@ -1,14 +1,14 @@
 ---
-summary: "Use StepFun models with OpenClaw"
+summary: "Use StepFun models with WineryClaw"
 read_when:
-  - You want StepFun models in OpenClaw
+  - You want StepFun models in WineryClaw
   - You need StepFun setup guidance
 title: "StepFun"
 ---
 
 # StepFun
 
-OpenClaw includes a bundled StepFun provider plugin with two provider ids:
+WineryClaw includes a bundled StepFun provider plugin with two provider ids:
 
 - `stepfun` for the standard endpoint
 - `stepfun-plan` for the Step Plan endpoint
@@ -201,7 +201,7 @@ Choose your provider surface and follow the setup steps.
   </Accordion>
 
   <Accordion title="Notes">
-    - The provider is bundled with OpenClaw, so there is no separate plugin install step.
+    - The provider is bundled with WineryClaw, so there is no separate plugin install step.
     - `step-3.5-flash-2603` is currently exposed only on `stepfun-plan`.
     - A single auth flow writes region-matched profiles for both `stepfun` and `stepfun-plan`, so both surfaces can be discovered together.
     - Use `openclaw models list` and `openclaw models set <provider/model>` to inspect or switch models.

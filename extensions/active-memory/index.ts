@@ -11,10 +11,10 @@ import {
 import {
   resolveSessionStoreEntry,
   updateSessionStore,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/config-runtime";
-import { definePluginEntry, type OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { definePluginEntry, type WineryClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/temp-path";
 
 const DEFAULT_TIMEOUT_MS = 15_000;
 const DEFAULT_AGENT_ID = "main";
@@ -296,7 +296,7 @@ function toSafeTranscriptAgentDirName(agentId: string): string {
   return encoded ? encoded : "unknown-agent";
 }
 
-function resolvePersistentTranscriptBaseDir(api: OpenClawPluginApi, agentId: string): string {
+function resolvePersistentTranscriptBaseDir(api: WineryClawPluginApi, agentId: string): string {
   return path.join(
     api.runtime.state.resolveStateDir(),
     "plugins",
@@ -308,7 +308,7 @@ function resolvePersistentTranscriptBaseDir(api: OpenClawPluginApi, agentId: str
 }
 
 function resolveCanonicalSessionKeyFromSessionId(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   agentId: string;
   sessionId?: string;
 }): string | undefined {
@@ -360,7 +360,7 @@ function normalizeOptionalString(value: unknown): string | undefined {
 }
 
 function resolveRecallRunChannelContext(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   agentId: string;
   sessionKey?: string;
   sessionId?: string;
@@ -434,7 +434,7 @@ function resolveRecallRunChannelContext(params: {
   }
 }
 
-function resolveToggleStatePath(api: OpenClawPluginApi): string {
+function resolveToggleStatePath(api: WineryClawPluginApi): string {
   return path.join(
     api.runtime.state.resolveStateDir(),
     "plugins",
@@ -489,7 +489,7 @@ async function writeToggleStore(statePath: string, store: ActiveMemoryToggleStor
 }
 
 async function isSessionActiveMemoryDisabled(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   sessionKey?: string;
 }): Promise<boolean> {
   const sessionKey = params.sessionKey?.trim();
@@ -508,7 +508,7 @@ async function isSessionActiveMemoryDisabled(params: {
 }
 
 async function setSessionActiveMemoryDisabled(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   sessionKey: string;
   disabled: boolean;
 }): Promise<void> {
@@ -526,7 +526,7 @@ async function setSessionActiveMemoryDisabled(params: {
 }
 
 function resolveCommandSessionKey(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   config: ResolvedActiveRecallPluginConfig;
   sessionKey?: string;
   sessionId?: string;
@@ -564,7 +564,7 @@ function formatActiveMemoryCommandHelp(): string {
   ].join("\n");
 }
 
-function isActiveMemoryGloballyEnabled(cfg: OpenClawConfig): boolean {
+function isActiveMemoryGloballyEnabled(cfg: WineryClawConfig): boolean {
   const entry = asRecord(cfg.plugins?.entries?.["active-memory"]);
   if (entry?.enabled === false) {
     return false;
@@ -573,14 +573,14 @@ function isActiveMemoryGloballyEnabled(cfg: OpenClawConfig): boolean {
   return pluginConfig?.enabled !== false;
 }
 
-function resolveActiveMemoryPluginConfigFromConfig(cfg: OpenClawConfig): unknown {
+function resolveActiveMemoryPluginConfigFromConfig(cfg: WineryClawConfig): unknown {
   return asRecord(cfg.plugins?.entries?.["active-memory"])?.config;
 }
 
 function updateActiveMemoryGlobalEnabledInConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   enabled: boolean,
-): OpenClawConfig {
+): WineryClawConfig {
   const entries = { ...cfg.plugins?.entries };
   const existingEntry = asRecord(entries["active-memory"]) ?? {};
   const existingConfig = asRecord(existingEntry.config) ?? {};
@@ -661,9 +661,9 @@ function normalizePluginConfig(pluginConfig: unknown): ResolvedActiveRecallPlugi
 }
 
 function applyActiveMemoryRuntimeConfigSnapshot(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   pluginConfig: ResolvedActiveRecallPluginConfig,
-): OpenClawConfig {
+): WineryClawConfig {
   const existingEntry = asRecord(cfg.plugins?.entries?.["active-memory"]);
   const existingPluginConfig = asRecord(existingEntry?.config);
   return {
@@ -1093,7 +1093,7 @@ function sanitizeDebugText(text: string): string {
 }
 
 async function persistPluginStatusLines(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   agentId: string;
   sessionKey?: string;
   statusLine?: string;
@@ -1468,7 +1468,7 @@ function parseModelCandidate(modelRef: string | undefined) {
 }
 
 function getModelRef(
-  api: OpenClawPluginApi,
+  api: WineryClawPluginApi,
   agentId: string,
   config: ResolvedActiveRecallPluginConfig,
   ctx?: {
@@ -1494,7 +1494,7 @@ function getModelRef(
 }
 
 async function runRecallSubagent(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   config: ResolvedActiveRecallPluginConfig;
   agentId: string;
   sessionKey?: string;
@@ -1538,7 +1538,7 @@ async function runRecallSubagent(params: {
     : `agent:${params.agentId}:${subagentSuffix}`;
   const tempDir = params.config.persistTranscripts
     ? undefined
-    : await fs.mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), "openclaw-active-memory-"));
+    : await fs.mkdtemp(path.join(resolvePreferredWineryClawTmpDir(), "openclaw-active-memory-"));
   const persistedDir = params.config.persistTranscripts
     ? resolveSafeTranscriptDir(
         resolvePersistentTranscriptBaseDir(params.api, params.agentId),
@@ -1625,7 +1625,7 @@ async function runRecallSubagent(params: {
 }
 
 async function maybeResolveActiveRecall(params: {
-  api: OpenClawPluginApi;
+  api: WineryClawPluginApi;
   config: ResolvedActiveRecallPluginConfig;
   agentId: string;
   sessionKey?: string;
@@ -1765,7 +1765,7 @@ export default definePluginEntry({
   id: "active-memory",
   name: "Active Memory",
   description: "Proactively surfaces relevant memory before eligible conversational replies.",
-  register(api: OpenClawPluginApi) {
+  register(api: WineryClawPluginApi) {
     let config = normalizePluginConfig(api.pluginConfig);
     const warnDeprecatedModelFallbackPolicy = (pluginConfig: unknown) => {
       if (hasDeprecatedModelFallbackPolicy(pluginConfig)) {

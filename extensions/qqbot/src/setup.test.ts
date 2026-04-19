@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { describe, expect, it } from "vitest";
 import { createPluginSetupWizardStatus } from "../../../test/helpers/plugins/setup-wizard.js";
 import { qqbotConfigAdapter, qqbotMeta, qqbotSetupAdapterShared } from "./channel-config-shared.js";
@@ -35,7 +35,7 @@ describe("qqbot setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(configured).toBe(true);
@@ -54,7 +54,7 @@ describe("qqbot setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(configured).toBe(true);
@@ -78,7 +78,7 @@ describe("qqbot setup", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       accountOverrides: {
         qqbot: "bot2",
       },
@@ -100,7 +100,7 @@ describe("qqbot setup", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const account = qqbotSetupPlugin.config.resolveAccount?.(cfg, DEFAULT_ACCOUNT_ID);
 
@@ -117,7 +117,7 @@ describe("qqbot setup", () => {
           clientSecret: "secret-from-config",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const next = await qqbotSetupWizard.credentials[1].applyUseEnv!({
       cfg,
@@ -157,7 +157,7 @@ describe("qqbot setup", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         accountId: undefined,
       } as never),
     ).toBe("bot2");

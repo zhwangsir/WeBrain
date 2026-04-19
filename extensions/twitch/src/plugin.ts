@@ -1,5 +1,5 @@
 /**
- * Twitch channel plugin for OpenClaw.
+ * Twitch channel plugin for WineryClaw.
  *
  * Main plugin export combining all adapters (outbound, actions, status, gateway).
  * This is the primary entry point for the Twitch channel integration.
@@ -12,7 +12,7 @@ import {
   createLoggedPairingApprovalNotifier,
   createPairingPrefixStripper,
 } from "openclaw/plugin-sdk/channel-pairing";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
 import {
   createComputedAccountStatusAdapter,
@@ -49,7 +49,7 @@ type ResolvedTwitchAccount = TwitchAccountConfig & { accountId?: string | null }
  * Twitch channel plugin.
  *
  * Implements the ChannelPlugin interface to provide Twitch chat integration
- * for OpenClaw. Supports message sending, receiving, access control, and
+ * for WineryClaw. Supports message sending, receiving, access control, and
  * status monitoring.
  */
 export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
@@ -80,8 +80,8 @@ export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
       },
       configSchema: buildChannelConfigSchema(TwitchConfigSchema),
       config: {
-        listAccountIds: (cfg: OpenClawConfig): string[] => listAccountIds(cfg),
-        resolveAccount: (cfg: OpenClawConfig, accountId?: string | null): ResolvedTwitchAccount => {
+        listAccountIds: (cfg: WineryClawConfig): string[] => listAccountIds(cfg),
+        resolveAccount: (cfg: WineryClawConfig, accountId?: string | null): ResolvedTwitchAccount => {
           const resolvedAccountId = accountId ?? resolveDefaultTwitchAccountId(cfg);
           const account = getAccountConfig(cfg, resolvedAccountId);
           if (!account) {
@@ -99,8 +99,8 @@ export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
             ...account,
           };
         },
-        defaultAccountId: (cfg: OpenClawConfig): string => resolveDefaultTwitchAccountId(cfg),
-        isConfigured: (_account: unknown, cfg: OpenClawConfig): boolean =>
+        defaultAccountId: (cfg: WineryClawConfig): string => resolveDefaultTwitchAccountId(cfg),
+        isConfigured: (_account: unknown, cfg: WineryClawConfig): boolean =>
           resolveTwitchAccountContext(cfg).configured,
         isEnabled: (account: ResolvedTwitchAccount | undefined): boolean =>
           account?.enabled !== false,
@@ -125,7 +125,7 @@ export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
           kind,
           runtime,
         }: {
-          cfg: OpenClawConfig;
+          cfg: WineryClawConfig;
           accountId?: string | null;
           inputs: string[];
           kind: ChannelResolveKind;

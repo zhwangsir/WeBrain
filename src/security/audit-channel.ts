@@ -8,7 +8,7 @@ import type { ChannelId } from "../channels/plugins/types.public.js";
 import { inspectReadOnlyChannelAccount } from "../channels/read-only-account-inspect.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { isDangerousNameMatchingEnabled } from "../config/dangerous-name-matching.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { SecurityAuditFinding, SecurityAuditSeverity } from "./audit.types.js";
 import { resolveDmAllowState } from "./dm-policy-shared.js";
@@ -52,7 +52,7 @@ function dedupeFindings(findings: SecurityAuditFinding[]): SecurityAuditFinding[
 }
 
 function hasExplicitProviderAccountConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   provider: string,
   accountId: string,
 ): boolean {
@@ -78,8 +78,8 @@ function formatChannelAccountNote(params: {
 }
 
 export async function collectChannelSecurityFindings(params: {
-  cfg: OpenClawConfig;
-  sourceConfig?: OpenClawConfig;
+  cfg: WineryClawConfig;
+  sourceConfig?: WineryClawConfig;
   plugins: ReturnType<typeof listChannelPlugins>;
 }): Promise<SecurityAuditFinding[]> {
   const findings: SecurityAuditFinding[] = [];
@@ -87,7 +87,7 @@ export async function collectChannelSecurityFindings(params: {
 
   const inspectChannelAccount = async (
     plugin: (typeof params.plugins)[number],
-    cfg: OpenClawConfig,
+    cfg: WineryClawConfig,
     accountId: string,
   ) =>
     plugin.config.inspectAccount?.(cfg, accountId) ??

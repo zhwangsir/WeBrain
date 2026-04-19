@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct FileHandleSafeReadTests {
     @Test func `read to end safely returns empty for closed handle`() {

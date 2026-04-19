@@ -10,7 +10,7 @@ import {
 import { normalizeBundledPluginArtifactSubpath } from "../plugins/public-surface-runtime.js";
 import { resolveLoaderPackageRoot } from "../plugins/sdk-alias.js";
 
-const OPENCLAW_PACKAGE_ROOT =
+const WINERYCLAW_PACKAGE_ROOT =
   resolveLoaderPackageRoot({
     modulePath: fileURLToPath(import.meta.url),
     moduleUrl: import.meta.url,
@@ -40,9 +40,9 @@ function findBundledPluginMetadataFast(
   }
   const roots = [
     resolveBundledPluginsDir(),
-    path.resolve(OPENCLAW_PACKAGE_ROOT, "extensions"),
-    path.resolve(OPENCLAW_PACKAGE_ROOT, "dist-runtime", "extensions"),
-    path.resolve(OPENCLAW_PACKAGE_ROOT, "dist", "extensions"),
+    path.resolve(WINERYCLAW_PACKAGE_ROOT, "extensions"),
+    path.resolve(WINERYCLAW_PACKAGE_ROOT, "dist-runtime", "extensions"),
+    path.resolve(WINERYCLAW_PACKAGE_ROOT, "dist", "extensions"),
   ].filter(
     (entry, index, values): entry is string => Boolean(entry) && values.indexOf(entry) === index,
   );
@@ -110,7 +110,7 @@ export function resolveBundledPluginPublicModulePath(params: {
 }): string {
   const metadata = findBundledPluginMetadata(params.pluginId);
   return path.resolve(
-    OPENCLAW_PACKAGE_ROOT,
+    WINERYCLAW_PACKAGE_ROOT,
     "extensions",
     metadata.dirName,
     normalizeBundledPluginArtifactSubpath(params.artifactBasename),

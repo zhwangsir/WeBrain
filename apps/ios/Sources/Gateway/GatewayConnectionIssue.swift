@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import WineryClawKit
 
 enum GatewayConnectionIssue: Equatable {
     case none

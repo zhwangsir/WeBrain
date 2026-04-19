@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite(.serialized) struct NodeServiceManagerTests {
     @Test func `builds node service commands with current CLI shape`() async throws {

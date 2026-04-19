@@ -1,5 +1,5 @@
 ---
-summary: "Install, configure, and manage OpenClaw plugins"
+summary: "Install, configure, and manage WineryClaw plugins"
 read_when:
   - Installing or configuring plugins
   - Understanding plugin discovery and load rules
@@ -10,10 +10,10 @@ sidebarTitle: "Install and Configure"
 
 # Plugins
 
-Plugins extend OpenClaw with new capabilities: channels, model providers,
+Plugins extend WineryClaw with new capabilities: channels, model providers,
 tools, skills, speech, realtime transcription, realtime voice,
 media-understanding, image generation, video generation, web fetch, web
-search, and more. Some plugins are **core** (shipped with OpenClaw), others
+search, and more. Some plugins are **core** (shipped with WineryClaw), others
 are **external** (published on npm by the community).
 
 ## Quick start
@@ -65,12 +65,12 @@ reinstall path for plugins that opt into
 
 ## Plugin types
 
-OpenClaw recognizes two plugin formats:
+WineryClaw recognizes two plugin formats:
 
 | Format     | How it works                                                       | Examples                                               |
 | ---------- | ------------------------------------------------------------------ | ------------------------------------------------------ |
 | **Native** | `openclaw.plugin.json` + runtime module; executes in-process       | Official plugins, community npm packages               |
-| **Bundle** | Codex/Claude/Cursor-compatible layout; mapped to OpenClaw features | `.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/` |
+| **Bundle** | Codex/Claude/Cursor-compatible layout; mapped to WineryClaw features | `.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/` |
 
 Both show up under `openclaw plugins list`. See [Plugin Bundles](/plugins/bundles) for bundle details.
 
@@ -90,7 +90,7 @@ and the [Plugin SDK Overview](/plugins/sdk-overview).
 | Zalo            | `@openclaw/zalo`       | [Zalo](/channels/zalo)               |
 | Zalo Personal   | `@openclaw/zalouser`   | [Zalo Personal](/plugins/zalouser)   |
 
-### Core (shipped with OpenClaw)
+### Core (shipped with WineryClaw)
 
 <AccordionGroup>
   <Accordion title="Model providers (enabled by default)">
@@ -155,7 +155,7 @@ restart is usually performed automatically a moment after the config write lands
 
 ## Discovery and precedence
 
-OpenClaw scans for plugins in this order (first match wins):
+WineryClaw scans for plugins in this order (first match wins):
 
 <Steps>
   <Step title="Config paths">
@@ -163,15 +163,15 @@ OpenClaw scans for plugins in this order (first match wins):
   </Step>
 
   <Step title="Workspace extensions">
-    `\<workspace\>/.openclaw/<plugin-root>/*.ts` and `\<workspace\>/.openclaw/<plugin-root>/*/index.ts`.
+    `\<workspace\>/.wineryclaw/<plugin-root>/*.ts` and `\<workspace\>/.wineryclaw/<plugin-root>/*/index.ts`.
   </Step>
 
   <Step title="Global extensions">
-    `~/.openclaw/<plugin-root>/*.ts` and `~/.openclaw/<plugin-root>/*/index.ts`.
+    `~/.wineryclaw/<plugin-root>/*.ts` and `~/.wineryclaw/<plugin-root>/*/index.ts`.
   </Step>
 
   <Step title="Bundled plugins">
-    Shipped with OpenClaw. Many are enabled by default (model providers, speech).
+    Shipped with WineryClaw. Many are enabled by default (model providers, speech).
     Others require explicit enablement.
   </Step>
 </Steps>
@@ -239,7 +239,7 @@ openclaw plugins enable <id>
 openclaw plugins disable <id>
 ```
 
-Bundled plugins ship with OpenClaw. Many are enabled by default (for example
+Bundled plugins ship with WineryClaw. Many are enabled by default (for example
 bundled model providers, bundled speech providers, and the bundled browser
 plugin). Other bundled plugins still need `openclaw plugins enable <id>`.
 
@@ -301,7 +301,7 @@ export default definePluginEntry({
 });
 ```
 
-OpenClaw loads the entry object and calls `register(api)` during plugin
+WineryClaw loads the entry object and calls `register(api)` during plugin
 activation. The loader still falls back to `activate(api)` for older plugins,
 but bundled plugins and new external plugins should treat `register` as the
 public contract.

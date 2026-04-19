@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { discoverOpenClawPlugins } from "../src/plugins/discovery.js";
+import { discoverWineryClawPlugins } from "../src/plugins/discovery.js";
 import { collectFilesSync, isCodeFile, relativeToCwd } from "./check-file-utils.js";
 
 // Match exact monolithic-root specifier in any code path:
@@ -53,7 +53,7 @@ function collectBundledExtensionSourceFiles(): string[] {
 }
 
 function main() {
-  const discovery = discoverOpenClawPlugins({});
+  const discovery = discoverWineryClawPlugins({});
   const bundledCandidates = discovery.candidates.filter((c) => c.origin === "bundled");
   const filesToCheck = new Set<string>();
   for (const candidate of bundledCandidates) {

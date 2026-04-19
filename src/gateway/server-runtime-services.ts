@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { startHeartbeatRunner, type HeartbeatRunner } from "../infra/heartbeat-runner.js";
 import type { ChannelHealthMonitor } from "./channel-health-monitor.js";
 import { startChannelHealthMonitor } from "./channel-health-monitor.js";
@@ -20,12 +20,12 @@ export type GatewayChannelManager = Parameters<
 function createNoopHeartbeatRunner(): HeartbeatRunner {
   return {
     stop: () => {},
-    updateConfig: (_cfg: OpenClawConfig) => {},
+    updateConfig: (_cfg: WineryClawConfig) => {},
   };
 }
 
 export function startGatewayChannelHealthMonitor(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   channelManager: GatewayChannelManager;
 }): ChannelHealthMonitor | null {
   const healthCheckMinutes = params.cfg.gateway?.channelHealthCheckMinutes;
@@ -52,7 +52,7 @@ export function startGatewayCronWithLogging(params: {
 }
 
 function recoverPendingOutboundDeliveries(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   log: GatewayRuntimeServiceLogger;
 }): void {
   void (async () => {
@@ -69,7 +69,7 @@ function recoverPendingOutboundDeliveries(params: {
 
 export function startGatewayRuntimeServices(params: {
   minimalTestGateway: boolean;
-  cfgAtStart: OpenClawConfig;
+  cfgAtStart: WineryClawConfig;
   channelManager: GatewayChannelManager;
   cron: { start: () => Promise<void> };
   logCron: { error: (message: string) => void };

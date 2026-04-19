@@ -7,7 +7,7 @@ const contextTestState = vi.hoisted(() => {
   const state = {
     loadConfigImpl: () => ({}) as unknown,
     discoveredModels: [] as DiscoveredModel[],
-    ensureOpenClawModelsJson: vi.fn(async () => {}),
+    ensureWineryClawModelsJson: vi.fn(async () => {}),
     discoverAuthStorage: vi.fn(() => ({})),
     discoverModels: vi.fn(() => ({
       getAll: () => state.discoveredModels,
@@ -21,11 +21,11 @@ vi.mock("../config/config.js", () => ({
 }));
 
 vi.mock("./models-config.js", () => ({
-  ensureOpenClawModelsJson: contextTestState.ensureOpenClawModelsJson,
+  ensureWineryClawModelsJson: contextTestState.ensureWineryClawModelsJson,
 }));
 
 vi.mock("./agent-paths.js", () => ({
-  resolveOpenClawAgentDir: () => "/tmp/openclaw-agent",
+  resolveWineryClawAgentDir: () => "/tmp/openclaw-agent",
 }));
 
 vi.mock("./pi-model-discovery-runtime.js", () => ({
@@ -39,8 +39,8 @@ function mockContextDeps(params: {
 }) {
   contextTestState.loadConfigImpl = params.loadConfig;
   contextTestState.discoveredModels = params.discoveredModels ?? [];
-  contextTestState.ensureOpenClawModelsJson.mockClear();
-  return { ensureOpenClawModelsJson: contextTestState.ensureOpenClawModelsJson };
+  contextTestState.ensureWineryClawModelsJson.mockClear();
+  return { ensureWineryClawModelsJson: contextTestState.ensureWineryClawModelsJson };
 }
 
 function mockContextModuleDeps(loadConfigImpl: () => unknown) {
@@ -105,7 +105,7 @@ describe("lookupContextTokens", () => {
   beforeEach(() => {
     contextTestState.loadConfigImpl = () => ({});
     contextTestState.discoveredModels = [];
-    contextTestState.ensureOpenClawModelsJson.mockClear();
+    contextTestState.ensureWineryClawModelsJson.mockClear();
     contextTestState.discoverAuthStorage.mockClear();
     contextTestState.discoverModels.mockClear();
     contextModule.resetContextWindowCacheForTest();
@@ -221,11 +221,11 @@ describe("lookupContextTokens", () => {
         },
       ]) {
         const loadConfigMock = vi.fn(() => ({ models: {} }));
-        const { ensureOpenClawModelsJson } = mockContextModuleDeps(loadConfigMock);
+        const { ensureWineryClawModelsJson } = mockContextModuleDeps(loadConfigMock);
         process.argv = scenario.argv;
         await importFreshContextModule();
         expect(loadConfigMock).toHaveBeenCalledTimes(scenario.expectedCalls);
-        expect(ensureOpenClawModelsJson).toHaveBeenCalledTimes(scenario.expectedCalls);
+        expect(ensureWineryClawModelsJson).toHaveBeenCalledTimes(scenario.expectedCalls);
       }
     } finally {
       process.argv = argvSnapshot;

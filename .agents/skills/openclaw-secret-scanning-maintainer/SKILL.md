@@ -1,9 +1,9 @@
 ---
 name: openclaw-secret-scanning-maintainer
-description: Maintainer-only workflow for handling GitHub Secret Scanning alerts on OpenClaw. Use when Codex needs to triage, redact, clean up, and resolve secret leakage found in issue comments, issue bodies, PR comments, or other GitHub content.
+description: Maintainer-only workflow for handling GitHub Secret Scanning alerts on WineryClaw. Use when Codex needs to triage, redact, clean up, and resolve secret leakage found in issue comments, issue bodies, PR comments, or other GitHub content.
 ---
 
-# OpenClaw Secret Scanning Maintainer
+# WineryClaw Secret Scanning Maintainer
 
 **Maintainer-only.** This skill requires repo admin / maintainer permissions to edit or delete other users' comments and resolve secret scanning alerts.
 

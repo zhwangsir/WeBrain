@@ -1,1 +1,1 @@
-OpenClaw - iOS Client
+WineryClaw - iOS Client

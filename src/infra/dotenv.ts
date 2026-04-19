@@ -25,44 +25,44 @@ const BLOCKED_WORKSPACE_DOTENV_KEYS = new Set([
   "NO_PROXY",
   "OPENAI_API_KEY",
   "OPENAI_API_KEYS",
-  "OPENCLAW_AGENT_DIR",
-  "OPENCLAW_ALLOW_INSECURE_PRIVATE_WS",
-  "OPENCLAW_ALLOW_PROJECT_LOCAL_BIN",
-  "OPENCLAW_BROWSER_EXECUTABLE_PATH",
-  "OPENCLAW_BROWSER_CONTROL_MODULE",
-  "OPENCLAW_BUNDLED_HOOKS_DIR",
-  "OPENCLAW_BUNDLED_PLUGINS_DIR",
-  "OPENCLAW_BUNDLED_SKILLS_DIR",
-  "OPENCLAW_CACHE_TRACE",
-  "OPENCLAW_CACHE_TRACE_FILE",
-  "OPENCLAW_CACHE_TRACE_MESSAGES",
-  "OPENCLAW_CACHE_TRACE_PROMPT",
-  "OPENCLAW_CACHE_TRACE_SYSTEM",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_GATEWAY_PASSWORD",
-  "OPENCLAW_GATEWAY_PORT",
-  "OPENCLAW_GATEWAY_SECRET",
-  "OPENCLAW_GATEWAY_TOKEN",
-  "OPENCLAW_GATEWAY_URL",
-  "OPENCLAW_HOME",
-  "OPENCLAW_LIVE_ANTHROPIC_KEY",
-  "OPENCLAW_LIVE_ANTHROPIC_KEYS",
-  "OPENCLAW_LIVE_GEMINI_KEY",
-  "OPENCLAW_LIVE_OPENAI_KEY",
-  "OPENCLAW_MPM_CATALOG_PATHS",
-  "OPENCLAW_NODE_EXEC_FALLBACK",
-  "OPENCLAW_NODE_EXEC_HOST",
-  "OPENCLAW_OAUTH_DIR",
-  "OPENCLAW_PINNED_PYTHON",
-  "OPENCLAW_PINNED_WRITE_PYTHON",
-  "OPENCLAW_PLUGIN_CATALOG_PATHS",
-  "OPENCLAW_PROFILE",
-  "OPENCLAW_RAW_STREAM",
-  "OPENCLAW_RAW_STREAM_PATH",
-  "OPENCLAW_SHOW_SECRETS",
-  "OPENCLAW_SKIP_BROWSER_CONTROL_SERVER",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_TEST_TAILSCALE_BINARY",
+  "WINERYCLAW_AGENT_DIR",
+  "WINERYCLAW_ALLOW_INSECURE_PRIVATE_WS",
+  "WINERYCLAW_ALLOW_PROJECT_LOCAL_BIN",
+  "WINERYCLAW_BROWSER_EXECUTABLE_PATH",
+  "WINERYCLAW_BROWSER_CONTROL_MODULE",
+  "WINERYCLAW_BUNDLED_HOOKS_DIR",
+  "WINERYCLAW_BUNDLED_PLUGINS_DIR",
+  "WINERYCLAW_BUNDLED_SKILLS_DIR",
+  "WINERYCLAW_CACHE_TRACE",
+  "WINERYCLAW_CACHE_TRACE_FILE",
+  "WINERYCLAW_CACHE_TRACE_MESSAGES",
+  "WINERYCLAW_CACHE_TRACE_PROMPT",
+  "WINERYCLAW_CACHE_TRACE_SYSTEM",
+  "WINERYCLAW_CONFIG_PATH",
+  "WINERYCLAW_GATEWAY_PASSWORD",
+  "WINERYCLAW_GATEWAY_PORT",
+  "WINERYCLAW_GATEWAY_SECRET",
+  "WINERYCLAW_GATEWAY_TOKEN",
+  "WINERYCLAW_GATEWAY_URL",
+  "WINERYCLAW_HOME",
+  "WINERYCLAW_LIVE_ANTHROPIC_KEY",
+  "WINERYCLAW_LIVE_ANTHROPIC_KEYS",
+  "WINERYCLAW_LIVE_GEMINI_KEY",
+  "WINERYCLAW_LIVE_OPENAI_KEY",
+  "WINERYCLAW_MPM_CATALOG_PATHS",
+  "WINERYCLAW_NODE_EXEC_FALLBACK",
+  "WINERYCLAW_NODE_EXEC_HOST",
+  "WINERYCLAW_OAUTH_DIR",
+  "WINERYCLAW_PINNED_PYTHON",
+  "WINERYCLAW_PINNED_WRITE_PYTHON",
+  "WINERYCLAW_PLUGIN_CATALOG_PATHS",
+  "WINERYCLAW_PROFILE",
+  "WINERYCLAW_RAW_STREAM",
+  "WINERYCLAW_RAW_STREAM_PATH",
+  "WINERYCLAW_SHOW_SECRETS",
+  "WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER",
+  "WINERYCLAW_STATE_DIR",
+  "WINERYCLAW_TEST_TAILSCALE_BINARY",
   "PI_CODING_AGENT_DIR",
   "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH",
   "UV_PYTHON",
@@ -74,10 +74,10 @@ const BLOCKED_WORKSPACE_DOTENV_PREFIXES = [
   "ANTHROPIC_API_KEY_",
   "CLAWHUB_",
   "OPENAI_API_KEY_",
-  "OPENCLAW_CLAWHUB_",
-  "OPENCLAW_DISABLE_",
-  "OPENCLAW_SKIP_",
-  "OPENCLAW_UPDATE_",
+  "WINERYCLAW_CLAWHUB_",
+  "WINERYCLAW_DISABLE_",
+  "WINERYCLAW_SKIP_",
+  "WINERYCLAW_UPDATE_",
 ];
 
 function shouldBlockWorkspaceRuntimeDotEnvKey(key: string): boolean {
@@ -85,7 +85,7 @@ function shouldBlockWorkspaceRuntimeDotEnvKey(key: string): boolean {
 }
 
 function shouldBlockRuntimeDotEnvKey(key: string): boolean {
-  // The global ~/.openclaw/.env (or OPENCLAW_STATE_DIR/.env) is a trusted
+  // The global ~/.wineryclaw/.env (or WINERYCLAW_STATE_DIR/.env) is a trusted
   // operator-controlled runtime surface. Workspace .env is untrusted and gets
   // the strict blocklist, but the trusted global fallback is allowed to set
   // runtime vars like proxy/base-url/auth values.
@@ -236,11 +236,11 @@ export function loadGlobalRuntimeDotEnvFiles(opts?: { quiet?: boolean; stateEnvP
   const stateEnvPath = opts?.stateEnvPath ?? path.join(resolveConfigDir(process.env), ".env");
   const defaultStateEnvPath = path.join(
     resolveRequiredHomeDir(process.env, os.homedir),
-    ".openclaw",
+    ".wineryclaw",
     ".env",
   );
   const hasExplicitNonDefaultStateDir =
-    process.env.OPENCLAW_STATE_DIR?.trim() !== undefined &&
+    process.env.WINERYCLAW_STATE_DIR?.trim() !== undefined &&
     path.resolve(stateEnvPath) !== path.resolve(defaultStateEnvPath);
   const parsedFiles = [
     readDotEnvFile({
@@ -272,7 +272,7 @@ export function loadDotEnv(opts?: { quiet?: boolean }) {
   const cwdEnvPath = path.join(process.cwd(), ".env");
   loadWorkspaceDotEnvFile(cwdEnvPath, { quiet });
 
-  // Then load global fallback: ~/.openclaw/.env (or OPENCLAW_STATE_DIR/.env),
+  // Then load global fallback: ~/.wineryclaw/.env (or WINERYCLAW_STATE_DIR/.env),
   // without overriding any env vars already present.
   loadGlobalRuntimeDotEnvFiles({ quiet });
 }

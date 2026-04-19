@@ -28,11 +28,11 @@ import type {
 } from "./service-types.js";
 
 function resolveTaskName(env: GatewayServiceEnv): string {
-  const override = env.OPENCLAW_WINDOWS_TASK_NAME?.trim();
+  const override = env.WINERYCLAW_WINDOWS_TASK_NAME?.trim();
   if (override) {
     return override;
   }
-  return resolveGatewayWindowsTaskName(env.OPENCLAW_PROFILE);
+  return resolveGatewayWindowsTaskName(env.WINERYCLAW_PROFILE);
 }
 
 function shouldFallbackToStartupEntry(params: { code: number; detail: string }): boolean {
@@ -45,11 +45,11 @@ function shouldFallbackToStartupEntry(params: { code: number; detail: string }):
 }
 
 export function resolveTaskScriptPath(env: GatewayServiceEnv): string {
-  const override = env.OPENCLAW_TASK_SCRIPT?.trim();
+  const override = env.WINERYCLAW_TASK_SCRIPT?.trim();
   if (override) {
     return override;
   }
-  const scriptName = env.OPENCLAW_TASK_SCRIPT_NAME?.trim() || "gateway.cmd";
+  const scriptName = env.WINERYCLAW_TASK_SCRIPT_NAME?.trim() || "gateway.cmd";
   const stateDir = resolveGatewayStateDir(env);
   return path.join(stateDir, scriptName);
 }
@@ -316,7 +316,7 @@ function launchFallbackTaskScript(scriptPath: string): void {
 }
 
 function resolveConfiguredGatewayPort(env: GatewayServiceEnv): number | null {
-  const raw = env.OPENCLAW_GATEWAY_PORT?.trim();
+  const raw = env.WINERYCLAW_GATEWAY_PORT?.trim();
   if (!raw) {
     return null;
   }
@@ -360,7 +360,7 @@ async function resolveScheduledTaskPort(env: GatewayServiceEnv): Promise<number 
   const command = await readScheduledTaskCommand(env).catch(() => null);
   return (
     parsePortFromProgramArguments(command?.programArguments) ??
-    parsePositivePort(command?.environment?.OPENCLAW_GATEWAY_PORT) ??
+    parsePositivePort(command?.environment?.WINERYCLAW_GATEWAY_PORT) ??
     resolveConfiguredGatewayPort(env)
   );
 }
@@ -627,7 +627,7 @@ async function activateScheduledTask(params: {
   scriptPath: string;
   description?: string;
 }) {
-  const taskDescription = params.description ?? "OpenClaw Gateway";
+  const taskDescription = params.description ?? "WineryClaw Gateway";
 
   const taskName = resolveTaskName(params.env);
   const quotedScript = quoteSchtasksArg(params.scriptPath);

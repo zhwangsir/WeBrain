@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { describe, expect, it } from "vitest";
 import {
   buildIMessageInboundContext,
@@ -7,7 +7,7 @@ import {
 import { parseIMessageNotification } from "./monitor/parse-notification.js";
 import type { IMessagePayload } from "./monitor/types.js";
 
-function baseCfg(): OpenClawConfig {
+function baseCfg(): WineryClawConfig {
   return {
     channels: {
       imessage: {
@@ -21,11 +21,11 @@ function baseCfg(): OpenClawConfig {
     messages: {
       groupChat: { mentionPatterns: ["@openclaw"] },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as WineryClawConfig;
 }
 
 function resolve(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   message: IMessagePayload;
   storeAllowFrom?: string[];
 }) {
@@ -49,7 +49,7 @@ function resolve(params: {
 }
 
 function resolveDispatchDecision(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   message: IMessagePayload;
   groupHistories?: Parameters<typeof resolveIMessageInboundDecision>[0]["groupHistories"];
   allowFrom?: string[];
@@ -80,7 +80,7 @@ function resolveDispatchDecision(params: {
   return { decision, groupHistories };
 }
 
-function buildDispatchContextPayload(params: { cfg: OpenClawConfig; message: IMessagePayload }) {
+function buildDispatchContextPayload(params: { cfg: WineryClawConfig; message: IMessagePayload }) {
   const { cfg, message } = params;
   const { decision, groupHistories } = resolveDispatchDecision({ cfg, message });
 

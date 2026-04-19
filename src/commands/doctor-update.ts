@@ -7,7 +7,7 @@ import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 import { note } from "../terminal/note.js";
 import type { DoctorOptions } from "./doctor-prompter.js";
 
-async function detectOpenClawGitCheckout(root: string): Promise<"git" | "not-git" | "unknown"> {
+async function detectWineryClawGitCheckout(root: string): Promise<"git" | "not-git" | "unknown"> {
   const res = await runCommandWithTimeout(["git", "-C", root, "rev-parse", "--show-toplevel"], {
     timeoutMs: 5000,
   }).catch(() => null);
@@ -32,7 +32,7 @@ export async function maybeOfferUpdateBeforeDoctor(params: {
   confirm: (p: { message: string; initialValue: boolean }) => Promise<boolean>;
   outro: (message: string) => void;
 }) {
-  const updateInProgress = isTruthyEnvValue(process.env.OPENCLAW_UPDATE_IN_PROGRESS);
+  const updateInProgress = isTruthyEnvValue(process.env.WINERYCLAW_UPDATE_IN_PROGRESS);
   const canOfferUpdate =
     !updateInProgress &&
     params.options.nonInteractive !== true &&
@@ -43,10 +43,10 @@ export async function maybeOfferUpdateBeforeDoctor(params: {
     return { updated: false };
   }
 
-  const git = await detectOpenClawGitCheckout(params.root);
+  const git = await detectWineryClawGitCheckout(params.root);
   if (git === "git") {
     const shouldUpdate = await params.confirm({
-      message: "Update OpenClaw from git before running doctor?",
+      message: "Update WineryClaw from git before running doctor?",
       initialValue: true,
     });
     if (!shouldUpdate) {

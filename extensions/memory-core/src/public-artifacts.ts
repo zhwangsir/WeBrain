@@ -3,7 +3,7 @@ import path from "node:path";
 import { resolveMemoryHostEventLogPath } from "openclaw/plugin-sdk/memory-core-host-events";
 import { resolveMemoryDreamingWorkspaces } from "openclaw/plugin-sdk/memory-core-host-status";
 import type { MemoryPluginPublicArtifact } from "openclaw/plugin-sdk/memory-host-core";
-import type { OpenClawConfig } from "../api.js";
+import type { WineryClawConfig } from "../api.js";
 
 async function pathExists(inputPath: string): Promise<boolean> {
   try {
@@ -88,7 +88,7 @@ async function collectWorkspaceArtifacts(params: {
 }
 
 export async function listMemoryCorePublicArtifacts(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): Promise<MemoryPluginPublicArtifact[]> {
   const workspaces = resolveMemoryDreamingWorkspaces(params.cfg);
   const artifacts: MemoryPluginPublicArtifact[] = [];

@@ -1,5 +1,5 @@
 import { ChannelType } from "@buape/carbon";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 type MaybeCreateDiscordAutoThreadFn = typeof import("./threading.js").maybeCreateDiscordAutoThread;
 
@@ -141,13 +141,13 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
     patchMock.mockResolvedValueOnce({});
     generateThreadTitleMock.mockResolvedValueOnce("Deploy rollout summary");
 
-    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as WineryClawConfig;
     const result = await maybeCreateDiscordAutoThread(
       createBaseParams({
         baseText: "Need help with deploy rollout",
         combinedBody: "Need help with deploy rollout",
         channelName: "openclaw",
-        channelDescription: "OpenClaw development coordination and release planning",
+        channelDescription: "WineryClaw development coordination and release planning",
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
         cfg,
         agentId: "main",
@@ -166,7 +166,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
         agentId: "main",
         messageText: "Need help with deploy rollout",
         channelName: "openclaw",
-        channelDescription: "OpenClaw development coordination and release planning",
+        channelDescription: "WineryClaw development coordination and release planning",
       }),
     );
     expect(patchMock).toHaveBeenCalledWith(
@@ -187,7 +187,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
       }),
     );
 
-    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as WineryClawConfig;
     const result = await maybeCreateDiscordAutoThread(
       createBaseParams({
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
@@ -219,7 +219,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await maybeCreateDiscordAutoThread(
       createBaseParams({
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
@@ -252,7 +252,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     await maybeCreateDiscordAutoThread(
       createBaseParams({
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
@@ -297,7 +297,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
     postMock.mockResolvedValueOnce({ id: "thread1" });
     generateThreadTitleMock.mockResolvedValueOnce("<@123456789012345678> <#987654321098765432>");
 
-    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as WineryClawConfig;
     const result = await maybeCreateDiscordAutoThread(
       createBaseParams({
         baseText: "Need help with deploy rollout",

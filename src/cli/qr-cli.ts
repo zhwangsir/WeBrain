@@ -1,7 +1,7 @@
 import type { Command } from "commander";
 import qrcode from "qrcode-terminal";
 import { loadConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { hasConfiguredSecretInput } from "../config/types.secrets.js";
 import { trimToUndefined } from "../gateway/credentials.js";
 import { resolveRequiredConfiguredSecretRefInputString } from "../gateway/resolve-configured-secret-input-string.js";
@@ -32,7 +32,7 @@ function renderQrAscii(data: string): Promise<string> {
   });
 }
 
-function readDevicePairPublicUrlFromConfig(cfg: OpenClawConfig): string | undefined {
+function readDevicePairPublicUrlFromConfig(cfg: WineryClawConfig): string | undefined {
   const value = cfg.plugins?.entries?.["device-pair"]?.config?.["publicUrl"];
   if (typeof value !== "string") {
     return undefined;
@@ -42,10 +42,10 @@ function readDevicePairPublicUrlFromConfig(cfg: OpenClawConfig): string | undefi
 }
 
 function shouldResolveLocalGatewayPasswordSecret(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   env: NodeJS.ProcessEnv,
 ): boolean {
-  if (trimToUndefined(env.OPENCLAW_GATEWAY_PASSWORD)) {
+  if (trimToUndefined(env.WINERYCLAW_GATEWAY_PASSWORD)) {
     return false;
   }
   const authMode = cfg.gateway?.auth?.mode;
@@ -55,7 +55,7 @@ function shouldResolveLocalGatewayPasswordSecret(
   if (authMode === "token" || authMode === "none" || authMode === "trusted-proxy") {
     return false;
   }
-  const envToken = trimToUndefined(env.OPENCLAW_GATEWAY_TOKEN);
+  const envToken = trimToUndefined(env.WINERYCLAW_GATEWAY_TOKEN);
   const configTokenConfigured = hasConfiguredSecretInput(
     cfg.gateway?.auth?.token,
     cfg.secrets?.defaults,
@@ -63,7 +63,7 @@ function shouldResolveLocalGatewayPasswordSecret(
   return !envToken && !configTokenConfigured;
 }
 
-async function resolveLocalGatewayPasswordSecretIfNeeded(cfg: OpenClawConfig): Promise<void> {
+async function resolveLocalGatewayPasswordSecretIfNeeded(cfg: WineryClawConfig): Promise<void> {
   const resolvedPassword = await resolveRequiredConfiguredSecretRefInputString({
     config: cfg,
     env: process.env,
@@ -231,7 +231,7 @@ export function registerQrCli(program: Command) {
 
         const lines: string[] = [
           theme.heading("Pairing QR"),
-          "Scan this with the OpenClaw mobile app (Onboarding -> Scan QR).",
+          "Scan this with the WineryClaw mobile app (Onboarding -> Scan QR).",
           "",
         ];
 

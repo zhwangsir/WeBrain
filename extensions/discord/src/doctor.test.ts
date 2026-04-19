@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { describe, expect, it } from "vitest";
 import {
   collectDiscordNumericIdWarnings,
@@ -131,7 +131,7 @@ describe("discord doctor", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const hits = scanDiscordNumericIdEntries(cfg);
     expect(hits.map((hit) => hit.path)).toEqual([
@@ -154,7 +154,7 @@ describe("discord doctor", () => {
           guilds: { main: { users: [111], roles: [222] } },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const result = maybeRepairDiscordNumericIds(cfg, "openclaw doctor --fix");
     expect(result.config.channels?.discord?.allowFrom).toEqual(["123"]);

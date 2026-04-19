@@ -15,7 +15,7 @@ import type {
 } from "../commands/channel-setup/types.js";
 import type { ChannelChoice } from "../commands/onboard-types.js";
 import { isChannelConfigured } from "../config/channel-configured.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { formatDocsLink } from "../terminal/links.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 import type { FlowContribution } from "./types.js";
@@ -56,7 +56,7 @@ function buildChannelSetupSelectionContribution(params: {
 }
 
 export async function collectChannelStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   options?: SetupChannelsOptions;
   accountOverrides: Partial<Record<ChannelChoice, string>>;
   installedPlugins?: ChannelSetupPlugin[];
@@ -152,7 +152,7 @@ export async function collectChannelStatus(params: {
 }
 
 export async function noteChannelStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   prompter: WizardPrompter;
   options?: SetupChannelsOptions;
   accountOverrides?: Partial<Record<ChannelChoice, string>>;
@@ -216,7 +216,7 @@ export function resolveQuickstartDefault(
 }
 
 export function resolveChannelSelectionNoteLines(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   installedPlugins: ChannelSetupPlugin[];
   selection: ChannelChoice[];
 }): string[] {

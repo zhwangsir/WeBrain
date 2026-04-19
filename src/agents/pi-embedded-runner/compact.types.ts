@@ -1,5 +1,5 @@
 import type { ReasoningLevel, ThinkLevel } from "../../auto-reply/thinking.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { CommandQueueEnqueueFn } from "../../process/command-queue.types.js";
 import type { ExecElevatedDefaults } from "../bash-tools.exec-types.js";
 import type { SkillSnapshot } from "../skills.js";
@@ -35,7 +35,7 @@ export type CompactEmbeddedPiSessionParams = {
   currentTokenCount?: number;
   workspaceDir: string;
   agentDir?: string;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   skillsSnapshot?: SkillSnapshot;
   provider?: string;
   model?: string;

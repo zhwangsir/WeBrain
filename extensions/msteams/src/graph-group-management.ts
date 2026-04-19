@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { WineryClawConfig } from "../runtime-api.js";
 import { resolveConversationPath, resolveGraphConversationId } from "./graph-messages.js";
 import {
   deleteGraphRequest,
@@ -13,7 +13,7 @@ import {
 // ---------------------------------------------------------------------------
 
 export type AddParticipantMSTeamsParams = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   to: string;
   userId: string;
   role?: string;
@@ -53,7 +53,7 @@ export async function addParticipantMSTeams(
 // ---------------------------------------------------------------------------
 
 export type RemoveParticipantMSTeamsParams = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   to: string;
   userId: string;
 };
@@ -123,7 +123,7 @@ export async function removeParticipantMSTeams(
 // ---------------------------------------------------------------------------
 
 export type RenameGroupMSTeamsParams = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   to: string;
   name: string;
 };

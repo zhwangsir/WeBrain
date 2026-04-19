@@ -11,7 +11,7 @@ import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
 import type { ChannelAccountSnapshot } from "../../channels/plugins/types.public.js";
 import { loadConfig, readConfigFileSnapshot } from "../../config/config.js";
 import { applyPluginAutoEnable } from "../../config/plugin-auto-enable.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { getChannelActivity } from "../../infra/channel-activity.js";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
 import { defaultRuntime } from "../../runtime.js";
@@ -36,7 +36,7 @@ type ChannelLogoutPayload = {
 export async function logoutChannelAccount(params: {
   channelId: ChannelId;
   accountId?: string | null;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   context: GatewayRequestContext;
   plugin: ChannelPlugin;
 }): Promise<ChannelLogoutPayload> {

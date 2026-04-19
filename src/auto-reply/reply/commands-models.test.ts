@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChannelPlugin } from "../../channels/plugins/types.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import {
   createChannelTestPluginBase,
@@ -78,7 +78,7 @@ beforeEach(() => {
 
 function buildModelsParams(
   commandBody: string,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   surface: string,
   options?: {
     authorized?: boolean;
@@ -119,7 +119,7 @@ describe("handleModelsCommand", () => {
   const cfg = {
     commands: { text: true },
     agents: { defaults: { model: { primary: "anthropic/claude-opus-4-5" } } },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 
   it.each(["discord", "whatsapp"])("lists providers on %s text surfaces", async (surface) => {
     const result = await handleModelsCommand(buildModelsParams("/models", cfg, surface), true);
@@ -208,7 +208,7 @@ describe("handleModelsCommand", () => {
           imageModel: "visionpro/studio-v1",
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const providerList = await handleModelsCommand(
       buildModelsParams("/models", customCfg, "discord"),
@@ -234,7 +234,7 @@ describe("handleModelsCommand", () => {
         defaults: { model: { primary: "anthropic/claude-opus-4-5" } },
         list: [{ id: "support", model: "localai/ultra-chat" }],
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const result = await handleModelsCommand(
       buildModelsParams("/models", multiAgentCfg, "discord", {
@@ -296,7 +296,7 @@ describe("handleModelsCommand", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const providerList = await handleModelsCommand(
       buildModelsParams("/models", allowlistedCfg, "discord"),
@@ -335,7 +335,7 @@ describe("handleModelsCommand", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const result = await handleModelsCommand(
       buildModelsParams("/models minimax", minimaxCfg, "discord"),
@@ -352,7 +352,7 @@ describe("handleModelsCommand", () => {
         defaults: { model: { primary: "anthropic/claude-opus-4-5" } },
         list: [{ id: "support", model: "localai/ultra-chat" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const result = await handleModelsCommand(
       buildModelsParams("/models", scopedCfg, "discord", {
@@ -372,7 +372,7 @@ describe("handleModelsCommand", () => {
         defaults: { model: { primary: "anthropic/claude-opus-4-5" } },
         list: [{ id: "support", model: "localai/ultra-chat" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const result = await handleModelsCommand(
       buildModelsParams("/models", scopedCfg, "discord", {

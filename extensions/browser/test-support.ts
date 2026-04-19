@@ -10,5 +10,5 @@ export {
   withEnvAsync,
   withFetchPreconnect,
   isLiveTestEnabled,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/testing";

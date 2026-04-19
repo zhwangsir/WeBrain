@@ -2,7 +2,7 @@
   "name": "@openclaw/googlechat",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Google Chat channel plugin",
+  "description": "WineryClaw Google Chat channel plugin",
   "type": "module",
   "dependencies": {
     "google-auth-library": "^10.6.2"

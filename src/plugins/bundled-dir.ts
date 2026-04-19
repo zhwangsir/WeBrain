@@ -2,14 +2,14 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveOpenClawPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveWineryClawPackageRootSync } from "../infra/openclaw-root.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { resolveUserPath } from "../utils.js";
 
 const DISABLED_BUNDLED_PLUGINS_DIR = path.join(os.tmpdir(), "openclaw-empty-bundled-plugins");
 
 function bundledPluginsDisabled(env: NodeJS.ProcessEnv): boolean {
-  const raw = normalizeOptionalLowercaseString(env.OPENCLAW_DISABLE_BUNDLED_PLUGINS);
+  const raw = normalizeOptionalLowercaseString(env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS);
   return raw === "1" || raw === "true";
 }
 
@@ -113,7 +113,7 @@ export function resolveBundledPluginsDir(env: NodeJS.ProcessEnv = process.env): 
     return resolveDisabledBundledPluginsDir();
   }
 
-  const override = env.OPENCLAW_BUNDLED_PLUGINS_DIR?.trim();
+  const override = env.WINERYCLAW_BUNDLED_PLUGINS_DIR?.trim();
   if (override) {
     const resolvedOverride = resolveUserPath(override, env);
     if (fs.existsSync(resolvedOverride)) {
@@ -123,7 +123,7 @@ export function resolveBundledPluginsDir(env: NodeJS.ProcessEnv = process.env): 
     // or debug sessions. Prefer the package that owns argv[1] over a broken
     // override so bundled providers keep working in packaged installs.
     try {
-      const argvPackageRoot = resolveOpenClawPackageRootSync({ argv1: process.argv[1] });
+      const argvPackageRoot = resolveWineryClawPackageRootSync({ argv1: process.argv[1] });
       if (argvPackageRoot && !isSourceCheckoutRoot(argvPackageRoot)) {
         const argvFallback = resolveBundledDirFromPackageRoot(argvPackageRoot, false);
         if (argvFallback) {
@@ -140,9 +140,9 @@ export function resolveBundledPluginsDir(env: NodeJS.ProcessEnv = process.env): 
 
   try {
     const packageRoots = [
-      resolveOpenClawPackageRootSync({ argv1: process.argv[1] }),
-      resolveOpenClawPackageRootSync({ cwd: process.cwd() }),
-      resolveOpenClawPackageRootSync({ moduleUrl: import.meta.url }),
+      resolveWineryClawPackageRootSync({ argv1: process.argv[1] }),
+      resolveWineryClawPackageRootSync({ cwd: process.cwd() }),
+      resolveWineryClawPackageRootSync({ moduleUrl: import.meta.url }),
     ].filter(
       (entry, index, all): entry is string => Boolean(entry) && all.indexOf(entry) === index,
     );

@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { resetLogger, setLoggerOverride } from "../logging/logger.js";
 import { createWarnLogCapture } from "../logging/test-helpers/warn-log-capture.js";
 import { AUTH_STORE_VERSION } from "./auth-profiles/constants.js";
@@ -21,7 +21,7 @@ vi.mock("../plugins/provider-runtime.js", () => ({
 
 const makeCfg = makeModelFallbackCfg;
 
-function makeFallbacksOnlyCfg(): OpenClawConfig {
+function makeFallbacksOnlyCfg(): WineryClawConfig {
   return {
     agents: {
       defaults: {
@@ -30,10 +30,10 @@ function makeFallbacksOnlyCfg(): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
-function makeProviderFallbackCfg(provider: string): OpenClawConfig {
+function makeProviderFallbackCfg(provider: string): WineryClawConfig {
   return makeCfg({
     agents: {
       defaults: {
@@ -60,7 +60,7 @@ async function withTempAuthStore<T>(
 }
 
 async function runWithStoredAuth(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   store: AuthProfileStore;
   provider: string;
   run: (provider: string, model: string) => Promise<string>;
@@ -191,7 +191,7 @@ const ANTHROPIC_OVERLOADED_PAYLOAD =
 // https://github.com/openclaw/openclaw/issues/23440
 const INSUFFICIENT_QUOTA_PAYLOAD =
   '{"type":"error","error":{"type":"insufficient_quota","message":"Your account has insufficient quota balance to run this request."}}';
-// Internal OpenClaw compatibility marker, not a provider API contract.
+// Internal WineryClaw compatibility marker, not a provider API contract.
 const MODEL_COOLDOWN_MESSAGE = "model_cooldown: All credentials for model gpt-5 are cooling down";
 // SDK/transport compatibility marker, not a provider API contract.
 const CONNECTION_ERROR_MESSAGE = "Connection error.";

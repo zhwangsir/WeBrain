@@ -23,17 +23,17 @@ let harness: Awaited<ReturnType<typeof createGatewaySuiteHarness>>;
 let previousMinimalGateway: string | undefined;
 
 beforeAll(async () => {
-  previousMinimalGateway = process.env.OPENCLAW_TEST_MINIMAL_GATEWAY;
-  delete process.env.OPENCLAW_TEST_MINIMAL_GATEWAY;
+  previousMinimalGateway = process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY;
+  delete process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY;
   harness = await createGatewaySuiteHarness();
 });
 
 afterAll(async () => {
   await harness.close();
   if (previousMinimalGateway === undefined) {
-    delete process.env.OPENCLAW_TEST_MINIMAL_GATEWAY;
+    delete process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY;
   } else {
-    process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = previousMinimalGateway;
+    process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY = previousMinimalGateway;
   }
 });
 

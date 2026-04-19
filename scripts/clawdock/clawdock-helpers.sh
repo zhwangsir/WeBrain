@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ClawDock - Docker helpers for OpenClaw
-# Inspired by Simon Willison's "Running OpenClaw in Docker"
+# ClawDock - Docker helpers for WineryClaw
+# Inspired by Simon Willison's "Running WineryClaw in Docker"
 # https://til.simonwillison.net/llms/openclaw-docker
 #
 # Installation:
@@ -38,7 +38,7 @@ _cmd() {
 # =============================================================================
 CLAWDOCK_CONFIG="${HOME}/.clawdock/config"
 
-# Common paths to check for OpenClaw
+# Common paths to check for WineryClaw
 CLAWDOCK_COMMON_PATHS=(
   "${HOME}/openclaw"
   "${HOME}/workspace/openclaw"
@@ -111,7 +111,7 @@ _clawdock_ensure_dir() {
 
   if [[ -n "$found_path" ]]; then
     echo ""
-    echo "🦞 Found OpenClaw at: $found_path"
+    echo "🦞 Found WineryClaw at: $found_path"
     echo -n "   Use this location? [Y/n] "
     read -r response
     if [[ "$response" =~ ^[Nn] ]]; then
@@ -123,7 +123,7 @@ _clawdock_ensure_dir() {
     CLAWDOCK_DIR="$found_path"
   else
     echo ""
-    echo "❌ OpenClaw not found in common locations."
+    echo "❌ WineryClaw not found in common locations."
     echo ""
     echo "Clone it first:"
     echo ""
@@ -163,7 +163,7 @@ _clawdock_read_env_token() {
     return 1
   fi
   local raw
-  raw=$(sed -n 's/^OPENCLAW_GATEWAY_TOKEN=//p' "${CLAWDOCK_DIR}/.env" | head -n 1)
+  raw=$(sed -n 's/^WINERYCLAW_GATEWAY_TOKEN=//p' "${CLAWDOCK_DIR}/.env" | head -n 1)
   if [[ -z "$raw" ]]; then
     return 1
   fi
@@ -275,7 +275,7 @@ clawdock-cli() {
 clawdock-update() {
   _clawdock_ensure_dir || return 1
 
-  echo "🔄 Updating OpenClaw..."
+  echo "🔄 Updating WineryClaw..."
 
   echo ""
   echo "📥 Pulling latest source..."
@@ -316,7 +316,7 @@ clawdock-health() {
     echo "   Check: ${CLAWDOCK_DIR}/.env"
     return 1
   fi
-  _clawdock_compose exec -e "OPENCLAW_GATEWAY_TOKEN=$token" openclaw-gateway \
+  _clawdock_compose exec -e "WINERYCLAW_GATEWAY_TOKEN=$token" openclaw-gateway \
     node dist/index.js health
 }
 
@@ -447,7 +447,7 @@ clawdock-approve() {
 
 # Show all available clawdock helper commands
 clawdock-help() {
-  echo -e "\n${_CLR_BOLD}${_CLR_CYAN}🦞 ClawDock - Docker Helpers for OpenClaw${_CLR_RESET}\n"
+  echo -e "\n${_CLR_BOLD}${_CLR_CYAN}🦞 ClawDock - Docker Helpers for WineryClaw${_CLR_RESET}\n"
 
   echo -e "${_CLR_BOLD}${_CLR_MAGENTA}⚡ Basic Operations${_CLR_RESET}"
   echo -e "  $(_cmd clawdock-start)       ${_CLR_DIM}Start the gateway${_CLR_RESET}"

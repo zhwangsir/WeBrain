@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import type { Command } from "commander";
 import { readConfigFileSnapshot, replaceConfigFile } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { sanitizeExecApprovalDisplayText } from "../infra/exec-approval-command-display.js";
 import {
   collectExecPolicyScopeSnapshots,
@@ -213,9 +213,9 @@ function applyApprovalsDefaults(
 }
 
 function buildNextExecPolicyConfig(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   policy: ExecPolicyResolved,
-): OpenClawConfig {
+): WineryClawConfig {
   const draft = structuredClone(config);
   applyConfigExecPolicy(draft as Record<string, unknown>, policy);
   return draft;

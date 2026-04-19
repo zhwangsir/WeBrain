@@ -5,7 +5,7 @@ import {
   DEFAULT_ACCOUNT_ID,
   getChatChannelMeta,
   type ChannelPlugin,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/core";
 import { resolveChannelMediaMaxBytes } from "openclaw/plugin-sdk/media-runtime";
 import { collectStatusIssuesFromLastError } from "openclaw/plugin-sdk/status-helpers";
@@ -29,4 +29,4 @@ export {
   resolveIMessageConfigDefaultTo,
 };
 
-export type { ChannelPlugin, ChannelStatusIssue, OpenClawConfig };
+export type { ChannelPlugin, ChannelStatusIssue, WineryClawConfig };

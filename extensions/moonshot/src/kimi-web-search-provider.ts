@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-onboard";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/provider-onboard";
 import {
   buildSearchCacheKey,
   buildUnsupportedSearchFilterResponse,
@@ -101,7 +101,7 @@ function trimTrailingSlashes(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
-function resolveKimiBaseUrl(kimi?: KimiConfig, openClawConfig?: OpenClawConfig): string {
+function resolveKimiBaseUrl(kimi?: KimiConfig, openClawConfig?: WineryClawConfig): string {
   const explicitBaseUrl = normalizeOptionalString(kimi?.baseUrl) ?? "";
   if (explicitBaseUrl) {
     return trimTrailingSlashes(explicitBaseUrl) || DEFAULT_KIMI_BASE_URL;
@@ -280,7 +280,7 @@ function createKimiSchema() {
 
 function createKimiToolDefinition(
   searchConfig: SearchConfigRecord | undefined,
-  openClawConfig: OpenClawConfig | undefined,
+  openClawConfig: WineryClawConfig | undefined,
 ): WebSearchProviderToolDefinition {
   return {
     description:

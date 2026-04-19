@@ -106,7 +106,7 @@ vi.mock("../channels/plugins/legacy-config.js", () => ({
 }));
 
 vi.mock("./zod-schema.js", () => ({
-  OpenClawSchema: {
+  WineryClawSchema: {
     safeParse: (raw: unknown) => ({ success: true, data: raw }),
   },
 }));

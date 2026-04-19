@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -15,7 +15,7 @@ import {
 describe("session cost usage", () => {
   const suiteRootTracker = createSuiteTempRootTracker({ prefix: "openclaw-session-cost-" });
   const withStateDir = async <T>(stateDir: string, fn: () => Promise<T>): Promise<T> =>
-    await withEnvAsync({ OPENCLAW_STATE_DIR: stateDir }, fn);
+    await withEnvAsync({ WINERYCLAW_STATE_DIR: stateDir }, fn);
   const makeSessionCostRoot = async (prefix: string): Promise<string> =>
     await suiteRootTracker.make(prefix);
 
@@ -111,7 +111,7 @@ describe("session cost usage", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     await withStateDir(root, async () => {
       const summary = await loadCostUsageSummary({ days: 30, config });

@@ -5,5 +5,5 @@ export {
   writeConfigFile,
   type BrowserConfig,
   type BrowserProfileConfig,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/browser-config-runtime";

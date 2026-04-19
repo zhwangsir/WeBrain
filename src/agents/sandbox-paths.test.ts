@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredWineryClawTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { resolveSandboxedMediaSource } from "./sandbox-paths.js";
 
 async function withSandboxRoot<T>(run: (sandboxDir: string) => Promise<T>) {
@@ -28,7 +28,7 @@ function makeTmpProbePath(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}.txt`;
 }
 
-async function withOutsideHardlinkInOpenClawTmp<T>(
+async function withOutsideHardlinkInWineryClawTmp<T>(
   params: {
     openClawTmpDir: string;
     hardlinkPrefix: string;
@@ -70,22 +70,22 @@ async function withOutsideHardlinkInOpenClawTmp<T>(
 }
 
 describe("resolveSandboxedMediaSource", () => {
-  const openClawTmpDir = resolvePreferredOpenClawTmpDir();
+  const openClawTmpDir = resolvePreferredWineryClawTmpDir();
 
   // Group 1: /tmp paths (the bug fix)
   it.each([
     {
-      name: "absolute paths under preferred OpenClaw tmp root",
+      name: "absolute paths under preferred WineryClaw tmp root",
       media: path.join(openClawTmpDir, "image.png"),
       expected: path.join(openClawTmpDir, "image.png"),
     },
     {
-      name: "file:// URLs pointing to preferred OpenClaw tmp root",
+      name: "file:// URLs pointing to preferred WineryClaw tmp root",
       media: pathToFileURL(path.join(openClawTmpDir, "photo.png")).href,
       expected: path.join(openClawTmpDir, "photo.png"),
     },
     {
-      name: "nested paths under preferred OpenClaw tmp root",
+      name: "nested paths under preferred WineryClaw tmp root",
       media: path.join(openClawTmpDir, "subdir", "deep", "file.png"),
       expected: path.join(openClawTmpDir, "subdir", "deep", "file.png"),
     },
@@ -178,7 +178,7 @@ describe("resolveSandboxedMediaSource", () => {
     });
   });
 
-  it("rejects symlinked OpenClaw tmp paths escaping tmp root", async () => {
+  it("rejects symlinked WineryClaw tmp paths escaping tmp root", async () => {
     if (process.platform === "win32") {
       return;
     }
@@ -220,11 +220,11 @@ describe("resolveSandboxedMediaSource", () => {
     });
   });
 
-  it("rejects hardlinked OpenClaw tmp paths to outside files", async () => {
+  it("rejects hardlinked WineryClaw tmp paths to outside files", async () => {
     if (process.platform === "win32") {
       return;
     }
-    await withOutsideHardlinkInOpenClawTmp(
+    await withOutsideHardlinkInWineryClawTmp(
       {
         openClawTmpDir,
         hardlinkPrefix: "sandbox-media-hardlink",
@@ -237,11 +237,11 @@ describe("resolveSandboxedMediaSource", () => {
     );
   });
 
-  it("rejects symlinked OpenClaw tmp paths to hardlinked outside files", async () => {
+  it("rejects symlinked WineryClaw tmp paths to hardlinked outside files", async () => {
     if (process.platform === "win32") {
       return;
     }
-    await withOutsideHardlinkInOpenClawTmp(
+    await withOutsideHardlinkInWineryClawTmp(
       {
         openClawTmpDir,
         hardlinkPrefix: "sandbox-media-hardlink-target",

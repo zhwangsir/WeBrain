@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { SessionEntry } from "../../config/sessions.js";
 import type { HookRunner } from "../../plugins/hooks.js";
 
@@ -66,7 +66,7 @@ describe("session-updates lifecycle hooks", () => {
 
   it("emits compaction lifecycle hooks when newSessionId replaces the session", async () => {
     const { storePath, sessionKey, sessionStore, entry, transcriptPath } = await createFixture();
-    const cfg = { session: { store: storePath } } as OpenClawConfig;
+    const cfg = { session: { store: storePath } } as WineryClawConfig;
 
     await incrementCompactionCount({
       cfg,

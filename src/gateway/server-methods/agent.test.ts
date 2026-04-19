@@ -7,7 +7,7 @@ import { agentHandlers } from "./agent.js";
 import { expectSubagentFollowupReactivation } from "./subagent-followup.test-helpers.js";
 import type { GatewayRequestContext } from "./types.js";
 
-const ORIGINAL_STATE_DIR = process.env.OPENCLAW_STATE_DIR;
+const ORIGINAL_STATE_DIR = process.env.WINERYCLAW_STATE_DIR;
 
 const mocks = vi.hoisted(() => ({
   loadSessionEntry: vi.fn(),
@@ -311,9 +311,9 @@ async function invokeAgentIdentityGet(
 describe("gateway agent handler", () => {
   afterEach(() => {
     if (ORIGINAL_STATE_DIR === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.WINERYCLAW_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = ORIGINAL_STATE_DIR;
+      process.env.WINERYCLAW_STATE_DIR = ORIGINAL_STATE_DIR;
     }
     resetTaskRegistryForTests();
   });
@@ -842,8 +842,8 @@ describe("gateway agent handler", () => {
     await invokeAgent(
       {
         message: [
-          "[Mon 2026-04-06 02:42 GMT+1] <<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>",
-          "OpenClaw runtime context (internal):",
+          "[Mon 2026-04-06 02:42 GMT+1] <<<BEGIN_WINERYCLAW_INTERNAL_CONTEXT>>>",
+          "WineryClaw runtime context (internal):",
           "This context is runtime-generated, not user-authored. Keep internal details private.",
         ].join("\n"),
         sessionKey: "agent:main:main",
@@ -956,7 +956,7 @@ describe("gateway agent handler", () => {
 
   it("tracks async gateway agent runs in the shared task registry", async () => {
     await withTempDir({ prefix: "openclaw-gateway-agent-task-" }, async (root) => {
-      process.env.OPENCLAW_STATE_DIR = root;
+      process.env.WINERYCLAW_STATE_DIR = root;
       resetTaskRegistryForTests();
       primeMainAgentRun();
 

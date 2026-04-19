@@ -17,7 +17,7 @@ import { createHookRunner } from "./hooks.js";
 import {
   __testing,
   clearPluginLoaderCache,
-  loadOpenClawPlugins,
+  loadWineryClawPlugins,
   PluginLoadReentryError,
   resolveRuntimePluginRegistry,
 } from "./loader.js";
@@ -109,7 +109,7 @@ function writeBundledPlugin(params: {
     filename: params.filename ?? "index.cjs",
     body: params.body ?? simplePluginBody(params.id),
   });
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+  process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
   return { bundledDir, plugin };
 }
 
@@ -120,7 +120,7 @@ function writeWorkspacePlugin(params: {
   workspaceDir?: string;
 }) {
   const workspaceDir = params.workspaceDir ?? makeTempDir();
-  const workspacePluginDir = path.join(workspaceDir, ".openclaw", "extensions", params.id);
+  const workspacePluginDir = path.join(workspaceDir, ".wineryclaw", "extensions", params.id);
   mkdirSafe(workspacePluginDir);
   const plugin = writePlugin({
     id: params.id,
@@ -133,7 +133,7 @@ function writeWorkspacePlugin(params: {
 
 function withStateDir<T>(run: (stateDir: string) => T) {
   const stateDir = makeTempDir();
-  return withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => run(stateDir));
+  return withEnv({ WINERYCLAW_STATE_DIR: stateDir }, () => run(stateDir));
 }
 
 function loadBundledMemoryPluginRegistry(options?: {
@@ -142,8 +142,8 @@ function loadBundledMemoryPluginRegistry(options?: {
   pluginFilename?: string;
 }) {
   if (!options && cachedBundledMemoryDir) {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = cachedBundledMemoryDir;
-    return loadOpenClawPlugins({
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = cachedBundledMemoryDir;
+    return loadWineryClawPlugins({
       cache: false,
       workspaceDir: cachedBundledMemoryDir,
       config: {
@@ -191,9 +191,9 @@ function loadBundledMemoryPluginRegistry(options?: {
   if (!options) {
     cachedBundledMemoryDir = bundledDir;
   }
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+  process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-  return loadOpenClawPlugins({
+  return loadWineryClawPlugins({
     cache: false,
     workspaceDir: bundledDir,
     config: {
@@ -216,10 +216,10 @@ function setupBundledTelegramPlugin() {
       filename: "telegram.cjs",
     });
   }
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = cachedBundledTelegramDir;
+  process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = cachedBundledTelegramDir;
 }
 
-function expectTelegramLoaded(registry: ReturnType<typeof loadOpenClawPlugins>) {
+function expectTelegramLoaded(registry: ReturnType<typeof loadWineryClawPlugins>) {
   const telegram = registry.plugins.find((entry) => entry.id === "telegram");
   expect(telegram?.status).toBe("loaded");
   expect(registry.channels.some((entry) => entry.plugin.id === "telegram")).toBe(true);
@@ -229,10 +229,10 @@ function loadRegistryFromSinglePlugin(params: {
   plugin: TempPlugin;
   pluginConfig?: Record<string, unknown>;
   includeWorkspaceDir?: boolean;
-  options?: Omit<Parameters<typeof loadOpenClawPlugins>[0], "cache" | "workspaceDir" | "config">;
+  options?: Omit<Parameters<typeof loadWineryClawPlugins>[0], "cache" | "workspaceDir" | "config">;
 }) {
   const pluginConfig = params.pluginConfig ?? {};
-  return loadOpenClawPlugins({
+  return loadWineryClawPlugins({
     cache: false,
     ...(params.includeWorkspaceDir === false ? {} : { workspaceDir: params.plugin.dir }),
     ...params.options,
@@ -247,9 +247,9 @@ function loadRegistryFromSinglePlugin(params: {
 
 function loadRegistryFromAllowedPlugins(
   plugins: TempPlugin[],
-  options?: Omit<Parameters<typeof loadOpenClawPlugins>[0], "cache" | "config">,
+  options?: Omit<Parameters<typeof loadWineryClawPlugins>[0], "cache" | "config">,
 ) {
-  return loadOpenClawPlugins({
+  return loadWineryClawPlugins({
     cache: false,
     ...options,
     config: {
@@ -477,7 +477,7 @@ function createEscapingEntryFixture(params: { id: string; sourceBody: string }) 
 }
 
 function resolveLoadedPluginSource(
-  registry: ReturnType<typeof loadOpenClawPlugins>,
+  registry: ReturnType<typeof loadWineryClawPlugins>,
   pluginId: string,
 ) {
   return fs.realpathSync(registry.plugins.find((entry) => entry.id === pluginId)?.source ?? "");
@@ -485,8 +485,8 @@ function resolveLoadedPluginSource(
 
 function expectCachePartitionByPluginSource(params: {
   pluginId: string;
-  loadFirst: () => ReturnType<typeof loadOpenClawPlugins>;
-  loadSecond: () => ReturnType<typeof loadOpenClawPlugins>;
+  loadFirst: () => ReturnType<typeof loadWineryClawPlugins>;
+  loadSecond: () => ReturnType<typeof loadWineryClawPlugins>;
   expectedFirstSource: string;
   expectedSecondSource: string;
 }) {
@@ -503,8 +503,8 @@ function expectCachePartitionByPluginSource(params: {
 }
 
 function expectCacheMissThenHit(params: {
-  loadFirst: () => ReturnType<typeof loadOpenClawPlugins>;
-  loadVariant: () => ReturnType<typeof loadOpenClawPlugins>;
+  loadFirst: () => ReturnType<typeof loadWineryClawPlugins>;
+  loadVariant: () => ReturnType<typeof loadWineryClawPlugins>;
 }) {
   const first = params.loadFirst();
   const second = params.loadVariant();
@@ -637,10 +637,10 @@ function createEnvResolvedPluginFixture(pluginId: string) {
   });
   const env = {
     ...process.env,
-    OPENCLAW_HOME: openclawHome,
+    WINERYCLAW_HOME: openclawHome,
     HOME: ignoredHome,
-    OPENCLAW_STATE_DIR: stateDir,
-    OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+    WINERYCLAW_STATE_DIR: stateDir,
+    WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
   };
   return { plugin, env };
 }
@@ -671,7 +671,7 @@ function expectEscapingEntryRejected(params: {
     throw err;
   }
 
-  const registry = loadOpenClawPlugins({
+  const registry = loadWineryClawPlugins({
     cache: false,
     config: {
       plugins: {
@@ -697,7 +697,7 @@ afterAll(() => {
   cachedBundledMemoryDir = "";
 });
 
-describe("loadOpenClawPlugins", () => {
+describe("loadWineryClawPlugins", () => {
   it("disables bundled plugins by default", () => {
     const bundledDir = makeTempDir();
     writePlugin({
@@ -706,9 +706,9 @@ describe("loadOpenClawPlugins", () => {
       dir: bundledDir,
       filename: "bundled.cjs",
     });
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config: {
         plugins: {
@@ -763,7 +763,7 @@ describe("loadOpenClawPlugins", () => {
           },
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
         expectTelegramLoaded(registry);
       },
     },
@@ -779,7 +779,7 @@ describe("loadOpenClawPlugins", () => {
           enabled: true,
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
         expectTelegramLoaded(registry);
       },
     },
@@ -795,7 +795,7 @@ describe("loadOpenClawPlugins", () => {
           allow: ["browser"],
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
         const telegram = registry.plugins.find((entry) => entry.id === "telegram");
         expect(telegram?.status).toBe("loaded");
         expect(telegram?.error).toBeUndefined();
@@ -816,7 +816,7 @@ describe("loadOpenClawPlugins", () => {
           },
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
         const telegram = registry.plugins.find((entry) => entry.id === "telegram");
         expect(telegram?.status).toBe("disabled");
         expect(telegram?.error).toBe("disabled in config");
@@ -826,7 +826,7 @@ describe("loadOpenClawPlugins", () => {
     "handles bundled telegram plugin enablement and override rules: $name",
     ({ config, assert }) => {
       setupBundledTelegramPlugin();
-      const registry = loadOpenClawPlugins({
+      const registry = loadWineryClawPlugins({
         cache: false,
         workspaceDir: cachedBundledTelegramDir,
         config,
@@ -852,7 +852,7 @@ describe("loadOpenClawPlugins", () => {
       env: {},
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: autoEnabled.config,
@@ -885,7 +885,7 @@ describe("loadOpenClawPlugins", () => {
       env: {},
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: autoEnabled.config,
@@ -918,7 +918,7 @@ describe("loadOpenClawPlugins", () => {
       },
     } satisfies PluginLoadConfig;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: {
@@ -960,7 +960,7 @@ describe("loadOpenClawPlugins", () => {
       },
     } satisfies PluginLoadConfig;
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config,
@@ -996,7 +996,7 @@ describe("loadOpenClawPlugins", () => {
     {
       label: "loads plugins from config paths",
       run: () => {
-        process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
+        process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
         const plugin = writePlugin({
           id: "allowed-config-path",
           filename: "allowed-config-path.cjs",
@@ -1008,7 +1008,7 @@ describe("loadOpenClawPlugins", () => {
 };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadWineryClawPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -1043,7 +1043,7 @@ describe("loadOpenClawPlugins", () => {
 };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadWineryClawPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -1082,7 +1082,7 @@ describe("loadOpenClawPlugins", () => {
 module.exports = { id: "skipped-scoped-only", register() { throw new Error("skipped plugin should not load"); } };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadWineryClawPlugins({
           cache: false,
           config: {
             plugins: {
@@ -1109,7 +1109,7 @@ module.exports = { id: "skipped-scoped-only", register() { throw new Error("skip
 module.exports = { id: "manifest-only-plugin", register() { throw new Error("manifest-only snapshot should not register"); } };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadWineryClawPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1162,7 +1162,7 @@ module.exports = { id: "manifest-only-plugin", register() { throw new Error("man
           "utf-8",
         );
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadWineryClawPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1209,7 +1209,7 @@ throw new Error("boom after import");
 module.exports = { id: "throws-after-import", register() {} };`,
         });
 
-        const registry = loadOpenClawPlugins({
+        const registry = loadWineryClawPlugins({
           cache: false,
           activate: false,
           config: {
@@ -1246,7 +1246,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         Reflect.set(
           globalThis,
           reenterFnMarker,
-          (options: Parameters<typeof loadOpenClawPlugins>[0]) => loadOpenClawPlugins(options),
+          (options: Parameters<typeof loadWineryClawPlugins>[0]) => loadWineryClawPlugins(options),
         );
         const pluginDir = makeTempDir();
         const pluginFile = path.join(pluginDir, "reentrant-snapshot.cjs");
@@ -1260,7 +1260,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
               allow: ["reentrant-snapshot"],
             },
           },
-        } satisfies Parameters<typeof loadOpenClawPlugins>[0];
+        } satisfies Parameters<typeof loadWineryClawPlugins>[0];
         writePlugin({
           id: "reentrant-snapshot",
           dir: pluginDir,
@@ -1281,7 +1281,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 };`,
         });
 
-        const registry = loadOpenClawPlugins(nestedOptions);
+        const registry = loadWineryClawPlugins(nestedOptions);
 
         try {
           expect(Reflect.get(globalThis, marker)).toMatchObject({
@@ -1326,7 +1326,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
               allow: ["runtime-registry-reentry"],
             },
           },
-        } satisfies Parameters<typeof loadOpenClawPlugins>[0];
+        } satisfies Parameters<typeof loadWineryClawPlugins>[0];
         writePlugin({
           id: "runtime-registry-reentry",
           dir: pluginDir,
@@ -1340,7 +1340,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 };`,
         });
 
-        const registry = loadOpenClawPlugins(nestedOptions);
+        const registry = loadWineryClawPlugins(nestedOptions);
 
         try {
           expect(Reflect.get(globalThis, marker)).toBe("undefined");
@@ -1378,12 +1378,12 @@ module.exports = { id: "throws-after-import", register() {} };`,
           },
         };
 
-        const full = loadOpenClawPlugins(options);
-        const scoped = loadOpenClawPlugins({
+        const full = loadWineryClawPlugins(options);
+        const scoped = loadWineryClawPlugins({
           ...options,
           onlyPluginIds: ["allowed-cache-scope"],
         });
-        const scopedAgain = loadOpenClawPlugins({
+        const scopedAgain = loadWineryClawPlugins({
           ...options,
           onlyPluginIds: ["allowed-cache-scope"],
         });
@@ -1410,7 +1410,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         setActivePluginRegistry(previousRegistry, "existing-registry");
         resetGlobalHookRunner();
 
-        const scoped = loadOpenClawPlugins({
+        const scoped = loadWineryClawPlugins({
           cache: false,
           activate: false,
           workspaceDir: plugin.dir,
@@ -1446,7 +1446,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "extra-empty-scope", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       activate: false,
       config: {
@@ -1480,7 +1480,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
     clearPluginCommands();
 
-    const scoped = loadOpenClawPlugins({
+    const scoped = loadWineryClawPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -1497,7 +1497,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     expect(scoped.commands.map((entry) => entry.command.name)).toEqual(["pair"]);
     expect(getPluginCommandSpecs("telegram")).toEqual([]);
 
-    const active = loadOpenClawPlugins({
+    const active = loadWineryClawPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -1539,7 +1539,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    loadOpenClawPlugins({
+    loadWineryClawPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -1552,7 +1552,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
     expect(listAgentHarnessIds()).toEqual(["codex"]);
 
-    loadOpenClawPlugins({
+    loadWineryClawPlugins({
       cache: false,
       workspaceDir: makeTempDir(),
       config: {
@@ -1578,7 +1578,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
 
     clearInternalHooks();
-    const scoped = loadOpenClawPlugins({
+    const scoped = loadWineryClawPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -1633,8 +1633,8 @@ module.exports = { id: "throws-after-import", register() {} };`,
       onlyPluginIds: ["internal-hook-reload"],
     };
 
-    loadOpenClawPlugins(loadOptions);
-    loadOpenClawPlugins(loadOptions);
+    loadWineryClawPlugins(loadOptions);
+    loadWineryClawPlugins(loadOptions);
 
     const event = createInternalHookEvent("gateway", "startup", "gateway:startup");
     await triggerInternalHook(event);
@@ -1646,7 +1646,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
   it("can scope bundled provider loads to deepseek without hanging", () => {
     resetPluginLoaderTestStateForTest();
 
-    const scoped = loadOpenClawPlugins({
+    const scoped = loadWineryClawPlugins({
       cache: false,
       activate: false,
       pluginSdkResolution: "dist",
@@ -1725,7 +1725,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const scoped = loadOpenClawPlugins({
+    const scoped = loadWineryClawPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -1790,7 +1790,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -1864,14 +1864,14 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     ];
 
-    const first = loadOpenClawPlugins(options);
+    const first = loadWineryClawPlugins(options);
     await expect(listActiveMemoryPublicArtifacts({ cfg: {} as never })).resolves.toEqual(
       expectedArtifacts,
     );
 
     clearMemoryPluginState();
 
-    const second = loadOpenClawPlugins(options);
+    const second = loadWineryClawPlugins(options);
     expect(second).toBe(first);
     await expect(listActiveMemoryPublicArtifacts({ cfg: {} as never })).resolves.toEqual(
       expectedArtifacts,
@@ -1879,16 +1879,16 @@ module.exports = { id: "throws-after-import", register() {} };`,
   });
 
   it("throws when activate:false is used without cache:false", () => {
-    expect(() => loadOpenClawPlugins({ activate: false })).toThrow(
+    expect(() => loadWineryClawPlugins({ activate: false })).toThrow(
       "activate:false requires cache:false",
     );
-    expect(() => loadOpenClawPlugins({ activate: false, cache: true })).toThrow(
+    expect(() => loadWineryClawPlugins({ activate: false, cache: true })).toThrow(
       "activate:false requires cache:false",
     );
   });
 
   it("re-initializes global hook runner when serving registry from cache", () => {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
     const plugin = writePlugin({
       id: "cache-hook-runner",
       filename: "cache-hook-runner.cjs",
@@ -1905,13 +1905,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     };
 
-    const first = loadOpenClawPlugins(options);
+    const first = loadWineryClawPlugins(options);
     expect(getGlobalHookRunner()).not.toBeNull();
 
     resetGlobalHookRunner();
     expect(getGlobalHookRunner()).toBeNull();
 
-    const second = loadOpenClawPlugins(options);
+    const second = loadWineryClawPlugins(options);
     expect(second).toBe(first);
     expect(getGlobalHookRunner()).not.toBeNull();
 
@@ -1953,19 +1953,19 @@ module.exports = { id: "throws-after-import", register() {} };`,
           expectedFirstSource: pluginA.file,
           expectedSecondSource: pluginB.file,
           loadFirst: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledA,
+                WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledA,
               },
             }),
           loadSecond: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledB,
+                WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledB,
               },
             }),
         };
@@ -2010,25 +2010,25 @@ module.exports = { id: "throws-after-import", register() {} };`,
           expectedFirstSource: pluginA.file,
           expectedSecondSource: pluginB.file,
           loadFirst: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               env: {
                 ...process.env,
                 HOME: homeA,
-                OPENCLAW_HOME: undefined,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+                WINERYCLAW_HOME: undefined,
+                WINERYCLAW_STATE_DIR: stateDir,
+                WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
               },
             }),
           loadSecond: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               env: {
                 ...process.env,
                 HOME: homeB,
-                OPENCLAW_HOME: undefined,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+                WINERYCLAW_HOME: undefined,
+                WINERYCLAW_STATE_DIR: stateDir,
+                WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
               },
             }),
         };
@@ -2081,25 +2081,25 @@ module.exports = { id: "throws-after-import", register() {} };`,
         const secondHome = makeTempDir();
         return {
           loadFirst: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_HOME: openclawHome,
+                WINERYCLAW_HOME: openclawHome,
                 HOME: ignoredHome,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+                WINERYCLAW_STATE_DIR: stateDir,
+                WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
               },
             }),
           loadVariant: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               env: {
                 ...process.env,
-                OPENCLAW_HOME: secondHome,
+                WINERYCLAW_HOME: secondHome,
                 HOME: ignoredHome,
-                OPENCLAW_STATE_DIR: stateDir,
-                OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+                WINERYCLAW_STATE_DIR: stateDir,
+                WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
               },
             }),
         };
@@ -2128,9 +2128,9 @@ module.exports = { id: "throws-after-import", register() {} };`,
         };
 
         return {
-          loadFirst: () => loadOpenClawPlugins(options),
+          loadFirst: () => loadWineryClawPlugins(options),
           loadVariant: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               pluginSdkResolution: "workspace" as PluginSdkResolutionPreference,
             }),
@@ -2160,9 +2160,9 @@ module.exports = { id: "throws-after-import", register() {} };`,
         };
 
         return {
-          loadFirst: () => loadOpenClawPlugins(options),
+          loadFirst: () => loadWineryClawPlugins(options),
           loadVariant: () =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               ...options,
               runtimeOptions: {
                 allowGatewaySubagentBinding: true,
@@ -2189,11 +2189,11 @@ module.exports = { id: "throws-after-import", register() {} };`,
     );
 
     const loadWithStateDir = (stateDir: string) =>
-      loadOpenClawPlugins({
+      loadWineryClawPlugins({
         env: {
           ...process.env,
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+          WINERYCLAW_STATE_DIR: stateDir,
+          WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
         },
         config: {
           plugins: {
@@ -2233,12 +2233,12 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "tilde-bundled", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       env: {
         ...process.env,
         HOME: homeDir,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: override,
+        WINERYCLAW_HOME: undefined,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: override,
       },
       config: {
         plugins: {
@@ -2255,7 +2255,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     ).toBe(fs.realpathSync(plugin.file));
   });
 
-  it("prefers OPENCLAW_HOME over HOME for env-expanded load paths", () => {
+  it("prefers WINERYCLAW_HOME over HOME for env-expanded load paths", () => {
     const ignoredHome = makeTempDir();
     const openclawHome = makeTempDir();
     const stateDir = makeTempDir();
@@ -2267,13 +2267,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "openclaw-home-demo", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       env: {
         ...process.env,
         HOME: ignoredHome,
-        OPENCLAW_HOME: openclawHome,
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+        WINERYCLAW_HOME: openclawHome,
+        WINERYCLAW_STATE_DIR: stateDir,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
       },
       config: {
         plugins: {
@@ -2370,7 +2370,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
 
     expect(() =>
-      loadOpenClawPlugins({
+      loadWineryClawPlugins({
         cache: false,
         throwOnLoadError: true,
         config: {
@@ -2447,7 +2447,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     }
   });
 } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const channel = registry.channels.find((entry) => entry.plugin.id === "demo");
           expect(channel).toBeDefined();
         },
@@ -2493,7 +2493,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     }
   });
 } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expect(registry.channels.filter((entry) => entry.plugin.id === "demo")).toHaveLength(1);
           expectRegistryErrorDiagnostic({
             registry,
@@ -2508,7 +2508,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "context-engine-core-collision", register(api) {
   api.registerContextEngine("legacy", () => ({}));
 } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "context-engine-core-collision",
@@ -2522,7 +2522,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "cli-missing-metadata", register(api) {
   api.registerCli(() => {});
 } };`,
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expect(registry.cliRegistrars).toHaveLength(0);
           expectRegistryErrorDiagnostic({
             registry,
@@ -2581,7 +2581,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerHook("gateway:startup", () => {}, { name: "shared-hook" });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadWineryClawPlugins>) =>
           registry.hooks.filter((entry) => entry.entry.hook.name === "shared-hook").length,
         duplicateMessage: "hook already registered: shared-hook (hook-owner-a)",
         assert: expectDuplicateRegistrationResult,
@@ -2593,7 +2593,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerService({ id: "shared-service", start() {} });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadWineryClawPlugins>) =>
           registry.services.filter((entry) => entry.service.id === "shared-service").length,
         duplicateMessage: "service already registered: shared-service (service-owner-a)",
         assert: expectDuplicateRegistrationResult,
@@ -2617,10 +2617,10 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerCli(() => {}, { commands: ["shared-cli"] });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadOpenClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadWineryClawPlugins>) =>
           registry.cliRegistrars.length,
         duplicateMessage: "cli command already registered: shared-cli (cli-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expect(registry.cliRegistrars[0]?.pluginId).toBe("cli-owner-a");
         },
         assert: expectDuplicateRegistrationResult,
@@ -2743,7 +2743,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expect(
             registry.httpRoutes.find((entry) => entry.pluginId === "http-route-missing-auth"),
           ).toBeUndefined();
@@ -2766,7 +2766,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-replace-self",
           );
@@ -2793,7 +2793,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const route = registry.httpRoutes.find((entry) => entry.path === "/demo");
           expect(route?.pluginId).toBe("http-route-owner-a");
           expect(
@@ -2815,7 +2815,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-overlap",
           );
@@ -2840,7 +2840,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-overlap-same-auth",
           );
@@ -2856,13 +2856,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
   });
 
   it("respects explicit disable in config", () => {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
     const plugin = writePlugin({
       id: "config-disable",
       body: `module.exports = { id: "config-disable", register() {} };`,
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config: {
         plugins: {
@@ -2946,7 +2946,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config: {
         channels: {
@@ -2997,7 +2997,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config: {
         plugins: {
@@ -3069,7 +3069,7 @@ module.exports = {
       },
     };
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config,
     });
@@ -3080,7 +3080,7 @@ module.exports = {
       "disabled",
     );
 
-    const broadSetupRegistry = loadOpenClawPlugins({
+    const broadSetupRegistry = loadWineryClawPlugins({
       cache: false,
       config,
       includeSetupOnlyChannelPlugins: true,
@@ -3093,7 +3093,7 @@ module.exports = {
       broadSetupRegistry.plugins.find((entry) => entry.id === "lazy-channel-plugin")?.status,
     ).toBe("disabled");
 
-    const scopedSetupRegistry = loadOpenClawPlugins({
+    const scopedSetupRegistry = loadWineryClawPlugins({
       cache: false,
       config,
       includeSetupOnlyChannelPlugins: true,
@@ -3120,7 +3120,7 @@ module.exports = {
         configured: false,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadWineryClawPlugins({
           cache: false,
           config: {
             plugins: {
@@ -3149,7 +3149,7 @@ module.exports = {
         configured: false,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadWineryClawPlugins({
           cache: false,
           config: {
             plugins: {
@@ -3173,7 +3173,7 @@ module.exports = {
         configured: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadOpenClawPlugins({
+        loadWineryClawPlugins({
           cache: false,
           preferSetupRuntimeForChannelPlugins: true,
           config: {
@@ -3344,7 +3344,7 @@ module.exports = {
       {
         label: "enforces memory slot selection",
         loadRegistry: () => {
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
+          process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
           const memoryA = writePlugin({
             id: "memory-a",
             body: memoryPluginBody("memory-a"),
@@ -3354,7 +3354,7 @@ module.exports = {
             body: memoryPluginBody("memory-b"),
           });
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3364,7 +3364,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const a = registry.plugins.find((entry) => entry.id === "memory-a");
           const b = registry.plugins.find((entry) => entry.id === "memory-b");
           expect(b?.status).toBe("loaded");
@@ -3417,9 +3417,9 @@ module.exports = {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3433,7 +3433,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const a = registry.plugins.find((entry) => entry.id === "memory-a");
           const b = registry.plugins.find((entry) => entry.id === "memory-b");
           expect(a?.status).toBe("disabled");
@@ -3481,9 +3481,9 @@ module.exports = {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3497,7 +3497,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const core = registry.plugins.find((entry) => entry.id === "memory-core");
           const lance = registry.plugins.find((entry) => entry.id === "memory-lancedb");
           expect(core?.status).toBe("loaded");
@@ -3544,9 +3544,9 @@ module.exports = {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3560,7 +3560,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const core = registry.plugins.find((entry) => entry.id === "memory-core");
           const lance = registry.plugins.find((entry) => entry.id === "memory-lancedb");
           expect(core?.status).toBe("disabled");
@@ -3588,9 +3588,9 @@ module.exports = {
             ),
             "utf-8",
           );
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+          process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3603,7 +3603,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const core = registry.plugins.find((entry) => entry.id === "memory-core");
           expect(core?.status).toBe("disabled");
         },
@@ -3611,13 +3611,13 @@ module.exports = {
       {
         label: "disables memory plugins when slot is none",
         loadRegistry: () => {
-          process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
+          process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
           const memory = writePlugin({
             id: "memory-off",
             body: memoryPluginBody("memory-off"),
           });
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3627,7 +3627,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           const entry = registry.plugins.find((item) => item.id === "memory-off");
           expect(entry?.status).toBe("disabled");
         },
@@ -3655,7 +3655,7 @@ module.exports = {
             body: simplePluginBody("shadow"),
           });
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             config: {
               plugins: {
@@ -3690,7 +3690,7 @@ module.exports = {
               filename: "index.cjs",
             });
 
-            return loadOpenClawPlugins({
+            return loadWineryClawPlugins({
               cache: false,
               config: {
                 plugins: {
@@ -3727,7 +3727,7 @@ module.exports = {
               filename: "index.cjs",
             });
 
-            return loadOpenClawPlugins({
+            return loadWineryClawPlugins({
               cache: false,
               config: {
                 plugins: {
@@ -3770,7 +3770,7 @@ module.exports = {
             id: "warn-open-allow-config",
             body: simplePluginBody("warn-open-allow-config"),
           });
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             config: {
@@ -3791,7 +3791,7 @@ module.exports = {
             id: "warn-open-allow-workspace",
           });
           return (warnings: string[]) =>
-            loadOpenClawPlugins({
+            loadWineryClawPlugins({
               cache: false,
               workspaceDir,
               logger: createWarningLogger(warnings),
@@ -3832,7 +3832,7 @@ module.exports = {
             id: "workspace-helper",
           });
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             workspaceDir,
             config: {
@@ -3842,7 +3842,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expectPluginOriginAndStatus({
             registry,
             pluginId: "workspace-helper",
@@ -3861,7 +3861,7 @@ module.exports = {
             id: "workspace-helper",
           });
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             workspaceDir,
             config: {
@@ -3872,7 +3872,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadOpenClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadWineryClawPlugins>) => {
           expectPluginOriginAndStatus({
             registry,
             pluginId: "workspace-helper",
@@ -3896,7 +3896,7 @@ module.exports = {
             id: "shadowed",
           });
 
-          return loadOpenClawPlugins({
+          return loadWineryClawPlugins({
             cache: false,
             workspaceDir,
             config: {
@@ -3944,7 +3944,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config: {
@@ -3972,7 +3972,7 @@ module.exports = {
       filename: "unscoped.cjs",
     });
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config: {
         plugins: {
@@ -4006,7 +4006,7 @@ module.exports = {
             });
 
             const warnings: string[] = [];
-            const registry = loadOpenClawPlugins({
+            const registry = loadWineryClawPlugins({
               cache: false,
               logger: createWarningLogger(warnings),
               config: {
@@ -4024,7 +4024,7 @@ module.exports = {
         label: "warns when loaded non-bundled plugin has no provenance and no allowlist is set",
         loadRegistry: () => {
           const stateDir = makeTempDir();
-          return withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => {
+          return withEnv({ WINERYCLAW_STATE_DIR: stateDir }, () => {
             const globalDir = path.join(stateDir, "extensions", "rogue");
             mkdirSafe(globalDir);
             writePlugin({
@@ -4035,7 +4035,7 @@ module.exports = {
             });
 
             const warnings: string[] = [];
-            const registry = loadOpenClawPlugins({
+            const registry = loadWineryClawPlugins({
               cache: false,
               logger: createWarningLogger(warnings),
               config: {
@@ -4054,7 +4054,7 @@ module.exports = {
         loadRegistry: () => {
           const { plugin, env } = createEnvResolvedPluginFixture("tracked-load-path");
           const warnings: string[] = [];
-          const registry = loadOpenClawPlugins({
+          const registry = loadWineryClawPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             env,
@@ -4080,7 +4080,7 @@ module.exports = {
         loadRegistry: () => {
           const { plugin, env } = createEnvResolvedPluginFixture("tracked-install-path");
           const warnings: string[] = [];
-          const registry = loadOpenClawPlugins({
+          const registry = loadWineryClawPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             env,
@@ -4178,8 +4178,8 @@ module.exports = {
       throw err;
     }
 
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
-    const registry = loadOpenClawPlugins({
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config: {
@@ -4220,7 +4220,7 @@ module.exports = {
 } };`,
     });
 
-    const registry = withEnv({ OPENCLAW_STATE_DIR: stateDir }, () =>
+    const registry = withEnv({ WINERYCLAW_STATE_DIR: stateDir }, () =>
       loadRegistryFromSinglePlugin({
         plugin,
         pluginConfig: {
@@ -4248,8 +4248,8 @@ module.exports = {
       };`,
     });
 
-    const registry = withEnv({ OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" }, () =>
-      loadOpenClawPlugins({
+    const registry = withEnv({ WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" }, () =>
+      loadWineryClawPlugins({
         cache: false,
         workspaceDir: plugin.dir,
         config: {
@@ -4293,9 +4293,9 @@ module.exports = {
 
     try {
       const registry = withEnv(
-        { OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" },
+        { WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" },
         () =>
-          loadOpenClawPlugins({
+          loadWineryClawPlugins({
             cache: false,
             workspaceDir: plugin.dir,
             config: {
@@ -4331,7 +4331,7 @@ module.exports = {
   it("suppresses trust warning logs for non-activating snapshot loads", () => {
     useNoBundledPlugins();
     const stateDir = makeTempDir();
-    withEnv({ OPENCLAW_STATE_DIR: stateDir }, () => {
+    withEnv({ WINERYCLAW_STATE_DIR: stateDir }, () => {
       const globalDir = path.join(stateDir, "extensions", "rogue");
       mkdirSafe(globalDir);
       writePlugin({
@@ -4342,7 +4342,7 @@ module.exports = {
       });
 
       const warnings: string[] = [];
-      const registry = loadOpenClawPlugins({
+      const registry = loadWineryClawPlugins({
         activate: false,
         cache: false,
         logger: createWarningLogger(warnings),
@@ -4389,7 +4389,7 @@ export const runtimeValue = helperValue;`,
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {

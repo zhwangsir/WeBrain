@@ -5,7 +5,7 @@ import "../cron/isolated-agent.mocks.js";
 import { __testing as agentCommandTesting } from "../agents/agent-command.js";
 import { resolveSession } from "../agents/command/session.js";
 import * as commandConfigResolutionModule from "../cli/command-config-resolution.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import * as configModule from "../config/config.js";
 import {
   mockSharedAgentCommandConfig,
@@ -63,7 +63,7 @@ describe("agentCommand runtime config", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
       const sourceConfig = {
         ...loadedConfig,
         models: {
@@ -75,7 +75,7 @@ describe("agentCommand runtime config", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
       const resolvedConfig = {
         ...loadedConfig,
         models: {
@@ -87,7 +87,7 @@ describe("agentCommand runtime config", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       configSpy.mockReturnValue(loadedConfig);
       readConfigFileSnapshotForWriteSpy.mockResolvedValue({

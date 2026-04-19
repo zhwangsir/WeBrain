@@ -1,4 +1,4 @@
-import OpenClawKit
+import WineryClawKit
 import Foundation
 import Testing
 
@@ -43,7 +43,7 @@ private func agentAction(
         #expect(DeepLinkParser.parse(url) == agentAction(message: "Hello"))
     }
 
-    @Test func parseRejectsNonOpenClawScheme() {
+    @Test func parseRejectsNonWineryClawScheme() {
         let url = URL(string: "https://example.com/agent?message=hi")!
         #expect(DeepLinkParser.parse(url) == nil)
     }

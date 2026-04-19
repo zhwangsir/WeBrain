@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { ProviderPlugin } from "../../plugins/types.js";
 import type { RuntimeEnv } from "../../runtime.js";
 
@@ -130,8 +130,8 @@ function createProvider(params: {
 
 describe("modelsAuthLoginCommand", () => {
   let restoreStdin: (() => void) | null = null;
-  let currentConfig: OpenClawConfig;
-  let lastUpdatedConfig: OpenClawConfig | null;
+  let currentConfig: WineryClawConfig;
+  let lastUpdatedConfig: WineryClawConfig | null;
   let runProviderAuth: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
@@ -155,7 +155,7 @@ describe("modelsAuthLoginCommand", () => {
     mocks.isRemoteEnvironment.mockReturnValue(false);
     mocks.loadValidConfigOrThrow.mockImplementation(async () => currentConfig);
     mocks.updateConfig.mockImplementation(
-      async (mutator: (cfg: OpenClawConfig) => OpenClawConfig) => {
+      async (mutator: (cfg: WineryClawConfig) => WineryClawConfig) => {
         lastUpdatedConfig = mutator(currentConfig);
         currentConfig = lastUpdatedConfig;
         return lastUpdatedConfig;
@@ -601,13 +601,13 @@ describe("modelsAuthLoginCommand", () => {
       agentDir: "/tmp/openclaw/agents/main",
     });
     expect(runtime.log).toHaveBeenCalledWith(
-      "Anthropic setup-token auth is supported in OpenClaw.",
+      "Anthropic setup-token auth is supported in WineryClaw.",
     );
     expect(runtime.log).toHaveBeenCalledWith(
-      "OpenClaw prefers Claude CLI reuse when it is available on the host.",
+      "WineryClaw prefers Claude CLI reuse when it is available on the host.",
     );
     expect(runtime.log).toHaveBeenCalledWith(
-      "Anthropic staff told us this OpenClaw path is allowed again.",
+      "Anthropic staff told us this WineryClaw path is allowed again.",
     );
   });
 

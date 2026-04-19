@@ -2,13 +2,13 @@
 title: "Cloudflare AI Gateway"
 summary: "Cloudflare AI Gateway setup (auth + model selection)"
 read_when:
-  - You want to use Cloudflare AI Gateway with OpenClaw
+  - You want to use Cloudflare AI Gateway with WineryClaw
   - You need the account ID, gateway ID, or API key env var
 ---
 
 # Cloudflare AI Gateway
 
-Cloudflare AI Gateway sits in front of provider APIs and lets you add analytics, caching, and controls. For Anthropic, OpenClaw uses the Anthropic Messages API through your Gateway endpoint.
+Cloudflare AI Gateway sits in front of provider APIs and lets you add analytics, caching, and controls. For Anthropic, WineryClaw uses the Anthropic Messages API through your Gateway endpoint.
 
 | Property      | Value                                                                                    |
 | ------------- | ---------------------------------------------------------------------------------------- |
@@ -35,7 +35,7 @@ For Anthropic models routed through Cloudflare AI Gateway, use your **Anthropic 
 
   </Step>
   <Step title="Set a default model">
-    Add the model to your OpenClaw config:
+    Add the model to your WineryClaw config:
 
     ```json5
     {
@@ -98,7 +98,7 @@ openclaw onboard --non-interactive \
     If the Gateway runs as a daemon (launchd/systemd), make sure `CLOUDFLARE_AI_GATEWAY_API_KEY` is available to that process.
 
     <Warning>
-    A key sitting only in `~/.profile` will not help a launchd/systemd daemon unless that environment is imported there as well. Set the key in `~/.openclaw/.env` or via `env.shellEnv` to ensure the gateway process can read it.
+    A key sitting only in `~/.profile` will not help a launchd/systemd daemon unless that environment is imported there as well. Set the key in `~/.wineryclaw/.env` or via `env.shellEnv` to ensure the gateway process can read it.
     </Warning>
 
   </Accordion>

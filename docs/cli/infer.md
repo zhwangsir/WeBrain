@@ -17,7 +17,7 @@ It intentionally exposes capability families, not raw gateway RPC names and not 
 Copy and paste this to an agent:
 
 ```text
-Read https://docs.openclaw.ai/cli/infer, then create a skill that routes my common workflows to `openclaw infer`.
+Read docs/cli/infer, then create a skill that routes my common workflows to `openclaw infer`.
 Focus on model runs, image generation, video generation, audio transcription, TTS, web search, and embeddings.
 ```
 
@@ -39,14 +39,14 @@ Typical infer-focused skill coverage:
 
 ## Why use infer
 
-`openclaw infer` provides one consistent CLI for provider-backed inference tasks inside OpenClaw.
+`openclaw infer` provides one consistent CLI for provider-backed inference tasks inside WineryClaw.
 
 Benefits:
 
-- Use the providers and models already configured in OpenClaw instead of wiring up one-off wrappers for each backend.
+- Use the providers and models already configured in WineryClaw instead of wiring up one-off wrappers for each backend.
 - Keep model, image, audio transcription, TTS, video, web, and embedding workflows under one command tree.
 - Use a stable `--json` output shape for scripts, automation, and agent-driven workflows.
-- Prefer a first-party OpenClaw surface when the task is fundamentally "run inference."
+- Prefer a first-party WineryClaw surface when the task is fundamentally "run inference."
 - Use the normal local path without requiring the gateway for most infer commands.
 
 ## Command tree
@@ -210,9 +210,9 @@ Notes:
 Use `web` for search and fetch workflows.
 
 ```bash
-openclaw infer web search --query "OpenClaw docs" --json
-openclaw infer web search --query "OpenClaw infer web providers" --json
-openclaw infer web fetch --url https://docs.openclaw.ai/cli/infer --json
+openclaw infer web search --query "WineryClaw docs" --json
+openclaw infer web search --query "WineryClaw infer web providers" --json
+openclaw infer web fetch --url docs/cli/infer --json
 openclaw infer web providers --json
 ```
 

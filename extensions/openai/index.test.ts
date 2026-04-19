@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import * as providerAuth from "openclaw/plugin-sdk/provider-auth-runtime";
 import * as providerHttp from "openclaw/plugin-sdk/provider-http";
 import type { ProviderPlugin } from "openclaw/plugin-sdk/provider-model-shared";
@@ -239,7 +239,7 @@ describe("openai plugin", () => {
               },
             },
           },
-        } satisfies OpenClawConfig,
+        } satisfies WineryClawConfig,
       }),
     ).rejects.toThrow("Blocked hostname or private/internal/special-use IP address");
 

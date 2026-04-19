@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { bundledDistPluginFile } from "../../test/helpers/bundled-plugin-paths.js";
-import { clearPluginDiscoveryCache, discoverOpenClawPlugins } from "./discovery.js";
+import { clearPluginDiscoveryCache, discoverWineryClawPlugins } from "./discovery.js";
 import {
   cleanupTrackedTempDirs,
   makeTrackedTempDir,
@@ -36,9 +36,9 @@ function hasDiagnosticSourceSuffix(
 
 function buildDiscoveryEnv(stateDir: string): NodeJS.ProcessEnv {
   return {
-    OPENCLAW_STATE_DIR: stateDir,
-    OPENCLAW_HOME: undefined,
-    OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+    WINERYCLAW_STATE_DIR: stateDir,
+    WINERYCLAW_HOME: undefined,
+    WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
   };
 }
 
@@ -48,20 +48,20 @@ function buildCachedDiscoveryEnv(
 ): NodeJS.ProcessEnv {
   return {
     ...buildDiscoveryEnv(stateDir),
-    OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5000",
+    WINERYCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5000",
     ...overrides,
   };
 }
 
 async function discoverWithStateDir(
   stateDir: string,
-  params: Parameters<typeof discoverOpenClawPlugins>[0],
+  params: Parameters<typeof discoverWineryClawPlugins>[0],
 ) {
-  return discoverOpenClawPlugins({ ...params, env: buildDiscoveryEnv(stateDir) });
+  return discoverWineryClawPlugins({ ...params, env: buildDiscoveryEnv(stateDir) });
 }
 
-function discoverWithCachedEnv(params: Parameters<typeof discoverOpenClawPlugins>[0]) {
-  return discoverOpenClawPlugins(params);
+function discoverWithCachedEnv(params: Parameters<typeof discoverWineryClawPlugins>[0]) {
+  return discoverWineryClawPlugins(params);
 }
 
 function writePluginPackageManifest(params: {
@@ -174,7 +174,7 @@ function expectEscapesPackageDiagnostic(diagnostics: Array<{ message: string }>)
 }
 
 function expectCandidatePresence(
-  result: Awaited<ReturnType<typeof discoverOpenClawPlugins>>,
+  result: Awaited<ReturnType<typeof discoverWineryClawPlugins>>,
   params: { present?: readonly string[]; absent?: readonly string[] },
 ) {
   const ids = result.candidates.map((candidate) => candidate.idHint);
@@ -262,7 +262,7 @@ afterEach(() => {
   cleanupTrackedTempDirs(tempDirs);
 });
 
-describe("discoverOpenClawPlugins", () => {
+describe("discoverWineryClawPlugins", () => {
   it("discovers global and workspace extensions", async () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
@@ -271,7 +271,7 @@ describe("discoverOpenClawPlugins", () => {
     mkdirSafe(globalExt);
     fs.writeFileSync(path.join(globalExt, "alpha.ts"), "export default function () {}", "utf-8");
 
-    const workspaceExt = path.join(workspaceDir, ".openclaw", "extensions");
+    const workspaceExt = path.join(workspaceDir, ".wineryclaw", "extensions");
     mkdirSafe(workspaceExt);
     fs.writeFileSync(path.join(workspaceExt, "beta.ts"), "export default function () {}", "utf-8");
 
@@ -282,7 +282,7 @@ describe("discoverOpenClawPlugins", () => {
   it("does not recurse arbitrary workspace directories for plugin auto-discovery", () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
-    const workspaceExt = path.join(workspaceDir, ".openclaw", "extensions");
+    const workspaceExt = path.join(workspaceDir, ".wineryclaw", "extensions");
 
     const expectedWorkspacePluginDir = path.join(workspaceExt, "workspace-plugin");
     createPackagePluginWithEntry({
@@ -297,7 +297,7 @@ describe("discoverOpenClawPlugins", () => {
       packageName: "@openclaw/stray-workspace-plugin",
     });
 
-    const result = discoverOpenClawPlugins({
+    const result = discoverWineryClawPlugins({
       workspaceDir,
       env: buildDiscoveryEnv(stateDir),
     });
@@ -313,11 +313,11 @@ describe("discoverOpenClawPlugins", () => {
     const stateDir = makeTempDir();
     const homeDir = makeTempDir();
     const workspaceRoot = path.join(homeDir, "workspace");
-    const workspaceExt = path.join(workspaceRoot, ".openclaw", "extensions");
+    const workspaceExt = path.join(workspaceRoot, ".wineryclaw", "extensions");
     mkdirSafe(workspaceExt);
     fs.writeFileSync(path.join(workspaceExt, "tilde-workspace.ts"), "export default {}", "utf-8");
 
-    const result = discoverOpenClawPlugins({
+    const result = discoverWineryClawPlugins({
       workspaceDir: "~/workspace",
       env: {
         ...buildDiscoveryEnv(stateDir),
@@ -371,10 +371,10 @@ describe("discoverOpenClawPlugins", () => {
     );
     writeStandalonePlugin(path.join(bundledDir, "real-plugin.ts"), "export default {}");
 
-    const { candidates, diagnostics } = discoverOpenClawPlugins({
+    const { candidates, diagnostics } = discoverWineryClawPlugins({
       env: {
         ...buildDiscoveryEnv(stateDir),
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
       },
     });
 
@@ -444,7 +444,7 @@ describe("discoverOpenClawPlugins", () => {
   it("skips dependency and build directories while scanning workspace roots", () => {
     const stateDir = makeTempDir();
     const workspaceDir = path.join(stateDir, "workspace");
-    const workspaceRoot = path.join(workspaceDir, ".openclaw", "extensions");
+    const workspaceRoot = path.join(workspaceDir, ".wineryclaw", "extensions");
     const workspacePluginDir = path.join(workspaceRoot, "workspace-plugin");
     const nestedNodeModulesDir = path.join(workspaceRoot, "node_modules", "openclaw");
     const nestedDistDir = path.join(workspaceRoot, "dist", "extensions", "diffs");
@@ -471,7 +471,7 @@ describe("discoverOpenClawPlugins", () => {
       "utf-8",
     );
 
-    const { candidates } = discoverOpenClawPlugins({
+    const { candidates } = discoverWineryClawPlugins({
       workspaceDir,
       env: buildDiscoveryEnv(stateDir),
     });
@@ -793,12 +793,12 @@ describe("discoverOpenClawPlugins", () => {
       fs.writeFileSync(path.join(packDir, "index.ts"), "export default function () {}", "utf-8");
       fs.chmodSync(packDir, 0o777);
 
-      const result = discoverOpenClawPlugins({
+      const result = discoverWineryClawPlugins({
         env: {
           ...process.env,
-          OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
+          WINERYCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+          WINERYCLAW_STATE_DIR: stateDir,
+          WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
         },
       });
 

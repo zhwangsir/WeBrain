@@ -35,7 +35,7 @@ describe("qa docker harness", () => {
         path.join(outputDir, ".env.example"),
         path.join(outputDir, "README.md"),
         path.join(outputDir, "docker-compose.qa.yml"),
-        path.join(outputDir, "state", "openclaw.json"),
+        path.join(outputDir, "state", "wineryclaw.json"),
         path.join(outputDir, "state", "seed-workspace", "QA_KICKOFF_TASK.md"),
         path.join(outputDir, "state", "seed-workspace", "QA_SCENARIO_PLAN.md"),
         path.join(outputDir, "state", "seed-workspace", "QA_SCENARIOS.md"),
@@ -64,17 +64,17 @@ describe("qa docker harness", () => {
     expect(compose).toContain(
       "cp -R /opt/openclaw-scaffold/seed-workspace/. /tmp/openclaw/workspace/",
     );
-    expect(compose).toContain("OPENCLAW_CONFIG_PATH: /tmp/openclaw/openclaw.json");
-    expect(compose).toContain("OPENCLAW_STATE_DIR: /tmp/openclaw/state");
-    expect(compose).toContain('OPENCLAW_NO_RESPAWN: "1"');
+    expect(compose).toContain("WINERYCLAW_CONFIG_PATH: /tmp/openclaw/openclaw.json");
+    expect(compose).toContain("WINERYCLAW_STATE_DIR: /tmp/openclaw/state");
+    expect(compose).toContain('WINERYCLAW_NO_RESPAWN: "1"');
 
     const envExample = await readFile(path.join(outputDir, ".env.example"), "utf8");
-    expect(envExample).toContain("OPENCLAW_GATEWAY_TOKEN=qa-token");
+    expect(envExample).toContain("WINERYCLAW_GATEWAY_TOKEN=qa-token");
     expect(envExample).toContain("QA_BUS_BASE_URL=http://qa-lab:43123");
     expect(envExample).toContain("QA_PROVIDER_BASE_URL=http://host.docker.internal:45123/v1");
     expect(envExample).toContain("QA_LAB_URL=http://127.0.0.1:43124");
 
-    const config = await readFile(path.join(outputDir, "state", "openclaw.json"), "utf8");
+    const config = await readFile(path.join(outputDir, "state", "wineryclaw.json"), "utf8");
     expect(config).toContain('"allowInsecureAuth": true');
     expect(config).toContain('"enabled": false');
     expect(config).toContain("/app/dist/control-ui");
@@ -117,7 +117,7 @@ describe("qa docker harness", () => {
     expect(result.imageName).toBe("openclaw:qa-local-prebaked");
     expect(calls).toEqual([
       expect.stringContaining(
-        "docker build -t openclaw:qa-local-prebaked --build-arg OPENCLAW_EXTENSIONS=qa-channel qa-lab -f Dockerfile . @/repo/openclaw",
+        "docker build -t openclaw:qa-local-prebaked --build-arg WINERYCLAW_EXTENSIONS=qa-channel qa-lab -f Dockerfile . @/repo/openclaw",
       ),
     ]);
   });

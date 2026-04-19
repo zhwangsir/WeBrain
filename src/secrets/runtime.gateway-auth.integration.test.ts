@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { loadConfig, writeConfigFile } from "../config/config.js";
 import { withTempHome } from "../config/home-env.test-harness.js";
 import { withEnvAsync } from "../test-utils/env.js";
@@ -36,9 +36,9 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
   it("fails fast at startup when gateway auth SecretRef is active and unresolved", async () => {
     await withEnvAsync(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-        OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-        OPENCLAW_VERSION: undefined,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: undefined,
+        WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+        WINERYCLAW_VERSION: undefined,
       },
       async () => {
         await expect(
@@ -118,8 +118,8 @@ describe("secrets runtime snapshot gateway-auth integration", () => {
         expect(activeAfterFailure?.sourceConfig.gateway?.auth?.token).toEqual(initialTokenRef);
 
         const persistedConfig = JSON.parse(
-          await fs.readFile(path.join(home, ".openclaw", "openclaw.json"), "utf8"),
-        ) as OpenClawConfig;
+          await fs.readFile(path.join(home, ".wineryclaw", "wineryclaw.json"), "utf8"),
+        ) as WineryClawConfig;
         expect(persistedConfig.gateway?.auth?.token).toEqual(missingTokenRef);
       });
     },

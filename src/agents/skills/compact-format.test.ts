@@ -1,7 +1,7 @@
 import os from "node:os";
 import { formatSkillsForPrompt as upstreamFormatSkillsForPrompt } from "@mariozechner/pi-coding-agent";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { createCanonicalFixtureSkill } from "../skills.test-helpers.js";
 import {
   restoreMockSkillsHomeEnv,
@@ -51,7 +51,7 @@ function buildPrompt(
           ...(limits.maxCount !== undefined && { maxSkillsInPrompt: limits.maxCount }),
         },
       },
-    } satisfies OpenClawConfig,
+    } satisfies WineryClawConfig,
   });
 }
 
@@ -129,7 +129,7 @@ describe("applySkillsPromptLimits (via buildWorkspaceSkillsPrompt)", () => {
             maxSkillsPromptChars: 4_000,
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies WineryClawConfig,
     });
 
     expect(prompt).toContain("visible");
@@ -245,7 +245,7 @@ describe("applySkillsPromptLimits (via buildWorkspaceSkillsPrompt)", () => {
       makeSkill(
         `skill-${i}`,
         "A".repeat(200),
-        `${home}/.openclaw/workspace/skills/skill-${i}/SKILL.md`,
+        `${home}/.wineryclaw/workspace/skills/skill-${i}/SKILL.md`,
       ),
     );
     // Compute compacted lengths (what the prompt will actually contain)
@@ -274,7 +274,7 @@ describe("applySkillsPromptLimits (via buildWorkspaceSkillsPrompt)", () => {
   it("resolvedSkills in snapshot keeps canonical paths, not compacted", () => {
     const home = os.homedir();
     const skills = Array.from({ length: 5 }, (_, i) =>
-      makeSkill(`skill-${i}`, "A skill", `${home}/.openclaw/workspace/skills/skill-${i}/SKILL.md`),
+      makeSkill(`skill-${i}`, "A skill", `${home}/.wineryclaw/workspace/skills/skill-${i}/SKILL.md`),
     );
     const snapshot = buildWorkspaceSkillSnapshot("/fake", {
       entries: skills.map(makeEntry),

@@ -9,7 +9,7 @@ title: "browser"
 
 # `openclaw browser`
 
-Manage OpenClaw's browser control surface and run browser actions (lifecycle, profiles, tabs, snapshots, screenshots, navigation, input, state emulation, and debugging).
+Manage WineryClaw's browser control surface and run browser actions (lifecycle, profiles, tabs, snapshots, screenshots, navigation, input, state emulation, and debugging).
 
 Related:
 
@@ -46,14 +46,14 @@ Notes:
 
 - For `attachOnly` and remote CDP profiles, `openclaw browser stop` closes the
   active control session and clears temporary emulation overrides even when
-  OpenClaw did not launch the browser process itself.
+  WineryClaw did not launch the browser process itself.
 - For local managed profiles, `openclaw browser stop` stops the spawned browser
   process.
 
 ## If the command is missing
 
 If `openclaw browser` is an unknown command, check `plugins.allow` in
-`~/.openclaw/openclaw.json`.
+`~/.wineryclaw/wineryclaw.json`.
 
 When `plugins.allow` is present, the bundled browser plugin must be listed
 explicitly:
@@ -75,7 +75,7 @@ Related: [Browser tool](/tools/browser#missing-browser-command-or-tool)
 
 Profiles are named browser routing configs. In practice:
 
-- `openclaw`: launches or attaches to a dedicated OpenClaw-managed Chrome instance (isolated user data dir).
+- `openclaw`: launches or attaches to a dedicated WineryClaw-managed Chrome instance (isolated user data dir).
 - `user`: controls your existing signed-in Chrome session via Chrome DevTools MCP.
 - custom CDP profiles: point at a local or remote CDP endpoint.
 
@@ -100,7 +100,7 @@ openclaw browser tabs
 openclaw browser tab new
 openclaw browser tab select 2
 openclaw browser tab close 2
-openclaw browser open https://docs.openclaw.ai
+openclaw browser open docs
 openclaw browser focus <targetId>
 openclaw browser close <targetId>
 ```

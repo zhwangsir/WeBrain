@@ -7,7 +7,7 @@ import {
 } from "./index.js";
 
 describe("@openclaw/plugin-package-contract", () => {
-  it("normalizes the OpenClaw compatibility block for external plugins", () => {
+  it("normalizes the WineryClaw compatibility block for external plugins", () => {
     expect(
       normalizeExternalPluginCompatibility({
         version: "1.2.3",
@@ -24,7 +24,7 @@ describe("@openclaw/plugin-package-contract", () => {
       }),
     ).toEqual({
       pluginApiRange: ">=2026.3.24-beta.2",
-      builtWithOpenClawVersion: "2026.3.24-beta.2",
+      builtWithWineryClawVersion: "2026.3.24-beta.2",
       pluginSdkVersion: "0.9.0",
       minGatewayVersion: "2026.3.24-beta.2",
     });
@@ -45,7 +45,7 @@ describe("@openclaw/plugin-package-contract", () => {
       }),
     ).toEqual({
       pluginApiRange: ">=1.0.0",
-      builtWithOpenClawVersion: "1.2.3",
+      builtWithWineryClawVersion: "1.2.3",
       minGatewayVersion: "2026.3.24-beta.2",
     });
   });

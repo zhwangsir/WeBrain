@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   normalizeCacheKey,
@@ -27,7 +27,7 @@ const EXTRACT_CACHE = new Map<
 const DEFAULT_SEARCH_COUNT = 5;
 
 export type TavilySearchParams = {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   query: string;
   searchDepth?: string;
   topic?: string;
@@ -40,7 +40,7 @@ export type TavilySearchParams = {
 };
 
 export type TavilyExtractParams = {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   urls: string[];
   query?: string;
   extractDepth?: string;

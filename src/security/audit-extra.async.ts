@@ -20,7 +20,7 @@ import { inspectReadOnlyChannelAccount } from "../channels/read-only-account-ins
 import { formatCliCommand } from "../cli/command-format.js";
 import { MANIFEST_KEY } from "../compat/legacy-names.js";
 import { resolveNativeSkillsEnabled } from "../config/commands.js";
-import type { OpenClawConfig, ConfigFileSnapshot } from "../config/config.js";
+import type { WineryClawConfig, ConfigFileSnapshot } from "../config/config.js";
 import { collectIncludePathsRecursive } from "../config/includes-scan.js";
 import { resolveOAuthDir } from "../config/paths.js";
 import type { AgentToolsConfig } from "../config/types.tools.js";
@@ -125,11 +125,11 @@ function formatCodeSafetyDetails(findings: SkillScanFinding[], rootDir: string):
 }
 
 function readChannelCommandSetting(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   channelId: string,
   key: "native" | "nativeSkills",
 ): unknown {
-  const channelCfg = cfg.channels?.[channelId as keyof NonNullable<OpenClawConfig["channels"]>];
+  const channelCfg = cfg.channels?.[channelId as keyof NonNullable<WineryClawConfig["channels"]>];
   if (!channelCfg || typeof channelCfg !== "object" || Array.isArray(channelCfg)) {
     return undefined;
   }
@@ -141,7 +141,7 @@ function readChannelCommandSetting(
 }
 
 async function isChannelPluginConfigured(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   plugin: ReturnType<typeof listChannelPlugins>[number],
 ): Promise<boolean> {
   const accountIds = plugin.config.listAccountIds(cfg);
@@ -224,7 +224,7 @@ async function listInstalledPluginDirs(params: {
 }
 
 function resolveToolPolicies(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentTools?: AgentToolsConfig;
   sandboxMode?: "off" | "non-main" | "all";
   agentId?: string | null;
@@ -251,7 +251,7 @@ function normalizePluginIdSet(entries: string[]): Set<string> {
 }
 
 function resolveEnabledExtensionPluginIds(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   pluginDirs: string[];
 }): string[] {
   const normalized = normalizePluginsConfig(params.cfg.plugins);
@@ -620,7 +620,7 @@ export async function collectSandboxBrowserHashLabelFindings(params?: {
 }
 
 export async function collectPluginsTrustFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   stateDir: string;
 }): Promise<SecurityAuditFinding[]> {
   const findings: SecurityAuditFinding[] = [];
@@ -869,7 +869,7 @@ export async function collectPluginsTrustFindings(params: {
 }
 
 export async function collectWorkspaceSkillSymlinkEscapeFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): Promise<SecurityAuditFinding[]> {
   const findings: SecurityAuditFinding[] = [];
   const workspaceDirs = listAgentWorkspaceDirs(params.cfg);
@@ -1018,7 +1018,7 @@ export async function collectIncludeFilePermFindings(params: {
 }
 
 export async function collectStateDeepFilesystemFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   stateDir: string;
   platform?: NodeJS.Platform;
@@ -1269,7 +1269,7 @@ export async function collectPluginsCodeSafetyFindings(params: {
         title: `Plugin "${pluginName}" contains dangerous code patterns`,
         detail: `Found ${summary.critical} critical issue(s) in ${summary.scannedFiles} scanned file(s):\n${details}`,
         remediation:
-          "Review the plugin source code carefully before use. If untrusted, remove the plugin from your OpenClaw extensions state directory.",
+          "Review the plugin source code carefully before use. If untrusted, remove the plugin from your WineryClaw extensions state directory.",
       });
     } else if (summary.warn > 0) {
       const warnFindings = summary.findings.filter((f) => f.severity === "warn");
@@ -1289,7 +1289,7 @@ export async function collectPluginsCodeSafetyFindings(params: {
 }
 
 export async function collectInstalledSkillsCodeSafetyFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   stateDir: string;
   summaryCache?: CodeSafetySummaryCache;
 }): Promise<SecurityAuditFinding[]> {

@@ -1,7 +1,7 @@
 ---
-summary: "Use OpenAI via API keys or Codex subscription in OpenClaw"
+summary: "Use OpenAI via API keys or Codex subscription in WineryClaw"
 read_when:
-  - You want to use OpenAI models in OpenClaw
+  - You want to use OpenAI models in WineryClaw
   - You want Codex subscription auth instead of API keys
   - You need stricter GPT-5 agent execution behavior
 title: "OpenAI"
@@ -9,12 +9,12 @@ title: "OpenAI"
 
 # OpenAI
 
-OpenAI provides developer APIs for GPT models. OpenClaw supports two auth routes:
+OpenAI provides developer APIs for GPT models. WineryClaw supports two auth routes:
 
 - **API key** — direct OpenAI Platform access with usage-based billing (`openai/*` models)
 - **Codex subscription** — ChatGPT/Codex sign-in with subscription access (`openai-codex/*` models)
 
-OpenAI explicitly supports subscription OAuth usage in external tools and workflows like OpenClaw.
+OpenAI explicitly supports subscription OAuth usage in external tools and workflows like WineryClaw.
 
 ## Getting started
 
@@ -67,7 +67,7 @@ Choose your preferred auth method and follow the setup steps.
     ```
 
     <Warning>
-    OpenClaw does **not** expose `openai/gpt-5.3-codex-spark` on the direct API path. Live OpenAI API requests reject that model. Spark is Codex-only.
+    WineryClaw does **not** expose `openai/gpt-5.3-codex-spark` on the direct API path. Live OpenAI API requests reject that model. Spark is Codex-only.
     </Warning>
 
   </Tab>
@@ -119,12 +119,12 @@ Choose your preferred auth method and follow the setup steps.
     ```
 
     <Tip>
-    If onboarding reuses an existing Codex CLI login, those credentials stay managed by Codex CLI. On expiry, OpenClaw re-reads the external Codex source first and writes the refreshed credential back to Codex storage.
+    If onboarding reuses an existing Codex CLI login, those credentials stay managed by Codex CLI. On expiry, WineryClaw re-reads the external Codex source first and writes the refreshed credential back to Codex storage.
     </Tip>
 
     ### Context window cap
 
-    OpenClaw treats model metadata and the runtime context cap as separate values.
+    WineryClaw treats model metadata and the runtime context cap as separate values.
 
     For `openai-codex/gpt-5.4`:
 
@@ -206,13 +206,13 @@ See [Video Generation](/tools/video-generation) for shared tool parameters, prov
 
 ## Personality overlay
 
-OpenClaw adds a small OpenAI-specific prompt overlay for `openai/*` and `openai-codex/*` runs. The overlay keeps the assistant warm, collaborative, concise, and a little more emotionally expressive without replacing the base system prompt.
+WineryClaw adds a small OpenAI-specific prompt overlay for `openai/*` and `openai-codex/*` runs. The overlay keeps the assistant warm, collaborative, concise, and a little more emotionally expressive without replacing the base system prompt.
 
 | Value                  | Effect                             |
 | ---------------------- | ---------------------------------- |
 | `"friendly"` (default) | Enable the OpenAI-specific overlay |
 | `"on"`                 | Alias for `"friendly"`             |
-| `"off"`                | Use base OpenClaw prompt only      |
+| `"off"`                | Use base WineryClaw prompt only      |
 
 <Tabs>
   <Tab title="Config">
@@ -312,9 +312,9 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
 
 <AccordionGroup>
   <Accordion title="Transport (WebSocket vs SSE)">
-    OpenClaw uses WebSocket-first with SSE fallback (`"auto"`) for both `openai/*` and `openai-codex/*`.
+    WineryClaw uses WebSocket-first with SSE fallback (`"auto"`) for both `openai/*` and `openai-codex/*`.
 
-    In `"auto"` mode, OpenClaw:
+    In `"auto"` mode, WineryClaw:
     - Retries one early WebSocket failure before falling back to SSE
     - After a failure, marks WebSocket as degraded for ~60 seconds and uses SSE during cool-down
     - Attaches stable session and turn identity headers for retries and reconnects
@@ -347,7 +347,7 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
   </Accordion>
 
   <Accordion title="WebSocket warm-up">
-    OpenClaw enables WebSocket warm-up by default for `openai/*` to reduce first-turn latency.
+    WineryClaw enables WebSocket warm-up by default for `openai/*` to reduce first-turn latency.
 
     ```json5
     // Disable warm-up
@@ -367,12 +367,12 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
   </Accordion>
 
   <Accordion title="Fast mode">
-    OpenClaw exposes a shared fast-mode toggle for both `openai/*` and `openai-codex/*`:
+    WineryClaw exposes a shared fast-mode toggle for both `openai/*` and `openai-codex/*`:
 
     - **Chat/UI:** `/fast status|on|off`
     - **Config:** `agents.defaults.models["<provider>/<model>"].params.fastMode`
 
-    When enabled, OpenClaw maps fast mode to OpenAI priority processing (`service_tier = "priority"`). Existing `service_tier` values are preserved, and fast mode does not rewrite `reasoning` or `text.verbosity`.
+    When enabled, WineryClaw maps fast mode to OpenAI priority processing (`service_tier = "priority"`). Existing `service_tier` values are preserved, and fast mode does not rewrite `reasoning` or `text.verbosity`.
 
     ```json5
     {
@@ -394,7 +394,7 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
   </Accordion>
 
   <Accordion title="Priority processing (service_tier)">
-    OpenAI's API exposes priority processing via `service_tier`. Set it per model in OpenClaw:
+    OpenAI's API exposes priority processing via `service_tier`. Set it per model in WineryClaw:
 
     ```json5
     {
@@ -412,13 +412,13 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
     Supported values: `auto`, `default`, `flex`, `priority`.
 
     <Warning>
-    `serviceTier` is only forwarded to native OpenAI endpoints (`api.openai.com`) and native Codex endpoints (`chatgpt.com/backend-api`). If you route either provider through a proxy, OpenClaw leaves `service_tier` untouched.
+    `serviceTier` is only forwarded to native OpenAI endpoints (`api.openai.com`) and native Codex endpoints (`chatgpt.com/backend-api`). If you route either provider through a proxy, WineryClaw leaves `service_tier` untouched.
     </Warning>
 
   </Accordion>
 
   <Accordion title="Server-side compaction (Responses API)">
-    For direct OpenAI Responses models (`openai/*` on `api.openai.com`), OpenClaw auto-enables server-side compaction:
+    For direct OpenAI Responses models (`openai/*` on `api.openai.com`), WineryClaw auto-enables server-side compaction:
 
     - Forces `store: true` (unless model compat sets `supportsStore: false`)
     - Injects `context_management: [{ type: "compaction", compact_threshold: ... }]`
@@ -484,7 +484,7 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
   </Accordion>
 
   <Accordion title="Strict-agentic GPT mode">
-    For GPT-5-family runs on `openai/*` and `openai-codex/*`, OpenClaw can use a stricter embedded execution contract:
+    For GPT-5-family runs on `openai/*` and `openai-codex/*`, WineryClaw can use a stricter embedded execution contract:
 
     ```json5
     {
@@ -496,7 +496,7 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
     }
     ```
 
-    With `strict-agentic`, OpenClaw:
+    With `strict-agentic`, WineryClaw:
     - No longer treats a plan-only turn as successful progress when a tool action is available
     - Retries the turn with an act-now steer
     - Auto-enables `update_plan` for substantial work
@@ -509,7 +509,7 @@ Values are case-insensitive at runtime, so `"Off"` and `"off"` both disable the 
   </Accordion>
 
   <Accordion title="Native vs OpenAI-compatible routes">
-    OpenClaw treats direct OpenAI, Codex, and Azure OpenAI endpoints differently from generic OpenAI-compatible `/v1` proxies:
+    WineryClaw treats direct OpenAI, Codex, and Azure OpenAI endpoints differently from generic OpenAI-compatible `/v1` proxies:
 
     **Native routes** (`openai/*`, `openai-codex/*`, Azure OpenAI):
     - Keep `reasoning: { effort: "none" }` intact when reasoning is explicitly disabled

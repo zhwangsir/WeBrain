@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { mockPinnedHostnameResolution } from "../../../src/test-helpers/ssrf.js";
 import {
@@ -451,7 +451,7 @@ describe("firecrawl tools", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(resolveFirecrawlSearchConfig(cfg)).toEqual({
       apiKey: "plugin-key",
@@ -471,7 +471,7 @@ describe("firecrawl tools", () => {
     expect(resolveFirecrawlMaxAgeMs()).toBe(DEFAULT_FIRECRAWL_MAX_AGE_MS);
     expect(resolveFirecrawlScrapeTimeoutSeconds()).toBe(DEFAULT_FIRECRAWL_SCRAPE_TIMEOUT_SECONDS);
     expect(resolveFirecrawlSearchTimeoutSeconds()).toBe(DEFAULT_FIRECRAWL_SEARCH_TIMEOUT_SECONDS);
-    expect(resolveFirecrawlBaseUrl({} as OpenClawConfig)).not.toBe(DEFAULT_FIRECRAWL_BASE_URL);
+    expect(resolveFirecrawlBaseUrl({} as WineryClawConfig)).not.toBe(DEFAULT_FIRECRAWL_BASE_URL);
   });
 
   it("only allows the official Firecrawl API host for fetch endpoints", () => {
@@ -502,7 +502,7 @@ describe("firecrawl tools", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(resolveFirecrawlOnlyMainContent(cfg)).toBe(false);
     expect(resolveFirecrawlMaxAgeMs(cfg)).toBe(1234);

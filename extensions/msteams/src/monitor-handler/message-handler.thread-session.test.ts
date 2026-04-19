@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../runtime-api.js";
+import type { WineryClawConfig } from "../../runtime-api.js";
 import { createMSTeamsMessageHandler } from "./message-handler.js";
 import {
   buildChannelActivity,
@@ -45,9 +45,9 @@ vi.mock("../reply-dispatcher.js", () => ({
 
 describe("msteams thread session isolation", () => {
   it("appends thread suffix to session key for channel thread replies", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: { msteams: { groupPolicy: "open" } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const { deps, recordInboundSession } = createMessageHandlerDeps(cfg);
     const handler = createMSTeamsMessageHandler(deps);
 
@@ -64,9 +64,9 @@ describe("msteams thread session isolation", () => {
   });
 
   it("does not append thread suffix for top-level channel messages", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: { msteams: { groupPolicy: "open" } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const { deps, recordInboundSession } = createMessageHandlerDeps(cfg);
     const handler = createMSTeamsMessageHandler(deps);
 
@@ -83,9 +83,9 @@ describe("msteams thread session isolation", () => {
   });
 
   it("produces different session keys for different threads in the same channel", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: { msteams: { groupPolicy: "open" } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const { deps, recordInboundSession } = createMessageHandlerDeps(cfg);
     const handler = createMSTeamsMessageHandler(deps);
 
@@ -108,9 +108,9 @@ describe("msteams thread session isolation", () => {
   });
 
   it("does not affect DM session keys", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: { msteams: { allowFrom: ["*"] } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const { deps, recordInboundSession } = createMessageHandlerDeps(cfg);
     const handler = createMSTeamsMessageHandler(deps);
 
@@ -134,9 +134,9 @@ describe("msteams thread session isolation", () => {
   });
 
   it("does not affect group chat session keys", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: { msteams: { groupPolicy: "open" } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const { deps, recordInboundSession } = createMessageHandlerDeps(cfg);
     const handler = createMSTeamsMessageHandler(deps);
 

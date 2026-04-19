@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SubagentRunRecord } from "../../agents/subagent-registry.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import {
   __testing as abortTesting,
   getAbortMemory,
@@ -98,7 +98,7 @@ describe("abort detection", () => {
       ...(typeof params?.commandsTextEnabled === "boolean"
         ? { commands: { text: params.commandsTextEnabled } }
         : {}),
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     if (params?.sessionIdsByKey) {
       await writeSessionStore(storePath, params.sessionIdsByKey, params.nowMs);
     }
@@ -106,7 +106,7 @@ describe("abort detection", () => {
   }
 
   async function runStopCommand(params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     sessionKey: string;
     from: string;
     to: string;
@@ -134,7 +134,7 @@ describe("abort detection", () => {
 
   function enqueueQueuedFollowupRun(params: {
     root: string;
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     sessionId: string;
     sessionKey: string;
   }) {
@@ -222,7 +222,7 @@ describe("abort detection", () => {
       "do not do that",
       "please stop",
       "stop please",
-      "STOP OPENCLAW",
+      "STOP WINERYCLAW",
       "stop openclaw!!!",
       "stop don’t do anything",
       "detente",
@@ -842,7 +842,7 @@ describe("abort detection", () => {
     });
 
     const result = stopSubagentsForRequester({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       requesterSessionKey: oldParentKey,
     });
 

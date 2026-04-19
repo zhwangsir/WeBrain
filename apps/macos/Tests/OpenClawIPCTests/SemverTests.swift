@@ -1,5 +1,5 @@
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct SemverTests {
     @Test func `comparison orders by major minor patch`() {

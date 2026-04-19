@@ -2,13 +2,13 @@ import fs from "node:fs/promises";
 import {
   buildEmbeddedAttemptToolRunContext,
   clearActiveEmbeddedRun,
-  createOpenClawCodingTools,
+  createWineryClawCodingTools,
   embeddedAgentLog,
   isSubagentSessionKey,
   normalizeProviderToolSchemas,
   resolveAttemptSpawnWorkspaceDir,
   resolveModelAuthMode,
-  resolveOpenClawAgentDir,
+  resolveWineryClawAgentDir,
   resolveSandboxContext,
   resolveSessionAgentIds,
   resolveUserPath,
@@ -295,8 +295,8 @@ async function buildDynamicTools(input: DynamicToolBuildParams) {
     return [];
   }
   const modelHasVision = params.model.input?.includes("image") ?? false;
-  const agentDir = params.agentDir ?? resolveOpenClawAgentDir();
-  const allTools = createOpenClawCodingTools({
+  const agentDir = params.agentDir ?? resolveWineryClawAgentDir();
+  const allTools = createWineryClawCodingTools({
     agentId: input.sessionAgentId,
     ...buildEmbeddedAttemptToolRunContext(params),
     exec: {

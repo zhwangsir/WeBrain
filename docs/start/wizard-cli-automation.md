@@ -1,5 +1,5 @@
 ---
-summary: "Scripted onboarding and agent setup for the OpenClaw CLI"
+summary: "Scripted onboarding and agent setup for the WineryClaw CLI"
 read_when:
   - You are automating onboarding in scripts or CI
   - You need non-interactive examples for specific providers
@@ -192,7 +192,7 @@ openclaw onboard --non-interactive \
   </Accordion>
 </AccordionGroup>
 
-Anthropic setup-token remains available as a supported onboarding token path, but OpenClaw now prefers Claude CLI reuse when available.
+Anthropic setup-token remains available as a supported onboarding token path, but WineryClaw now prefers Claude CLI reuse when available.
 For production, prefer an Anthropic API key.
 
 ## Add another agent
@@ -202,7 +202,7 @@ sessions, and auth profiles. Running without `--workspace` launches the wizard.
 
 ```bash
 openclaw agents add work \
-  --workspace ~/.openclaw/workspace-work \
+  --workspace ~/.wineryclaw/workspace-work \
   --model openai/gpt-5.4 \
   --bind whatsapp:biz \
   --non-interactive \
@@ -217,7 +217,7 @@ What it sets:
 
 Notes:
 
-- Default workspaces follow `~/.openclaw/workspace-<agentId>`.
+- Default workspaces follow `~/.wineryclaw/workspace-<agentId>`.
 - Add `bindings` to route inbound messages (the wizard can do this).
 - Non-interactive flags: `--model`, `--agent-dir`, `--bind`, `--non-interactive`.
 

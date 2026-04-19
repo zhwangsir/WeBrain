@@ -272,7 +272,7 @@ export function createMatrixUpdateKeepCredentialsPrompter(params?: {
     },
     text: {
       "Matrix homeserver URL": params?.homeserver ?? "https://matrix.example.org",
-      "Matrix device name (optional)": params?.deviceName ?? "OpenClaw Gateway",
+      "Matrix device name (optional)": params?.deviceName ?? "WineryClaw Gateway",
     },
     confirm: {
       "Matrix credentials already configured. Keep them?": true,

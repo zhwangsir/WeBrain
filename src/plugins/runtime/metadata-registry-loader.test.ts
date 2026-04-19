@@ -2,7 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const loadConfigMock = vi.fn();
 const applyPluginAutoEnableMock = vi.fn();
-const loadOpenClawPluginsMock = vi.fn();
+const loadWineryClawPluginsMock = vi.fn();
 
 let loadPluginMetadataRegistrySnapshot: typeof import("./metadata-registry-loader.js").loadPluginMetadataRegistrySnapshot;
 
@@ -15,7 +15,7 @@ vi.mock("../../config/plugin-auto-enable.js", () => ({
 }));
 
 vi.mock("../loader.js", () => ({
-  loadOpenClawPlugins: (...args: unknown[]) => loadOpenClawPluginsMock(...args),
+  loadWineryClawPlugins: (...args: unknown[]) => loadWineryClawPluginsMock(...args),
 }));
 
 vi.mock("../../agents/agent-scope.js", () => ({
@@ -31,14 +31,14 @@ describe("loadPluginMetadataRegistrySnapshot", () => {
   beforeEach(() => {
     loadConfigMock.mockReset();
     applyPluginAutoEnableMock.mockReset();
-    loadOpenClawPluginsMock.mockReset();
+    loadWineryClawPluginsMock.mockReset();
     loadConfigMock.mockReturnValue({ plugins: {} });
     applyPluginAutoEnableMock.mockImplementation((params: { config: unknown }) => ({
       config: params.config,
       changes: [],
       autoEnabledReasons: {},
     }));
-    loadOpenClawPluginsMock.mockReturnValue({ plugins: [], diagnostics: [] });
+    loadWineryClawPluginsMock.mockReturnValue({ plugins: [], diagnostics: [] });
   });
 
   it("defaults to a non-activating validate snapshot", () => {
@@ -50,7 +50,7 @@ describe("loadPluginMetadataRegistrySnapshot", () => {
       onlyPluginIds: ["demo"],
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         config: { plugins: {} },
         activationSourceConfig: { plugins: { allow: ["demo"] } },
@@ -71,7 +71,7 @@ describe("loadPluginMetadataRegistrySnapshot", () => {
       loadModules: false,
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         loadModules: false,
         mode: "validate",
@@ -85,7 +85,7 @@ describe("loadPluginMetadataRegistrySnapshot", () => {
       onlyPluginIds: [],
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: [],
         mode: "validate",

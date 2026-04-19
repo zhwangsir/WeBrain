@@ -1,6 +1,6 @@
 import { buildPluginConfigSchema } from "openclaw/plugin-sdk/core";
 import { z } from "openclaw/plugin-sdk/zod";
-import type { OpenClawPluginConfigSchema } from "../runtime-api.js";
+import type { WineryClawPluginConfigSchema } from "../runtime-api.js";
 
 export const ACPX_PERMISSION_MODES = ["approve-all", "approve-reads", "deny-all"] as const;
 export type AcpxPermissionMode = (typeof ACPX_PERMISSION_MODES)[number];
@@ -110,6 +110,6 @@ export const AcpxPluginConfigSchema = z.strictObject({
     .optional(),
 });
 
-export function createAcpxPluginConfigSchema(): OpenClawPluginConfigSchema {
+export function createAcpxPluginConfigSchema(): WineryClawPluginConfigSchema {
   return buildPluginConfigSchema(AcpxPluginConfigSchema);
 }

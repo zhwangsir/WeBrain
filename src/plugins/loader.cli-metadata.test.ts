@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
-import { loadOpenClawPluginCliRegistry, loadOpenClawPlugins } from "./loader.js";
+import { loadWineryClawPluginCliRegistry, loadWineryClawPlugins } from "./loader.js";
 import {
   cleanupPluginLoaderFixturesForTest,
   EMPTY_PLUGIN_SCHEMA,
@@ -47,8 +47,8 @@ describe("plugin loader CLI metadata", () => {
     });
 
     const warnings: string[] = [];
-    const registry = await loadOpenClawPluginCliRegistry({
-      env: { ...process.env, OPENCLAW_STATE_DIR: stateDir },
+    const registry = await loadWineryClawPluginCliRegistry({
+      env: { ...process.env, WINERYCLAW_STATE_DIR: stateDir },
       logger: {
         info: () => {},
         warn: (msg: string) => warnings.push(msg),
@@ -109,7 +109,7 @@ describe("plugin loader CLI metadata", () => {
       "utf-8",
     );
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },
@@ -218,7 +218,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [pluginDir] },
@@ -241,7 +241,7 @@ module.exports = {
     const fullMarker = path.join(pluginDir, "full-loaded.txt");
 
     fs.mkdirSync(pluginDir, { recursive: true });
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
 
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
@@ -280,7 +280,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           allow: ["bundled-skip-channel"],
@@ -309,7 +309,7 @@ module.exports = {
     const cliMarker = path.join(pluginDir, "cli-loaded.txt");
 
     fs.mkdirSync(pluginDir, { recursive: true });
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
 
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
@@ -367,7 +367,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           allow: ["bundled-cli-channel"],
@@ -393,7 +393,7 @@ module.exports = {
     const fullMarker = path.join(pluginDir, "full-loaded.txt");
 
     fs.mkdirSync(pluginDir, { recursive: true });
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledRoot;
 
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
@@ -431,7 +431,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           allow: ["bundled-skip-provider"],
@@ -532,7 +532,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = loadOpenClawPlugins({
+    const registry = loadWineryClawPlugins({
       cache: false,
       config: {
         plugins: {
@@ -571,7 +571,7 @@ module.exports = {
 };`,
     });
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },
@@ -621,7 +621,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },
@@ -661,7 +661,7 @@ module.exports = {
 };`,
     });
 
-    const registry = await loadOpenClawPluginCliRegistry({
+    const registry = await loadWineryClawPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },

@@ -3,8 +3,8 @@ import {
   definePluginEntry,
   fetchWithSsrFGuard,
   ssrfPolicyFromDangerouslyAllowPrivateNetwork,
-  type OpenClawConfig,
-  type OpenClawPluginApi,
+  type WineryClawConfig,
+  type WineryClawPluginApi,
 } from "./api.js";
 
 type ThreadOwnershipConfig = {
@@ -12,7 +12,7 @@ type ThreadOwnershipConfig = {
   abTestChannels?: string[];
 };
 
-type AgentEntry = NonNullable<NonNullable<OpenClawConfig["agents"]>["list"]>[number];
+type AgentEntry = NonNullable<NonNullable<WineryClawConfig["agents"]>["list"]>[number];
 type ThreadOwnershipMessageSendingResult = { cancel: true } | undefined;
 
 // In-memory set of {channel}:{thread} keys where this agent was @-mentioned.
@@ -29,7 +29,7 @@ function cleanExpiredMentions(): void {
   }
 }
 
-function resolveOwnershipAgent(config: OpenClawConfig): { id: string; name: string } {
+function resolveOwnershipAgent(config: WineryClawConfig): { id: string; name: string } {
   const list = Array.isArray(config.agents?.list)
     ? config.agents.list.filter(
         (entry): entry is AgentEntry => entry !== null && typeof entry === "object",
@@ -49,7 +49,7 @@ export default definePluginEntry({
   id: "thread-ownership",
   name: "Thread Ownership",
   description: "Slack thread claim coordination for multi-agent setups",
-  register(api: OpenClawPluginApi) {
+  register(api: WineryClawPluginApi) {
     const pluginCfg = (api.pluginConfig ?? {}) as ThreadOwnershipConfig;
     const forwarderUrl = (
       pluginCfg.forwarderUrl ??

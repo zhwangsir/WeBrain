@@ -24,8 +24,8 @@ import { sendGatewayAuthFailure } from "./http-common.js";
 import { ADMIN_SCOPE, CLI_DEFAULT_OPERATOR_SCOPES } from "./method-scopes.js";
 import { loadGatewayModelCatalog } from "./server-model-catalog.js";
 
-export const OPENCLAW_MODEL_ID = "openclaw";
-export const OPENCLAW_DEFAULT_MODEL_ID = "openclaw/default";
+export const WINERYCLAW_MODEL_ID = "openclaw";
+export const WINERYCLAW_DEFAULT_MODEL_ID = "openclaw/default";
 
 export function getHeader(req: IncomingMessage, name: string): string | undefined {
   const raw = req.headers[normalizeLowercaseStringOrEmpty(name)];
@@ -211,7 +211,7 @@ export function resolveAgentIdFromModel(
     return undefined;
   }
   const lowered = normalizeLowercaseStringOrEmpty(raw);
-  if (lowered === OPENCLAW_MODEL_ID || lowered === OPENCLAW_DEFAULT_MODEL_ID) {
+  if (lowered === WINERYCLAW_MODEL_ID || lowered === WINERYCLAW_DEFAULT_MODEL_ID) {
     return resolveDefaultAgentId(cfg);
   }
 

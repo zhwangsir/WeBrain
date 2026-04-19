@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveOwningPluginIdsForProvider } from "../plugins/providers.js";
 import {
   normalizeLowercaseStringOrEmpty,
@@ -55,7 +55,7 @@ function hasSharedOwner(
   left: string,
   right: string,
   params: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
     ownerCache: Map<string, readonly string[]>;
@@ -86,7 +86,7 @@ function hasSharedOwner(
 export function createLiveTargetMatcher(params: {
   providerFilter: Set<string> | null;
   modelFilter: Set<string> | null;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }) {

@@ -1,6 +1,6 @@
 import { rmSync } from "node:fs";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ReplyPayload } from "openclaw/plugin-sdk/reply-payload";
 import type { SpeechProviderPlugin, SpeechSynthesisRequest } from "openclaw/plugin-sdk/speech-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -54,7 +54,7 @@ const { _test, maybeApplyTtsToPayload } = await import("./tts.js");
 
 const nativeVoiceNoteChannels = ["discord", "feishu", "matrix", "telegram", "whatsapp"] as const;
 
-function createTtsConfig(prefsName: string): OpenClawConfig {
+function createTtsConfig(prefsName: string): WineryClawConfig {
   return {
     messages: {
       tts: {

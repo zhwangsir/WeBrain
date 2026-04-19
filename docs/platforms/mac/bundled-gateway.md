@@ -1,7 +1,7 @@
 ---
 summary: "Gateway runtime on macOS (external launchd service)"
 read_when:
-  - Packaging OpenClaw.app
+  - Packaging WineryClaw.app
   - Debugging the macOS gateway launchd service
   - Installing the gateway CLI for macOS
 title: "Gateway on macOS"
@@ -9,7 +9,7 @@ title: "Gateway on macOS"
 
 # Gateway on macOS (external launchd)
 
-OpenClaw.app no longer bundles Node/Bun or the Gateway runtime. The macOS app
+WineryClaw.app no longer bundles Node/Bun or the Gateway runtime. The macOS app
 expects an **external** `openclaw` CLI install, does not spawn the Gateway as a
 child process, and manages a per‑user launchd service to keep the Gateway
 running (or attaches to an existing local Gateway if one is already running).
@@ -44,7 +44,7 @@ Manager:
 
 Behavior:
 
-- “OpenClaw Active” enables/disables the LaunchAgent.
+- “WineryClaw Active” enables/disables the LaunchAgent.
 - App quit does **not** stop the gateway (launchd keeps it alive).
 - If a Gateway is already running on the configured port, the app attaches to
   it instead of starting a new one.
@@ -63,8 +63,8 @@ incompatible, update the global CLI to match the app version.
 ```bash
 openclaw --version
 
-OPENCLAW_SKIP_CHANNELS=1 \
-OPENCLAW_SKIP_CANVAS_HOST=1 \
+WINERYCLAW_SKIP_CHANNELS=1 \
+WINERYCLAW_SKIP_CANVAS_HOST=1 \
 openclaw gateway --port 18999 --bind loopback
 ```
 

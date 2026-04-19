@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { coerceSecretRef, resolveSecretInputRef } from "../config/types.secrets.js";
 import { resolveProviderSyntheticAuthWithPlugin } from "../plugins/provider-runtime.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
@@ -15,7 +15,7 @@ import {
 import { resolveAwsSdkEnvVarName } from "./model-auth-runtime-shared.js";
 import { resolveProviderIdForAuth } from "./provider-auth-aliases.js";
 
-type ModelsConfig = NonNullable<OpenClawConfig["models"]>;
+type ModelsConfig = NonNullable<WineryClawConfig["models"]>;
 export type ProviderConfig = NonNullable<ModelsConfig["providers"]>[string];
 
 export type SecretDefaults = {
@@ -330,7 +330,7 @@ export function resolveMissingProviderApiKey(params: {
 export function createProviderApiKeyResolver(
   env: NodeJS.ProcessEnv,
   authStoreInput: AuthProfileStoreInput,
-  config?: OpenClawConfig,
+  config?: WineryClawConfig,
 ): ProviderApiKeyResolver {
   return (provider: string): { apiKey: string | undefined; discoveryApiKey?: string } => {
     const authProvider = resolveProviderIdForAuth(provider, { config, env });
@@ -368,7 +368,7 @@ export function createProviderApiKeyResolver(
 export function createProviderAuthResolver(
   env: NodeJS.ProcessEnv,
   authStoreInput: AuthProfileStoreInput,
-  config?: OpenClawConfig,
+  config?: WineryClawConfig,
 ): ProviderAuthResolver {
   return (provider: string, options?: { oauthMarker?: string }) => {
     const authProvider = resolveProviderIdForAuth(provider, { config, env });
@@ -446,7 +446,7 @@ export function createProviderAuthResolver(
   };
 }
 
-function resolveConfigBackedProviderAuth(params: { provider: string; config?: OpenClawConfig }):
+function resolveConfigBackedProviderAuth(params: { provider: string; config?: WineryClawConfig }):
   | {
       apiKey: string;
       discoveryApiKey?: string;

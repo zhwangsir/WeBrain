@@ -58,12 +58,12 @@ describe("resolveGatewayWindowsTaskName", () => {
   it("returns default task name when no profile is set", () => {
     const result = resolveGatewayWindowsTaskName();
     expect(result).toBe(GATEWAY_WINDOWS_TASK_NAME);
-    expect(result).toBe("OpenClaw Gateway");
+    expect(result).toBe("WineryClaw Gateway");
   });
 
   it("returns profile-specific task name when profile is set", () => {
     const result = resolveGatewayWindowsTaskName("dev");
-    expect(result).toBe("OpenClaw Gateway (dev)");
+    expect(result).toBe("WineryClaw Gateway (dev)");
   });
 });
 
@@ -88,24 +88,24 @@ describe("resolveGatewayProfileSuffix", () => {
 
 describe("formatGatewayServiceDescription", () => {
   it("returns default description when no profile/version", () => {
-    expect(formatGatewayServiceDescription()).toBe("OpenClaw Gateway");
+    expect(formatGatewayServiceDescription()).toBe("WineryClaw Gateway");
   });
 
   it("includes profile when set", () => {
     expect(formatGatewayServiceDescription({ profile: "work" })).toBe(
-      "OpenClaw Gateway (profile: work)",
+      "WineryClaw Gateway (profile: work)",
     );
   });
 
   it("includes version when set", () => {
     expect(formatGatewayServiceDescription({ version: "2026.1.10" })).toBe(
-      "OpenClaw Gateway (v2026.1.10)",
+      "WineryClaw Gateway (v2026.1.10)",
     );
   });
 
   it("includes profile and version when set", () => {
     expect(formatGatewayServiceDescription({ profile: "dev", version: "1.2.3" })).toBe(
-      "OpenClaw Gateway (profile: dev, v1.2.3)",
+      "WineryClaw Gateway (profile: dev, v1.2.3)",
     );
   });
 });
@@ -114,7 +114,7 @@ describe("resolveGatewayServiceDescription", () => {
   it("prefers explicit description override", () => {
     expect(
       resolveGatewayServiceDescription({
-        env: { OPENCLAW_PROFILE: "work", OPENCLAW_SERVICE_VERSION: "1.0.0" },
+        env: { WINERYCLAW_PROFILE: "work", WINERYCLAW_SERVICE_VERSION: "1.0.0" },
         description: "Custom",
       }),
     ).toBe("Custom");
@@ -123,10 +123,10 @@ describe("resolveGatewayServiceDescription", () => {
   it("resolves version from explicit environment map", () => {
     expect(
       resolveGatewayServiceDescription({
-        env: { OPENCLAW_PROFILE: "work", OPENCLAW_SERVICE_VERSION: "local" },
-        environment: { OPENCLAW_SERVICE_VERSION: "remote" },
+        env: { WINERYCLAW_PROFILE: "work", WINERYCLAW_SERVICE_VERSION: "local" },
+        environment: { WINERYCLAW_SERVICE_VERSION: "remote" },
       }),
-    ).toBe("OpenClaw Gateway (profile: work, vremote)");
+    ).toBe("WineryClaw Gateway (profile: work, vremote)");
   });
 });
 

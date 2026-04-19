@@ -26,7 +26,7 @@ export async function modelsListCommand(
   runtime: RuntimeEnv,
 ) {
   ensureFlagCompatibility(opts);
-  const { ensureAuthProfileStore, ensureOpenClawModelsJson } = await import("./list.runtime.js");
+  const { ensureAuthProfileStore, ensureWineryClawModelsJson } = await import("./list.runtime.js");
   const { sourceConfig, resolvedConfig: cfg } = await loadModelsConfigWithSource({
     commandName: "models list",
     runtime,
@@ -48,7 +48,7 @@ export async function modelsListCommand(
   try {
     // Keep command behavior explicit: sync models.json from the source config
     // before building the read-only model registry view.
-    await ensureOpenClawModelsJson(sourceConfig ?? cfg);
+    await ensureWineryClawModelsJson(sourceConfig ?? cfg);
     const loaded = await loadListModelRegistry(cfg, { sourceConfig });
     modelRegistry = loaded.registry;
     discoveredKeys = loaded.discoveredKeys;

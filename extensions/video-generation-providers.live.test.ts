@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { resolveOpenClawAgentDir } from "../src/agents/agent-paths.js";
+import { resolveWineryClawAgentDir } from "../src/agents/agent-paths.js";
 import { collectProviderApiKeys } from "../src/agents/live-auth-keys.js";
 import { isLiveProfileKeyModeEnabled, isLiveTestEnabled } from "../src/agents/live-test-helpers.js";
 import { resolveApiKeyForProvider } from "../src/agents/model-auth.js";
-import { loadConfig, type OpenClawConfig } from "../src/config/config.js";
+import { loadConfig, type WineryClawConfig } from "../src/config/config.js";
 import { isTruthyEnvValue } from "../src/infra/env.js";
 import { getShellEnvAppliedKeys, loadShellEnvFallback } from "../src/infra/shell-env.js";
 import { encodePngRgba, fillPixel } from "../src/media/png-encode.js";
@@ -38,10 +38,10 @@ import xaiPlugin from "./xai/index.js";
 
 const LIVE = isLiveTestEnabled();
 const REQUIRE_PROFILE_KEYS =
-  isLiveProfileKeyModeEnabled() || isTruthyEnvValue(process.env.OPENCLAW_LIVE_REQUIRE_PROFILE_KEYS);
+  isLiveProfileKeyModeEnabled() || isTruthyEnvValue(process.env.WINERYCLAW_LIVE_REQUIRE_PROFILE_KEYS);
 const describeLive = LIVE ? describe : describe.skip;
-const providerFilter = parseCsvFilter(process.env.OPENCLAW_LIVE_VIDEO_GENERATION_PROVIDERS);
-const envModelMap = parseProviderModelMap(process.env.OPENCLAW_LIVE_VIDEO_GENERATION_MODELS);
+const providerFilter = parseCsvFilter(process.env.WINERYCLAW_LIVE_VIDEO_GENERATION_PROVIDERS);
+const envModelMap = parseProviderModelMap(process.env.WINERYCLAW_LIVE_VIDEO_GENERATION_MODELS);
 
 type LiveProviderCase = {
   plugin: Parameters<typeof registerProviderPlugin>[0]["plugin"];
@@ -86,7 +86,7 @@ const CASES: LiveProviderCase[] = [
   .filter((entry) => (providerFilter ? providerFilter.has(entry.providerId) : true))
   .toSorted((left, right) => left.providerId.localeCompare(right.providerId));
 
-function withPluginsEnabled(cfg: OpenClawConfig): OpenClawConfig {
+function withPluginsEnabled(cfg: WineryClawConfig): WineryClawConfig {
   return {
     ...cfg,
     plugins: {
@@ -168,7 +168,7 @@ describeLive("video generation provider live", () => {
     async () => {
       const cfg = withPluginsEnabled(loadConfig());
       const configuredModels = resolveConfiguredLiveVideoModels(cfg);
-      const agentDir = resolveOpenClawAgentDir();
+      const agentDir = resolveWineryClawAgentDir();
       const attempted: string[] = [];
       const skipped: string[] = [];
       const failures: string[] = [];

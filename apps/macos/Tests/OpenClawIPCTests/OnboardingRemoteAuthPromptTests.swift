@@ -1,6 +1,6 @@
-import OpenClawKit
+import WineryClawKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @MainActor
 struct OnboardingRemoteAuthPromptTests {

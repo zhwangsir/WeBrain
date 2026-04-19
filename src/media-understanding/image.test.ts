@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const hoisted = vi.hoisted(() => ({
   completeMock: vi.fn(),
-  ensureOpenClawModelsJsonMock: vi.fn(async () => {}),
+  ensureWineryClawModelsJsonMock: vi.fn(async () => {}),
   getApiKeyForModelMock: vi.fn(async () => ({
     apiKey: "oauth-test", // pragma: allowlist secret
     source: "test",
@@ -20,7 +20,7 @@ const hoisted = vi.hoisted(() => ({
 }));
 const {
   completeMock,
-  ensureOpenClawModelsJsonMock,
+  ensureWineryClawModelsJsonMock,
   getApiKeyForModelMock,
   resolveApiKeyForProviderMock,
   requireApiKeyMock,
@@ -41,7 +41,7 @@ vi.mock("../agents/models-config.js", async () => ({
   ...(await vi.importActual<typeof import("../agents/models-config.js")>(
     "../agents/models-config.js",
   )),
-  ensureOpenClawModelsJson: ensureOpenClawModelsJsonMock,
+  ensureWineryClawModelsJson: ensureWineryClawModelsJsonMock,
 }));
 
 vi.mock("../agents/model-auth.js", () => ({
@@ -106,7 +106,7 @@ describe("describeImageWithModel", () => {
       text: "portal ok",
       model: "MiniMax-VL-01",
     });
-    expect(ensureOpenClawModelsJsonMock).toHaveBeenCalled();
+    expect(ensureWineryClawModelsJsonMock).toHaveBeenCalled();
     expect(getApiKeyForModelMock).toHaveBeenCalled();
     expect(requireApiKeyMock).toHaveBeenCalled();
     expect(setRuntimeApiKeyMock).toHaveBeenCalledWith("minimax-portal", "oauth-test");
@@ -117,7 +117,7 @@ describe("describeImageWithModel", () => {
         headers: {
           Authorization: "Bearer oauth-test",
           "Content-Type": "application/json",
-          "MM-API-Source": "OpenClaw",
+          "MM-API-Source": "WineryClaw",
         },
         body: JSON.stringify({
           prompt: "Describe the image.",

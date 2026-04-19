@@ -1,5 +1,5 @@
 import type {
-  OpenClawConfig,
+  WineryClawConfig,
   ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { describe, expect, it, vi } from "vitest";
@@ -106,7 +106,7 @@ describe("memory manager mistral provider wiring", () => {
 
   it("uses default ollama model when activating ollama fallback", () => {
     const request = resolveMemoryFallbackProviderRequest({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       settings: createSettings({ provider: "openai", fallback: "ollama" }),
       currentProviderId: "openai",
     });

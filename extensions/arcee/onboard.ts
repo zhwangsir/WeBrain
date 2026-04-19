@@ -1,6 +1,6 @@
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import { ARCEE_BASE_URL } from "./models.js";
 import {
@@ -14,7 +14,7 @@ export const ARCEE_OPENROUTER_DEFAULT_MODEL_REF = "arcee/trinity-large-thinking"
 
 const arceePresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: ARCEE_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: WineryClawConfig) => ({
     providerId: "arcee",
     api: "openai-completions",
     baseUrl: ARCEE_BASE_URL,
@@ -25,7 +25,7 @@ const arceePresetAppliers = createModelCatalogPresetAppliers({
 
 const arceeOpenRouterPresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: ARCEE_OPENROUTER_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: WineryClawConfig) => ({
     providerId: "arcee",
     api: "openai-completions",
     baseUrl: OPENROUTER_BASE_URL,
@@ -34,14 +34,14 @@ const arceeOpenRouterPresetAppliers = createModelCatalogPresetAppliers({
   }),
 });
 
-export function applyArceeProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyArceeProviderConfig(cfg: WineryClawConfig): WineryClawConfig {
   return arceePresetAppliers.applyProviderConfig(cfg);
 }
 
-export function applyArceeConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyArceeConfig(cfg: WineryClawConfig): WineryClawConfig {
   return arceePresetAppliers.applyConfig(cfg);
 }
 
-export function applyArceeOpenRouterConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyArceeOpenRouterConfig(cfg: WineryClawConfig): WineryClawConfig {
   return arceeOpenRouterPresetAppliers.applyConfig(cfg);
 }

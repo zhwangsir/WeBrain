@@ -6,7 +6,7 @@ import {
 } from "../agents/auth-profiles.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { collectDurableServiceEnvVars } from "../config/state-dir-dotenv.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { resolveGatewayLaunchAgentLabel } from "../daemon/constants.js";
 import { resolveGatewayProgramArguments } from "../daemon/program-args.js";
 import { buildServiceEnvironment } from "../daemon/service-env.js";
@@ -31,7 +31,7 @@ export type GatewayInstallPlan = {
   environment: Record<string, string | undefined>;
 };
 
-const MANAGED_SERVICE_ENV_KEYS_VAR = "OPENCLAW_SERVICE_MANAGED_ENV_KEYS";
+const MANAGED_SERVICE_ENV_KEYS_VAR = "WINERYCLAW_SERVICE_MANAGED_ENV_KEYS";
 
 function collectAuthProfileServiceEnvVars(params: {
   env: Record<string, string | undefined>;
@@ -164,7 +164,7 @@ function collectPreservedExistingServiceEnvVars(
       upper === "HOME" ||
       upper === "PATH" ||
       upper === "TMPDIR" ||
-      upper.startsWith("OPENCLAW_")
+      upper.startsWith("WINERYCLAW_")
     ) {
       continue;
     }
@@ -185,7 +185,7 @@ function collectPreservedExistingServiceEnvVars(
 
 function buildGatewayInstallEnvironment(params: {
   env: Record<string, string | undefined>;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   authStore?: AuthProfileStore;
   warn?: DaemonInstallWarnFn;
   serviceEnvironment: Record<string, string | undefined>;
@@ -234,7 +234,7 @@ export async function buildGatewayInstallPlan(params: {
   nodePath?: string;
   warn?: DaemonInstallWarnFn;
   /** Full config to extract env vars from (env vars + inline env keys). */
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   authStore?: AuthProfileStore;
 }): Promise<GatewayInstallPlan> {
   const { devMode, nodePath } = await resolveDaemonInstallRuntimeInputs({
@@ -261,7 +261,7 @@ export async function buildGatewayInstallPlan(params: {
     port: params.port,
     launchdLabel:
       process.platform === "darwin"
-        ? resolveGatewayLaunchAgentLabel(params.env.OPENCLAW_PROFILE)
+        ? resolveGatewayLaunchAgentLabel(params.env.WINERYCLAW_PROFILE)
         : undefined,
     extraPathDirs: resolveDaemonNodeBinDir(nodePath),
   });

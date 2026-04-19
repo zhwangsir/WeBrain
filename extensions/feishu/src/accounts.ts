@@ -1,6 +1,6 @@
 import {
   DEFAULT_ACCOUNT_ID,
-  type OpenClawConfig as ClawdbotConfig,
+  type WineryClawConfig as ClawdbotConfig,
   createAccountListHelpers,
   normalizeAccountId,
   normalizeOptionalAccountId,

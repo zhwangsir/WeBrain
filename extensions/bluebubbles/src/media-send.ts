@@ -8,7 +8,7 @@ import { resolveBlueBubblesAccount } from "./accounts.js";
 import { sendBlueBubblesAttachment } from "./attachments.js";
 import { basenameFromMediaSource, safeFileURLToPath } from "./local-file-access.js";
 import { resolveBlueBubblesMessageId } from "./monitor-reply-cache.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 import { getBlueBubblesRuntime } from "./runtime.js";
 import { sendMessageBlueBubbles } from "./send.js";
 
@@ -82,7 +82,7 @@ function isPathInsideRoot(candidate: string, root: string): boolean {
   return normalizedCandidate === normalizedRoot || normalizedCandidate.startsWith(rootWithSep);
 }
 
-function resolveMediaLocalRoots(params: { cfg: OpenClawConfig; accountId?: string }): string[] {
+function resolveMediaLocalRoots(params: { cfg: WineryClawConfig; accountId?: string }): string[] {
   const account = resolveBlueBubblesAccount({
     cfg: params.cfg,
     accountId: params.accountId,
@@ -173,7 +173,7 @@ function resolveFilenameFromSource(source?: string): string | undefined {
 }
 
 export async function sendBlueBubblesMedia(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   to: string;
   mediaUrl?: string;
   mediaPath?: string;

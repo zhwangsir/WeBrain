@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
 import {
   defaultQaModelForMode,
@@ -72,7 +72,7 @@ export function buildQaGatewayConfig(params: {
   liveProviderConfigs?: Record<string, ModelProviderConfig>;
   fastMode?: boolean;
   thinkingDefault?: QaThinkingLevel;
-}): OpenClawConfig {
+}): WineryClawConfig {
   const mockProviderBaseUrl = params.providerBaseUrl ?? "http://127.0.0.1:44080/v1";
   const mockOpenAiProvider: ModelProviderConfig = {
     baseUrl: mockProviderBaseUrl,
@@ -317,5 +317,5 @@ export function buildQaGatewayConfig(params: {
     },
     ...(params.transportConfig?.channels ? { channels: params.transportConfig.channels } : {}),
     ...(params.transportConfig?.messages ? { messages: params.transportConfig.messages } : {}),
-  } satisfies OpenClawConfig;
+  } satisfies WineryClawConfig;
 }

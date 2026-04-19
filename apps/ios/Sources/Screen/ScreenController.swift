@@ -1,4 +1,4 @@
-import OpenClawKit
+import WineryClawKit
 import Observation
 import UIKit
 import WebKit
@@ -163,7 +163,7 @@ final class ScreenController {
 
     func snapshotBase64(
         maxWidth: CGFloat? = nil,
-        format: OpenClawCanvasSnapshotFormat,
+        format: WineryClawCanvasSnapshotFormat,
         quality: Double? = nil) async throws -> String
     {
         let image = try await self.snapshotImage(maxWidth: maxWidth)
@@ -230,7 +230,7 @@ final class ScreenController {
         subdirectory: String)
         -> URL?
     {
-        let bundle = OpenClawKitResources.bundle
+        let bundle = WineryClawKitResources.bundle
         return bundle.url(forResource: name, withExtension: ext, subdirectory: subdirectory)
             ?? bundle.url(forResource: name, withExtension: ext)
     }

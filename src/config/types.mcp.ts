@@ -21,6 +21,6 @@ export type McpServerConfig = {
 };
 
 export type McpConfig = {
-  /** Named MCP server definitions managed by OpenClaw. */
+  /** Named MCP server definitions managed by WineryClaw. */
   servers?: Record<string, McpServerConfig>;
 };

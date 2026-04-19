@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
 import type { AuthProfileStore } from "./types.js";
 
@@ -25,7 +25,7 @@ export function buildAuthProfileId(params: {
 }
 
 export function resolveAuthProfileMetadata(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   store?: AuthProfileStore;
   profileId: string;
 }): { displayName?: string; email?: string } {

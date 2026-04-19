@@ -5,7 +5,7 @@ import { createQueuedWizardPrompter } from "../../../test/helpers/plugins/setup-
 import { whatsappApprovalAuth } from "./approval-auth.js";
 import { whatsappPlugin } from "./channel.js";
 import { checkWhatsAppHeartbeatReady } from "./heartbeat.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 import { finalizeWhatsAppSetup } from "./setup-finalize.js";
 import {
   createWhatsAppAllowlistModeInput,
@@ -60,12 +60,12 @@ vi.mock("openclaw/plugin-sdk/setup", async () => {
         .split(",")
         .map((entry) => entry.trim())
         .filter(Boolean),
-    setSetupChannelEnabled: (cfg: OpenClawConfig, channel: string, enabled: boolean) => ({
+    setSetupChannelEnabled: (cfg: WineryClawConfig, channel: string, enabled: boolean) => ({
       ...cfg,
       channels: {
         ...cfg.channels,
         [channel]: {
-          ...(cfg.channels?.[channel as keyof NonNullable<OpenClawConfig["channels"]>] as object),
+          ...(cfg.channels?.[channel as keyof NonNullable<WineryClawConfig["channels"]>] as object),
           enabled,
         },
       },
@@ -89,12 +89,12 @@ function createRuntime(): RuntimeEnv {
 
 async function runConfigureWithHarness(params: {
   harness: ReturnType<typeof createQueuedWizardPrompter>;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   runtime?: RuntimeEnv;
   forceAllowFrom?: boolean;
 }) {
   const result = await finalizeWhatsAppSetup({
-    cfg: params.cfg ?? ({} as OpenClawConfig),
+    cfg: params.cfg ?? ({} as WineryClawConfig),
     accountId: DEFAULT_ACCOUNT_ID,
     forceAllowFrom: params.forceAllowFrom ?? false,
     prompter: params.harness.prompter,
@@ -188,7 +188,7 @@ describe("whatsapp setup wizard", () => {
 
     const result = await runConfigureWithHarness({
       harness,
-      cfg: createWhatsAppRootAllowFromConfig() as OpenClawConfig,
+      cfg: createWhatsAppRootAllowFromConfig() as WineryClawConfig,
     });
 
     expectWhatsAppOpenPolicySetup(result.cfg, harness);
@@ -247,7 +247,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       deps: {
         webAuthExists: async () => true,
         hasActiveWebListener: (accountId?: string) => accountId === "work",

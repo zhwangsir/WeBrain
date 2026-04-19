@@ -1,18 +1,18 @@
 // swift-tools-version: 6.2
-// Package manifest for the OpenClaw macOS companion (menu bar app + IPC library).
+// Package manifest for the WineryClaw macOS companion (menu bar app + IPC library).
 
 import PackageDescription
 
 let package = Package(
-    name: "OpenClaw",
+    name: "WineryClaw",
     platforms: [
         .macOS(.v15),
     ],
     products: [
-        .library(name: "OpenClawIPC", targets: ["OpenClawIPC"]),
-        .library(name: "OpenClawDiscovery", targets: ["OpenClawDiscovery"]),
-        .executable(name: "OpenClaw", targets: ["OpenClaw"]),
-        .executable(name: "openclaw-mac", targets: ["OpenClawMacCLI"]),
+        .library(name: "WineryClawIPC", targets: ["WineryClawIPC"]),
+        .library(name: "WineryClawDiscovery", targets: ["WineryClawDiscovery"]),
+        .executable(name: "WineryClaw", targets: ["WineryClaw"]),
+        .executable(name: "openclaw-mac", targets: ["WineryClawMacCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/MenuBarExtraAccess", exact: "1.2.2"),
@@ -26,28 +26,29 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "OpenClawIPC",
+            name: "WineryClawIPC",
             dependencies: [],
+            path: "Sources/WineryClawIPC",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "OpenClawDiscovery",
+            name: "WineryClawDiscovery",
             dependencies: [
-                .product(name: "OpenClawKit", package: "OpenClawKit"),
+                .product(name: "WineryClawKit", package: "OpenClawKit"),
             ],
-            path: "Sources/OpenClawDiscovery",
+            path: "Sources/WineryClawDiscovery",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .executableTarget(
-            name: "OpenClaw",
+            name: "WineryClaw",
             dependencies: [
-                "OpenClawIPC",
-                "OpenClawDiscovery",
-                .product(name: "OpenClawKit", package: "OpenClawKit"),
-                .product(name: "OpenClawChatUI", package: "OpenClawKit"),
-                .product(name: "OpenClawProtocol", package: "OpenClawKit"),
+                "WineryClawIPC",
+                "WineryClawDiscovery",
+                .product(name: "WineryClawKit", package: "OpenClawKit"),
+                .product(name: "WineryClawChatUI", package: "OpenClawKit"),
+                .product(name: "WineryClawProtocol", package: "OpenClawKit"),
                 .product(name: "SwabbleKit", package: "swabble"),
                 .product(name: "MenuBarExtraAccess", package: "MenuBarExtraAccess"),
                 .product(name: "Subprocess", package: "swift-subprocess"),
@@ -57,34 +58,34 @@ let package = Package(
                 .product(name: "PeekabooAutomationKit", package: "Peekaboo"),
                 .product(name: "MLXAudioTTS", package: "mlx-audio-swift"),
             ],
+            path: "Sources/WineryClawApp",
             exclude: [
                 "Resources/Info.plist",
             ],
             resources: [
-                .copy("Resources/OpenClaw.icns"),
                 .copy("Resources/DeviceModels"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .executableTarget(
-            name: "OpenClawMacCLI",
+            name: "WineryClawMacCLI",
             dependencies: [
-                "OpenClawDiscovery",
-                .product(name: "OpenClawKit", package: "OpenClawKit"),
-                .product(name: "OpenClawProtocol", package: "OpenClawKit"),
+                "WineryClawDiscovery",
+                .product(name: "WineryClawKit", package: "OpenClawKit"),
+                .product(name: "WineryClawProtocol", package: "OpenClawKit"),
             ],
-            path: "Sources/OpenClawMacCLI",
+            path: "Sources/WineryClawMacCLI",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .testTarget(
-            name: "OpenClawIPCTests",
+            name: "WineryClawIPCTests",
             dependencies: [
-                "OpenClawIPC",
-                "OpenClaw",
-                "OpenClawDiscovery",
-                .product(name: "OpenClawProtocol", package: "OpenClawKit"),
+                "WineryClawIPC",
+                "WineryClaw",
+                "WineryClawDiscovery",
+                .product(name: "WineryClawProtocol", package: "OpenClawKit"),
                 .product(name: "SwabbleKit", package: "swabble"),
             ],
             swiftSettings: [

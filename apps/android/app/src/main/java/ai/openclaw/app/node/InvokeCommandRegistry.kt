@@ -1,19 +1,19 @@
 package ai.openclaw.app.node
 
-import ai.openclaw.app.protocol.OpenClawCalendarCommand
-import ai.openclaw.app.protocol.OpenClawCanvasA2UICommand
-import ai.openclaw.app.protocol.OpenClawCanvasCommand
-import ai.openclaw.app.protocol.OpenClawCameraCommand
-import ai.openclaw.app.protocol.OpenClawCapability
-import ai.openclaw.app.protocol.OpenClawCallLogCommand
-import ai.openclaw.app.protocol.OpenClawContactsCommand
-import ai.openclaw.app.protocol.OpenClawDeviceCommand
-import ai.openclaw.app.protocol.OpenClawLocationCommand
-import ai.openclaw.app.protocol.OpenClawMotionCommand
-import ai.openclaw.app.protocol.OpenClawNotificationsCommand
-import ai.openclaw.app.protocol.OpenClawPhotosCommand
-import ai.openclaw.app.protocol.OpenClawSmsCommand
-import ai.openclaw.app.protocol.OpenClawSystemCommand
+import ai.openclaw.app.protocol.WineryClawCalendarCommand
+import ai.openclaw.app.protocol.WineryClawCanvasA2UICommand
+import ai.openclaw.app.protocol.WineryClawCanvasCommand
+import ai.openclaw.app.protocol.WineryClawCameraCommand
+import ai.openclaw.app.protocol.WineryClawCapability
+import ai.openclaw.app.protocol.WineryClawCallLogCommand
+import ai.openclaw.app.protocol.WineryClawContactsCommand
+import ai.openclaw.app.protocol.WineryClawDeviceCommand
+import ai.openclaw.app.protocol.WineryClawLocationCommand
+import ai.openclaw.app.protocol.WineryClawMotionCommand
+import ai.openclaw.app.protocol.WineryClawNotificationsCommand
+import ai.openclaw.app.protocol.WineryClawPhotosCommand
+import ai.openclaw.app.protocol.WineryClawSmsCommand
+import ai.openclaw.app.protocol.WineryClawSystemCommand
 
 data class NodeRuntimeFlags(
   val cameraEnabled: Boolean,
@@ -65,35 +65,35 @@ data class InvokeCommandSpec(
 object InvokeCommandRegistry {
   val capabilityManifest: List<NodeCapabilitySpec> =
     listOf(
-      NodeCapabilitySpec(name = OpenClawCapability.Canvas.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Device.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Notifications.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.System.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.Canvas.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.Device.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.Notifications.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.System.rawValue),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Camera.rawValue,
+        name = WineryClawCapability.Camera.rawValue,
         availability = NodeCapabilityAvailability.CameraEnabled,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Sms.rawValue,
+        name = WineryClawCapability.Sms.rawValue,
         availability = NodeCapabilityAvailability.SmsAvailable,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.VoiceWake.rawValue,
+        name = WineryClawCapability.VoiceWake.rawValue,
         availability = NodeCapabilityAvailability.VoiceWakeEnabled,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Location.rawValue,
+        name = WineryClawCapability.Location.rawValue,
         availability = NodeCapabilityAvailability.LocationEnabled,
       ),
-      NodeCapabilitySpec(name = OpenClawCapability.Photos.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Contacts.rawValue),
-      NodeCapabilitySpec(name = OpenClawCapability.Calendar.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.Photos.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.Contacts.rawValue),
+      NodeCapabilitySpec(name = WineryClawCapability.Calendar.rawValue),
       NodeCapabilitySpec(
-        name = OpenClawCapability.Motion.rawValue,
+        name = WineryClawCapability.Motion.rawValue,
         availability = NodeCapabilityAvailability.MotionAvailable,
       ),
       NodeCapabilitySpec(
-        name = OpenClawCapability.CallLog.rawValue,
+        name = WineryClawCapability.CallLog.rawValue,
         availability = NodeCapabilityAvailability.CallLogAvailable,
       ),
     )
@@ -101,110 +101,110 @@ object InvokeCommandRegistry {
   val all: List<InvokeCommandSpec> =
     listOf(
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Present.rawValue,
+        name = WineryClawCanvasCommand.Present.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Hide.rawValue,
+        name = WineryClawCanvasCommand.Hide.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Navigate.rawValue,
+        name = WineryClawCanvasCommand.Navigate.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Eval.rawValue,
+        name = WineryClawCanvasCommand.Eval.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasCommand.Snapshot.rawValue,
+        name = WineryClawCanvasCommand.Snapshot.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasA2UICommand.Push.rawValue,
+        name = WineryClawCanvasA2UICommand.Push.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasA2UICommand.PushJSONL.rawValue,
+        name = WineryClawCanvasA2UICommand.PushJSONL.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawCanvasA2UICommand.Reset.rawValue,
+        name = WineryClawCanvasA2UICommand.Reset.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = OpenClawSystemCommand.Notify.rawValue,
+        name = WineryClawSystemCommand.Notify.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawCameraCommand.List.rawValue,
-        requiresForeground = true,
-        availability = InvokeCommandAvailability.CameraEnabled,
-      ),
-      InvokeCommandSpec(
-        name = OpenClawCameraCommand.Snap.rawValue,
+        name = WineryClawCameraCommand.List.rawValue,
         requiresForeground = true,
         availability = InvokeCommandAvailability.CameraEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawCameraCommand.Clip.rawValue,
+        name = WineryClawCameraCommand.Snap.rawValue,
         requiresForeground = true,
         availability = InvokeCommandAvailability.CameraEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawLocationCommand.Get.rawValue,
+        name = WineryClawCameraCommand.Clip.rawValue,
+        requiresForeground = true,
+        availability = InvokeCommandAvailability.CameraEnabled,
+      ),
+      InvokeCommandSpec(
+        name = WineryClawLocationCommand.Get.rawValue,
         availability = InvokeCommandAvailability.LocationEnabled,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Status.rawValue,
+        name = WineryClawDeviceCommand.Status.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Info.rawValue,
+        name = WineryClawDeviceCommand.Info.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Permissions.rawValue,
+        name = WineryClawDeviceCommand.Permissions.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawDeviceCommand.Health.rawValue,
+        name = WineryClawDeviceCommand.Health.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawNotificationsCommand.List.rawValue,
+        name = WineryClawNotificationsCommand.List.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawNotificationsCommand.Actions.rawValue,
+        name = WineryClawNotificationsCommand.Actions.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawPhotosCommand.Latest.rawValue,
+        name = WineryClawPhotosCommand.Latest.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawContactsCommand.Search.rawValue,
+        name = WineryClawContactsCommand.Search.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawContactsCommand.Add.rawValue,
+        name = WineryClawContactsCommand.Add.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawCalendarCommand.Events.rawValue,
+        name = WineryClawCalendarCommand.Events.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawCalendarCommand.Add.rawValue,
+        name = WineryClawCalendarCommand.Add.rawValue,
       ),
       InvokeCommandSpec(
-        name = OpenClawMotionCommand.Activity.rawValue,
+        name = WineryClawMotionCommand.Activity.rawValue,
         availability = InvokeCommandAvailability.MotionActivityAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawMotionCommand.Pedometer.rawValue,
+        name = WineryClawMotionCommand.Pedometer.rawValue,
         availability = InvokeCommandAvailability.MotionPedometerAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawSmsCommand.Send.rawValue,
+        name = WineryClawSmsCommand.Send.rawValue,
         availability = InvokeCommandAvailability.SendSmsAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawSmsCommand.Search.rawValue,
+        name = WineryClawSmsCommand.Search.rawValue,
         availability = InvokeCommandAvailability.RequestableSmsSearchAvailable,
       ),
       InvokeCommandSpec(
-        name = OpenClawCallLogCommand.Search.rawValue,
+        name = WineryClawCallLogCommand.Search.rawValue,
         availability = InvokeCommandAvailability.CallLogAvailable,
       ),
       InvokeCommandSpec(

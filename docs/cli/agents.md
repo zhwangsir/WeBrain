@@ -20,12 +20,12 @@ Related:
 ```bash
 openclaw agents list
 openclaw agents list --bindings
-openclaw agents add work --workspace ~/.openclaw/workspace-work
-openclaw agents add ops --workspace ~/.openclaw/workspace-ops --bind telegram:ops --non-interactive
+openclaw agents add work --workspace ~/.wineryclaw/workspace-work
+openclaw agents add ops --workspace ~/.wineryclaw/workspace-ops --bind telegram:ops --non-interactive
 openclaw agents bindings
 openclaw agents bind --agent work --bind telegram:ops
 openclaw agents unbind --agent work --bind telegram:ops
-openclaw agents set-identity --workspace ~/.openclaw/workspace --from-identity
+openclaw agents set-identity --workspace ~/.wineryclaw/workspace --from-identity
 openclaw agents set-identity --agent main --avatar avatars/openclaw.png
 openclaw agents delete work
 ```
@@ -35,7 +35,7 @@ openclaw agents delete work
 Use routing bindings to pin inbound channel traffic to a specific agent.
 
 If you also want different visible skills per agent, configure
-`agents.defaults.skills` and `agents.list[].skills` in `openclaw.json`. See
+`agents.defaults.skills` and `agents.list[].skills` in `wineryclaw.json`. See
 [Skills config](/tools/skills-config) and
 [Configuration Reference](/gateway/configuration-reference#agents-defaults-skills).
 
@@ -53,15 +53,15 @@ Add bindings:
 openclaw agents bind --agent work --bind telegram:ops --bind discord:guild-a
 ```
 
-If you omit `accountId` (`--bind <channel>`), OpenClaw resolves it from channel defaults and plugin setup hooks when available.
+If you omit `accountId` (`--bind <channel>`), WineryClaw resolves it from channel defaults and plugin setup hooks when available.
 
-If you omit `--agent` for `bind` or `unbind`, OpenClaw targets the current default agent.
+If you omit `--agent` for `bind` or `unbind`, WineryClaw targets the current default agent.
 
 ### Binding scope behavior
 
 - A binding without `accountId` matches the channel default account only.
 - `accountId: "*"` is the channel-wide fallback (all accounts) and is less specific than an explicit account binding.
-- If the same agent already has a matching channel binding without `accountId`, and you later bind with an explicit or resolved `accountId`, OpenClaw upgrades that existing binding in place instead of adding a duplicate.
+- If the same agent already has a matching channel binding without `accountId`, and you later bind with an explicit or resolved `accountId`, WineryClaw upgrades that existing binding in place instead of adding a duplicate.
 
 Example:
 
@@ -155,7 +155,7 @@ Notes:
 
 Each agent workspace can include an `IDENTITY.md` at the workspace root:
 
-- Example path: `~/.openclaw/workspace/IDENTITY.md`
+- Example path: `~/.wineryclaw/workspace/IDENTITY.md`
 - `set-identity --from-identity` reads from the workspace root (or an explicit `--identity-file`)
 
 Avatar paths resolve relative to the workspace root.
@@ -190,13 +190,13 @@ Notes:
 Load from `IDENTITY.md`:
 
 ```bash
-openclaw agents set-identity --workspace ~/.openclaw/workspace --from-identity
+openclaw agents set-identity --workspace ~/.wineryclaw/workspace --from-identity
 ```
 
 Override fields explicitly:
 
 ```bash
-openclaw agents set-identity --agent main --name "OpenClaw" --emoji "🦞" --avatar avatars/openclaw.png
+openclaw agents set-identity --agent main --name "WineryClaw" --emoji "😋" --avatar avatars/openclaw.png
 ```
 
 Config sample:
@@ -208,9 +208,9 @@ Config sample:
       {
         id: "main",
         identity: {
-          name: "OpenClaw",
+          name: "WineryClaw",
           theme: "space lobster",
-          emoji: "🦞",
+          emoji: "😋",
           avatar: "avatars/openclaw.png",
         },
       },

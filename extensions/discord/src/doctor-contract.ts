@@ -2,7 +2,7 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   asObjectRecord,
   normalizeLegacyDmAliases,
@@ -125,7 +125,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): ChannelDoctorConfigMutation {
   const rawEntry = asObjectRecord((cfg.channels as Record<string, unknown> | undefined)?.discord);
   if (!rawEntry) {
@@ -227,7 +227,7 @@ export function normalizeCompatibilityConfig({
       channels: {
         ...cfg.channels,
         discord: updated,
-      } as OpenClawConfig["channels"],
+      } as WineryClawConfig["channels"],
     },
     changes,
   };

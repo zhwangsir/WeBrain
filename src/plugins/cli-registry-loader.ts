@@ -1,8 +1,8 @@
 import { collectUniqueCommandDescriptors } from "../cli/program/command-descriptor-utils.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveManifestActivationPluginIds } from "./activation-planner.js";
 import type { PluginLoadOptions } from "./loader.js";
-import { loadOpenClawPluginCliRegistry, loadOpenClawPlugins } from "./loader.js";
+import { loadWineryClawPluginCliRegistry, loadWineryClawPlugins } from "./loader.js";
 import type { PluginRegistry } from "./registry.js";
 import {
   buildPluginRuntimeLoadOptions,
@@ -11,15 +11,15 @@ import {
   type PluginRuntimeLoadContext,
 } from "./runtime/load-context.js";
 import type {
-  OpenClawPluginCliCommandDescriptor,
-  OpenClawPluginCliContext,
+  WineryClawPluginCliCommandDescriptor,
+  WineryClawPluginCliContext,
   PluginLogger,
 } from "./types.js";
 
 export type PluginCliLoaderOptions = Pick<PluginLoadOptions, "pluginSdkResolution">;
 
 export type PluginCliPublicLoadParams = {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   loaderOptions?: PluginCliLoaderOptions;
   logger?: PluginLogger;
@@ -34,9 +34,9 @@ export type PluginCliRegistryLoadResult = PluginCliLoadContext & {
 
 export type PluginCliCommandGroupEntry = {
   pluginId: string;
-  placeholders: readonly OpenClawPluginCliCommandDescriptor[];
+  placeholders: readonly WineryClawPluginCliCommandDescriptor[];
   names: readonly string[];
-  register: (program: OpenClawPluginCliContext["program"]) => Promise<void>;
+  register: (program: WineryClawPluginCliContext["program"]) => Promise<void>;
 };
 
 export function createPluginCliLogger(): PluginLogger {
@@ -101,7 +101,7 @@ function resolvePrimaryCommandPluginIds(
 }
 
 export function resolvePluginCliLoadContext(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   logger: PluginLogger;
 }): PluginCliLoadContext {
@@ -119,7 +119,7 @@ export async function loadPluginCliMetadataRegistryWithContext(
 ): Promise<PluginCliRegistryLoadResult> {
   return {
     ...context,
-    registry: await loadOpenClawPluginCliRegistry(
+    registry: await loadWineryClawPluginCliRegistry(
       buildPluginCliLoaderParams(context, params, loaderOptions),
     ),
   };
@@ -131,7 +131,7 @@ export async function loadPluginCliCommandRegistryWithContext(params: {
   loaderOptions?: PluginCliLoaderOptions;
   onMetadataFallbackError: (error: unknown) => void;
 }): Promise<PluginCliRegistryLoadResult> {
-  const runtimeRegistry = loadOpenClawPlugins(
+  const runtimeRegistry = loadWineryClawPlugins(
     buildPluginCliLoaderParams(
       params.context,
       { primaryCommand: params.primaryCommand },
@@ -147,7 +147,7 @@ export async function loadPluginCliCommandRegistryWithContext(params: {
   }
 
   try {
-    const metadataRegistry = await loadOpenClawPluginCliRegistry(
+    const metadataRegistry = await loadWineryClawPluginCliRegistry(
       buildPluginCliLoaderParams(
         params.context,
         { primaryCommand: params.primaryCommand },
@@ -175,7 +175,7 @@ export async function loadPluginCliCommandRegistryWithContext(params: {
 
 function buildPluginCliCommandGroupEntries(params: {
   registry: PluginRegistry;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   workspaceDir: string | undefined;
   logger: PluginLogger;
 }): PluginCliCommandGroupEntry[] {
@@ -200,7 +200,7 @@ function logPluginCliMetadataFallbackError(logger: PluginLogger, error: unknown)
 
 export async function loadPluginCliDescriptors(
   params: PluginCliPublicLoadParams,
-): Promise<OpenClawPluginCliCommandDescriptor[]> {
+): Promise<WineryClawPluginCliCommandDescriptor[]> {
   try {
     const logger = resolvePluginCliLogger(params.logger);
     const context = resolvePluginCliLoadContext({
@@ -222,7 +222,7 @@ export async function loadPluginCliDescriptors(
 }
 
 export async function loadPluginCliRegistrationEntries(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   loaderOptions?: PluginCliLoaderOptions;
   logger?: PluginLogger;

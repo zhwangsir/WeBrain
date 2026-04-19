@@ -1,6 +1,6 @@
 import SwiftUI
 import Foundation
-import OpenClawKit
+import WineryClawKit
 import os
 import UIKit
 import BackgroundTasks
@@ -16,12 +16,12 @@ private struct PendingWatchPromptAction {
 private typealias PendingExecApprovalPrompt = ExecApprovalNotificationPrompt
 
 @MainActor
-enum OpenClawAppModelRegistry {
+enum WineryClawAppModelRegistry {
     static var appModel: NodeAppModel?
 }
 
 @MainActor
-final class OpenClawAppDelegate: NSObject, UIApplicationDelegate, @preconcurrency UNUserNotificationCenterDelegate {
+final class WineryClawAppDelegate: NSObject, UIApplicationDelegate, @preconcurrency UNUserNotificationCenterDelegate {
     private let logger = Logger(subsystem: "ai.openclaw.ios", category: "Push")
     private let backgroundWakeLogger = Logger(subsystem: "ai.openclaw.ios", category: "BackgroundWake")
     private static let wakeRefreshTaskIdentifier = "ai.openclaw.ios.bgrefresh"
@@ -85,7 +85,7 @@ final class OpenClawAppDelegate: NSObject, UIApplicationDelegate, @preconcurrenc
     }
 
     private func resolvedAppModel() -> NodeAppModel? {
-        self.appModel ?? OpenClawAppModelRegistry.appModel
+        self.appModel ?? WineryClawAppModelRegistry.appModel
     }
 
 #if DEBUG
@@ -101,7 +101,7 @@ final class OpenClawAppDelegate: NSObject, UIApplicationDelegate, @preconcurrenc
     {
         GatewayDiagnostics.log("app delegate: didFinishLaunching")
         if self.appModel == nil {
-            self.appModel = OpenClawAppModelRegistry.appModel
+            self.appModel = WineryClawAppModelRegistry.appModel
         }
         self.registerBackgroundWakeRefreshTask()
         let notificationCenter = UNUserNotificationCenter.current()
@@ -387,7 +387,7 @@ enum WatchPromptNotificationBridge {
     @MainActor
     static func scheduleMirroredWatchPromptNotificationIfNeeded(
         invokeID: String,
-        params: OpenClawWatchNotifyParams,
+        params: WineryClawWatchNotifyParams,
         sendResult: WatchNotificationSendResult) async
     {
         guard sendResult.queuedForDelivery || !sendResult.deliveredImmediately else { return }
@@ -397,11 +397,11 @@ enum WatchPromptNotificationBridge {
         guard !title.isEmpty || !body.isEmpty else { return }
         guard await self.requestNotificationAuthorizationIfNeeded() else { return }
 
-        let normalizedActions = (params.actions ?? []).compactMap { action -> OpenClawWatchAction? in
+        let normalizedActions = (params.actions ?? []).compactMap { action -> WineryClawWatchAction? in
             let id = action.id.trimmingCharacters(in: .whitespacesAndNewlines)
             let label = action.label.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !id.isEmpty, !label.isEmpty else { return nil }
-            return OpenClawWatchAction(id: id, label: label, style: action.style)
+            return WineryClawWatchAction(id: id, label: label, style: action.style)
         }
         let displayedActions = Array(normalizedActions.prefix(4))
 
@@ -440,7 +440,7 @@ enum WatchPromptNotificationBridge {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = title.isEmpty ? "OpenClaw" : title
+        content.title = title.isEmpty ? "WineryClaw" : title
         content.body = body
         content.sound = .default
         content.userInfo = userInfo
@@ -473,7 +473,7 @@ enum WatchPromptNotificationBridge {
         "\(self.actionLabelKeyPrefix)\(index)"
     }
 
-    private static func categoryActions(_ actions: [OpenClawWatchAction]) -> [UNNotificationAction] {
+    private static func categoryActions(_ actions: [WineryClawWatchAction]) -> [UNNotificationAction] {
         actions.enumerated().map { index, action in
             let identifier: String
             switch index {
@@ -603,17 +603,17 @@ extension NodeAppModel {
 }
 
 @main
-struct OpenClawApp: App {
+struct WineryClawApp: App {
     @State private var appModel: NodeAppModel
     @State private var gatewayController: GatewayConnectionController
-    @UIApplicationDelegateAdaptor(OpenClawAppDelegate.self) private var appDelegate
+    @UIApplicationDelegateAdaptor(WineryClawAppDelegate.self) private var appDelegate
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
         Self.installUncaughtExceptionLogger()
         GatewaySettingsStore.bootstrapPersistence()
         let appModel = NodeAppModel()
-        OpenClawAppModelRegistry.appModel = appModel
+        WineryClawAppModelRegistry.appModel = appModel
         _appModel = State(initialValue: appModel)
         _gatewayController = State(initialValue: GatewayConnectionController(appModel: appModel))
     }
@@ -639,9 +639,9 @@ struct OpenClawApp: App {
     }
 }
 
-extension OpenClawApp {
+extension WineryClawApp {
     private static func installUncaughtExceptionLogger() {
-        NSLog("OpenClaw: installing uncaught exception handler")
+        NSLog("WineryClaw: installing uncaught exception handler")
         NSSetUncaughtExceptionHandler { exception in
             // Useful when the app hits NSExceptions from SwiftUI/WebKit internals; these do not
             // produce a normal Swift error backtrace.

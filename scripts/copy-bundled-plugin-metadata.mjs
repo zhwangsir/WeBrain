@@ -227,7 +227,10 @@ export function copyBundledPluginMetadata(params = {}) {
     }
 
     const pluginDir = path.join(extensionsRoot, dirent.name);
-    const manifestPath = path.join(pluginDir, "openclaw.plugin.json");
+    let manifestPath = path.join(pluginDir, "wineryclaw.plugin.json");
+    if (!fs.existsSync(manifestPath)) {
+      manifestPath = path.join(pluginDir, "openclaw.plugin.json");
+    }
     const distPluginDir = path.join(distExtensionsRoot, dirent.name);
     const packageJsonPath = path.join(pluginDir, "package.json");
     const packageJson = fs.existsSync(packageJsonPath)
@@ -249,7 +252,7 @@ export function copyBundledPluginMetadata(params = {}) {
 
     sourcePluginDirs.add(dirent.name);
 
-    const distManifestPath = path.join(distPluginDir, "openclaw.plugin.json");
+    const distManifestPath = path.join(distPluginDir, "wineryclaw.plugin.json");
     const distPackageJsonPath = path.join(distPluginDir, "package.json");
     if (!fs.existsSync(manifestPath) && !isManifestlessSupportPackage) {
       removePathIfExists(distPluginDir);

@@ -6,7 +6,7 @@ export { ensureConfiguredAcpBindingReady } from "openclaw/plugin-sdk/acp-binding
 export type { NormalizedLocation } from "openclaw/plugin-sdk/channel-inbound";
 export type { PluginRuntime, RuntimeLogger } from "openclaw/plugin-sdk/plugin-runtime";
 export type { BlockReplyContext, ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-export type { MarkdownTableMode, OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+export type { MarkdownTableMode, WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
 export {
   addAllowlistUserEntriesFromConfigEntry,

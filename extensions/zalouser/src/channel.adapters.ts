@@ -19,7 +19,7 @@ import type {
   ChannelGroupContext,
   ChannelMessageActionAdapter,
   GroupToolPolicyConfig,
-  OpenClawConfig,
+  WineryClawConfig,
 } from "./channel-api.js";
 import {
   DEFAULT_ACCOUNT_ID,
@@ -51,11 +51,11 @@ export function resolveZalouserQrProfile(accountId?: string | null): string {
   return normalized;
 }
 
-function resolveZalouserOutboundChunkMode(cfg: OpenClawConfig, accountId?: string) {
+function resolveZalouserOutboundChunkMode(cfg: WineryClawConfig, accountId?: string) {
   return getZalouserRuntime().channel.text.resolveChunkMode(cfg, "zalouser", accountId);
 }
 
-function resolveZalouserOutboundTextChunkLimit(cfg: OpenClawConfig, accountId?: string) {
+function resolveZalouserOutboundTextChunkLimit(cfg: WineryClawConfig, accountId?: string) {
   return getZalouserRuntime().channel.text.resolveTextChunkLimit(cfg, "zalouser", accountId, {
     fallbackLimit: ZALOUSER_TEXT_CHUNK_LIMIT,
   });
@@ -218,7 +218,7 @@ export const zalouserResolverAdapter = {
     kind,
     runtime,
   }: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId?: string | null;
     inputs: string[];
     kind: "user" | "group";
@@ -282,7 +282,7 @@ export const zalouserAuthAdapter = {
     accountId,
     runtime,
   }: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId?: string | null;
     runtime: RuntimeEnv;
   }) => {
@@ -338,7 +338,7 @@ export const zalouserPairingTextAdapter = {
   idLabel: "zalouserUserId",
   message: "Your pairing request has been approved.",
   normalizeAllowEntry: createPairingPrefixStripper(/^(zalouser|zlu):/i),
-  notify: async ({ cfg, id, message }: { cfg: OpenClawConfig; id: string; message: string }) => {
+  notify: async ({ cfg, id, message }: { cfg: WineryClawConfig; id: string; message: string }) => {
     const { sendMessageZalouser } = await loadZalouserChannelRuntime();
     const account = resolveZalouserAccountSync({ cfg: cfg });
     const authenticated = await checkZcaAuthenticated(account.profile);

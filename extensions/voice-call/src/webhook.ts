@@ -1,6 +1,6 @@
 import http from "node:http";
 import { URL } from "node:url";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import {
   createWebhookInFlightLimiter,
@@ -80,7 +80,7 @@ export class VoiceCallWebhookServer {
   private manager: CallManager;
   private provider: VoiceCallProvider;
   private coreConfig: CoreConfig | null;
-  private fullConfig: OpenClawConfig | null;
+  private fullConfig: WineryClawConfig | null;
   private agentRuntime: CoreAgentDeps | null;
   private stopStaleCallReaper: (() => void) | null = null;
   private readonly webhookInFlightLimiter = createWebhookInFlightLimiter();
@@ -97,7 +97,7 @@ export class VoiceCallWebhookServer {
     manager: CallManager,
     provider: VoiceCallProvider,
     coreConfig?: CoreConfig,
-    fullConfig?: OpenClawConfig,
+    fullConfig?: WineryClawConfig,
     agentRuntime?: CoreAgentDeps,
   ) {
     this.config = normalizeVoiceCallConfig(config);
@@ -158,14 +158,14 @@ export class VoiceCallWebhookServer {
   private async initializeMediaStreaming(): Promise<void> {
     const streaming = this.config.streaming;
     const pluginConfig =
-      this.fullConfig ?? (this.coreConfig as unknown as OpenClawConfig | undefined);
+      this.fullConfig ?? (this.coreConfig as unknown as WineryClawConfig | undefined);
     const { getRealtimeTranscriptionProvider, listRealtimeTranscriptionProviders } =
       await import("./realtime-transcription.runtime.js");
     const resolution = resolveConfiguredCapabilityProvider({
       configuredProviderId: streaming.provider,
       providerConfigs: streaming.providers,
       cfg: pluginConfig,
-      cfgForResolve: pluginConfig ?? ({} as OpenClawConfig),
+      cfgForResolve: pluginConfig ?? ({} as WineryClawConfig),
       getConfiguredProvider: (providerId) =>
         getRealtimeTranscriptionProvider(providerId, pluginConfig),
       listProviders: () => listRealtimeTranscriptionProviders(pluginConfig),

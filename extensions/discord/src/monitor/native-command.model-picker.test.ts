@@ -2,7 +2,7 @@ import { ChannelType } from "discord-api-types/v10";
 import * as commandRegistryModule from "openclaw/plugin-sdk/command-auth";
 import type { ChatCommandDefinition, CommandArgsParsing } from "openclaw/plugin-sdk/command-auth";
 import type { ModelsProviderData } from "openclaw/plugin-sdk/command-auth";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import * as globalsModule from "openclaw/plugin-sdk/runtime-env";
 import * as commandTextModule from "openclaw/plugin-sdk/text-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -67,7 +67,7 @@ function createModelPickerContext(): ModelPickerContext {
         },
       },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as WineryClawConfig;
 
   return {
     cfg,

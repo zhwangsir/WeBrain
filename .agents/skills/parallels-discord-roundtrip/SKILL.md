@@ -28,12 +28,12 @@ Cover:
 ## Preferred run
 
 ```bash
-export OPENCLAW_PARALLELS_DISCORD_TOKEN="$(
-  ssh peters-mac-studio-1 'jq -r ".channels.discord.token" ~/.openclaw/openclaw.json' | tr -d '\n'
+export WINERYCLAW_PARALLELS_DISCORD_TOKEN="$(
+  ssh peters-mac-studio-1 'jq -r ".channels.discord.token" ~/.wineryclaw/wineryclaw.json' | tr -d '\n'
 )"
 
 pnpm test:parallels:macos \
-  --discord-token-env OPENCLAW_PARALLELS_DISCORD_TOKEN \
+  --discord-token-env WINERYCLAW_PARALLELS_DISCORD_TOKEN \
   --discord-guild-id 1456350064065904867 \
   --discord-channel-id 1456744319972282449 \
   --json

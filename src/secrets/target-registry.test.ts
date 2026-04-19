@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   buildTalkTestProviderConfig,
   TALK_TEST_PROVIDER_API_KEY_PATH,
@@ -19,7 +19,7 @@ describe("secret target registry", () => {
           token: { source: "env" as const, provider: "default", id: "REMOTE_TOKEN" },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies WineryClawConfig;
 
     const targets = discoverConfigSecretTargetsByIds(config, new Set(["talk.providers.*.apiKey"]));
 

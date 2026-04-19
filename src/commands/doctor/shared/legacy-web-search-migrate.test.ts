@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { WineryClawConfig } from "../../../config/config.js";
 import { findLegacyConfigIssues } from "../../../config/legacy.js";
 import { migrateLegacyConfig } from "./legacy-config-migrate.js";
 import {
@@ -9,7 +9,7 @@ import {
 
 describe("legacy web search config", () => {
   it("migrates legacy provider config through bundled web search ownership metadata", () => {
-    const res = migrateLegacyWebSearchConfig<OpenClawConfig>({
+    const res = migrateLegacyWebSearchConfig<WineryClawConfig>({
       tools: {
         web: {
           search: {
@@ -102,7 +102,7 @@ describe("legacy web search config", () => {
           },
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies WineryClawConfig;
 
     expect(findLegacyConfigIssues(rawConfig)).toEqual([
       {

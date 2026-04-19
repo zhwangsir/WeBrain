@@ -44,7 +44,7 @@ internal fun buildGatewayDiagnosticsReport(
   val endpoint = gatewayAddress.trim().ifEmpty { "unknown" }
   val status = gatewayStatusForDisplay(statusText)
   return """
-    Help diagnose this OpenClaw Android gateway connection failure.
+    Help diagnose this WineryClaw Android gateway connection failure.
 
     Please:
     - pick one route only: same machine, same LAN, Tailscale, or public URL
@@ -73,6 +73,6 @@ internal fun copyGatewayDiagnosticsReport(
 ) {
   val clipboard = context.getSystemService(ClipboardManager::class.java) ?: return
   val report = buildGatewayDiagnosticsReport(screen = screen, gatewayAddress = gatewayAddress, statusText = statusText)
-  clipboard.setPrimaryClip(ClipData.newPlainText("OpenClaw gateway diagnostics", report))
+  clipboard.setPrimaryClip(ClipData.newPlainText("WineryClaw gateway diagnostics", report))
   Toast.makeText(context, "Copied gateway diagnostics", Toast.LENGTH_SHORT).show()
 }

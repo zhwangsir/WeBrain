@@ -5,7 +5,7 @@ import { resolvePathFromInput } from "../../agents/path-policy.js";
 import { assertMediaNotDataUrl, resolveSandboxedMediaSource } from "../../agents/sandbox-paths.js";
 import { ensureSandboxWorkspaceForSession } from "../../agents/sandbox.js";
 import { resolveEffectiveToolFsWorkspaceOnly } from "../../agents/tool-fs-policy.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { logVerbose } from "../../globals.js";
 import { saveMediaSource } from "../../media/store.js";
 import { resolveConfigDir } from "../../utils.js";
@@ -16,7 +16,7 @@ const FILE_URL_RE = /^file:\/\//i;
 const WINDOWS_DRIVE_RE = /^[a-zA-Z]:[\\/]/;
 const SCHEME_RE = /^[a-zA-Z][a-zA-Z0-9+.-]*:/;
 const HAS_FILE_EXT_RE = /\.\w{1,10}$/;
-const AGENT_STATE_MEDIA_DIRNAME = path.join(".openclaw", "media");
+const AGENT_STATE_MEDIA_DIRNAME = path.join(".wineryclaw", "media");
 const MANAGED_GLOBAL_MEDIA_SUBDIRS = new Set(["outbound"]);
 
 function isPathInside(root: string, candidate: string): boolean {
@@ -67,7 +67,7 @@ function getPayloadMediaList(payload: ReplyPayload): string[] {
 }
 
 export function createReplyMediaPathNormalizer(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey?: string;
   workspaceDir: string;
 }): (payload: ReplyPayload) => Promise<ReplyPayload> {

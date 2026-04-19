@@ -1,15 +1,15 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { isStrictAgenticExecutionContractActive } from "./execution-contract.js";
 import type { AnyAgentTool } from "./tools/common.js";
 
-export function collectPresentOpenClawTools(
+export function collectPresentWineryClawTools(
   candidates: readonly (AnyAgentTool | null | undefined)[],
 ): AnyAgentTool[] {
   return candidates.filter((tool): tool is AnyAgentTool => tool !== null && tool !== undefined);
 }
 
-export function isUpdatePlanToolEnabledForOpenClawTools(params: {
-  config?: OpenClawConfig;
+export function isUpdatePlanToolEnabledForWineryClawTools(params: {
+  config?: WineryClawConfig;
   agentSessionKey?: string;
   agentId?: string | null;
   modelProvider?: string;

@@ -18,7 +18,7 @@ describe("test-install-sh-docker", () => {
     const script = readFileSync(SCRIPT_PATH, "utf8");
 
     expect(script).toContain(
-      'UPDATE_EXPECT_VERSION="${OPENCLAW_INSTALL_SMOKE_UPDATE_EXPECT_VERSION:-}"',
+      'UPDATE_EXPECT_VERSION="${WINERYCLAW_INSTALL_SMOKE_UPDATE_EXPECT_VERSION:-}"',
     );
     expect(script).toContain('if [[ -z "$UPDATE_EXPECT_VERSION" ]]; then');
     expect(script).toContain('UPDATE_EXPECT_VERSION="$packed_update_version"');
@@ -42,7 +42,7 @@ describe("install-sh smoke runner", () => {
     const script = readFileSync(SMOKE_RUNNER_PATH, "utf8");
 
     expect(script).toContain(
-      'HEARTBEAT_INTERVAL="${OPENCLAW_INSTALL_SMOKE_HEARTBEAT_INTERVAL:-60}"',
+      'HEARTBEAT_INTERVAL="${WINERYCLAW_INSTALL_SMOKE_HEARTBEAT_INTERVAL:-60}"',
     );
     expect(script).toContain("run_with_heartbeat");
     expect(script).toContain("==> Still running");

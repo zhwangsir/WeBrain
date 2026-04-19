@@ -1,5 +1,5 @@
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   withBundledPluginAllowlistCompat,
   withBundledPluginEnablementCompat,
@@ -25,10 +25,10 @@ export type PluginActivationBundledCompatMode = {
 };
 
 export type PluginActivationInputs = {
-  rawConfig?: OpenClawConfig;
-  config?: OpenClawConfig;
+  rawConfig?: WineryClawConfig;
+  config?: WineryClawConfig;
   normalized: NormalizedPluginsConfig;
-  activationSourceConfig?: OpenClawConfig;
+  activationSourceConfig?: WineryClawConfig;
   activationSource: PluginActivationConfigSource;
   autoEnabledReasons: Record<string, string[]>;
 };
@@ -48,11 +48,11 @@ export type BundledPluginCompatibleActivationInputs = PluginActivationInputs & {
 };
 
 export function withActivatedPluginIds(params: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   pluginIds: readonly string[];
   overrideGlobalDisable?: boolean;
   overrideExplicitDisable?: boolean;
-}): OpenClawConfig | undefined {
+}): WineryClawConfig | undefined {
   if (params.pluginIds.length === 0) {
     return params.config;
   }
@@ -86,10 +86,10 @@ export function withActivatedPluginIds(params: {
 }
 
 export function applyPluginCompatibilityOverrides(params: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   compat?: PluginActivationCompatConfig;
   env: NodeJS.ProcessEnv;
-}): OpenClawConfig | undefined {
+}): WineryClawConfig | undefined {
   const allowlistCompat = params.compat?.allowlistPluginIds?.length
     ? withBundledPluginAllowlistCompat({
         config: params.config,
@@ -113,8 +113,8 @@ export function applyPluginCompatibilityOverrides(params: {
 }
 
 export function resolvePluginActivationSnapshot(params: {
-  rawConfig?: OpenClawConfig;
-  resolvedConfig?: OpenClawConfig;
+  rawConfig?: WineryClawConfig;
+  resolvedConfig?: WineryClawConfig;
   autoEnabledReasons?: Record<string, string[]>;
   env?: NodeJS.ProcessEnv;
   applyAutoEnable?: boolean;
@@ -146,8 +146,8 @@ export function resolvePluginActivationSnapshot(params: {
 }
 
 export function resolvePluginActivationInputs(params: {
-  rawConfig?: OpenClawConfig;
-  resolvedConfig?: OpenClawConfig;
+  rawConfig?: WineryClawConfig;
+  resolvedConfig?: WineryClawConfig;
   autoEnabledReasons?: Record<string, string[]>;
   env?: NodeJS.ProcessEnv;
   compat?: PluginActivationCompatConfig;
@@ -178,8 +178,8 @@ export function resolvePluginActivationInputs(params: {
 }
 
 export function resolveBundledPluginCompatibleActivationInputs(params: {
-  rawConfig?: OpenClawConfig;
-  resolvedConfig?: OpenClawConfig;
+  rawConfig?: WineryClawConfig;
+  resolvedConfig?: WineryClawConfig;
   autoEnabledReasons?: Record<string, string[]>;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
@@ -187,7 +187,7 @@ export function resolveBundledPluginCompatibleActivationInputs(params: {
   applyAutoEnable?: boolean;
   compatMode: PluginActivationBundledCompatMode;
   resolveCompatPluginIds: (params: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
     onlyPluginIds?: readonly string[];

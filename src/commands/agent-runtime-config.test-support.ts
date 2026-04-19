@@ -3,7 +3,7 @@ import { __testing as acpManagerTesting } from "../acp/control-plane/manager.js"
 import { loadModelCatalog } from "../agents/model-catalog.js";
 import * as modelSelectionModule from "../agents/model-selection.js";
 import { runEmbeddedPiAgent } from "../agents/pi-embedded.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import * as configModule from "../config/config.js";
 import { clearSessionStoreCacheForTest } from "../config/sessions.js";
 import { resetAgentEventsForTest, resetAgentRunContextForTest } from "../infra/agent-events.js";
@@ -75,7 +75,7 @@ export function resetSharedAgentCommandRuntimeState(
   vi.mocked(loadModelCatalog).mockResolvedValue([]);
   vi.mocked(modelSelectionModule.isCliProvider).mockImplementation(() => false);
   vi.mocked(readConfigFileSnapshotForWriteSpy).mockResolvedValue({
-    snapshot: { valid: false, resolved: {} as OpenClawConfig },
+    snapshot: { valid: false, resolved: {} as WineryClawConfig },
     writeOptions: {},
   } as Awaited<ReturnType<typeof configModule.readConfigFileSnapshotForWrite>>);
 }

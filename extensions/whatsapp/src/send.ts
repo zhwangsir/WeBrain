@@ -1,5 +1,5 @@
 import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
-import { loadConfig, type OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import { loadConfig, type WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { resolveMarkdownTableMode } from "openclaw/plugin-sdk/config-runtime";
 import { generateSecureUuid } from "openclaw/plugin-sdk/core";
 import { normalizePollInput, type PollInput } from "openclaw/plugin-sdk/media-runtime";
@@ -20,7 +20,7 @@ import { markdownToWhatsApp, toWhatsappJid } from "./text-runtime.js";
 const outboundLog = createSubsystemLogger("gateway/channels/whatsapp").child("outbound");
 
 function resolveOutboundWhatsAppAccountId(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string;
 }): string | undefined {
   const explicitAccountId = params.accountId?.trim();
@@ -30,7 +30,7 @@ function resolveOutboundWhatsAppAccountId(params: {
   return resolveDefaultWhatsAppAccountId(params.cfg);
 }
 
-function requireOutboundActiveWebListener(params: { cfg: OpenClawConfig; accountId?: string }): {
+function requireOutboundActiveWebListener(params: { cfg: WineryClawConfig; accountId?: string }): {
   accountId: string;
   listener: ActiveWebListener;
 } {
@@ -51,7 +51,7 @@ export async function sendMessageWhatsApp(
   body: string,
   options: {
     verbose: boolean;
-    cfg?: OpenClawConfig;
+    cfg?: WineryClawConfig;
     mediaUrl?: string;
     mediaUrls?: readonly string[];
     mediaAccess?: {
@@ -211,7 +211,7 @@ export async function sendReactionWhatsApp(
 export async function sendPollWhatsApp(
   to: string,
   poll: PollInput,
-  options: { verbose: boolean; accountId?: string; cfg?: OpenClawConfig },
+  options: { verbose: boolean; accountId?: string; cfg?: WineryClawConfig },
 ): Promise<{ messageId: string; toJid: string }> {
   const correlationId = generateSecureUuid();
   const startedAt = Date.now();

@@ -1,6 +1,6 @@
 import type { Mock } from "vitest";
 import { vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { mergeMockedModule } from "../test-utils/vitest-module-mocks.js";
 import { createTestRuntime } from "./test-runtime-config-helpers.js";
 
@@ -13,7 +13,7 @@ export const writeConfigFileMock: Mock<(...args: unknown[]) => Promise<unknown>>
   .fn()
   .mockResolvedValue(undefined);
 export const replaceConfigFileMock: Mock<(...args: unknown[]) => Promise<unknown>> = vi.fn(
-  async (params: { nextConfig: OpenClawConfig }): Promise<ReplaceConfigFileResult> => {
+  async (params: { nextConfig: WineryClawConfig }): Promise<ReplaceConfigFileResult> => {
     await writeConfigFileMock(params.nextConfig);
     return {
       path: "/tmp/openclaw.json",

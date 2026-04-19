@@ -8,7 +8,7 @@ title: "Bonjour Discovery"
 
 # Bonjour / mDNS discovery
 
-OpenClaw uses Bonjour (mDNS / DNS‑SD) to discover an active Gateway (WebSocket endpoint).
+WineryClaw uses Bonjour (mDNS / DNS‑SD) to discover an active Gateway (WebSocket endpoint).
 Multicast `local.` browsing is a **LAN-only convenience**. For cross-network discovery, the
 same beacon can also be published through a configured wide-area DNS-SD domain. Discovery is
 still best-effort and does **not** replace SSH or Tailnet-based connectivity.
@@ -27,7 +27,7 @@ High‑level steps:
 3. Configure Tailscale **split DNS** so your chosen domain resolves via that
    DNS server for clients (including iOS).
 
-OpenClaw supports any discovery domain; `openclaw.internal.` is just an example.
+WineryClaw supports any discovery domain; `openclaw.internal.` is just an example.
 iOS/Android nodes browse both `local.` and your configured wide‑area domain.
 
 ### Gateway config (recommended)
@@ -48,7 +48,7 @@ openclaw dns setup --apply
 This installs CoreDNS and configures it to:
 
 - listen on port 53 only on the gateway’s Tailscale interfaces
-- serve your chosen domain (example: `openclaw.internal.`) from `~/.openclaw/dns/<domain>.db`
+- serve your chosen domain (example: `openclaw.internal.`) from `~/.wineryclaw/dns/<domain>.db`
 
 Validate from a tailnet‑connected machine:
 
@@ -74,7 +74,7 @@ access, bind explicitly and keep auth enabled.
 
 For tailnet‑only setups:
 
-- Set `gateway.bind: "tailnet"` in `~/.openclaw/openclaw.json`.
+- Set `gateway.bind: "tailnet"` in `~/.wineryclaw/wineryclaw.json`.
 - Restart the Gateway (or restart the macOS menubar app).
 
 ## What advertises
@@ -167,11 +167,11 @@ sequences (e.g. spaces become `\032`).
 
 ## Disabling / configuration
 
-- `OPENCLAW_DISABLE_BONJOUR=1` disables advertising (legacy: `OPENCLAW_DISABLE_BONJOUR`).
-- `gateway.bind` in `~/.openclaw/openclaw.json` controls the Gateway bind mode.
-- `OPENCLAW_SSH_PORT` overrides the SSH port when `sshPort` is advertised (legacy: `OPENCLAW_SSH_PORT`).
-- `OPENCLAW_TAILNET_DNS` publishes a MagicDNS hint in TXT (legacy: `OPENCLAW_TAILNET_DNS`).
-- `OPENCLAW_CLI_PATH` overrides the advertised CLI path (legacy: `OPENCLAW_CLI_PATH`).
+- `WINERYCLAW_DISABLE_BONJOUR=1` disables advertising (legacy: `WINERYCLAW_DISABLE_BONJOUR`).
+- `gateway.bind` in `~/.wineryclaw/wineryclaw.json` controls the Gateway bind mode.
+- `WINERYCLAW_SSH_PORT` overrides the SSH port when `sshPort` is advertised (legacy: `WINERYCLAW_SSH_PORT`).
+- `WINERYCLAW_TAILNET_DNS` publishes a MagicDNS hint in TXT (legacy: `WINERYCLAW_TAILNET_DNS`).
+- `WINERYCLAW_CLI_PATH` overrides the advertised CLI path (legacy: `WINERYCLAW_CLI_PATH`).
 
 ## Related docs
 

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
 import { resolvePluginWebSearchProviders } from "./web-search-providers.runtime.js";
 
@@ -10,7 +10,7 @@ function hasConfiguredCredentialValue(value: unknown): boolean {
 }
 
 export function hasConfiguredWebSearchCredential(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   searchConfig?: Record<string, unknown>;
   origin?: PluginManifestRecord["origin"];

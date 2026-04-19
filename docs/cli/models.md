@@ -29,14 +29,14 @@ When provider usage snapshots are available, the OAuth/API-key status section in
 provider usage windows and quota snapshots.
 Current usage-window providers: Anthropic, GitHub Copilot, Gemini CLI, OpenAI
 Codex, MiniMax, Xiaomi, and z.ai. Usage auth comes from provider-specific hooks
-when available; otherwise OpenClaw falls back to matching OAuth/API-key
+when available; otherwise WineryClaw falls back to matching OAuth/API-key
 credentials from auth profiles, env, or config.
 In `--json` output, `auth.providers` is the env/config/store-aware provider
 overview, while `auth.oauth` is auth-store profile health only.
 Add `--probe` to run live auth probes against each configured provider profile.
 Probes are real requests (may consume tokens and trigger rate limits).
 Use `--agent <id>` to inspect a configured agent’s model/auth state. When omitted,
-the command uses `OPENCLAW_AGENT_DIR`/`PI_CODING_AGENT_DIR` if set, otherwise the
+the command uses `WINERYCLAW_AGENT_DIR`/`PI_CODING_AGENT_DIR` if set, otherwise the
 configured default agent.
 Probe rows can come from auth profiles, env credentials, or `models.json`.
 
@@ -44,10 +44,10 @@ Notes:
 
 - `models set <model-or-alias>` accepts `provider/model` or an alias.
 - Model refs are parsed by splitting on the **first** `/`. If the model ID includes `/` (OpenRouter-style), include the provider prefix (example: `openrouter/moonshotai/kimi-k2`).
-- If you omit the provider, OpenClaw resolves the input as an alias first, then
+- If you omit the provider, WineryClaw resolves the input as an alias first, then
   as a unique configured-provider match for that exact model id, and only then
   falls back to the configured default provider with a deprecation warning.
-  If that provider no longer exposes the configured default model, OpenClaw
+  If that provider no longer exposes the configured default model, WineryClaw
   falls back to the first configured provider/model instead of surfacing a
   stale removed-provider default.
 - `models status` may show `marker(<value>)` in auth output for non-secret placeholders (for example `OPENAI_API_KEY`, `secretref-managed`, `minimax-oauth`, `oauth:chutes`, `ollama-local`) instead of masking them as secrets.
@@ -65,7 +65,7 @@ Options:
 - `--probe-timeout <ms>`
 - `--probe-concurrency <n>`
 - `--probe-max-tokens <n>`
-- `--agent <id>` (configured agent id; overrides `OPENCLAW_AGENT_DIR`/`PI_CODING_AGENT_DIR`)
+- `--agent <id>` (configured agent id; overrides `WINERYCLAW_AGENT_DIR`/`PI_CODING_AGENT_DIR`)
 
 Probe status buckets:
 
@@ -85,7 +85,7 @@ Probe detail/reason-code cases to expect:
   trying it.
 - `missing_credential`, `invalid_expires`, `expired`, `unresolved_ref`:
   profile is present but not eligible/resolvable.
-- `no_model`: provider auth exists, but OpenClaw could not resolve a probeable
+- `no_model`: provider auth exists, but WineryClaw could not resolve a probeable
   model candidate for that provider.
 
 ## Aliases + fallbacks
@@ -130,5 +130,5 @@ Notes:
   `--profile-id`.
 - `paste-token --expires-in <duration>` stores an absolute token expiry from a
   relative duration such as `365d` or `12h`.
-- Anthropic note: Anthropic staff told us OpenClaw-style Claude CLI usage is allowed again, so OpenClaw treats Claude CLI reuse and `claude -p` usage as sanctioned for this integration unless Anthropic publishes a new policy.
-- Anthropic `setup-token` / `paste-token` remain available as a supported OpenClaw token path, but OpenClaw now prefers Claude CLI reuse and `claude -p` when available.
+- Anthropic note: Anthropic staff told us WineryClaw-style Claude CLI usage is allowed again, so WineryClaw treats Claude CLI reuse and `claude -p` usage as sanctioned for this integration unless Anthropic publishes a new policy.
+- Anthropic `setup-token` / `paste-token` remain available as a supported WineryClaw token path, but WineryClaw now prefers Claude CLI reuse and `claude -p` when available.

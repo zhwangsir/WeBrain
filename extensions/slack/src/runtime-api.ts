@@ -9,10 +9,10 @@ export type { ChannelMessageActionContext } from "openclaw/plugin-sdk/channel-co
 export { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/account-id";
 export type {
   ChannelPlugin,
-  OpenClawPluginApi,
+  WineryClawPluginApi,
   PluginRuntime,
 } from "openclaw/plugin-sdk/channel-plugin-common";
-export type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+export type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 export type { SlackAccountConfig } from "openclaw/plugin-sdk/config-runtime";
 export {
   emptyPluginConfigSchema,

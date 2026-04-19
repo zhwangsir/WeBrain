@@ -3,7 +3,7 @@ import {
   type ChannelOutboundAdapter,
   createAttachedChannelResultAdapter,
 } from "openclaw/plugin-sdk/channel-send-result";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   resolveOutboundSendDep,
   type OutboundIdentity,
@@ -79,7 +79,7 @@ function resolveDiscordWebhookIdentity(params: {
 }
 
 async function maybeSendDiscordWebhookText(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   text: string;
   threadId?: string | number | null;
   accountId?: string | null;

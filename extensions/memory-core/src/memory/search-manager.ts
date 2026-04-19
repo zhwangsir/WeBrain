@@ -3,7 +3,7 @@ import {
   createSubsystemLogger,
   resolveAgentWorkspaceDir,
   resolveGlobalSingleton,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { checkQmdBinaryAvailability } from "openclaw/plugin-sdk/memory-core-host-engine-qmd";
 import {
@@ -45,7 +45,7 @@ export type MemorySearchManagerResult = {
 };
 
 export async function getMemorySearchManager(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   purpose?: "default" | "status";
 }): Promise<MemorySearchManagerResult> {

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   __testing as sessionBindingTesting,
   getSessionBindingService,
@@ -8,7 +8,7 @@ import { __testing, createBlueBubblesConversationBindingManager } from "./conver
 
 const baseCfg = {
   session: { mainKey: "main", scope: "per-sender" },
-} satisfies OpenClawConfig;
+} satisfies WineryClawConfig;
 
 describe("BlueBubbles conversation bindings", () => {
   beforeEach(() => {

@@ -27,7 +27,7 @@ openclaw onboard --mode remote --remote-url wss://gateway-host:18789
 ```
 
 For plaintext private-network `ws://` targets (trusted networks only), set
-`OPENCLAW_ALLOW_INSECURE_PRIVATE_WS=1` in the onboarding process environment.
+`WINERYCLAW_ALLOW_INSECURE_PRIVATE_WS=1` in the onboarding process environment.
 
 Non-interactive custom provider:
 
@@ -88,12 +88,12 @@ Gateway token options in non-interactive mode:
 Example:
 
 ```bash
-export OPENCLAW_GATEWAY_TOKEN="your-token"
+export WINERYCLAW_GATEWAY_TOKEN="your-token"
 openclaw onboard --non-interactive \
   --mode local \
   --auth-choice skip \
   --gateway-auth token \
-  --gateway-token-ref-env OPENCLAW_GATEWAY_TOKEN \
+  --gateway-token-ref-env WINERYCLAW_GATEWAY_TOKEN \
   --accept-risk
 ```
 

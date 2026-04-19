@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   createStandardChannelSetupStatus,
   hasConfiguredSecretInput,
@@ -24,10 +24,10 @@ type QQBotEnvCredentialField = "appId" | "clientSecret";
  * AppID + env AppSecret.
  */
 function clearQQBotCredentialField(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
   field: QQBotEnvCredentialField,
-): OpenClawConfig {
+): WineryClawConfig {
   const next = { ...cfg };
   const qqbot = { ...(next.channels?.qqbot as Record<string, unknown> | undefined) };
 

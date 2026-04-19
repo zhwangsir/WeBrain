@@ -1,4 +1,4 @@
-name: OpenClaw
+name: WineryClaw
 options:
   bundleIdPrefix: ai.openclaw
   deploymentTarget:
@@ -11,32 +11,32 @@ settings:
     ENABLE_APP_INTENTS_METADATA_GENERATION: NO
 
 packages:
-  OpenClawKit:
-    path: ../shared/OpenClawKit
+  WineryClawKit:
+    path: ../shared/WineryClawKit
   Swabble:
     path: ../../Swabble
 
 schemes:
-  OpenClaw:
+  WineryClaw:
     shared: true
     build:
       targets:
-        OpenClaw: all
+        WineryClaw: all
     test:
       targets:
-        - OpenClawTests
-        - OpenClawLogicTests
-  OpenClawLogicTests:
+        - WineryClawTests
+        - WineryClawLogicTests
+  WineryClawLogicTests:
     shared: true
     build:
       targets:
-        OpenClawLogicTests: all
+        WineryClawLogicTests: all
     test:
       targets:
-        - OpenClawLogicTests
+        - WineryClawLogicTests
 
 targets:
-  OpenClaw:
+  WineryClaw:
     type: application
     platform: iOS
     configFiles:
@@ -45,16 +45,16 @@ targets:
     sources:
       - path: Sources
     dependencies:
-      - target: OpenClawShareExtension
+      - target: WineryClawShareExtension
         embed: true
-      - target: OpenClawActivityWidget
+      - target: WineryClawActivityWidget
         embed: true
-      - target: OpenClawWatchApp
-      - package: OpenClawKit
-      - package: OpenClawKit
-        product: OpenClawChatUI
-      - package: OpenClawKit
-        product: OpenClawProtocol
+      - target: WineryClawWatchApp
+      - package: WineryClawKit
+      - package: WineryClawKit
+        product: WineryClawChatUI
+      - package: WineryClawKit
+        product: WineryClawProtocol
       - package: Swabble
         product: SwabbleKit
       - sdk: AppIntents.framework
@@ -87,11 +87,11 @@ targets:
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_ENTITLEMENTS: Sources/OpenClaw.entitlements
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
-        PRODUCT_BUNDLE_IDENTIFIER: "$(OPENCLAW_APP_BUNDLE_ID)"
-        PROVISIONING_PROFILE_SPECIFIER: "$(OPENCLAW_APP_PROFILE)"
+        CODE_SIGN_ENTITLEMENTS: Sources/WineryClaw.entitlements
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
+        PRODUCT_BUNDLE_IDENTIFIER: "$(WINERYCLAW_APP_BUNDLE_ID)"
+        PROVISIONING_PROFILE_SPECIFIER: "$(WINERYCLAW_APP_PROFILE)"
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
@@ -100,27 +100,27 @@ targets:
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
       configs:
         Debug:
-          OPENCLAW_PUSH_TRANSPORT: direct
-          OPENCLAW_PUSH_DISTRIBUTION: local
-          OPENCLAW_PUSH_RELAY_BASE_URL: ""
-          OPENCLAW_PUSH_APNS_ENVIRONMENT: sandbox
+          WINERYCLAW_PUSH_TRANSPORT: direct
+          WINERYCLAW_PUSH_DISTRIBUTION: local
+          WINERYCLAW_PUSH_RELAY_BASE_URL: ""
+          WINERYCLAW_PUSH_APNS_ENVIRONMENT: sandbox
         Release:
-          OPENCLAW_PUSH_TRANSPORT: direct
-          OPENCLAW_PUSH_DISTRIBUTION: local
-          OPENCLAW_PUSH_RELAY_BASE_URL: ""
-          OPENCLAW_PUSH_APNS_ENVIRONMENT: production
+          WINERYCLAW_PUSH_TRANSPORT: direct
+          WINERYCLAW_PUSH_DISTRIBUTION: local
+          WINERYCLAW_PUSH_RELAY_BASE_URL: ""
+          WINERYCLAW_PUSH_APNS_ENVIRONMENT: production
     info:
       path: Sources/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw
+        CFBundleDisplayName: WineryClaw
         CFBundleIconName: AppIcon
         CFBundleURLTypes:
           - CFBundleURLName: ai.openclaw.ios
             CFBundleURLSchemes:
               - openclaw
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        OpenClawCanonicalVersion: "$(OPENCLAW_IOS_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        WineryClawCanonicalVersion: "$(WINERYCLAW_IOS_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"
         UILaunchScreen: {}
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
@@ -129,24 +129,24 @@ targets:
           - remote-notification
         BGTaskSchedulerPermittedIdentifiers:
           - ai.openclaw.ios.bgrefresh
-        NSLocalNetworkUsageDescription: OpenClaw discovers and connects to your OpenClaw gateway on the local network.
+        NSLocalNetworkUsageDescription: WineryClaw discovers and connects to your WineryClaw gateway on the local network.
         NSAppTransportSecurity:
           NSAllowsArbitraryLoadsInWebContent: true
         NSBonjourServices:
           - _openclaw-gw._tcp
-        NSCameraUsageDescription: OpenClaw can capture photos or short video clips when requested via the gateway.
-        NSLocationWhenInUseUsageDescription: OpenClaw uses your location when you allow location sharing.
-        NSLocationAlwaysAndWhenInUseUsageDescription: OpenClaw can share your location in the background when you enable Always.
-        NSMicrophoneUsageDescription: OpenClaw needs microphone access for voice wake.
-        NSMotionUsageDescription: OpenClaw may use motion data to support device-aware interactions and automations.
-        NSPhotoLibraryUsageDescription: OpenClaw needs photo library access when you choose existing photos to share with your assistant.
-        NSSpeechRecognitionUsageDescription: OpenClaw uses on-device speech recognition for voice wake.
+        NSCameraUsageDescription: WineryClaw can capture photos or short video clips when requested via the gateway.
+        NSLocationWhenInUseUsageDescription: WineryClaw uses your location when you allow location sharing.
+        NSLocationAlwaysAndWhenInUseUsageDescription: WineryClaw can share your location in the background when you enable Always.
+        NSMicrophoneUsageDescription: WineryClaw needs microphone access for voice wake.
+        NSMotionUsageDescription: WineryClaw may use motion data to support device-aware interactions and automations.
+        NSPhotoLibraryUsageDescription: WineryClaw needs photo library access when you choose existing photos to share with your assistant.
+        NSSpeechRecognitionUsageDescription: WineryClaw uses on-device speech recognition for voice wake.
         NSSupportsLiveActivities: true
         ITSAppUsesNonExemptEncryption: false
-        OpenClawPushTransport: "$(OPENCLAW_PUSH_TRANSPORT)"
-        OpenClawPushDistribution: "$(OPENCLAW_PUSH_DISTRIBUTION)"
-        OpenClawPushRelayBaseURL: "$(OPENCLAW_PUSH_RELAY_BASE_URL)"
-        OpenClawPushAPNsEnvironment: "$(OPENCLAW_PUSH_APNS_ENVIRONMENT)"
+        WineryClawPushTransport: "$(WINERYCLAW_PUSH_TRANSPORT)"
+        WineryClawPushDistribution: "$(WINERYCLAW_PUSH_DISTRIBUTION)"
+        WineryClawPushRelayBaseURL: "$(WINERYCLAW_PUSH_RELAY_BASE_URL)"
+        WineryClawPushAPNsEnvironment: "$(WINERYCLAW_PUSH_APNS_ENVIRONMENT)"
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
           - UIInterfaceOrientationPortraitUpsideDown
@@ -158,7 +158,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
 
-  OpenClawShareExtension:
+  WineryClawShareExtension:
     type: app-extension
     platform: iOS
     configFiles:
@@ -167,25 +167,25 @@ targets:
     sources:
       - path: ShareExtension
     dependencies:
-      - package: OpenClawKit
+      - package: WineryClawKit
       - sdk: AppIntents.framework
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
         ENABLE_APPINTENTS_METADATA: NO
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
-        PRODUCT_BUNDLE_IDENTIFIER: "$(OPENCLAW_SHARE_BUNDLE_ID)"
-        PROVISIONING_PROFILE_SPECIFIER: "$(OPENCLAW_SHARE_PROFILE)"
+        PRODUCT_BUNDLE_IDENTIFIER: "$(WINERYCLAW_SHARE_BUNDLE_ID)"
+        PROVISIONING_PROFILE_SPECIFIER: "$(WINERYCLAW_SHARE_PROFILE)"
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
     info:
       path: ShareExtension/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw Share
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
+        CFBundleDisplayName: WineryClaw Share
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: "$(PRODUCT_MODULE_NAME).ShareViewController"
@@ -196,7 +196,7 @@ targets:
               NSExtensionActivationSupportsImageWithMaxCount: 10
               NSExtensionActivationSupportsMovieWithMaxCount: 1
 
-  OpenClawActivityWidget:
+  WineryClawActivityWidget:
     type: app-extension
     platform: iOS
     configFiles:
@@ -204,63 +204,63 @@ targets:
       Release: Signing.xcconfig
     sources:
       - path: ActivityWidget
-      - path: Sources/LiveActivity/OpenClawActivityAttributes.swift
+      - path: Sources/LiveActivity/WineryClawActivityAttributes.swift
     dependencies:
       - sdk: WidgetKit.framework
       - sdk: ActivityKit.framework
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
-        PRODUCT_BUNDLE_IDENTIFIER: "$(OPENCLAW_ACTIVITY_WIDGET_BUNDLE_ID)"
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
+        PRODUCT_BUNDLE_IDENTIFIER: "$(WINERYCLAW_ACTIVITY_WIDGET_BUNDLE_ID)"
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
         SUPPORTS_LIVE_ACTIVITIES: YES
     info:
       path: ActivityWidget/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw Activity
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
+        CFBundleDisplayName: WineryClaw Activity
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"
         NSSupportsLiveActivities: true
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
 
-  OpenClawWatchApp:
+  WineryClawWatchApp:
     type: application.watchapp2
     platform: watchOS
     deploymentTarget: "11.0"
     sources:
       - path: WatchApp
     dependencies:
-      - target: OpenClawWatchExtension
+      - target: WineryClawWatchExtension
     configFiles:
       Debug: Config/Signing.xcconfig
       Release: Config/Signing.xcconfig
     attributes:
-      DevelopmentTeam: "$(OPENCLAW_DEVELOPMENT_TEAM)"
-      ProvisioningStyle: "$(OPENCLAW_CODE_SIGN_STYLE)"
+      DevelopmentTeam: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
+      ProvisioningStyle: "$(WINERYCLAW_CODE_SIGN_STYLE)"
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
         ENABLE_APPINTENTS_METADATA: NO
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
-        PRODUCT_BUNDLE_IDENTIFIER: "$(OPENCLAW_WATCH_APP_BUNDLE_ID)"
-        PROVISIONING_PROFILE_SPECIFIER: "$(OPENCLAW_WATCH_APP_PROFILE)"
+        PRODUCT_BUNDLE_IDENTIFIER: "$(WINERYCLAW_WATCH_APP_BUNDLE_ID)"
+        PROVISIONING_PROFILE_SPECIFIER: "$(WINERYCLAW_WATCH_APP_PROFILE)"
     info:
       path: WatchApp/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
-        WKCompanionAppBundleIdentifier: "$(OPENCLAW_APP_BUNDLE_ID)"
+        CFBundleDisplayName: WineryClaw
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"
+        WKCompanionAppBundleIdentifier: "$(WINERYCLAW_APP_BUNDLE_ID)"
         WKWatchKitApp: true
 
-  OpenClawWatchExtension:
+  WineryClawWatchExtension:
     type: watchkit2-extension
     platform: watchOS
     deploymentTarget: "11.0"
@@ -274,27 +274,27 @@ targets:
       Debug: Config/Signing.xcconfig
       Release: Config/Signing.xcconfig
     attributes:
-      DevelopmentTeam: "$(OPENCLAW_DEVELOPMENT_TEAM)"
-      ProvisioningStyle: "$(OPENCLAW_CODE_SIGN_STYLE)"
+      DevelopmentTeam: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
+      ProvisioningStyle: "$(WINERYCLAW_CODE_SIGN_STYLE)"
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
-        PRODUCT_BUNDLE_IDENTIFIER: "$(OPENCLAW_WATCH_EXTENSION_BUNDLE_ID)"
-        PROVISIONING_PROFILE_SPECIFIER: "$(OPENCLAW_WATCH_EXTENSION_PROFILE)"
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
+        PRODUCT_BUNDLE_IDENTIFIER: "$(WINERYCLAW_WATCH_EXTENSION_BUNDLE_ID)"
+        PROVISIONING_PROFILE_SPECIFIER: "$(WINERYCLAW_WATCH_EXTENSION_PROFILE)"
     info:
       path: WatchExtension/Info.plist
       properties:
-        CFBundleDisplayName: OpenClaw
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
+        CFBundleDisplayName: WineryClaw
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"
         NSExtension:
           NSExtensionAttributes:
-            WKAppBundleIdentifier: "$(OPENCLAW_WATCH_APP_BUNDLE_ID)"
+            WKAppBundleIdentifier: "$(WINERYCLAW_WATCH_APP_BUNDLE_ID)"
           NSExtensionPointIdentifier: com.apple.watchkit
 
-  OpenClawTests:
+  WineryClawTests:
     type: bundle.unit-test
     platform: iOS
     configFiles:
@@ -305,29 +305,29 @@ targets:
         excludes:
           - Logic
     dependencies:
-      - target: OpenClaw
+      - target: WineryClaw
       - package: Swabble
         product: SwabbleKit
       - sdk: AppIntents.framework
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
         PRODUCT_BUNDLE_IDENTIFIER: ai.openclaw.ios.tests
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/OpenClaw.app/OpenClaw"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/WineryClaw.app/WineryClaw"
         BUNDLE_LOADER: "$(TEST_HOST)"
     info:
       path: Tests/Info.plist
       properties:
-        CFBundleDisplayName: OpenClawTests
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
+        CFBundleDisplayName: WineryClawTests
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"
 
-  OpenClawLogicTests:
+  WineryClawLogicTests:
     type: bundle.unit-test
     platform: iOS
     configFiles:
@@ -336,12 +336,12 @@ targets:
     sources:
       - path: Tests/Logic
     dependencies:
-      - package: OpenClawKit
+      - package: WineryClawKit
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_STYLE: "$(OPENCLAW_CODE_SIGN_STYLE)"
-        DEVELOPMENT_TEAM: "$(OPENCLAW_DEVELOPMENT_TEAM)"
+        CODE_SIGN_STYLE: "$(WINERYCLAW_CODE_SIGN_STYLE)"
+        DEVELOPMENT_TEAM: "$(WINERYCLAW_DEVELOPMENT_TEAM)"
         PRODUCT_BUNDLE_IDENTIFIER: ai.openclaw.ios.logic-tests
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
         SWIFT_VERSION: "6.0"
@@ -349,6 +349,6 @@ targets:
     info:
       path: Tests/Info.plist
       properties:
-        CFBundleDisplayName: OpenClawLogicTests
-        CFBundleShortVersionString: "$(OPENCLAW_MARKETING_VERSION)"
-        CFBundleVersion: "$(OPENCLAW_BUILD_VERSION)"
+        CFBundleDisplayName: WineryClawLogicTests
+        CFBundleShortVersionString: "$(WINERYCLAW_MARKETING_VERSION)"
+        CFBundleVersion: "$(WINERYCLAW_BUILD_VERSION)"

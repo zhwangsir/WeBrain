@@ -6,7 +6,7 @@ import { CONFIG_PATH } from "../config/paths.js";
 import { isBlockedObjectKey } from "../config/prototype-keys.js";
 import { redactConfigObject } from "../config/redact-snapshot.js";
 import { readBestEffortRuntimeConfigSchema } from "../config/runtime-schema.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   coerceSecretRef,
   isValidEnvSecretRefId,
@@ -794,7 +794,7 @@ function buildSingleSetOperations(params: {
 }
 
 function collectDryRunRefs(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   operations: ConfigSetOperation[];
 }): SecretRef[] {
   const refsByKey = new Map<string, SecretRef>();
@@ -836,7 +836,7 @@ function collectDryRunRefs(params: {
 
 async function collectDryRunResolvabilityErrors(params: {
   refs: SecretRef[];
-  config: OpenClawConfig;
+  config: WineryClawConfig;
 }): Promise<ConfigSetDryRunError[]> {
   const failures: ConfigSetDryRunError[] = [];
   for (const ref of params.refs) {
@@ -858,7 +858,7 @@ async function collectDryRunResolvabilityErrors(params: {
 
 function collectDryRunStaticErrorsForSkippedExecRefs(params: {
   refs: SecretRef[];
-  config: OpenClawConfig;
+  config: WineryClawConfig;
 }): ConfigSetDryRunError[] {
   const failures: ConfigSetDryRunError[] = [];
   for (const ref of params.refs) {
@@ -916,7 +916,7 @@ function selectDryRunRefsForResolution(params: { refs: SecretRef[]; allowExecInD
   return { refsToResolve, skippedExecRefs };
 }
 
-function collectDryRunSchemaErrors(config: OpenClawConfig): ConfigSetDryRunError[] {
+function collectDryRunSchemaErrors(config: WineryClawConfig): ConfigSetDryRunError[] {
   const validated = validateConfigObjectRaw(config);
   if (validated.ok) {
     return [];
@@ -1024,7 +1024,7 @@ export async function runConfigSet(opts: {
       root: next,
       operations,
     });
-    const nextConfig = next as OpenClawConfig;
+    const nextConfig = next as WineryClawConfig;
     const policyIssues = collectUnsupportedSecretRefPolicyIssues(nextConfig);
     const policyIssueLines = formatConfigIssueLines(policyIssues, "", { normalizeRoot: true }).map(
       (line) => line.trim(),
@@ -1256,7 +1256,7 @@ export async function runConfigSchema(opts: { runtime?: RuntimeEnv } = {}) {
 
 export async function runConfigValidate(opts: { json?: boolean; runtime?: RuntimeEnv } = {}) {
   const runtime = opts.runtime ?? defaultRuntime;
-  let outputPath = CONFIG_PATH ?? "openclaw.json";
+  let outputPath = CONFIG_PATH ?? "wineryclaw.json";
 
   try {
     const snapshot = await readConfigFileSnapshot();

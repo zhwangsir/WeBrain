@@ -244,7 +244,7 @@ vi.mock("../context-engine-maintenance.js", () => ({
 }));
 
 vi.mock("../../docs-path.js", () => ({
-  resolveOpenClawDocsPath: async () => undefined,
+  resolveWineryClawDocsPath: async () => undefined,
 }));
 
 vi.mock("../../pi-project-settings.js", () => ({
@@ -364,7 +364,7 @@ vi.mock("../../cache-trace.js", () => ({
 }));
 
 vi.mock("../../pi-tools.js", () => ({
-  createOpenClawCodingTools: (options?: { workspaceDir?: string; spawnWorkspaceDir?: string }) => [
+  createWineryClawCodingTools: (options?: { workspaceDir?: string; spawnWorkspaceDir?: string }) => [
     {
       name: "sessions_spawn",
       execute: async (

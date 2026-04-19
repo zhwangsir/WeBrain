@@ -16,7 +16,7 @@ describe("scripts/run-vitest", () => {
   it("allows opting back into Maglev explicitly", () => {
     expect(
       resolveVitestNodeArgs({
-        OPENCLAW_VITEST_ENABLE_MAGLEV: "1",
+        WINERYCLAW_VITEST_ENABLE_MAGLEV: "1",
         PATH: "/usr/bin",
       }),
     ).toEqual([]);
@@ -24,11 +24,11 @@ describe("scripts/run-vitest", () => {
 
   it("parses the optional no-output timeout env", () => {
     expect(resolveVitestNoOutputTimeoutMs({})).toBeNull();
-    expect(resolveVitestNoOutputTimeoutMs({ OPENCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "2500" })).toBe(
+    expect(resolveVitestNoOutputTimeoutMs({ WINERYCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "2500" })).toBe(
       2500,
     );
     expect(
-      resolveVitestNoOutputTimeoutMs({ OPENCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "0" }),
+      resolveVitestNoOutputTimeoutMs({ WINERYCLAW_VITEST_NO_OUTPUT_TIMEOUT_MS: "0" }),
     ).toBeNull();
   });
 

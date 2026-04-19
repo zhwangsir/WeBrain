@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   isNonSecretApiKeyMarker,
   normalizeOptionalSecretInput,
@@ -55,7 +55,7 @@ type OllamaWebSearchResponse = {
   results?: OllamaWebSearchResult[];
 };
 
-function resolveOllamaWebSearchApiKey(config?: OpenClawConfig): string | undefined {
+function resolveOllamaWebSearchApiKey(config?: WineryClawConfig): string | undefined {
   const providerApiKey = normalizeOptionalSecretInput(config?.models?.providers?.ollama?.apiKey);
   if (providerApiKey && !isNonSecretApiKeyMarker(providerApiKey)) {
     return providerApiKey;
@@ -63,7 +63,7 @@ function resolveOllamaWebSearchApiKey(config?: OpenClawConfig): string | undefin
   return resolveEnvApiKey("ollama")?.apiKey;
 }
 
-function resolveOllamaWebSearchBaseUrl(config?: OpenClawConfig): string {
+function resolveOllamaWebSearchBaseUrl(config?: WineryClawConfig): string {
   const configuredBaseUrl = config?.models?.providers?.ollama?.baseUrl;
   if (normalizeOptionalString(configuredBaseUrl)) {
     return resolveOllamaApiBase(configuredBaseUrl);
@@ -86,7 +86,7 @@ function normalizeOllamaWebSearchResult(
 }
 
 export async function runOllamaWebSearch(params: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   query: string;
   count?: number;
 }): Promise<Record<string, unknown>> {
@@ -164,11 +164,11 @@ export async function runOllamaWebSearch(params: {
 }
 
 async function warnOllamaWebSearchPrereqs(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   prompter: {
     note: (message: string, title?: string) => Promise<void>;
   };
-}): Promise<OpenClawConfig> {
+}): Promise<WineryClawConfig> {
   const baseUrl = resolveOllamaWebSearchBaseUrl(params.config);
   const { reachable } = await fetchOllamaModels(baseUrl);
   if (!reachable) {

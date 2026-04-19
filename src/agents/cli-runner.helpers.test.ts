@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type { ImageContent } from "@mariozechner/pi-ai";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredWineryClawTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { MAX_IMAGE_BYTES } from "../media/constants.js";
 import {
   buildCliArgs,
@@ -187,7 +187,7 @@ describe("buildCliArgs", () => {
 describe("writeCliImages", () => {
   it("uses stable hashed file paths so repeated image hydration reuses the same path", async () => {
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-write-images-"),
+      path.join(resolvePreferredWineryClawTmpDir(), "openclaw-cli-write-images-"),
     );
     const image: ImageContent = {
       type: "image",
@@ -209,7 +209,7 @@ describe("writeCliImages", () => {
     try {
       expect(first.paths).toHaveLength(1);
       expect(second.paths).toEqual(first.paths);
-      expect(first.paths[0]).toContain(`${resolvePreferredOpenClawTmpDir()}/openclaw-cli-images/`);
+      expect(first.paths[0]).toContain(`${resolvePreferredWineryClawTmpDir()}/openclaw-cli-images/`);
       expect(first.paths[0]).toMatch(/\.png$/);
       await expect(fs.readFile(first.paths[0])).resolves.toEqual(Buffer.from(image.data, "base64"));
     } finally {
@@ -220,7 +220,7 @@ describe("writeCliImages", () => {
 
   it("uses the shared media extension map for image formats beyond the tiny builtin list", async () => {
     const workspaceDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-write-heic-"),
+      path.join(resolvePreferredWineryClawTmpDir(), "openclaw-cli-write-heic-"),
     );
     const image: ImageContent = {
       type: "image",
@@ -244,7 +244,7 @@ describe("writeCliImages", () => {
 
   it("hydrates prompt media refs into codex image args through the helper seams", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-prompt-image-"),
+      path.join(resolvePreferredWineryClawTmpDir(), "openclaw-cli-prompt-image-"),
     );
     const sourceImage = path.join(tempDir, "bb-image.png");
     await fs.writeFile(
@@ -291,7 +291,7 @@ describe("writeCliImages", () => {
 
   it("appends hydrated prompt media refs for stdin backends through the helper seams", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-prompt-image-generic-"),
+      path.join(resolvePreferredWineryClawTmpDir(), "openclaw-cli-prompt-image-generic-"),
     );
     const sourceImage = path.join(tempDir, "claude-image.png");
     await fs.writeFile(
@@ -326,7 +326,7 @@ describe("writeCliImages", () => {
 
   it("appends Gemini prompt refs with @-prefixed image paths", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-prompt-image-gemini-"),
+      path.join(resolvePreferredWineryClawTmpDir(), "openclaw-cli-prompt-image-gemini-"),
     );
     const explicitImage: ImageContent = {
       type: "image",
@@ -377,7 +377,7 @@ describe("writeCliImages", () => {
 
   it("prefers explicit images over prompt refs through the helper seams", async () => {
     const tempDir = await fs.mkdtemp(
-      path.join(resolvePreferredOpenClawTmpDir(), "openclaw-cli-explicit-images-"),
+      path.join(resolvePreferredWineryClawTmpDir(), "openclaw-cli-explicit-images-"),
     );
     const sourceImage = path.join(tempDir, "ignored-prompt-image.png");
     await fs.writeFile(

@@ -29,11 +29,11 @@ jobs:
 
       - name: Clone publish repo
         env:
-          OPENCLAW_DOCS_SYNC_TOKEN: ${{ secrets.OPENCLAW_DOCS_SYNC_TOKEN }}
+          WINERYCLAW_DOCS_SYNC_TOKEN: ${{ secrets.WINERYCLAW_DOCS_SYNC_TOKEN }}
         run: |
           set -euo pipefail
           git clone \
-            "https://x-access-token:${OPENCLAW_DOCS_SYNC_TOKEN}@github.com/openclaw/docs.git" \
+            "https://x-access-token:${WINERYCLAW_DOCS_SYNC_TOKEN}@github.com/openclaw/docs.git" \
             publish
 
       - name: Sync docs into publish repo

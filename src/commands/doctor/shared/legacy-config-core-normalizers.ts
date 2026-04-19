@@ -1,7 +1,7 @@
 import { normalizeProviderId } from "../../../agents/provider-id.js";
 import { resolveSingleAccountKeysToMove } from "../../../channels/plugins/setup-promotion-helpers.js";
 import { resolveNormalizedProviderModelMaxTokens } from "../../../config/defaults.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import { DEFAULT_GOOGLE_API_BASE_URL } from "../../../infra/google-api-base-url.js";
 import { DEFAULT_ACCOUNT_ID } from "../../../routing/session-key.js";
 import {
@@ -12,9 +12,9 @@ import { isRecord } from "./legacy-config-record-shared.js";
 export { normalizeLegacyTalkConfig } from "./legacy-talk-config-normalizer.js";
 
 export function normalizeLegacyBrowserConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   changes: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   const rawBrowser = cfg.browser;
   if (!isRecord(rawBrowser)) {
     return cfg;
@@ -92,14 +92,14 @@ export function normalizeLegacyBrowserConfig(
 
   return {
     ...cfg,
-    browser: browser as OpenClawConfig["browser"],
+    browser: browser as WineryClawConfig["browser"],
   };
 }
 
 export function seedMissingDefaultAccountsFromSingleAccountBase(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   changes: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   const channels = cfg.channels as Record<string, unknown> | undefined;
   if (!channels) {
     return cfg;
@@ -162,19 +162,19 @@ export function seedMissingDefaultAccountsFromSingleAccountBase(
 
   return {
     ...cfg,
-    channels: nextChannels as OpenClawConfig["channels"],
+    channels: nextChannels as WineryClawConfig["channels"],
   };
 }
 
 type ModelProviderEntry = Partial<
-  NonNullable<NonNullable<OpenClawConfig["models"]>["providers"]>[string]
+  NonNullable<NonNullable<WineryClawConfig["models"]>["providers"]>[string]
 >;
-type ModelsConfigPatch = Partial<NonNullable<OpenClawConfig["models"]>>;
+type ModelsConfigPatch = Partial<NonNullable<WineryClawConfig["models"]>>;
 
 export function normalizeLegacyNanoBananaSkill(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   changes: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   const NANO_BANANA_SKILL_KEY = "nano-banana-pro";
   const NANO_BANANA_MODEL = "google/gemini-3-pro-image-preview";
   const rawSkills = cfg.skills;
@@ -273,10 +273,10 @@ export function normalizeLegacyNanoBananaSkill(
       rawGoogle.models = [];
     }
     rawProviders.google = rawGoogle;
-    rawModels.providers = rawProviders as NonNullable<OpenClawConfig["models"]>["providers"];
+    rawModels.providers = rawProviders as NonNullable<WineryClawConfig["models"]>["providers"];
     next = {
       ...next,
-      models: rawModels as OpenClawConfig["models"],
+      models: rawModels as WineryClawConfig["models"],
     };
     changes.push(
       `Moved skills.entries.${NANO_BANANA_SKILL_KEY}.${legacyEnvApiKey ? "env.GEMINI_API_KEY" : "apiKey"} → models.providers.google.apiKey.`,
@@ -308,9 +308,9 @@ export function normalizeLegacyNanoBananaSkill(
 }
 
 export function normalizeLegacyCrossContextMessageConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   changes: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   const rawTools = cfg.tools;
   if (!isRecord(rawTools)) {
     return cfg;
@@ -402,9 +402,9 @@ function migrateLegacyDeepgramCompat(params: {
 }
 
 export function normalizeLegacyMediaProviderOptions(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   changes: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   const rawTools = cfg.tools;
   if (!isRecord(rawTools)) {
     return cfg;
@@ -474,15 +474,15 @@ export function normalizeLegacyMediaProviderOptions(
     ...cfg,
     tools: {
       ...cfg.tools,
-      media: nextMedia as NonNullable<OpenClawConfig["tools"]>["media"],
+      media: nextMedia as NonNullable<WineryClawConfig["tools"]>["media"],
     },
   };
 }
 
 export function normalizeLegacyMistralModelMaxTokens(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   changes: string[],
-): OpenClawConfig {
+): WineryClawConfig {
   const rawProviders = cfg.models?.providers;
   if (!isRecord(rawProviders)) {
     return cfg;
@@ -556,7 +556,7 @@ export function normalizeLegacyMistralModelMaxTokens(
     ...cfg,
     models: {
       ...cfg.models,
-      providers: nextProviders as NonNullable<OpenClawConfig["models"]>["providers"],
+      providers: nextProviders as NonNullable<WineryClawConfig["models"]>["providers"],
     },
   };
 }

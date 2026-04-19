@@ -1,4 +1,4 @@
-# fastlane setup (OpenClaw iOS)
+# fastlane setup (WineryClaw iOS)
 
 Install:
 
@@ -53,9 +53,9 @@ Code signing variable (optional in `.env`):
 IOS_DEVELOPMENT_TEAM=YOUR_TEAM_ID
 ```
 
-Tip: run `scripts/ios-team-id.sh` from repo root to print a Team ID for `.env`. The helper prefers the canonical OpenClaw team (`Y5PE65HELJ`) when present locally; otherwise it prefers the first non-personal team from your Xcode account (then personal team if needed). Fastlane uses this helper automatically if `IOS_DEVELOPMENT_TEAM` is missing.
+Tip: run `scripts/ios-team-id.sh` from repo root to print a Team ID for `.env`. The helper prefers the canonical WineryClaw team (`Y5PE65HELJ`) when present locally; otherwise it prefers the first non-personal team from your Xcode account (then personal team if needed). Fastlane uses this helper automatically if `IOS_DEVELOPMENT_TEAM` is missing.
 
-For local/manual iOS builds that stay on direct APNs, configure the gateway host separately with `OPENCLAW_APNS_TEAM_ID`, `OPENCLAW_APNS_KEY_ID`, and either `OPENCLAW_APNS_PRIVATE_KEY_P8` or `OPENCLAW_APNS_PRIVATE_KEY_PATH`. Those gateway runtime env vars are separate from Fastlane's `.env`.
+For local/manual iOS builds that stay on direct APNs, configure the gateway host separately with `WINERYCLAW_APNS_TEAM_ID`, `WINERYCLAW_APNS_KEY_ID`, and either `WINERYCLAW_APNS_PRIVATE_KEY_P8` or `WINERYCLAW_APNS_PRIVATE_KEY_PATH`. Those gateway runtime env vars are separate from Fastlane's `.env`.
 
 Validate auth:
 
@@ -118,7 +118,7 @@ pnpm ios:version:pin -- --from-gateway
 5. Set the official/TestFlight relay URL before release:
 
 ```bash
-export OPENCLAW_PUSH_RELAY_BASE_URL=https://relay.example.com
+export WINERYCLAW_PUSH_RELAY_BASE_URL=https://relay.example.com
 ```
 
 6. Upload:
@@ -129,7 +129,7 @@ pnpm ios:beta
 
 Quick verification after upload:
 
-- confirm `apps/ios/build/beta/OpenClaw-<version>.ipa` exists
+- confirm `apps/ios/build/beta/WineryClaw-<version>.ipa` exists
 - confirm Fastlane prints `Uploaded iOS beta: version=<version> short=<short> build=<build>`
 - remember that TestFlight processing can take a few minutes after the upload succeeds
 
@@ -144,6 +144,6 @@ Versioning rules:
 - Fastlane resolves `CFBundleVersion` as the next integer TestFlight build number for that short version
 - Run `pnpm ios:version:sync` after changing `apps/ios/version.json` or `apps/ios/CHANGELOG.md`
 - `pnpm ios:version:check` validates that checked-in iOS version artifacts are in sync
-- The beta flow regenerates `apps/ios/OpenClaw.xcodeproj` from `apps/ios/project.yml` before archiving
+- The beta flow regenerates `apps/ios/WineryClaw.xcodeproj` from `apps/ios/project.yml` before archiving
 - Local beta signing uses a temporary generated xcconfig and leaves local development signing overrides untouched
 - See `apps/ios/VERSIONING.md` for the detailed workflow

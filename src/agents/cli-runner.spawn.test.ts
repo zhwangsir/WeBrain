@@ -163,7 +163,7 @@ describe("runCliAgent spawn path", () => {
     expect(allArgs).toContain("You are a helpful assistant.");
   });
 
-  it("includes the OpenClaw skills prompt in CLI system prompts", () => {
+  it("includes the WineryClaw skills prompt in CLI system prompts", () => {
     const systemPrompt = buildSystemPrompt({
       workspaceDir: "/tmp",
       modelDisplay: "claude-cli/sonnet",
@@ -240,7 +240,7 @@ describe("runCliAgent spawn path", () => {
     expect(input.argv).not.toContain("hi");
   });
 
-  it("passes OpenClaw skills to Claude as a session plugin", async () => {
+  it("passes WineryClaw skills to Claude as a session plugin", async () => {
     const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cli-skills-"));
     const skillDir = path.join(workspaceDir, "skills", "weather");
     await fs.mkdir(skillDir, { recursive: true });
@@ -726,7 +726,7 @@ describe("runCliAgent spawn path", () => {
 
   it("can preserve selected clearEnv keys for live CLI backend probes", async () => {
     try {
-      process.env.OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV = '["SAFE_CLEAR"]';
+      process.env.WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV = '["SAFE_CLEAR"]';
       process.env.SAFE_CLEAR = "from-base";
       mockSuccessfulCliRun();
       await executePreparedCliRun(
@@ -747,7 +747,7 @@ describe("runCliAgent spawn path", () => {
       expect(input.env?.SAFE_CLEAR).toBe("from-base");
       expect(input.env?.SAFE_DROP).toBeUndefined();
     } finally {
-      delete process.env.OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV;
+      delete process.env.WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV;
       delete process.env.SAFE_CLEAR;
     }
   });

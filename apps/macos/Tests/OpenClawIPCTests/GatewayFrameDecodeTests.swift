@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import WineryClawProtocol
 import Testing
 
 struct GatewayFrameDecodeTests {

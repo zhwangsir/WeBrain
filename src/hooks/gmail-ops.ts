@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { formatCliCommand } from "../cli/command-format.js";
 import {
-  type OpenClawConfig,
+  type WineryClawConfig,
   CONFIG_PATH,
   loadConfig,
   readConfigFileSnapshot,
@@ -198,7 +198,7 @@ export async function runGmailSetup(opts: GmailSetupOptions) {
     true,
   );
 
-  const nextConfig: OpenClawConfig = {
+  const nextConfig: WineryClawConfig = {
     ...baseConfig,
     hooks: {
       ...baseConfig.hooks,

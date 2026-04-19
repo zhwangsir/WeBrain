@@ -5,11 +5,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("debug proxy runtime", () => {
   const envKeys = [
-    "OPENCLAW_DEBUG_PROXY_ENABLED",
-    "OPENCLAW_DEBUG_PROXY_DB_PATH",
-    "OPENCLAW_DEBUG_PROXY_BLOB_DIR",
-    "OPENCLAW_DEBUG_PROXY_SESSION_ID",
-    "OPENCLAW_DEBUG_PROXY_SOURCE_PROCESS",
+    "WINERYCLAW_DEBUG_PROXY_ENABLED",
+    "WINERYCLAW_DEBUG_PROXY_DB_PATH",
+    "WINERYCLAW_DEBUG_PROXY_BLOB_DIR",
+    "WINERYCLAW_DEBUG_PROXY_SESSION_ID",
+    "WINERYCLAW_DEBUG_PROXY_SOURCE_PROCESS",
   ] as const;
   const savedEnv = Object.fromEntries(envKeys.map((key) => [key, process.env[key]]));
   const originalFetch = globalThis.fetch;
@@ -17,11 +17,11 @@ describe("debug proxy runtime", () => {
 
   beforeEach(() => {
     tempDir = mkdtempSync(path.join(os.tmpdir(), "openclaw-proxy-runtime-"));
-    process.env.OPENCLAW_DEBUG_PROXY_ENABLED = "1";
-    process.env.OPENCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
-    process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
-    process.env.OPENCLAW_DEBUG_PROXY_SESSION_ID = "runtime-test-session";
-    process.env.OPENCLAW_DEBUG_PROXY_SOURCE_PROCESS = "runtime-test";
+    process.env.WINERYCLAW_DEBUG_PROXY_ENABLED = "1";
+    process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
+    process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
+    process.env.WINERYCLAW_DEBUG_PROXY_SESSION_ID = "runtime-test-session";
+    process.env.WINERYCLAW_DEBUG_PROXY_SOURCE_PROCESS = "runtime-test";
   });
 
   afterEach(() => {
@@ -55,8 +55,8 @@ describe("debug proxy runtime", () => {
     runtime.finalizeDebugProxyCapture();
 
     const store = storeModule.getDebugProxyCaptureStore(
-      process.env.OPENCLAW_DEBUG_PROXY_DB_PATH!,
-      process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR!,
+      process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH!,
+      process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR!,
     );
     const events = store.getSessionEvents("runtime-test-session", 20);
     expect(events.some((event) => event.host === "api.minimax.io")).toBe(true);

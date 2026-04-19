@@ -9,7 +9,7 @@ title: "Skills Config"
 # Skills Config
 
 Most skills loader/install configuration lives under `skills` in
-`~/.openclaw/openclaw.json`. Agent-specific skill visibility lives under
+`~/.wineryclaw/wineryclaw.json`. Agent-specific skill visibility lives under
 `agents.defaults.skills` and `agents.list[].skills`.
 
 ```json5
@@ -84,7 +84,7 @@ Rules:
 
 ## Fields
 
-- Built-in skill roots always include `~/.openclaw/skills`, `~/.agents/skills`,
+- Built-in skill roots always include `~/.wineryclaw/skills`, `~/.agents/skills`,
   `<workspace>/.agents/skills`, and `<workspace>/skills`.
 - `allowBundled`: optional allowlist for **bundled** skills only. When set, only
   bundled skills in the list are eligible (managed, agent, and workspace skills unaffected).
@@ -116,7 +116,7 @@ Per-skill fields:
 - Keys under `entries` map to the skill name by default. If a skill defines
   `metadata.openclaw.skillKey`, use that key instead.
 - Load precedence is `<workspace>/skills` → `<workspace>/.agents/skills` →
-  `~/.agents/skills` → `~/.openclaw/skills` → bundled skills →
+  `~/.agents/skills` → `~/.wineryclaw/skills` → bundled skills →
   `skills.load.extraDirs`.
 - Changes to skills are picked up on the next agent turn when the watcher is enabled.
 

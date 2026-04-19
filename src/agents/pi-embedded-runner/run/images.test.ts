@@ -145,8 +145,8 @@ describe("detectImageReferences", () => {
     // Multi-file format uses separate brackets on separate lines
     const refs = expectImageReferenceCount(
       `[media attached: 2 files]
-[media attached 1/2: /Users/tyleryust/.openclaw/media/IMG_6430.jpeg (image/jpeg)]
-[media attached 2/2: /Users/tyleryust/.openclaw/media/IMG_6431.jpeg (image/jpeg)]
+[media attached 1/2: /Users/tyleryust/.wineryclaw/media/IMG_6430.jpeg (image/jpeg)]
+[media attached 2/2: /Users/tyleryust/.wineryclaw/media/IMG_6431.jpeg (image/jpeg)]
 what about these images?`,
       2,
     );
@@ -186,7 +186,7 @@ what is this?`);
   it("handles paths with spaces in filename", () => {
     // URL after | is https, not a local path, so only the local path should be detected
     const ref =
-      expectSingleImageReference(`[media attached: /Users/test/.openclaw/media/ChatGPT Image Apr 21, 2025.png (image/png) | https://example.com/same.png]
+      expectSingleImageReference(`[media attached: /Users/test/.wineryclaw/media/ChatGPT Image Apr 21, 2025.png (image/png) | https://example.com/same.png]
 what is this?`);
 
     // Only 1 ref - the local path (example.com URLs are skipped)

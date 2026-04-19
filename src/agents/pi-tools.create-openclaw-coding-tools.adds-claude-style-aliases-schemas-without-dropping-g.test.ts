@@ -4,7 +4,7 @@ import path from "node:path";
 import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
 import { Type } from "@sinclair/typebox";
 import { describe, expect, it, vi } from "vitest";
-import { createOpenClawReadTool, createSandboxedReadTool } from "./pi-tools.read.js";
+import { createWineryClawReadTool, createSandboxedReadTool } from "./pi-tools.read.js";
 import { createHostSandboxFsBridge } from "./test-helpers/host-sandbox-fs-bridge.js";
 
 function extractToolText(result: unknown): string {
@@ -26,7 +26,7 @@ function extractToolText(result: unknown): string {
   return textBlock?.text ?? "";
 }
 
-describe("createOpenClawCodingTools read behavior", () => {
+describe("createWineryClawCodingTools read behavior", () => {
   it("applies sandbox path guards to canonical path", async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sbx-"));
     const outsidePath = path.join(os.tmpdir(), "openclaw-outside.txt");
@@ -117,8 +117,8 @@ describe("createOpenClawCodingTools read behavior", () => {
       execute: vi.fn(async () => readResult),
     };
 
-    const wrapped = createOpenClawReadTool(
-      baseRead as unknown as Parameters<typeof createOpenClawReadTool>[0],
+    const wrapped = createWineryClawReadTool(
+      baseRead as unknown as Parameters<typeof createWineryClawReadTool>[0],
     );
     const result = await wrapped.execute("read-strip-1", { path: "demo.txt", limit: 1 });
 

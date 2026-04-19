@@ -1,8 +1,8 @@
 import type {
-  OpenClawPluginApi,
-  OpenClawPluginNodeHostCommand,
-  OpenClawPluginToolContext,
-  OpenClawPluginToolFactory,
+  WineryClawPluginApi,
+  WineryClawPluginNodeHostCommand,
+  WineryClawPluginToolContext,
+  WineryClawPluginToolFactory,
 } from "openclaw/plugin-sdk/plugin-entry";
 import {
   collectBrowserSecurityAuditFindings,
@@ -15,7 +15,7 @@ import {
 
 export const browserPluginReload = { restartPrefixes: ["browser"] };
 
-export const browserPluginNodeHostCommands: OpenClawPluginNodeHostCommand[] = [
+export const browserPluginNodeHostCommands: WineryClawPluginNodeHostCommand[] = [
   {
     command: "browser.proxy",
     cap: "browser",
@@ -25,13 +25,13 @@ export const browserPluginNodeHostCommands: OpenClawPluginNodeHostCommand[] = [
 
 export const browserSecurityAuditCollectors = [collectBrowserSecurityAuditFindings];
 
-export function registerBrowserPlugin(api: OpenClawPluginApi) {
-  api.registerTool(((ctx: OpenClawPluginToolContext) =>
+export function registerBrowserPlugin(api: WineryClawPluginApi) {
+  api.registerTool(((ctx: WineryClawPluginToolContext) =>
     createBrowserTool({
       sandboxBridgeUrl: ctx.browser?.sandboxBridgeUrl,
       allowHostControl: ctx.browser?.allowHostControl,
       agentSessionKey: ctx.sessionKey,
-    })) as OpenClawPluginToolFactory);
+    })) as WineryClawPluginToolFactory);
   api.registerCli(({ program }) => registerBrowserCli(program), { commands: ["browser"] });
   api.registerGatewayMethod("browser.request", handleBrowserGatewayRequest, {
     scope: "operator.write",

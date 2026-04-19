@@ -1,5 +1,5 @@
 import AVFoundation
-import OpenClawKit
+import WineryClawKit
 import Foundation
 import os
 
@@ -37,7 +37,7 @@ actor CameraController {
         }
     }
 
-    func snap(params: OpenClawCameraSnapParams) async throws -> (
+    func snap(params: WineryClawCameraSnapParams) async throws -> (
         format: String,
         base64: String,
         width: Int,
@@ -87,7 +87,7 @@ actor CameraController {
             height: res.heightPx)
     }
 
-    func clip(params: OpenClawCameraClipParams) async throws -> (
+    func clip(params: WineryClawCameraClipParams) async throws -> (
         format: String,
         base64: String,
         durationMs: Int,
@@ -158,7 +158,7 @@ actor CameraController {
     }
 
     private nonisolated static func pickCamera(
-        facing: OpenClawCameraFacing,
+        facing: WineryClawCameraFacing,
         deviceId: String?) -> AVCaptureDevice?
     {
         if let deviceId, !deviceId.isEmpty {

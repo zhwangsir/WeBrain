@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { resolvePluginInstallDir } from "./install.js";
 import {
   cleanupTrackedTempDirsAsync,
@@ -15,7 +15,7 @@ import {
   uninstallPlugin,
 } from "./uninstall.js";
 
-type PluginConfig = NonNullable<OpenClawConfig["plugins"]>;
+type PluginConfig = NonNullable<WineryClawConfig["plugins"]>;
 type PluginInstallRecord = NonNullable<PluginConfig["installs"]>[string];
 
 async function createInstalledNpmPluginFixture(params: {
@@ -25,7 +25,7 @@ async function createInstalledNpmPluginFixture(params: {
   pluginId: string;
   extensionsDir: string;
   pluginDir: string;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
 }> {
   const pluginId = params.pluginId ?? "my-plugin";
   const extensionsDir = path.join(params.baseDir, "extensions");
@@ -132,8 +132,8 @@ function createPluginConfig(params: {
   enabled?: boolean;
   slots?: PluginConfig["slots"];
   loadPaths?: string[];
-  channels?: OpenClawConfig["channels"];
-}): OpenClawConfig {
+  channels?: WineryClawConfig["channels"];
+}): WineryClawConfig {
   const plugins: PluginConfig = {};
   if (params.entries) {
     plugins.entries = params.entries;
@@ -163,14 +163,14 @@ function createPluginConfig(params: {
 }
 
 function expectRemainingChannels(
-  channels: OpenClawConfig["channels"],
+  channels: WineryClawConfig["channels"],
   expected: Record<string, unknown> | undefined,
 ) {
   expect(channels as Record<string, unknown> | undefined).toEqual(expected);
 }
 
 function expectChannelCleanupResult(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   pluginId: string;
   expectedChannels: Record<string, unknown> | undefined;
   expectedChanged: boolean;
@@ -189,14 +189,14 @@ function expectChannelCleanupResult(params: {
   expect(actions.channelConfig).toBe(params.expectedChanged);
 }
 
-function createSinglePluginWithEmptySlotsConfig(): OpenClawConfig {
+function createSinglePluginWithEmptySlotsConfig(): WineryClawConfig {
   return createPluginConfig({
     entries: createSinglePluginEntries(),
     slots: {},
   });
 }
 
-function createSingleNpmInstallConfig(installPath: string): OpenClawConfig {
+function createSingleNpmInstallConfig(installPath: string): WineryClawConfig {
   return createPluginConfig({
     entries: createSinglePluginEntries(),
     installs: {
@@ -535,7 +535,7 @@ describe("removePluginFromConfig", () => {
           defaults: { groupPolicy: "opt-in" },
           modelByChannel: { timbot: "gpt-3.5" } as Record<string, string>,
           timbot: { sdkAppId: "123" },
-        } as unknown as OpenClawConfig["channels"],
+        } as unknown as WineryClawConfig["channels"],
       }),
       pluginId: "timbot",
       expectedChannels: {
@@ -555,7 +555,7 @@ describe("removePluginFromConfig", () => {
         },
         channels: {
           defaults: { groupPolicy: "opt-in" },
-        } as unknown as OpenClawConfig["channels"],
+        } as unknown as WineryClawConfig["channels"],
       }),
       pluginId: "bad-plugin",
       options: {

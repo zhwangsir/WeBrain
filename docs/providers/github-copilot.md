@@ -1,5 +1,5 @@
 ---
-summary: "Sign in to GitHub Copilot from OpenClaw using the device flow"
+summary: "Sign in to GitHub Copilot from WineryClaw using the device flow"
 read_when:
   - You want to use GitHub Copilot as a model provider
   - You need the `openclaw models auth login-github-copilot` flow
@@ -9,15 +9,15 @@ title: "GitHub Copilot"
 # GitHub Copilot
 
 GitHub Copilot is GitHub's AI coding assistant. It provides access to Copilot
-models for your GitHub account and plan. OpenClaw can use Copilot as a model
+models for your GitHub account and plan. WineryClaw can use Copilot as a model
 provider in two different ways.
 
-## Two ways to use Copilot in OpenClaw
+## Two ways to use Copilot in WineryClaw
 
 <Tabs>
   <Tab title="Built-in provider (github-copilot)">
     Use the native device-login flow to obtain a GitHub token, then exchange it for
-    Copilot API tokens when OpenClaw runs. This is the **default** and simplest path
+    Copilot API tokens when WineryClaw runs. This is the **default** and simplest path
     because it does not require VS Code.
 
     <Steps>
@@ -47,7 +47,7 @@ provider in two different ways.
   </Tab>
 
   <Tab title="Copilot Proxy plugin (copilot-proxy)">
-    Use the **Copilot Proxy** VS Code extension as a local bridge. OpenClaw talks to
+    Use the **Copilot Proxy** VS Code extension as a local bridge. WineryClaw talks to
     the proxy's `/v1` endpoint and uses the model list you configure there.
 
     <Note>
@@ -86,12 +86,12 @@ openclaw models auth login --provider github-copilot --method device --set-defau
 
   <Accordion title="Transport selection">
     Claude model IDs use the Anthropic Messages transport automatically. GPT,
-    o-series, and Gemini models keep the OpenAI Responses transport. OpenClaw
+    o-series, and Gemini models keep the OpenAI Responses transport. WineryClaw
     selects the correct transport based on the model ref.
   </Accordion>
 
   <Accordion title="Environment variable resolution order">
-    OpenClaw resolves Copilot auth from environment variables in the following
+    WineryClaw resolves Copilot auth from environment variables in the following
     priority order:
 
     | Priority | Variable              | Notes                            |
@@ -100,7 +100,7 @@ openclaw models auth login --provider github-copilot --method device --set-defau
     | 2        | `GH_TOKEN`            | GitHub CLI token (fallback)      |
     | 3        | `GITHUB_TOKEN`        | Standard GitHub token (lowest)   |
 
-    When multiple variables are set, OpenClaw uses the highest-priority one.
+    When multiple variables are set, WineryClaw uses the highest-priority one.
     The device-login flow (`openclaw models auth login-github-copilot`) stores
     its token in the auth profile store and takes precedence over all environment
     variables.
@@ -109,7 +109,7 @@ openclaw models auth login --provider github-copilot --method device --set-defau
 
   <Accordion title="Token storage">
     The login stores a GitHub token in the auth profile store and exchanges it
-    for a Copilot API token when OpenClaw runs. You do not need to manage the
+    for a Copilot API token when WineryClaw runs. You do not need to manage the
     token manually.
   </Accordion>
 </AccordionGroup>

@@ -13,7 +13,7 @@ import type {
 import {
   readConfigFileSnapshot,
   replaceConfigFile,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "../../config/config.js";
 import { danger } from "../../globals.js";
 import { formatErrorMessage } from "../../infra/errors.js";
@@ -133,7 +133,7 @@ function renderDisplayLine(line: ChannelCapabilitiesDisplayLine) {
 
 async function resolveChannelReports(params: {
   plugin: ChannelPlugin;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   timeoutMs: number;
   accountOverride?: string;
   target?: string;

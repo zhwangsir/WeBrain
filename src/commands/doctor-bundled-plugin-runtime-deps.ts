@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { formatCliCommand } from "../cli/command-format.js";
-import { resolveOpenClawPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveWineryClawPackageRootSync } from "../infra/openclaw-root.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { note } from "../terminal/note.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
@@ -174,7 +174,7 @@ export async function maybeRepairBundledPluginRuntimeDeps(params: {
 }): Promise<void> {
   const packageRoot =
     params.packageRoot ??
-    resolveOpenClawPackageRootSync({
+    resolveWineryClawPackageRootSync({
       argv1: process.argv[1],
       cwd: process.cwd(),
       moduleUrl: import.meta.url,

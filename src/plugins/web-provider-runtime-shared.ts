@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { withActivatedPluginIds } from "./activation-context.js";
 import {
   buildPluginSnapshotCacheEnvKey,
@@ -7,7 +7,7 @@ import {
 } from "./cache-controls.js";
 import {
   isPluginRegistryLoadInFlight,
-  loadOpenClawPlugins,
+  loadWineryClawPlugins,
   resolveCompatibleRuntimePluginRegistry,
   resolveRuntimePluginRegistry,
 } from "./loader.js";
@@ -28,7 +28,7 @@ type WebProviderSnapshotCacheEntry<TEntry> = {
 };
 
 export type WebProviderSnapshotCache<TEntry> = WeakMap<
-  OpenClawConfig,
+  WineryClawConfig,
   WeakMap<NodeJS.ProcessEnv, Map<string, WebProviderSnapshotCacheEntry<TEntry>>>
 >;
 
@@ -71,7 +71,7 @@ type ResolveWebProviderRuntimeDeps<TEntry> = {
 
 export function createWebProviderSnapshotCache<TEntry>(): WebProviderSnapshotCache<TEntry> {
   return new WeakMap<
-    OpenClawConfig,
+    WineryClawConfig,
     WeakMap<NodeJS.ProcessEnv, Map<string, WebProviderSnapshotCacheEntry<TEntry>>>
   >();
 }
@@ -132,7 +132,7 @@ export function resolvePluginWebProviders<TEntry>(
     if (pluginIds.length === 0) {
       return [];
     }
-    const registry = loadOpenClawPlugins(
+    const registry = loadWineryClawPlugins(
       buildPluginRuntimeLoadOptionsFromValues(
         {
           config: withActivatedPluginIds({
@@ -212,7 +212,7 @@ export function resolvePluginWebProviders<TEntry>(
     return [];
   }
   const resolved = deps.mapRegistryProviders({
-    registry: loadOpenClawPlugins(loadOptions),
+    registry: loadWineryClawPlugins(loadOptions),
     onlyPluginIds: params.onlyPluginIds,
   });
   memoizeSnapshot(resolved);

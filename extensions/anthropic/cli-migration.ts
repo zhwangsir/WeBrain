@@ -1,6 +1,6 @@
 import {
   CLAUDE_CLI_PROFILE_ID,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type ProviderAuthResult,
 } from "openclaw/plugin-sdk/provider-auth";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/text-runtime";
@@ -14,8 +14,8 @@ import {
   CLAUDE_CLI_DEFAULT_MODEL_REF,
 } from "./cli-shared.js";
 
-type AgentDefaultsModel = NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]>["model"];
-type AgentDefaultsModels = NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]>["models"];
+type AgentDefaultsModel = NonNullable<NonNullable<WineryClawConfig["agents"]>["defaults"]>["model"];
+type AgentDefaultsModels = NonNullable<NonNullable<WineryClawConfig["agents"]>["defaults"]>["models"];
 type ClaudeCliCredential = NonNullable<ReturnType<typeof readClaudeCliCredentialsForSetup>>;
 
 function toClaudeCliModelRef(raw: string): string | null {
@@ -158,7 +158,7 @@ function buildClaudeCliAuthProfiles(
 }
 
 export function buildAnthropicCliMigrationResult(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   credential?: ClaudeCliCredential | null,
 ): ProviderAuthResult {
   const defaults = config.agents?.defaults;

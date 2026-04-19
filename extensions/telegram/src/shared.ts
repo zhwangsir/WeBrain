@@ -7,7 +7,7 @@ import {
 } from "openclaw/plugin-sdk/channel-config-helpers";
 import { createChannelPluginBase, type ChannelPlugin } from "openclaw/plugin-sdk/channel-core";
 import { getChatChannelMeta } from "openclaw/plugin-sdk/channel-plugin-common";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/routing";
 import { inspectTelegramAccount } from "./account-inspect.js";
 import {
@@ -30,7 +30,7 @@ import { namedAccountPromotionKeys, singleAccountKeysToMove } from "./setup-cont
 export const TELEGRAM_CHANNEL = "telegram" as const;
 
 export function findTelegramTokenOwnerAccountId(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
 }): string | null {
   const normalizedAccountId = normalizeAccountId(params.accountId);
@@ -77,7 +77,7 @@ export function formatDuplicateTelegramTokenReason(params: {
  *
  * See: https://github.com/openclaw/openclaw/issues/53876
  */
-function isBlockedByMultiBotGuard(cfg: OpenClawConfig, accountId: string): boolean {
+function isBlockedByMultiBotGuard(cfg: WineryClawConfig, accountId: string): boolean {
   if (normalizeAccountId(accountId) === DEFAULT_ACCOUNT_ID) {
     return false;
   }

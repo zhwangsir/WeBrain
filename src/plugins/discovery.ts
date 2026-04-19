@@ -14,7 +14,7 @@ import {
   loadPluginManifest,
   type PluginManifest,
   resolvePackageExtensionEntries,
-  type OpenClawPackageManifest,
+  type WineryClawPackageManifest,
   type PackageManifest,
 } from "./manifest.js";
 import { formatPosixMode, isPathInside, safeRealpathSync, safeStatSync } from "./path-safety.js";
@@ -48,7 +48,7 @@ export type PluginCandidate = {
   packageVersion?: string;
   packageDescription?: string;
   packageDir?: string;
-  packageManifest?: OpenClawPackageManifest;
+  packageManifest?: WineryClawPackageManifest;
   bundledManifest?: PluginManifest;
   bundledManifestPath?: string;
 };
@@ -68,7 +68,7 @@ export function clearPluginDiscoveryCache(): void {
 }
 
 function resolveDiscoveryCacheMs(env: NodeJS.ProcessEnv): number {
-  const raw = env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS?.trim();
+  const raw = env.WINERYCLAW_PLUGIN_DISCOVERY_CACHE_MS?.trim();
   if (raw === "" || raw === "0") {
     return 0;
   }
@@ -83,7 +83,7 @@ function resolveDiscoveryCacheMs(env: NodeJS.ProcessEnv): number {
 }
 
 function shouldUseDiscoveryCache(env: NodeJS.ProcessEnv): boolean {
-  const disabled = env.OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE?.trim();
+  const disabled = env.WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE?.trim();
   if (disabled) {
     return false;
   }
@@ -860,7 +860,7 @@ function discoverFromPath(params: {
   }
 }
 
-export function discoverOpenClawPlugins(params: {
+export function discoverWineryClawPlugins(params: {
   workspaceDir?: string;
   extraPaths?: string[];
   ownershipUid?: number | null;
@@ -912,7 +912,7 @@ export function discoverOpenClawPlugins(params: {
   const workspaceMatchesBundledRoot = resolvesToSameDirectory(workspaceRoot, roots.stock);
 
   if (roots.workspace && workspaceRoot && !workspaceMatchesBundledRoot) {
-    // Keep workspace auto-discovery constrained to the OpenClaw extensions root.
+    // Keep workspace auto-discovery constrained to the WineryClaw extensions root.
     // Recursively scanning the full workspace treats arbitrary project folders as
     // plugin candidates and causes noisy "plugin manifest not found" validation failures.
     discoverInDirectory({

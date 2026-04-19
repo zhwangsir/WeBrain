@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { WineryClawConfig } from "../runtime-api.js";
 import { resolveWebhooksPluginConfig } from "./config.js";
 
 describe("resolveWebhooksPluginConfig", () => {
@@ -12,14 +12,14 @@ describe("resolveWebhooksPluginConfig", () => {
             secret: {
               source: "env",
               provider: "default",
-              id: "OPENCLAW_WEBHOOK_SECRET",
+              id: "WINERYCLAW_WEBHOOK_SECRET",
             },
           },
         },
       },
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       env: {
-        OPENCLAW_WEBHOOK_SECRET: "shared-secret",
+        WINERYCLAW_WEBHOOK_SECRET: "shared-secret",
       },
     });
 
@@ -50,7 +50,7 @@ describe("resolveWebhooksPluginConfig", () => {
           },
         },
       },
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       env: {},
       logger: { warn } as never,
     });
@@ -78,7 +78,7 @@ describe("resolveWebhooksPluginConfig", () => {
             },
           },
         },
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         env: {},
       }),
     ).rejects.toThrow(/conflicts with routes\.first\.path/i);

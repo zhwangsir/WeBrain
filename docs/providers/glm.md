@@ -1,14 +1,14 @@
 ---
-summary: "GLM model family overview + how to use it in OpenClaw"
+summary: "GLM model family overview + how to use it in WineryClaw"
 read_when:
-  - You want GLM models in OpenClaw
+  - You want GLM models in WineryClaw
   - You need the model naming convention and setup
 title: "GLM (Zhipu)"
 ---
 
 # GLM models
 
-GLM is a **model family** (not a company) available through the Z.AI platform. In OpenClaw, GLM
+GLM is a **model family** (not a company) available through the Z.AI platform. In WineryClaw, GLM
 models are accessed via the `zai` provider and model IDs like `zai/glm-5`.
 
 ## Getting started
@@ -56,14 +56,14 @@ models are accessed via the `zai` provider and model IDs like `zai/glm-5`.
 ```
 
 <Tip>
-`zai-api-key` lets OpenClaw detect the matching Z.AI endpoint from the key and
+`zai-api-key` lets WineryClaw detect the matching Z.AI endpoint from the key and
 apply the correct base URL automatically. Use the explicit regional choices when
 you want to force a specific Coding Plan or general API surface.
 </Tip>
 
 ## Bundled GLM models
 
-OpenClaw currently seeds the bundled `zai` provider with these GLM refs:
+WineryClaw currently seeds the bundled `zai` provider with these GLM refs:
 
 | Model           | Model            |
 | --------------- | ---------------- |
@@ -85,7 +85,7 @@ can change; check Z.AI's docs for the latest.
 
 <AccordionGroup>
   <Accordion title="Endpoint auto-detection">
-    When you use the `zai-api-key` auth choice, OpenClaw inspects the key format
+    When you use the `zai-api-key` auth choice, WineryClaw inspects the key format
     to determine the correct Z.AI base URL. Explicit regional choices
     (`zai-coding-global`, `zai-coding-cn`, `zai-global`, `zai-cn`) override
     auto-detection and pin the endpoint directly.

@@ -51,8 +51,8 @@ const opts = parseFlagArgs(
     warmup: 0,
     timeoutMs: 30_000,
     maxDurationRegressionPct:
-      readEnvNumber("OPENCLAW_STARTUP_BENCH_MAX_DURATION_REGRESSION_PCT") ?? 20,
-    maxRssRegressionPct: readEnvNumber("OPENCLAW_STARTUP_BENCH_MAX_RSS_REGRESSION_PCT") ?? 20,
+      readEnvNumber("WINERYCLAW_STARTUP_BENCH_MAX_DURATION_REGRESSION_PCT") ?? 20,
+    maxRssRegressionPct: readEnvNumber("WINERYCLAW_STARTUP_BENCH_MAX_RSS_REGRESSION_PCT") ?? 20,
   },
   [
     stringFlag("--baseline", "baseline"),

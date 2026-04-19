@@ -1,14 +1,14 @@
 ---
-summary: "Use MiniMax models in OpenClaw"
+summary: "Use MiniMax models in WineryClaw"
 read_when:
-  - You want MiniMax models in OpenClaw
+  - You want MiniMax models in WineryClaw
   - You need MiniMax setup guidance
 title: "MiniMax"
 ---
 
 # MiniMax
 
-OpenClaw's MiniMax provider defaults to **MiniMax M2.7**.
+WineryClaw's MiniMax provider defaults to **MiniMax M2.7**.
 
 MiniMax also provides:
 
@@ -168,7 +168,7 @@ Choose your preferred auth method and follow the setup steps.
     ```
 
     <Warning>
-    On the Anthropic-compatible streaming path, OpenClaw disables MiniMax thinking by default unless you explicitly set `thinking` yourself. MiniMax's streaming endpoint emits `reasoning_content` in OpenAI-style delta chunks instead of native Anthropic thinking blocks, which can leak internal reasoning into visible output if left enabled implicitly.
+    On the Anthropic-compatible streaming path, WineryClaw disables MiniMax thinking by default unless you explicitly set `thinking` yourself. MiniMax's streaming endpoint emits `reasoning_content` in OpenAI-style delta chunks instead of native Anthropic thinking blocks, which can leak internal reasoning into visible output if left enabled implicitly.
     </Warning>
 
     <Note>
@@ -238,7 +238,7 @@ Both `minimax` and `minimax-portal` register `image_generate` with the same
 the bundled `minimax-portal` auth path instead.
 
 When onboarding or API-key setup writes explicit `models.providers.minimax`
-entries, OpenClaw materializes `MiniMax-M2.7` and
+entries, WineryClaw materializes `MiniMax-M2.7` and
 `MiniMax-M2.7-highspeed` with `input: ["text", "image"]`.
 
 The built-in bundled MiniMax text catalog itself stays text-only metadata until
@@ -352,7 +352,7 @@ See [MiniMax Search](/tools/minimax-search) for full web search configuration an
   </Accordion>
 
   <Accordion title="Thinking defaults">
-    On `api: "anthropic-messages"`, OpenClaw injects `thinking: { type: "disabled" }` unless thinking is already explicitly set in params/config.
+    On `api: "anthropic-messages"`, WineryClaw injects `thinking: { type: "disabled" }` unless thinking is already explicitly set in params/config.
 
     This prevents MiniMax's streaming endpoint from emitting `reasoning_content` in OpenAI-style delta chunks, which would leak internal reasoning into visible output.
 
@@ -387,8 +387,8 @@ See [MiniMax Search](/tools/minimax-search) for full web search configuration an
 
   <Accordion title="Coding Plan usage details">
     - Coding Plan usage API: `https://api.minimaxi.com/v1/api/openplatform/coding_plan/remains` (requires a coding plan key).
-    - OpenClaw normalizes MiniMax coding-plan usage to the same `% left` display used by other providers. MiniMax's raw `usage_percent` / `usagePercent` fields are remaining quota, not consumed quota, so OpenClaw inverts them. Count-based fields win when present.
-    - When the API returns `model_remains`, OpenClaw prefers the chat-model entry, derives the window label from `start_time` / `end_time` when needed, and includes the selected model name in the plan label so coding-plan windows are easier to distinguish.
+    - WineryClaw normalizes MiniMax coding-plan usage to the same `% left` display used by other providers. MiniMax's raw `usage_percent` / `usagePercent` fields are remaining quota, not consumed quota, so WineryClaw inverts them. Count-based fields win when present.
+    - When the API returns `model_remains`, WineryClaw prefers the chat-model entry, derives the window label from `start_time` / `end_time` when needed, and includes the selected model name in the plan label so coding-plan windows are easier to distinguish.
     - Usage snapshots treat `minimax`, `minimax-cn`, and `minimax-portal` as the same MiniMax quota surface, and prefer stored MiniMax OAuth before falling back to Coding Plan key env vars.
   </Accordion>
 </AccordionGroup>

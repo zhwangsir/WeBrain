@@ -1,8 +1,8 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { getMemorySearchManager, type MemoryIndexManager } from "./index.js";
 
 export async function createMemoryManagerOrThrow(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   agentId = "main",
 ): Promise<MemoryIndexManager> {
   const result = await getMemorySearchManager({ cfg, agentId });

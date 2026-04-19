@@ -1,6 +1,6 @@
-# GPT-5.4 / Codex Agentic Parity in OpenClaw
+# GPT-5.4 / Codex Agentic Parity in WineryClaw
 
-OpenClaw already worked well with tool-using frontier models, but GPT-5.4 and Codex-style models were still underperforming in a few practical ways:
+WineryClaw already worked well with tool-using frontier models, but GPT-5.4 and Codex-style models were still underperforming in a few practical ways:
 
 - they could stop after planning instead of doing the work
 - they could use strict OpenAI/Codex tool schemas incorrectly
@@ -16,7 +16,7 @@ This parity program fixes those gaps in four reviewable slices.
 
 This slice adds an opt-in `strict-agentic` execution contract for embedded Pi GPT-5 runs.
 
-When enabled, OpenClaw stops accepting plan-only turns as “good enough” completion. If the model only says what it intends to do and does not actually use tools or make progress, OpenClaw retries with an act-now steer and then fails closed with an explicit blocked state instead of silently ending the task.
+When enabled, WineryClaw stops accepting plan-only turns as “good enough” completion. If the model only says what it intends to do and does not actually use tools or make progress, WineryClaw retries with an act-now steer and then fails closed with an explicit blocked state instead of silently ending the task.
 
 This improves the GPT-5.4 experience most on:
 
@@ -26,7 +26,7 @@ This improves the GPT-5.4 experience most on:
 
 ### PR B: runtime truthfulness
 
-This slice makes OpenClaw tell the truth about two things:
+This slice makes WineryClaw tell the truth about two things:
 
 - why the provider/runtime call failed
 - whether `/elevated full` is actually available
@@ -66,7 +66,7 @@ That command writes:
 
 ## Why this improves GPT-5.4 in practice
 
-Before this work, GPT-5.4 on OpenClaw could feel less agentic than Opus in real coding sessions because the runtime tolerated behaviors that are especially harmful for GPT-5-style models:
+Before this work, GPT-5.4 on WineryClaw could feel less agentic than Opus in real coding sessions because the runtime tolerated behaviors that are especially harmful for GPT-5-style models:
 
 - commentary-only turns
 - schema friction around tools
@@ -81,7 +81,7 @@ That changes the user experience from:
 
 to:
 
-- “the model either acted, or OpenClaw surfaced the exact reason it could not”
+- “the model either acted, or WineryClaw surfaced the exact reason it could not”
 
 ## Before vs after for GPT-5.4 users
 

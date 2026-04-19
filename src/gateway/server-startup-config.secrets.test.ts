@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/types.js";
+import type { ConfigFileSnapshot, WineryClawConfig } from "../config/types.js";
 import type { PreparedSecretsRuntimeSnapshot, SecretResolverWarning } from "../secrets/runtime.js";
 import {
   createRuntimeSecretsActivator,
@@ -7,7 +7,7 @@ import {
 } from "./server-startup-config.js";
 import { buildTestConfigSnapshot } from "./test-helpers.config-snapshots.js";
 
-function gatewayTokenConfig(config: OpenClawConfig): OpenClawConfig {
+function gatewayTokenConfig(config: WineryClawConfig): WineryClawConfig {
   return {
     ...config,
     gateway: {
@@ -21,11 +21,11 @@ function gatewayTokenConfig(config: OpenClawConfig): OpenClawConfig {
   };
 }
 
-function asConfig(value: unknown): OpenClawConfig {
-  return value as OpenClawConfig;
+function asConfig(value: unknown): WineryClawConfig {
+  return value as WineryClawConfig;
 }
 
-function buildSnapshot(config: OpenClawConfig): ConfigFileSnapshot {
+function buildSnapshot(config: WineryClawConfig): ConfigFileSnapshot {
   const raw = `${JSON.stringify(config, null, 2)}\n`;
   return buildTestConfigSnapshot({
     path: "/tmp/openclaw-startup-secrets-test.json",
@@ -39,7 +39,7 @@ function buildSnapshot(config: OpenClawConfig): ConfigFileSnapshot {
   });
 }
 
-function preparedSnapshot(config: OpenClawConfig): PreparedSecretsRuntimeSnapshot {
+function preparedSnapshot(config: WineryClawConfig): PreparedSecretsRuntimeSnapshot {
   return {
     sourceConfig: config,
     config,
@@ -60,19 +60,19 @@ function preparedSnapshot(config: OpenClawConfig): PreparedSecretsRuntimeSnapsho
 }
 
 describe("gateway startup config secret preflight", () => {
-  const previousSkipChannels = process.env.OPENCLAW_SKIP_CHANNELS;
-  const previousSkipProviders = process.env.OPENCLAW_SKIP_PROVIDERS;
+  const previousSkipChannels = process.env.WINERYCLAW_SKIP_CHANNELS;
+  const previousSkipProviders = process.env.WINERYCLAW_SKIP_PROVIDERS;
 
   afterEach(() => {
     if (previousSkipChannels === undefined) {
-      delete process.env.OPENCLAW_SKIP_CHANNELS;
+      delete process.env.WINERYCLAW_SKIP_CHANNELS;
     } else {
-      process.env.OPENCLAW_SKIP_CHANNELS = previousSkipChannels;
+      process.env.WINERYCLAW_SKIP_CHANNELS = previousSkipChannels;
     }
     if (previousSkipProviders === undefined) {
-      delete process.env.OPENCLAW_SKIP_PROVIDERS;
+      delete process.env.WINERYCLAW_SKIP_PROVIDERS;
     } else {
-      process.env.OPENCLAW_SKIP_PROVIDERS = previousSkipProviders;
+      process.env.WINERYCLAW_SKIP_PROVIDERS = previousSkipProviders;
     }
   });
 
@@ -158,7 +158,7 @@ describe("gateway startup config secret preflight", () => {
   });
 
   it("prunes channel refs from startup secret preflight when channels are skipped", async () => {
-    process.env.OPENCLAW_SKIP_CHANNELS = "1";
+    process.env.WINERYCLAW_SKIP_CHANNELS = "1";
     const prepareRuntimeSecretsSnapshot = vi.fn(async ({ config }) => preparedSnapshot(config));
     const activateRuntimeSecrets = createRuntimeSecretsActivator({
       logSecrets: {

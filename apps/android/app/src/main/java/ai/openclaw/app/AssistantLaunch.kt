@@ -2,7 +2,7 @@ package ai.openclaw.app
 
 import android.content.Intent
 
-const val actionAskOpenClaw = "ai.openclaw.app.action.ASK_OPENCLAW"
+const val actionAskWineryClaw = "ai.openclaw.app.action.ASK_OPENCLAW"
 const val extraAssistantPrompt = "prompt"
 
 enum class HomeDestination {
@@ -29,7 +29,7 @@ fun parseAssistantLaunchIntent(intent: Intent?): AssistantLaunchRequest? {
         autoSend = false,
       )
 
-    actionAskOpenClaw -> {
+    actionAskWineryClaw -> {
       val prompt = intent.getStringExtra(extraAssistantPrompt)?.trim()?.ifEmpty { null }
       AssistantLaunchRequest(
         source = "app_action",

@@ -5,7 +5,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest
 import { upsertAcpSessionMeta } from "../../acp/runtime/session-meta.js";
 import * as jsonFiles from "../../infra/json-files.js";
 import { createSuiteTempRootTracker, withTempDirSync } from "../../test-helpers/temp-dir.js";
-import type { OpenClawConfig } from "../config.js";
+import type { WineryClawConfig } from "../config.js";
 import type { SessionConfig } from "../types.base.js";
 import {
   resolveSessionFilePath,
@@ -327,7 +327,7 @@ describe("session store lock (Promise chain mutex)", () => {
       session: {
         store: storePath,
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const result = await upsertAcpSessionMeta({
       cfg,

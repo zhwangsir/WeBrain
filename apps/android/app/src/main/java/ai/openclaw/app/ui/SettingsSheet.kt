@@ -122,7 +122,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
         }
       NotificationPackageFilterMode.Blocklist ->
         if (notificationForwardingPackages.isEmpty()) {
-          "Selected: none — blocklist mode forwards all apps except OpenClaw."
+          "Selected: none — blocklist mode forwards all apps except WineryClaw."
         } else {
           "Selected: ${notificationForwardingPackages.size} app(s) blocked."
         }
@@ -498,9 +498,9 @@ fun SettingsSheet(viewModel: MainViewModel) {
               supportingContent = {
                 Text(
                   if (assistantRoleHeld) {
-                    "OpenClaw is registered as the device assistant."
+                    "WineryClaw is registered as the device assistant."
                   } else {
-                    "Let Android launch OpenClaw from the assistant gesture. Google Assistant App Actions still work separately."
+                    "Let Android launch WineryClaw from the assistant gesture. Google Assistant App Actions still work separately."
                   },
                   style = mobileCallout,
                 )
@@ -1136,7 +1136,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
             headlineContent = { Text("While Using", style = mobileHeadline) },
-            supportingContent = { Text("Only while OpenClaw is open.", style = mobileCallout) },
+            supportingContent = { Text("Only while WineryClaw is open.", style = mobileCallout) },
             trailingContent = {
               RadioButton(
                 selected = locationMode == LocationMode.WhileUsing,

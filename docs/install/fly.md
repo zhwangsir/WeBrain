@@ -1,14 +1,14 @@
 ---
 title: Fly.io
-summary: "Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS"
+summary: "Step-by-step Fly.io deployment for WineryClaw with persistent storage and HTTPS"
 read_when:
-  - Deploying OpenClaw on Fly.io
+  - Deploying WineryClaw on Fly.io
   - Setting up Fly volumes, secrets, and first-run config
 ---
 
 # Fly.io Deployment
 
-**Goal:** OpenClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
+**Goal:** WineryClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
 
 ## What you need
 
@@ -56,8 +56,8 @@ read_when:
 
     [env]
       NODE_ENV = "production"
-      OPENCLAW_PREFER_PNPM = "1"
-      OPENCLAW_STATE_DIR = "/data"
+      WINERYCLAW_PREFER_PNPM = "1"
+      WINERYCLAW_STATE_DIR = "/data"
       NODE_OPTIONS = "--max-old-space-size=1536"
 
     [processes]
@@ -86,16 +86,16 @@ read_when:
     | ------------------------------ | --------------------------------------------------------------------------- |
     | `--bind lan`                   | Binds to `0.0.0.0` so Fly's proxy can reach the gateway                     |
     | `--allow-unconfigured`         | Starts without a config file (you'll create one after)                      |
-    | `internal_port = 3000`         | Must match `--port 3000` (or `OPENCLAW_GATEWAY_PORT`) for Fly health checks |
+    | `internal_port = 3000`         | Must match `--port 3000` (or `WINERYCLAW_GATEWAY_PORT`) for Fly health checks |
     | `memory = "2048mb"`            | 512MB is too small; 2GB recommended                                         |
-    | `OPENCLAW_STATE_DIR = "/data"` | Persists state on the volume                                                |
+    | `WINERYCLAW_STATE_DIR = "/data"` | Persists state on the volume                                                |
 
   </Step>
 
   <Step title="Set secrets">
     ```bash
     # Required: Gateway token (for non-loopback binding)
-    fly secrets set OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)
+    fly secrets set WINERYCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)
 
     # Model provider API keys
     fly secrets set ANTHROPIC_API_KEY=sk-ant-...
@@ -110,9 +110,9 @@ read_when:
 
     **Notes:**
 
-    - Non-loopback binds (`--bind lan`) require a valid gateway auth path. This Fly.io example uses `OPENCLAW_GATEWAY_TOKEN`, but `gateway.auth.password` or a correctly configured non-loopback `trusted-proxy` deployment also satisfy the requirement.
+    - Non-loopback binds (`--bind lan`) require a valid gateway auth path. This Fly.io example uses `WINERYCLAW_GATEWAY_TOKEN`, but `gateway.auth.password` or a correctly configured non-loopback `trusted-proxy` deployment also satisfy the requirement.
     - Treat these tokens like passwords.
-    - **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `openclaw.json` where they could be accidentally exposed or logged.
+    - **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `wineryclaw.json` where they could be accidentally exposed or logged.
 
   </Step>
 
@@ -150,7 +150,7 @@ read_when:
 
     ```bash
     mkdir -p /data
-    cat > /data/openclaw.json << 'EOF'
+    cat > /data/wineryclaw.json << 'EOF'
     {
       "agents": {
         "defaults": {
@@ -200,7 +200,7 @@ read_when:
     EOF
     ```
 
-    **Note:** With `OPENCLAW_STATE_DIR=/data`, the config path is `/data/openclaw.json`.
+    **Note:** With `WINERYCLAW_STATE_DIR=/data`, the config path is `/data/wineryclaw.json`.
 
     **Note:** The Discord token can come from either:
 
@@ -230,7 +230,7 @@ read_when:
     Or visit `https://my-openclaw.fly.dev/`
 
     Authenticate with the configured shared secret. This guide uses the gateway
-    token from `OPENCLAW_GATEWAY_TOKEN`; if you switched to password auth, use
+    token from `WINERYCLAW_GATEWAY_TOKEN`; if you switched to password auth, use
     that password instead.
 
     ### Logs
@@ -261,7 +261,7 @@ The gateway is binding to `127.0.0.1` instead of `0.0.0.0`.
 
 Fly can't reach the gateway on the configured port.
 
-**Fix:** Ensure `internal_port` matches the gateway port (set `--port 3000` or `OPENCLAW_GATEWAY_PORT=3000`).
+**Fix:** Ensure `internal_port` matches the gateway port (set `--port 3000` or `WINERYCLAW_GATEWAY_PORT=3000`).
 
 ### OOM / Memory Issues
 
@@ -299,12 +299,12 @@ The lock file is at `/data/gateway.*.lock` (not in a subdirectory).
 
 ### Config Not Being Read
 
-`--allow-unconfigured` only bypasses the startup guard. It does not create or repair `/data/openclaw.json`, so make sure your real config exists and includes `gateway.mode="local"` when you want a normal local gateway start.
+`--allow-unconfigured` only bypasses the startup guard. It does not create or repair `/data/wineryclaw.json`, so make sure your real config exists and includes `gateway.mode="local"` when you want a normal local gateway start.
 
 Verify the config exists:
 
 ```bash
-fly ssh console --command "cat /data/openclaw.json"
+fly ssh console --command "cat /data/wineryclaw.json"
 ```
 
 ### Writing Config via SSH
@@ -313,17 +313,17 @@ The `fly ssh console -C` command doesn't support shell redirection. To write a c
 
 ```bash
 # Use echo + tee (pipe from local to remote)
-echo '{"your":"config"}' | fly ssh console -C "tee /data/openclaw.json"
+echo '{"your":"config"}' | fly ssh console -C "tee /data/wineryclaw.json"
 
 # Or use sftp
 fly sftp shell
-> put /local/path/config.json /data/openclaw.json
+> put /local/path/config.json /data/wineryclaw.json
 ```
 
 **Note:** `fly sftp` may fail if the file already exists. Delete first:
 
 ```bash
-fly ssh console --command "rm /data/openclaw.json"
+fly ssh console --command "rm /data/wineryclaw.json"
 ```
 
 ### State Not Persisting
@@ -331,7 +331,7 @@ fly ssh console --command "rm /data/openclaw.json"
 If you lose auth profiles, channel/provider state, or sessions after a restart,
 the state dir is writing to the container filesystem.
 
-**Fix:** Ensure `OPENCLAW_STATE_DIR=/data` is set in `fly.toml` and redeploy.
+**Fix:** Ensure `WINERYCLAW_STATE_DIR=/data` is set in `fly.toml` and redeploy.
 
 ## Updates
 
@@ -501,4 +501,4 @@ See [Fly.io pricing](https://fly.io/docs/about/pricing/) for details.
 
 - Set up messaging channels: [Channels](/channels)
 - Configure the Gateway: [Gateway configuration](/gateway/configuration)
-- Keep OpenClaw up to date: [Updating](/install/updating)
+- Keep WineryClaw up to date: [Updating](/install/updating)

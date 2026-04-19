@@ -1,14 +1,14 @@
 ---
-summary: "ClawDock shell helpers for Docker-based OpenClaw installs"
+summary: "ClawDock shell helpers for Docker-based WineryClaw installs"
 read_when:
-  - You run OpenClaw with Docker often and want shorter day-to-day commands
+  - You run WineryClaw with Docker often and want shorter day-to-day commands
   - You want a helper layer for dashboard, logs, token setup, and pairing flows
 title: "ClawDock"
 ---
 
 # ClawDock
 
-ClawDock is a small shell-helper layer for Docker-based OpenClaw installs.
+ClawDock is a small shell-helper layer for Docker-based WineryClaw installs.
 
 It gives you short commands like `clawdock-start`, `clawdock-dashboard`, and `clawdock-fix-token` instead of longer `docker compose ...` invocations.
 
@@ -42,7 +42,7 @@ If you previously installed ClawDock from `scripts/shell-helpers/clawdock-helper
 | Command                   | Description                                   |
 | ------------------------- | --------------------------------------------- |
 | `clawdock-shell`          | Open a shell inside the gateway container     |
-| `clawdock-cli <command>`  | Run OpenClaw CLI commands in Docker           |
+| `clawdock-cli <command>`  | Run WineryClaw CLI commands in Docker           |
 | `clawdock-exec <command>` | Execute an arbitrary command in the container |
 
 ### Web UI and pairing
@@ -68,7 +68,7 @@ If you previously installed ClawDock from `scripts/shell-helpers/clawdock-helper
 | ---------------------- | --------------------------------------- |
 | `clawdock-health`      | Run a gateway health check              |
 | `clawdock-token`       | Print the gateway token                 |
-| `clawdock-cd`          | Jump to the OpenClaw project directory  |
+| `clawdock-cd`          | Jump to the WineryClaw project directory  |
 | `clawdock-config`      | Open `~/.openclaw`                      |
 | `clawdock-show-config` | Print config files with redacted values |
 | `clawdock-workspace`   | Open the workspace directory            |
@@ -93,11 +93,11 @@ clawdock-approve <request-id>
 ClawDock works with the same Docker config split described in [Docker](/install/docker):
 
 - `<project>/.env` for Docker-specific values like image name, ports, and the gateway token
-- `~/.openclaw/.env` for env-backed provider keys and bot tokens
-- `~/.openclaw/agents/<agentId>/agent/auth-profiles.json` for stored provider OAuth/API-key auth
-- `~/.openclaw/openclaw.json` for behavior config
+- `~/.wineryclaw/.env` for env-backed provider keys and bot tokens
+- `~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json` for stored provider OAuth/API-key auth
+- `~/.wineryclaw/wineryclaw.json` for behavior config
 
-Use `clawdock-show-config` when you want to inspect the `.env` files and `openclaw.json` quickly. It redacts `.env` values in its printed output.
+Use `clawdock-show-config` when you want to inspect the `.env` files and `wineryclaw.json` quickly. It redacts `.env` values in its printed output.
 
 ## Related pages
 

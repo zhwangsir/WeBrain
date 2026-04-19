@@ -6,7 +6,7 @@ import { applyOwnerOnlyToolPolicy } from "../agents/tool-policy.js";
 import { ToolInputError, type AnyAgentTool } from "../agents/tools/common.js";
 import { loadConfig } from "../config/config.js";
 import { resolveMainSessionKey } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { logWarn } from "../logger.js";
 import { isTestDefaultMemorySlotDisabled } from "../plugins/config-state.js";
 import {
@@ -49,7 +49,7 @@ function resolveSessionKeyFromBody(body: ToolsInvokeBody): string | undefined {
   return undefined;
 }
 
-function resolveMemoryToolDisableReasons(cfg: OpenClawConfig): string[] {
+function resolveMemoryToolDisableReasons(cfg: WineryClawConfig): string[] {
   if (!process.env.VITEST) {
     return [];
   }

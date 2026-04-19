@@ -1,10 +1,10 @@
 import Foundation
-import OpenClawProtocol
+import WineryClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite(.serialized) struct VoiceWakeGlobalSettingsSyncTests {
-    private func voiceWakeChangedEvent(payload: OpenClawProtocol.AnyCodable) -> EventFrame {
+    private func voiceWakeChangedEvent(payload: WineryClawProtocol.AnyCodable) -> EventFrame {
         EventFrame(
             type: "event",
             event: "voicewake.changed",
@@ -23,7 +23,7 @@ import Testing
 
     @Test func `applies voice wake changed event to app state`() async {
         let previous = await applyTriggersAndCapturePrevious(["before"])
-        let evt = self.voiceWakeChangedEvent(payload: OpenClawProtocol.AnyCodable(["triggers": [
+        let evt = self.voiceWakeChangedEvent(payload: WineryClawProtocol.AnyCodable(["triggers": [
             "openclaw",
             "computer",
         ]]))
@@ -40,7 +40,7 @@ import Testing
 
     @Test func `ignores voice wake changed event with invalid payload`() async {
         let previous = await applyTriggersAndCapturePrevious(["before"])
-        let evt = self.voiceWakeChangedEvent(payload: OpenClawProtocol.AnyCodable(["unexpected": 123]))
+        let evt = self.voiceWakeChangedEvent(payload: WineryClawProtocol.AnyCodable(["unexpected": 123]))
 
         await VoiceWakeGlobalSettingsSync.shared.handle(push: .event(evt))
 

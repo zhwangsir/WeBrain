@@ -1,15 +1,15 @@
 ---
 title: "Runway"
-summary: "Runway video generation setup in OpenClaw"
+summary: "Runway video generation setup in WineryClaw"
 read_when:
-  - You want to use Runway video generation in OpenClaw
+  - You want to use Runway video generation in WineryClaw
   - You need the Runway API key/env setup
   - You want to make Runway the default video provider
 ---
 
 # Runway
 
-OpenClaw ships a bundled `runway` provider for hosted video generation.
+WineryClaw ships a bundled `runway` provider for hosted video generation.
 
 | Property    | Value                                                             |
 | ----------- | ----------------------------------------------------------------- |
@@ -70,12 +70,12 @@ Video-to-video currently requires `runway/gen4_aleph` specifically.
 
 <AccordionGroup>
   <Accordion title="Environment variable aliases">
-    OpenClaw recognizes both `RUNWAYML_API_SECRET` (canonical) and `RUNWAY_API_KEY`.
+    WineryClaw recognizes both `RUNWAYML_API_SECRET` (canonical) and `RUNWAY_API_KEY`.
     Either variable will authenticate the Runway provider.
   </Accordion>
 
   <Accordion title="Task polling">
-    Runway uses a task-based API. After submitting a generation request, OpenClaw
+    Runway uses a task-based API. After submitting a generation request, WineryClaw
     polls `GET /v1/tasks/{id}` until the video is ready. No additional
     configuration is needed for the polling behavior.
   </Accordion>

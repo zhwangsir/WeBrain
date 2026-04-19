@@ -1,5 +1,5 @@
 import type { DmPolicy } from "../../config/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { RuntimeEnv } from "../../runtime.js";
 import type { WizardPrompter } from "../../wizard/prompts.js";
 import type { ChannelAccessPolicy } from "./setup-group-access.js";
@@ -28,21 +28,21 @@ export type ChannelSetupWizardStatus = {
   configuredScore?: number;
   unconfiguredScore?: number;
   resolveConfigured: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId?: string;
   }) => boolean | Promise<boolean>;
   resolveStatusLines?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId?: string;
     configured: boolean;
   }) => string[] | Promise<string[]>;
   resolveSelectionHint?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId?: string;
     configured: boolean;
   }) => string | undefined | Promise<string | undefined>;
   resolveQuickstartScore?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId?: string;
     configured: boolean;
   }) => number | undefined | Promise<number | undefined>;
@@ -61,7 +61,7 @@ export type ChannelSetupWizardNote = {
   title: string;
   lines: string[];
   shouldShow?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
   }) => boolean | Promise<boolean>;
@@ -70,11 +70,11 @@ export type ChannelSetupWizardNote = {
 export type ChannelSetupWizardEnvShortcut = {
   prompt: string;
   preferredEnvVar?: string;
-  isAvailable: (params: { cfg: OpenClawConfig; accountId: string }) => boolean;
+  isAvailable: (params: { cfg: WineryClawConfig; accountId: string }) => boolean;
   apply: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
-  }) => OpenClawConfig | Promise<OpenClawConfig>;
+  }) => WineryClawConfig | Promise<WineryClawConfig>;
 };
 
 export type ChannelSetupWizardCredential = {
@@ -87,29 +87,29 @@ export type ChannelSetupWizardCredential = {
   envPrompt: string;
   keepPrompt: string;
   inputPrompt: string;
-  allowEnv?: (params: { cfg: OpenClawConfig; accountId: string }) => boolean;
+  allowEnv?: (params: { cfg: WineryClawConfig; accountId: string }) => boolean;
   inspect: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
   }) => ChannelSetupWizardCredentialState;
   shouldPrompt?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
     currentValue?: string;
     state: ChannelSetupWizardCredentialState;
   }) => boolean | Promise<boolean>;
   applyUseEnv?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
-  }) => OpenClawConfig | Promise<OpenClawConfig>;
+  }) => WineryClawConfig | Promise<WineryClawConfig>;
   applySet?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
     value: unknown;
     resolvedValue: string;
-  }) => OpenClawConfig | Promise<OpenClawConfig>;
+  }) => WineryClawConfig | Promise<WineryClawConfig>;
 };
 
 export type ChannelSetupWizardTextInput = {
@@ -123,17 +123,17 @@ export type ChannelSetupWizardTextInput = {
   confirmCurrentValue?: boolean;
   keepPrompt?: string | ((value: string) => string);
   currentValue?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
   }) => string | undefined | Promise<string | undefined>;
   initialValue?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
   }) => string | undefined | Promise<string | undefined>;
   shouldPrompt?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
     currentValue?: string;
@@ -141,21 +141,21 @@ export type ChannelSetupWizardTextInput = {
   applyCurrentValue?: boolean;
   validate?: (params: {
     value: string;
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
   }) => string | undefined;
   normalizeValue?: (params: {
     value: string;
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
   }) => string;
   applySet?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     value: string;
-  }) => OpenClawConfig | Promise<OpenClawConfig>;
+  }) => WineryClawConfig | Promise<WineryClawConfig>;
 };
 
 export type ChannelSetupWizardAllowFromEntry = {
@@ -174,16 +174,16 @@ export type ChannelSetupWizardAllowFrom = {
   parseInputs?: (raw: string) => string[];
   parseId: (raw: string) => string | null;
   resolveEntries: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
     entries: string[];
   }) => Promise<ChannelSetupWizardAllowFromEntry[]>;
   apply: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     allowFrom: string[];
-  }) => OpenClawConfig | Promise<OpenClawConfig>;
+  }) => WineryClawConfig | Promise<WineryClawConfig>;
 };
 
 export type ChannelSetupWizardGroupAccess = {
@@ -192,30 +192,30 @@ export type ChannelSetupWizardGroupAccess = {
   helpTitle?: string;
   helpLines?: string[];
   skipAllowlistEntries?: boolean;
-  currentPolicy: (params: { cfg: OpenClawConfig; accountId: string }) => ChannelAccessPolicy;
-  currentEntries: (params: { cfg: OpenClawConfig; accountId: string }) => string[];
-  updatePrompt: (params: { cfg: OpenClawConfig; accountId: string }) => boolean;
+  currentPolicy: (params: { cfg: WineryClawConfig; accountId: string }) => ChannelAccessPolicy;
+  currentEntries: (params: { cfg: WineryClawConfig; accountId: string }) => string[];
+  updatePrompt: (params: { cfg: WineryClawConfig; accountId: string }) => boolean;
   setPolicy: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     policy: ChannelAccessPolicy;
-  }) => OpenClawConfig;
+  }) => WineryClawConfig;
   resolveAllowlist?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     credentialValues: ChannelSetupWizardCredentialValues;
     entries: string[];
     prompter: Pick<WizardPrompter, "note">;
   }) => Promise<unknown>;
   applyAllowlist?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     accountId: string;
     resolved: unknown;
-  }) => OpenClawConfig;
+  }) => WineryClawConfig;
 };
 
 export type ChannelSetupWizardPrepare = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   credentialValues: ChannelSetupWizardCredentialValues;
   runtime: ChannelSetupConfigureContext["runtime"];
@@ -223,17 +223,17 @@ export type ChannelSetupWizardPrepare = (params: {
   options?: ChannelSetupConfigureContext["options"];
 }) =>
   | {
-      cfg?: OpenClawConfig;
+      cfg?: WineryClawConfig;
       credentialValues?: ChannelSetupWizardCredentialValues;
     }
   | void
   | Promise<{
-      cfg?: OpenClawConfig;
+      cfg?: WineryClawConfig;
       credentialValues?: ChannelSetupWizardCredentialValues;
     } | void>;
 
 export type ChannelSetupWizardFinalize = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   credentialValues: ChannelSetupWizardCredentialValues;
   runtime: ChannelSetupConfigureContext["runtime"];
@@ -242,12 +242,12 @@ export type ChannelSetupWizardFinalize = (params: {
   forceAllowFrom: boolean;
 }) =>
   | {
-      cfg?: OpenClawConfig;
+      cfg?: WineryClawConfig;
       credentialValues?: ChannelSetupWizardCredentialValues;
     }
   | void
   | Promise<{
-      cfg?: OpenClawConfig;
+      cfg?: WineryClawConfig;
       credentialValues?: ChannelSetupWizardCredentialValues;
     } | void>;
 
@@ -257,7 +257,7 @@ export type ChannelSetupWizard = {
   introNote?: ChannelSetupWizardNote;
   envShortcut?: ChannelSetupWizardEnvShortcut;
   resolveAccountIdForConfigure?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     prompter: WizardPrompter;
     options?: ChannelSetupConfigureContext["options"];
     accountOverride?: string;
@@ -266,7 +266,7 @@ export type ChannelSetupWizard = {
     defaultAccountId: string;
   }) => string | Promise<string>;
   resolveShouldPromptAccountIds?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     options?: ChannelSetupConfigureContext["options"];
     shouldPromptAccountIds: boolean;
   }) => boolean;
@@ -279,7 +279,7 @@ export type ChannelSetupWizard = {
   dmPolicy?: ChannelSetupDmPolicy;
   allowFrom?: ChannelSetupWizardAllowFrom;
   groupAccess?: ChannelSetupWizardGroupAccess;
-  disable?: (cfg: OpenClawConfig) => OpenClawConfig;
+  disable?: (cfg: WineryClawConfig) => WineryClawConfig;
   onAccountRecorded?: ChannelSetupWizardAdapter["onAccountRecorded"];
 };
 
@@ -302,11 +302,11 @@ export type SetupChannelsOptions = {
 };
 
 export type PromptAccountIdParams = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   prompter: WizardPrompter;
   label: string;
   currentId?: string;
-  listAccountIds: (cfg: OpenClawConfig) => string[];
+  listAccountIds: (cfg: WineryClawConfig) => string[];
   defaultAccountId: string;
 };
 
@@ -321,13 +321,13 @@ export type ChannelSetupStatus = {
 };
 
 export type ChannelSetupStatusContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   options?: SetupChannelsOptions;
   accountOverrides: Partial<Record<ChannelId, string>>;
 };
 
 export type ChannelSetupConfigureContext = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   runtime: RuntimeEnv;
   prompter: WizardPrompter;
   options?: SetupChannelsOptions;
@@ -337,8 +337,8 @@ export type ChannelSetupConfigureContext = {
 };
 
 export type ChannelOnboardingPostWriteContext = {
-  previousCfg: OpenClawConfig;
-  cfg: OpenClawConfig;
+  previousCfg: WineryClawConfig;
+  cfg: WineryClawConfig;
   accountId: string;
   runtime: RuntimeEnv;
 };
@@ -346,11 +346,11 @@ export type ChannelOnboardingPostWriteContext = {
 export type ChannelOnboardingPostWriteHook = {
   channel: ChannelId;
   accountId: string;
-  run: (ctx: { cfg: OpenClawConfig; runtime: RuntimeEnv }) => Promise<void> | void;
+  run: (ctx: { cfg: WineryClawConfig; runtime: RuntimeEnv }) => Promise<void> | void;
 };
 
 export type ChannelSetupResult = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string;
 };
 
@@ -367,16 +367,16 @@ export type ChannelSetupDmPolicy = {
   policyKey: string;
   allowFromKey: string;
   resolveConfigKeys?: (
-    cfg: OpenClawConfig,
+    cfg: WineryClawConfig,
     accountId?: string,
   ) => { policyKey: string; allowFromKey: string };
-  getCurrent: (cfg: OpenClawConfig, accountId?: string) => DmPolicy;
-  setPolicy: (cfg: OpenClawConfig, policy: DmPolicy, accountId?: string) => OpenClawConfig;
+  getCurrent: (cfg: WineryClawConfig, accountId?: string) => DmPolicy;
+  setPolicy: (cfg: WineryClawConfig, policy: DmPolicy, accountId?: string) => WineryClawConfig;
   promptAllowFrom?: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     prompter: WizardPrompter;
     accountId?: string;
-  }) => Promise<OpenClawConfig>;
+  }) => Promise<WineryClawConfig>;
 };
 
 export type ChannelSetupWizardAdapter = {
@@ -392,5 +392,5 @@ export type ChannelSetupWizardAdapter = {
   afterConfigWritten?: (ctx: ChannelOnboardingPostWriteContext) => Promise<void> | void;
   dmPolicy?: ChannelSetupDmPolicy;
   onAccountRecorded?: (accountId: string, options?: SetupChannelsOptions) => void;
-  disable?: (cfg: OpenClawConfig) => OpenClawConfig;
+  disable?: (cfg: WineryClawConfig) => WineryClawConfig;
 };

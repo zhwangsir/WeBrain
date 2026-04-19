@@ -2,7 +2,7 @@
 title: "Vercel AI Gateway"
 summary: "Vercel AI Gateway setup (auth + model selection)"
 read_when:
-  - You want to use Vercel AI Gateway with OpenClaw
+  - You want to use Vercel AI Gateway with WineryClaw
   - You need the API key env var or CLI auth choice
 ---
 
@@ -19,7 +19,7 @@ access hundreds of models through a single endpoint.
 | Model catalog | Auto-discovered via `/v1/models` |
 
 <Tip>
-OpenClaw auto-discovers the Gateway `/v1/models` catalog, so
+WineryClaw auto-discovers the Gateway `/v1/models` catalog, so
 `/models vercel-ai-gateway` includes current model refs such as
 `vercel-ai-gateway/openai/gpt-5.4`.
 </Tip>
@@ -36,7 +36,7 @@ OpenClaw auto-discovers the Gateway `/v1/models` catalog, so
 
   </Step>
   <Step title="Set a default model">
-    Add the model to your OpenClaw config:
+    Add the model to your WineryClaw config:
 
     ```json5
     {
@@ -69,7 +69,7 @@ openclaw onboard --non-interactive \
 
 ## Model ID shorthand
 
-OpenClaw accepts Vercel Claude shorthand model refs and normalizes them at
+WineryClaw accepts Vercel Claude shorthand model refs and normalizes them at
 runtime:
 
 | Shorthand input                     | Normalized model ref                          |
@@ -79,20 +79,20 @@ runtime:
 
 <Tip>
 You can use either the shorthand or the fully qualified model ref in your
-configuration. OpenClaw resolves the canonical form automatically.
+configuration. WineryClaw resolves the canonical form automatically.
 </Tip>
 
 ## Advanced notes
 
 <AccordionGroup>
   <Accordion title="Environment variable for daemon processes">
-    If the OpenClaw Gateway runs as a daemon (launchd/systemd), make sure
+    If the WineryClaw Gateway runs as a daemon (launchd/systemd), make sure
     `AI_GATEWAY_API_KEY` is available to that process.
 
     <Warning>
     A key set only in `~/.profile` will not be visible to a launchd/systemd
     daemon unless that environment is explicitly imported. Set the key in
-    `~/.openclaw/.env` or via `env.shellEnv` to ensure the gateway process can
+    `~/.wineryclaw/.env` or via `env.shellEnv` to ensure the gateway process can
     read it.
     </Warning>
 

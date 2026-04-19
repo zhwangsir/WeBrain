@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import fsSync from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { redactIdentifier } from "openclaw/plugin-sdk/logging-core";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ActiveWebListener } from "./inbound/types.js";
@@ -123,7 +123,7 @@ describe("web outbound", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(result).toEqual({
@@ -299,7 +299,7 @@ describe("web outbound", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     await sendMessageWhatsApp("+1555", "pic", {
       verbose: false,

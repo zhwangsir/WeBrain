@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import type { MsgContext } from "../../../src/auto-reply/templating.js";
 import { expectChannelInboundContextContract } from "../../../src/channels/plugins/contracts/test-helpers.js";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 import { resolveRelativeBundledPluginPublicModuleId } from "../../../src/test-utils/bundled-plugin-public-surface.js";
 import { withTempHome } from "../temp-home.js";
 
@@ -18,7 +18,7 @@ type SlackMessageEvent = {
 type SlackPrepareResult = { ctxPayload: MsgContext } | null | undefined;
 
 type SlackTestApi = {
-  createInboundSlackTestContext: (params: { cfg: OpenClawConfig }) => {
+  createInboundSlackTestContext: (params: { cfg: WineryClawConfig }) => {
     resolveUserName?: () => Promise<unknown>;
   };
   prepareSlackMessage: (params: {
@@ -76,7 +76,7 @@ export function installSlackInboundContractSuite() {
       const ctx = createInboundSlackTestContext({
         cfg: {
           channels: { slack: { enabled: true } },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
       });
       ctx.resolveUserName = async () => ({ name: "Alice" }) as never;
 

@@ -3,7 +3,7 @@ import path from "node:path";
 import { resolveSandboxConfigForAgent } from "../agents/sandbox/config.js";
 import { hasPotentialConfiguredChannels } from "../channels/config-presence.js";
 import type { listChannelPlugins } from "../channels/plugins/index.js";
-import type { ConfigFileSnapshot, OpenClawConfig } from "../config/config.js";
+import type { ConfigFileSnapshot, WineryClawConfig } from "../config/config.js";
 import { resolveConfigPath, resolveStateDir } from "../config/paths.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import { hasConfiguredSecretInput } from "../config/types.secrets.js";
@@ -52,8 +52,8 @@ export type {
 } from "./audit.types.js";
 
 export type SecurityAuditOptions = {
-  config: OpenClawConfig;
-  sourceConfig?: OpenClawConfig;
+  config: WineryClawConfig;
+  sourceConfig?: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   platform?: NodeJS.Platform;
   deep?: boolean;
@@ -82,8 +82,8 @@ export type SecurityAuditOptions = {
 };
 
 type AuditExecutionContext = {
-  cfg: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  cfg: WineryClawConfig;
+  sourceConfig: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   platform: NodeJS.Platform;
   includeFilesystem: boolean;
@@ -212,7 +212,7 @@ export async function collectFilesystemFindings(params: {
         checkId: "fs.state_dir.perms_world_writable",
         severity: "critical",
         title: "State dir is world-writable",
-        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; other users can write into your OpenClaw state.`,
+        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; other users can write into your WineryClaw state.`,
         remediation: formatPermissionRemediation({
           targetPath: params.stateDir,
           perms: stateDirPerms,
@@ -226,7 +226,7 @@ export async function collectFilesystemFindings(params: {
         checkId: "fs.state_dir.perms_group_writable",
         severity: "warn",
         title: "State dir is group-writable",
-        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; group users can write into your OpenClaw state.`,
+        detail: `${formatPermissionDetail(params.stateDir, stateDirPerms)}; group users can write into your WineryClaw state.`,
         remediation: formatPermissionRemediation({
           targetPath: params.stateDir,
           perms: stateDirPerms,
@@ -316,8 +316,8 @@ export async function collectFilesystemFindings(params: {
 }
 
 export function collectGatewayConfigFindings(
-  cfg: OpenClawConfig,
-  sourceConfig: OpenClawConfig,
+  cfg: WineryClawConfig,
+  sourceConfig: WineryClawConfig,
   env: NodeJS.ProcessEnv,
 ): SecurityAuditFinding[] {
   const findings: SecurityAuditFinding[] = [];
@@ -336,8 +336,8 @@ export function collectGatewayConfigFindings(
     : [];
   const hasToken = typeof auth.token === "string" && auth.token.trim().length > 0;
   const hasPassword = typeof auth.password === "string" && auth.password.trim().length > 0;
-  const envTokenConfigured = hasNonEmptyString(env.OPENCLAW_GATEWAY_TOKEN);
-  const envPasswordConfigured = hasNonEmptyString(env.OPENCLAW_GATEWAY_PASSWORD);
+  const envTokenConfigured = hasNonEmptyString(env.WINERYCLAW_GATEWAY_TOKEN);
+  const envPasswordConfigured = hasNonEmptyString(env.WINERYCLAW_GATEWAY_PASSWORD);
   const tokenConfiguredFromConfig = hasConfiguredSecretInput(
     sourceConfig.gateway?.auth?.token,
     sourceConfig.secrets?.defaults,
@@ -750,7 +750,7 @@ async function collectPluginSecurityAuditFindings(
   return collectorResults.flat();
 }
 
-export function collectLoggingFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
+export function collectLoggingFindings(cfg: WineryClawConfig): SecurityAuditFinding[] {
   const redact = cfg.logging?.redactSensitive;
   if (redact !== "off") {
     return [];
@@ -766,7 +766,7 @@ export function collectLoggingFindings(cfg: OpenClawConfig): SecurityAuditFindin
   ];
 }
 
-export function collectElevatedFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
+export function collectElevatedFindings(cfg: WineryClawConfig): SecurityAuditFinding[] {
   const findings: SecurityAuditFinding[] = [];
   const enabled = cfg.tools?.elevated?.enabled;
   const allowFrom = cfg.tools?.elevated?.allowFrom ?? {};
@@ -801,7 +801,7 @@ export function collectElevatedFindings(cfg: OpenClawConfig): SecurityAuditFindi
   return findings;
 }
 
-export function collectExecRuntimeFindings(cfg: OpenClawConfig): SecurityAuditFinding[] {
+export function collectExecRuntimeFindings(cfg: WineryClawConfig): SecurityAuditFinding[] {
   const findings: SecurityAuditFinding[] = [];
   const globalExecHost = cfg.tools?.exec?.host;
   const globalStrictInlineEval = cfg.tools?.exec?.strictInlineEval === true;
@@ -1109,7 +1109,7 @@ export function collectExecRuntimeFindings(cfg: OpenClawConfig): SecurityAuditFi
   return findings;
 }
 
-function collectOpenExecSurfacePaths(cfg: OpenClawConfig): string[] {
+function collectOpenExecSurfacePaths(cfg: WineryClawConfig): string[] {
   const channels = asNullableRecord(cfg.channels);
   if (!channels) {
     return [];
@@ -1177,7 +1177,7 @@ function collectInterpreterAllowlistHits(params: {
 }
 
 async function maybeProbeGateway(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   timeoutMs: number;
   probe: ProbeGatewayFn;

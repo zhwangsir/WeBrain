@@ -1,15 +1,15 @@
 <?xml version="1.0" standalone="yes"?>
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
-        <title>OpenClaw</title>
+        <title>WineryClaw</title>
         <item>
             <title>2026.4.12</title>
             <pubDate>Sun, 12 Apr 2026 12:00:00 +0000</pubDate>
-            <link>https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml</link>
+            <link>https://raw.githubusercontent.com/<your-fork>/openclaw/main/appcast.xml</link>
             <sparkle:version>2026041290</sparkle:version>
             <sparkle:shortVersionString>2026.4.12</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>OpenClaw 2026.4.12</h2>
+            <description><![CDATA[<h2>WineryClaw 2026.4.12</h2>
 <h3>Changes</h3>
 <ul>
 <li>Dreaming/memory-wiki: add ChatGPT import ingestion plus new <code>Imported Insights</code> and <code>Memory Palace</code> diary subtabs so Dreaming can inspect imported source chats, compiled wiki pages, and full source pages directly from the UI. (#64505)</li>
@@ -32,7 +32,7 @@
 <li>ACP/agents: suppress commentary-phase child assistant relay text in ACP parent stream updates, so spawned child runs stop leaking internal progress chatter into the parent session. Thanks @vincentkoc.</li>
 <li>Agents/timeouts: honor explicit run timeouts in the LLM idle watchdog and align default timeout config so slow models can keep working until the configured limit instead of using the wrong idle window.</li>
 <li>Config: include <code>asyncCompletion</code> in the generated zod schema so documented async completion config no longer fails with an unrecognized-key error. (#63618)</li>
-<li>Google/Veo: stop sending the unsupported <code>numberOfVideos</code> request field so Gemini Developer API Veo runs do not fail before OpenClaw can complete the intended Google video generation path. (#64723) Thanks @velvet-shark.</li>
+<li>Google/Veo: stop sending the unsupported <code>numberOfVideos</code> request field so Gemini Developer API Veo runs do not fail before WineryClaw can complete the intended Google video generation path. (#64723) Thanks @velvet-shark.</li>
 <li>QA/packaging: stop packaged CLI startup and completion cache generation from reading repo-only QA scenario markdown, ship the bundled QA scenario pack in npm releases, and keep <code>openclaw completion --write-state</code> working even if QA setup is broken. (#64648) Thanks @obviyus.</li>
 <li>Codex/QA: keep Codex app-server coordination chatter out of visible replies, add a live QA leak scenario, and classify leaked harness meta text as a QA failure instead of a successful reply. Thanks @vincentkoc.</li>
 <li>WhatsApp: route <code>message react</code> through the gateway-owned action path so reactions use the live WhatsApp listener in both DM and group chats, matching <code>message send</code> and <code>message poll</code>. Thanks @mcaxtr.</li>
@@ -41,22 +41,22 @@
 <li>Agents/failover: scope assistant-side fallback classification and surfaced provider errors to the current attempt instead of stale session history, so cross-provider fallback runs stop inheriting the previous provider's failure. (#62907) Thanks @stainlu.</li>
 <li>MiniMax/OAuth: write <code>api: "anthropic-messages"</code> and <code>authHeader: true</code> into the <code>minimax-portal</code> config patch during <code>openclaw configure</code>, so re-authenticated portal setups keep Bearer auth routing working. (#64964) Thanks @ryanlee666.</li>
 </ul>
-<p><a href="https://github.com/openclaw/openclaw/blob/main/CHANGELOG.md">View full changelog</a></p>
+<p><a href="https://github.com/<your-fork>/openclaw/blob/main/CHANGELOG.md">View full changelog</a></p>
 ]]></description>
-            <enclosure url="https://github.com/openclaw/openclaw/releases/download/v2026.4.12/OpenClaw-2026.4.12.zip" length="47317969" type="application/octet-stream" sparkle:edSignature="v9bUsh1mBBPtpMn7kKYAvO8MNJHAeMj7UkmkkuDSC8NvwPx2Fo3+NEeyAyA9s9Vax6L7i+eHSpwzAmtwpnHcCA=="/>
+            <enclosure url="https://github.com/<your-fork>/openclaw/releases/download/v2026.4.12/WineryClaw-2026.4.12.zip" length="47317969" type="application/octet-stream" sparkle:edSignature="v9bUsh1mBBPtpMn7kKYAvO8MNJHAeMj7UkmkkuDSC8NvwPx2Fo3+NEeyAyA9s9Vax6L7i+eHSpwzAmtwpnHcCA=="/>
         </item>
         <item>
             <title>2026.4.10</title>
             <pubDate>Sat, 11 Apr 2026 03:17:02 +0000</pubDate>
-            <link>https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml</link>
+            <link>https://raw.githubusercontent.com/<your-fork>/openclaw/main/appcast.xml</link>
             <sparkle:version>2026041090</sparkle:version>
             <sparkle:shortVersionString>2026.4.10</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>OpenClaw 2026.4.10</h2>
+            <description><![CDATA[<h2>WineryClaw 2026.4.10</h2>
 <h3>Changes</h3>
 <ul>
 <li>Models/Codex: add the bundled Codex provider and plugin-owned app-server harness so <code>codex/gpt-*</code> models use Codex-managed auth, native threads, model discovery, and compaction while <code>openai/gpt-*</code> stays on the normal OpenAI provider path. (#64298)</li>
-<li>Memory/Active Memory: add a new optional Active Memory plugin that gives OpenClaw a dedicated memory sub-agent right before the main reply, so ongoing chats can automatically pull in relevant preferences, context, and past details without making users remember to manually say "remember this" or "search memory" first. Includes configurable message/recent/full context modes, live <code>/verbose</code> inspection, advanced prompt/thinking overrides for tuning, and opt-in transcript persistence for debugging. Docs: https://docs.openclaw.ai/concepts/active-memory. (#63286) Thanks @Takhoffman.</li>
+<li>Memory/Active Memory: add a new optional Active Memory plugin that gives WineryClaw a dedicated memory sub-agent right before the main reply, so ongoing chats can automatically pull in relevant preferences, context, and past details without making users remember to manually say "remember this" or "search memory" first. Includes configurable message/recent/full context modes, live <code>/verbose</code> inspection, advanced prompt/thinking overrides for tuning, and opt-in transcript persistence for debugging. Docs: https://docs.openclaw.ai/concepts/active-memory. (#63286) Thanks @Takhoffman.</li>
 <li>macOS/Talk: add an experimental local MLX speech provider for Talk Mode, with explicit provider selection, local utterance playback, interruption handling, and system-voice fallback. (#63539) Thanks @ImLukeF.</li>
 <li>Tools/video generation: add Seedance 2.0 model refs to the bundled fal provider and submit the provider-specific duration, resolution, audio, and seed metadata fields needed for live Seedance 2.0 runs.</li>
 <li>Microsoft Teams: add message actions for pin, unpin, read, react, and listing reactions. (#53432) Thanks @sudie-codes.</li>
@@ -66,7 +66,7 @@
 <li>CLI/exec policy: add a local <code>openclaw exec-policy</code> command with <code>show</code>, <code>preset</code>, and <code>set</code> subcommands for synchronizing requested <code>tools.exec.*</code> config with the local exec approvals file, plus follow-up hardening for node-host rejection, rollback safety, and sync conflict detection. (#64050)</li>
 <li>Gateway: add a <code>commands.list</code> RPC so remote gateway clients can discover runtime-native, text, skill, and plugin commands with surface-aware naming and serialized argument metadata. (#62656) Thanks @samzong.</li>
 <li>Models/providers: add per-provider <code>models.providers.*.request.allowPrivateNetwork</code> for trusted self-hosted OpenAI-compatible endpoints, keep the opt-in scoped to model request surfaces, and refresh cached WebSocket managers when request transport overrides change. (#63671) Thanks @qas.</li>
-<li>Feishu: standardize request user agents and register the bot as an AI agent so Feishu deployments identify OpenClaw consistently. (#63835) Thanks @evandance.</li>
+<li>Feishu: standardize request user agents and register the bot as an AI agent so Feishu deployments identify WineryClaw consistently. (#63835) Thanks @evandance.</li>
 <li>Matrix/partial streaming: add MSC4357 live markers to draft preview sends and edits so supporting Matrix clients can render a live/typewriter animation and stop it when the final edit lands. (#63513) Thanks @TigerInYourDream.</li>
 <li>Control UI/dreaming: simplify the Scene and Diary surfaces, preserve unknown phase state for partial status payloads, and stabilize waiting-entry recency ordering so Dreaming status and review lists stay clear and deterministic. (#64035) Thanks @davemorin.</li>
 <li>Agents: add an opt-in strict-agentic embedded Pi execution contract for GPT-5-family runs so plan-only or filler turns keep acting until they hit a real blocker. (#64241) Thanks @100yenadmin.</li>
@@ -142,10 +142,10 @@
 <li>Gateway: keep <code>commands.list</code> skill entries categorized under tools and include provider-aware plugin <code>nativeName</code> metadata even when <code>scope=text</code>, so remote clients can group skills correctly and map text-surface plugin commands back to native aliases. (#64147)</li>
 <li>TUI: reset footer activity to idle when switching sessions so a stale streaming indicator cannot persist after the selection changes. (#63988) Thanks @neeravmakwana.</li>
 <li>Claude CLI: stop marking spawned Claude Code runs as host-managed so they keep using normal CLI subscription behavior. (#64023) Thanks @Alex-Alaniz.</li>
-<li>Codex auth: brand Codex OAuth flows as OpenClaw in user-visible auth prompts and diagnostics.</li>
+<li>Codex auth: brand Codex OAuth flows as WineryClaw in user-visible auth prompts and diagnostics.</li>
 <li>Gateway/pairing: fail closed for paired device records that have no device tokens, and reject pairing approvals whose requested scopes do not match the requested device roles.</li>
 <li>ACP/gateway chat: classify lifecycle errors before forwarding them to ACP clients so refusals use ACP's refusal stop reason while transient backend errors continue to finish as normal turns.</li>
-<li>Claude CLI/skills: pass eligible OpenClaw skills into CLI runs, including native Claude Code skill resolution via a temporary plugin plus per-run skill env/API key injection. (#62686, #62723) Thanks @zomars.</li>
+<li>Claude CLI/skills: pass eligible WineryClaw skills into CLI runs, including native Claude Code skill resolution via a temporary plugin plus per-run skill env/API key injection. (#62686, #62723) Thanks @zomars.</li>
 <li>Discord: keep generated auto-thread names working with reasoning models by giving title generation enough output budget for thinking plus visible title text. (#64172) Thanks @hanamizuki.</li>
 <li>Heartbeat: ignore doc-only Markdown fence markers in the default <code>HEARTBEAT.md</code> template so comment-only heartbeat scaffolds skip API calls again. (#61690, #63434) Thanks @ravyg.</li>
 <li>Reply/skills: keep resolved skill and memory secret config stable through embedded reply runs so raw SecretRefs in secondary skill settings no longer crash replies when the gateway already has the live env. (#64249) Thanks @mbelinky.</li>
@@ -185,18 +185,18 @@
 <li>Models/vLLM: ignore empty <code>tool_calls</code> arrays from reasoning-model OpenAI-compatible replies, reset false <code>toolUse</code> stop reasons when no actual tool calls were parsed, and stop sending <code>tool_choice</code> unless tools are present so vLLM reasoning responses no longer hang indefinitely. (#61197, #61534) Thanks @balajisiva.</li>
 <li>Heartbeat/scheduling: spread interval heartbeats across stable per-agent phases derived from gateway identity, so provider traffic is distributed more uniformly across the configured interval instead of clustering around startup-relative times. (#64560) Thanks @odysseus0.</li>
 </ul>
-<p><a href="https://github.com/openclaw/openclaw/blob/main/CHANGELOG.md">View full changelog</a></p>
+<p><a href="https://github.com/<your-fork>/openclaw/blob/main/CHANGELOG.md">View full changelog</a></p>
 ]]></description>
-            <enclosure url="https://github.com/openclaw/openclaw/releases/download/v2026.4.10/OpenClaw-2026.4.10.zip" length="47259509" type="application/octet-stream" sparkle:edSignature="XY9FHxx09r2O9rlFs3t5UV9Zk2rGXSpWw5InazJhb661kgp6OKiOrrNTV631b2StWze5tnSEPXakkOCXq7O6DQ=="/>
+            <enclosure url="https://github.com/<your-fork>/openclaw/releases/download/v2026.4.10/WineryClaw-2026.4.10.zip" length="47259509" type="application/octet-stream" sparkle:edSignature="XY9FHxx09r2O9rlFs3t5UV9Zk2rGXSpWw5InazJhb661kgp6OKiOrrNTV631b2StWze5tnSEPXakkOCXq7O6DQ=="/>
         </item>
         <item>
             <title>2026.4.9</title>
             <pubDate>Thu, 09 Apr 2026 02:38:08 +0000</pubDate>
-            <link>https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml</link>
+            <link>https://raw.githubusercontent.com/<your-fork>/openclaw/main/appcast.xml</link>
             <sparkle:version>2026040990</sparkle:version>
             <sparkle:shortVersionString>2026.4.9</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>OpenClaw 2026.4.9</h2>
+            <description><![CDATA[<h2>WineryClaw 2026.4.9</h2>
 <h3>Changes</h3>
 <ul>
 <li>Memory/dreaming: add a grounded REM backfill lane with historical <code>rem-harness --path</code>, diary commit/reset flows, cleaner durable-fact extraction, and live short-term promotion integration so old daily notes can replay into Dreams and durable memory without a second memory stack. Thanks @mbelinky.</li>
@@ -221,14 +221,14 @@
 <li>Auto-reply/NO_REPLY: strip glued leading <code>NO_REPLY</code> tokens before reply normalization and ACP-visible streaming so silent sentinel text no longer leaks into user-visible replies while preserving substantive <code>NO_REPLY ...</code> text. Thanks @frankekn.</li>
 <li>Sessions/routing: preserve established external routes on inter-session announce traffic so <code>sessions_send</code> follow-ups do not steal delivery from Telegram, Discord, or other external channels. (#58013) Thanks @duqaXxX.</li>
 <li>Gateway/sessions: clear auto-fallback-pinned model overrides on <code>/reset</code> and <code>/new</code> while still preserving explicit user model selections, including legacy sessions created before override-source tracking existed. (#63155) Thanks @frankekn.</li>
-<li>Slack/ACP: treat Slack ACP block replies as visible delivered output so OpenClaw stops re-sending the final fallback text after Slack already rendered the reply. (#62858) Thanks @gumadeiras.</li>
+<li>Slack/ACP: treat Slack ACP block replies as visible delivered output so WineryClaw stops re-sending the final fallback text after Slack already rendered the reply. (#62858) Thanks @gumadeiras.</li>
 <li>Slack/partial streaming: key turn-local dedupe by dispatch kind and keep the final fallback reply path active when preview finalization fails so stale preview text cannot suppress the actual final answer. (#62859) Thanks @gumadeiras.</li>
 <li>Matrix/doctor: migrate legacy <code>channels.matrix.dm.policy: "trusted"</code> configs back to compatible DM policies during <code>openclaw doctor --fix</code>, preserving explicit <code>allowFrom</code> boundaries as <code>allowlist</code> and defaulting empty legacy configs to <code>pairing</code>. (#62942) Thanks @lukeboyett.</li>
 <li>npm packaging: mirror bundled channel runtime deps, stage Nostr runtime deps, derive required root mirrors from manifests and built chunks, and test packed release tarballs without repo <code>node_modules</code> so fresh installs fail fast on missing plugin deps instead of crashing at runtime. (#63065) Thanks @scoootscooob.</li>
 <li>QA/live auth: fail fast when live QA scenarios hit classified auth or runtime failure replies, including raw scenario wait paths, and sanitize missing-key guidance so gateway auth problems surface as actionable errors instead of timeouts. (#63333) Thanks @shakkernerd.</li>
 <li>Providers/OpenAI: default missing reasoning effort to <code>high</code> on OpenAI Responses, WebSocket, and compatible completions transports, while still honoring explicit per-run reasoning levels.</li>
 <li>Providers/Ollama: allow Ollama models using the native <code>api: "ollama"</code> path to optionally display thinking output when <code>/think</code> is set to a non-off level. (#62712) Thanks @hoyyeva.</li>
-<li>Codex CLI: pass OpenClaw's system prompt through Codex's <code>model_instructions_file</code> config override so fresh Codex CLI sessions receive the same prompt guidance as Claude CLI sessions.</li>
+<li>Codex CLI: pass WineryClaw's system prompt through Codex's <code>model_instructions_file</code> config override so fresh Codex CLI sessions receive the same prompt guidance as Claude CLI sessions.</li>
 <li>Auth/profiles: persist explicit auth-profile upserts directly and skip external CLI sync for local writes so profile changes are saved without stale external credential state.</li>
 <li>Agents/timeouts: make the LLM idle timeout inherit <code>agents.defaults.timeoutSeconds</code> when configured, disable the unconfigured idle watchdog for cron runs, and point idle-timeout errors at <code>agents.defaults.llm.idleTimeoutSeconds</code>. Thanks @drvoss.</li>
 <li>Agents/failover: classify Z.ai vendor code <code>1311</code> as billing and <code>1113</code> as auth, including long wrapped <code>1311</code> payloads, so these errors stop falling through to generic failover handling. (#49552) Thanks @1bcMax.</li>
@@ -242,9 +242,9 @@
 <li>Control UI/models: preserve provider-qualified refs for OpenRouter catalog models whose ids already contain slashes so picker selections submit allowlist-compatible model refs instead of dropping the <code>openrouter/</code> prefix. (#63416) Thanks @sallyom.</li>
 <li>Plugin SDK/command auth: split command status builders onto the lightweight <code>openclaw/plugin-sdk/command-status</code> subpath while preserving deprecated <code>command-auth</code> compatibility exports, so auth-only plugin imports no longer pull status/context warmup into CLI onboarding paths. (#63174) Thanks @hxy91819.</li>
 </ul>
-<p><a href="https://github.com/openclaw/openclaw/blob/main/CHANGELOG.md">View full changelog</a></p>
+<p><a href="https://github.com/<your-fork>/openclaw/blob/main/CHANGELOG.md">View full changelog</a></p>
 ]]></description>
-            <enclosure url="https://github.com/openclaw/openclaw/releases/download/v2026.4.9/OpenClaw-2026.4.9.zip" length="25336730" type="application/octet-stream" sparkle:edSignature="zFKTcKpejPyGEHj6Bdop3EBDfRrHyQMtJzrpVKsIkBq3I/jbTNvsxQveKEy9r7dqkZVsldFYv7eSunP3SUmaAw=="/>
+            <enclosure url="https://github.com/<your-fork>/openclaw/releases/download/v2026.4.9/WineryClaw-2026.4.9.zip" length="25336730" type="application/octet-stream" sparkle:edSignature="zFKTcKpejPyGEHj6Bdop3EBDfRrHyQMtJzrpVKsIkBq3I/jbTNvsxQveKEy9r7dqkZVsldFYv7eSunP3SUmaAw=="/>
         </item>
     </channel>
 </rss>

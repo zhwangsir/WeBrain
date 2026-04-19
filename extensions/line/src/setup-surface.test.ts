@@ -11,7 +11,7 @@ import {
   type WizardPrompter,
 } from "../../../test/helpers/plugins/setup-wizard.js";
 import { createStartAccountContext } from "../../../test/helpers/plugins/start-account-context.js";
-import type { OpenClawConfig, PluginRuntime, ResolvedLineAccount } from "../api.js";
+import type { WineryClawConfig, PluginRuntime, ResolvedLineAccount } from "../api.js";
 import { linePlugin } from "./channel.js";
 import { lineGatewayAdapter } from "./gateway.js";
 import { probeLineBot } from "./probe.js";
@@ -167,7 +167,7 @@ describe("line setup wizard", () => {
 
     const result = await runSetupWizardConfigure({
       configure: lineConfigure,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       prompter,
       options: {},
     });
@@ -194,14 +194,14 @@ describe("line setup wizard", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         "work",
       ),
     ).toBe("allowlist");
   });
 
   it("reports account-scoped config keys for named accounts", async () => {
-    expect(lineSetupWizard.dmPolicy?.resolveConfigKeys?.({} as OpenClawConfig, "work")).toEqual({
+    expect(lineSetupWizard.dmPolicy?.resolveConfigKeys?.({} as WineryClawConfig, "work")).toEqual({
       policyKey: "channels.line.accounts.work.dmPolicy",
       allowFromKey: "channels.line.accounts.work.allowFrom",
     });
@@ -223,7 +223,7 @@ describe("line setup wizard", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(lineSetupWizard.dmPolicy?.getCurrent(cfg)).toBe("allowlist");
     expect(lineSetupWizard.dmPolicy?.resolveConfigKeys?.(cfg)).toEqual({
@@ -255,7 +255,7 @@ describe("line setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       "open",
       "work",
     );
@@ -292,7 +292,7 @@ describe("line setup wizard", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(configured).toBe(false);
@@ -328,7 +328,7 @@ describe("probeLineBot", () => {
 
   it("returns bot info when available", async () => {
     getBotInfoMock.mockResolvedValue({
-      displayName: "OpenClaw",
+      displayName: "WineryClaw",
       userId: "U123",
       basicId: "@openclaw",
       pictureUrl: "https://example.com/bot.png",
@@ -348,14 +348,14 @@ describe("linePlugin status.probeAccount", () => {
       return { getBotInfo: getBotInfoMock };
     });
     getBotInfoMock.mockResolvedValue({
-      displayName: "OpenClaw",
+      displayName: "WineryClaw",
       userId: "U123",
       basicId: "@openclaw",
       pictureUrl: "https://example.com/bot.png",
     });
 
     const params = {
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       account: {
         accountId: "default",
         enabled: true,

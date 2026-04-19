@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { installedPluginRoot } from "../../test/helpers/bundled-plugin-paths.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   buildPluginDiagnosticsReport,
   loadConfig,
@@ -37,7 +37,7 @@ describe("plugins cli uninstall", () => {
           },
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
     buildPluginDiagnosticsReport.mockReturnValue({
       plugins: [{ id: "alpha", name: "alpha" }],
       diagnostics: [],
@@ -64,13 +64,13 @@ describe("plugins cli uninstall", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const nextConfig = {
       plugins: {
         entries: {},
         installs: {},
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     buildPluginDiagnosticsReport.mockReturnValue({
@@ -109,7 +109,7 @@ describe("plugins cli uninstall", () => {
         entries: {},
         installs: {},
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
     buildPluginDiagnosticsReport.mockReturnValue({
       plugins: [{ id: "alpha", name: "alpha" }],
       diagnostics: [],

@@ -1,5 +1,5 @@
 import { resolveNativeSkillsEnabled } from "openclaw/plugin-sdk/config-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import type { ResolvedTelegramAccount } from "./accounts.js";
@@ -21,7 +21,7 @@ function collectInvalidTelegramAllowFromEntries(params: { entries: unknown; targ
 }
 
 export async function collectTelegramSecurityAuditFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   account: ResolvedTelegramAccount;
 }) {

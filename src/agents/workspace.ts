@@ -14,12 +14,27 @@ export function resolveDefaultAgentWorkspaceDir(
   env: NodeJS.ProcessEnv = process.env,
   homedir: () => string = os.homedir,
 ): string {
-  const home = resolveRequiredHomeDir(env, homedir);
-  const profile = env.OPENCLAW_PROFILE?.trim();
+  const stateDir = resolveStateDir(env, homedir);
+  const profile = env.WINERYCLAW_PROFILE?.trim();
   if (profile && normalizeOptionalLowercaseString(profile) !== "default") {
-    return path.join(home, ".openclaw", `workspace-${profile}`);
+    return path.join(stateDir, `workspace-${profile}`);
   }
-  return path.join(home, ".openclaw", "workspace");
+  return path.join(stateDir, "workspace");
+}
+
+function resolveStateDir(
+  env: NodeJS.ProcessEnv,
+  homedir: () => string,
+): string {
+  const override = env.WINERYCLAW_STATE_DIR?.trim();
+  if (override) {
+    return resolveUserPath(override, env, homedir);
+  }
+  const configPath = env.WINERYCLAW_CONFIG_PATH?.trim();
+  if (configPath) {
+    return path.dirname(resolveUserPath(configPath, env, homedir));
+  }
+  return path.join(homedir(), ".wineryclaw");
 }
 
 export const DEFAULT_AGENT_WORKSPACE_DIR = resolveDefaultAgentWorkspaceDir();
@@ -32,7 +47,7 @@ export const DEFAULT_HEARTBEAT_FILENAME = "HEARTBEAT.md";
 export const DEFAULT_BOOTSTRAP_FILENAME = "BOOTSTRAP.md";
 export const DEFAULT_MEMORY_FILENAME = "MEMORY.md";
 export const DEFAULT_MEMORY_ALT_FILENAME = "memory.md";
-const WORKSPACE_STATE_DIRNAME = ".openclaw";
+const WORKSPACE_STATE_DIRNAME = ".wineryclaw";
 const WORKSPACE_STATE_FILENAME = "workspace-state.json";
 const WORKSPACE_STATE_VERSION = 1;
 

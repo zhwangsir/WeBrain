@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
 import {
   resolveMatrixCredentialsDir,
@@ -10,13 +10,13 @@ import {
 
 type MatrixAuthPresenceParams =
   | {
-      cfg: OpenClawConfig;
+      cfg: WineryClawConfig;
       env?: NodeJS.ProcessEnv;
     }
-  | OpenClawConfig;
+  | WineryClawConfig;
 
 function listMatrixCredentialPaths(
-  _cfg: OpenClawConfig,
+  _cfg: WineryClawConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): readonly string[] {
   const credentialsDir = resolveMatrixCredentialsDir(resolveStateDir(env, os.homedir));

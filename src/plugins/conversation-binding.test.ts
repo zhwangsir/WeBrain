@@ -98,7 +98,7 @@ vi.mock("../infra/home-dir.js", async () => {
   return {
     ...actual,
     expandHomePrefix: (value: string) => {
-      if (value === "~/.openclaw/plugin-binding-approvals.json") {
+      if (value === "~/.wineryclaw/plugin-binding-approvals.json") {
         return approvalsPath;
       }
       return actual.expandHomePrefix(value);
@@ -395,7 +395,7 @@ describe("plugin conversation binding approvals", () => {
       return {
         ...actual,
         expandHomePrefix: (value: string) => {
-          if (value === "~/.openclaw/plugin-binding-approvals.json") {
+          if (value === "~/.wineryclaw/plugin-binding-approvals.json") {
             return approvalsPath;
           }
           return actual.expandHomePrefix(value);

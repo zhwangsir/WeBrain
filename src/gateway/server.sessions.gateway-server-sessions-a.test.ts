@@ -1526,7 +1526,7 @@ describe("gateway server sessions", () => {
       "utf-8",
     );
 
-    await withEnvAsync({ OPENCLAW_CONFIG_PATH: undefined }, async () => {
+    await withEnvAsync({ WINERYCLAW_CONFIG_PATH: undefined }, async () => {
       const { clearConfigCache, clearRuntimeConfigSnapshot } = await getGatewayConfigModule();
       clearConfigCache();
       clearRuntimeConfigSnapshot();
@@ -1539,10 +1539,10 @@ describe("gateway server sessions", () => {
           list: [{ id: "main", default: true, workspace: dir }],
         },
       };
-      const configPath = path.join(dir, "openclaw.json");
+      const configPath = path.join(dir, "wineryclaw.json");
       await fs.writeFile(configPath, JSON.stringify(cfg, null, 2), "utf-8");
 
-      await withEnvAsync({ OPENCLAW_CONFIG_PATH: configPath }, async () => {
+      await withEnvAsync({ WINERYCLAW_CONFIG_PATH: configPath }, async () => {
         const started = await startConnectedServerWithClient();
         const { server, ws } = started;
         try {

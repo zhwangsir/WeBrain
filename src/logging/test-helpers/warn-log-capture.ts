@@ -1,5 +1,5 @@
 import path from "node:path";
-import { resolvePreferredOpenClawTmpDir } from "../../infra/tmp-openclaw-dir.js";
+import { resolvePreferredWineryClawTmpDir } from "../../infra/tmp-openclaw-dir.js";
 import {
   registerLogTransport,
   resetLogger,
@@ -12,7 +12,7 @@ export function createWarnLogCapture(prefix: string) {
   setLoggerOverride({
     level: "warn",
     consoleLevel: "silent",
-    file: path.join(resolvePreferredOpenClawTmpDir(), `${prefix}-${process.pid}-${Date.now()}.log`),
+    file: path.join(resolvePreferredWineryClawTmpDir(), `${prefix}-${process.pid}-${Date.now()}.log`),
   });
   const unregister = registerLogTransport((record) => {
     records.push(record);

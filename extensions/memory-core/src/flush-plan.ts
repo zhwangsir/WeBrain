@@ -4,7 +4,7 @@ import {
   resolveCronStyleNow,
   SILENT_REPLY_TOKEN,
   type MemoryFlushPlan,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 
 export const DEFAULT_MEMORY_FLUSH_SOFT_TOKENS = 4000;
@@ -94,7 +94,7 @@ function appendCurrentTimeLine(text: string, timeLine: string): string {
 
 export function buildMemoryFlushPlan(
   params: {
-    cfg?: OpenClawConfig;
+    cfg?: WineryClawConfig;
     nowMs?: number;
   } = {},
 ): MemoryFlushPlan | null {

@@ -1,6 +1,6 @@
 ---
 title: "Memory Overview"
-summary: "How OpenClaw remembers things across sessions"
+summary: "How WineryClaw remembers things across sessions"
 read_when:
   - You want to understand how memory works
   - You want to know what memory files to write
@@ -8,7 +8,7 @@ read_when:
 
 # Memory Overview
 
-OpenClaw remembers things by writing **plain Markdown files** in your agent's
+WineryClaw remembers things by writing **plain Markdown files** in your agent's
 workspace. The model only "remembers" what gets saved to disk -- there is no
 hidden state.
 
@@ -23,7 +23,7 @@ Your agent has three memory-related files:
 - **`DREAMS.md`** (experimental, optional) -- Dream Diary and dreaming sweep
   summaries for human review, including grounded historical backfill entries.
 
-These files live in the agent workspace (default `~/.openclaw/workspace`).
+These files live in the agent workspace (default `~/.wineryclaw/workspace`).
 
 <Tip>
 If you want your agent to remember something, just ask it: "Remember that I
@@ -68,7 +68,7 @@ search** -- combining vector similarity (semantic meaning) with keyword matching
 an API key for any supported provider.
 
 <Info>
-OpenClaw auto-detects your embedding provider from available API keys. If you
+WineryClaw auto-detects your embedding provider from available API keys. If you
 have an OpenAI, Gemini, Voyage, or Mistral key configured, memory search is
 enabled automatically.
 </Info>
@@ -104,7 +104,7 @@ dashboards, bridge mode, and Obsidian-friendly workflows.
 
 ## Automatic memory flush
 
-Before [compaction](/concepts/compaction) summarizes your conversation, OpenClaw
+Before [compaction](/concepts/compaction) summarizes your conversation, WineryClaw
 runs a silent turn that reminds the agent to save important context to memory
 files. This is on by default -- you do not need to configure anything.
 

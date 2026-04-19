@@ -51,7 +51,7 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
     .version(ctx.programVersion)
     .option(
       "--container <name>",
-      "Run the CLI inside a running Podman/Docker container named <name> (default: env OPENCLAW_CONTAINER)",
+      "Run the CLI inside a running Podman/Docker container named <name> (default: env WINERYCLAW_CONTAINER)",
     )
     .option(
       "--dev",
@@ -59,7 +59,7 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
     )
     .option(
       "--profile <name>",
-      "Use a named profile (isolates OPENCLAW_STATE_DIR/OPENCLAW_CONFIG_PATH under ~/.openclaw-<name>)",
+      "Use a named profile (isolates WINERYCLAW_STATE_DIR/WINERYCLAW_CONFIG_PATH under ~/.openclaw-<name>)",
     )
     .option(
       "--log-level <level>",
@@ -116,7 +116,7 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
   ) {
     const commit = resolveCommitHash({ moduleUrl: import.meta.url });
     console.log(
-      commit ? `OpenClaw ${ctx.programVersion} (${commit})` : `OpenClaw ${ctx.programVersion}`,
+      commit ? `WineryClaw ${ctx.programVersion} (${commit})` : `WineryClaw ${ctx.programVersion}`,
     );
     process.exit(0);
   }

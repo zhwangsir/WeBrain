@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { MsgContext } from "../templating.js";
 import {
   initFastReplySessionState,
@@ -72,7 +72,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   beforeEach(() => {
-    vi.stubEnv("OPENCLAW_TEST_FAST", "1");
+    vi.stubEnv("WINERYCLAW_TEST_FAST", "1");
     mocks.ensureAgentWorkspace.mockReset();
     mocks.initSessionState.mockReset();
     mocks.resolveReplyDirectives.mockReset();
@@ -106,7 +106,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("fails fast on unmarked config overrides in strict fast-test mode", async () => {
-    await expect(getReplyFromConfig(buildCtx(), undefined, {} as OpenClawConfig)).rejects.toThrow(
+    await expect(getReplyFromConfig(buildCtx(), undefined, {} as WineryClawConfig)).rejects.toThrow(
       /withFastReplyConfig\(\)\/markCompleteReplyConfig\(\)/,
     );
     expect(vi.mocked(loadConfigMock)).not.toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
       },
       channels: { telegram: { allowFrom: ["*"] } },
       session: { store: path.join(home, "sessions.json") },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     await expect(getReplyFromConfig(buildCtx(), undefined, cfg)).resolves.toEqual({ text: "ok" });
     expect(vi.mocked(loadConfigMock)).not.toHaveBeenCalled();
@@ -138,14 +138,14 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("still merges partial config overrides against loadConfig()", async () => {
-    vi.stubEnv("OPENCLAW_ALLOW_SLOW_REPLY_TESTS", "1");
+    vi.stubEnv("WINERYCLAW_ALLOW_SLOW_REPLY_TESTS", "1");
     vi.mocked(loadConfigMock).mockReturnValue({
       channels: {
         telegram: {
           botToken: "resolved-telegram-token",
         },
       },
-    } satisfies OpenClawConfig);
+    } satisfies WineryClawConfig);
 
     await getReplyFromConfig(buildCtx(), undefined, {
       agents: {
@@ -153,7 +153,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
           userTimezone: "America/New_York",
         },
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     expect(vi.mocked(loadConfigMock)).toHaveBeenCalledOnce();
     expect(mocks.initSessionState).toHaveBeenCalledOnce();
@@ -176,7 +176,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("marks configs through withFastReplyConfig()", async () => {
-    const cfg = withFastReplyConfig({ session: { store: "/tmp/sessions.json" } } as OpenClawConfig);
+    const cfg = withFastReplyConfig({ session: { store: "/tmp/sessions.json" } } as WineryClawConfig);
 
     await expect(getReplyFromConfig(buildCtx(), undefined, cfg)).resolves.toEqual({ text: "ok" });
     expect(vi.mocked(loadConfigMock)).not.toHaveBeenCalled();
@@ -191,7 +191,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandSource: "native",
         CommandTargetSessionKey: "agent:main:main",
       }),
-      cfg: { session: { store: "/tmp/sessions.json" } } as OpenClawConfig,
+      cfg: { session: { store: "/tmp/sessions.json" } } as WineryClawConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: "/tmp/workspace",

@@ -3,11 +3,11 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/scripts/lib/live-docker-auth.sh"
-IMAGE_NAME="${OPENCLAW_IMAGE:-openclaw:local}"
-LIVE_IMAGE_NAME="${OPENCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
-CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}"
-WORKSPACE_DIR="${OPENCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
-PROFILE_FILE="${OPENCLAW_PROFILE_FILE:-$HOME/.profile}"
+IMAGE_NAME="${WINERYCLAW_IMAGE:-openclaw:local}"
+LIVE_IMAGE_NAME="${WINERYCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
+CONFIG_DIR="${WINERYCLAW_CONFIG_DIR:-$HOME/.openclaw}"
+WORKSPACE_DIR="${WINERYCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
+PROFILE_FILE="${WINERYCLAW_PROFILE_FILE:-$HOME/.profile}"
 
 PROFILE_MOUNT=()
 if [[ -f "$PROFILE_FILE" ]]; then
@@ -16,7 +16,7 @@ fi
 
 AUTH_DIRS=()
 AUTH_FILES=()
-if [[ -n "${OPENCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
+if [[ -n "${WINERYCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
@@ -25,15 +25,15 @@ if [[ -n "${OPENCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
     [[ -n "$auth_file" ]] || continue
     AUTH_FILES+=("$auth_file")
   done < <(openclaw_live_collect_auth_files)
-elif [[ -n "${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}" ]]; then
+elif [[ -n "${WINERYCLAW_LIVE_GATEWAY_PROVIDERS:-}" ]]; then
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(openclaw_live_collect_auth_dirs_from_csv "${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}")
+  done < <(openclaw_live_collect_auth_dirs_from_csv "${WINERYCLAW_LIVE_GATEWAY_PROVIDERS:-}")
   while IFS= read -r auth_file; do
     [[ -n "$auth_file" ]] || continue
     AUTH_FILES+=("$auth_file")
-  done < <(openclaw_live_collect_auth_files_from_csv "${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}")
+  done < <(openclaw_live_collect_auth_files_from_csv "${WINERYCLAW_LIVE_GATEWAY_PROVIDERS:-}")
 else
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
@@ -74,8 +74,8 @@ fi
 read -r -d '' LIVE_TEST_CMD <<'EOF' || true
 set -euo pipefail
 [ -f "$HOME/.profile" ] && source "$HOME/.profile" || true
-IFS=',' read -r -a auth_dirs <<<"${OPENCLAW_DOCKER_AUTH_DIRS_RESOLVED:-}"
-IFS=',' read -r -a auth_files <<<"${OPENCLAW_DOCKER_AUTH_FILES_RESOLVED:-}"
+IFS=',' read -r -a auth_dirs <<<"${WINERYCLAW_DOCKER_AUTH_DIRS_RESOLVED:-}"
+IFS=',' read -r -a auth_files <<<"${WINERYCLAW_DOCKER_AUTH_FILES_RESOLVED:-}"
 if ((${#auth_dirs[@]} > 0)); then
   for auth_dir in "${auth_dirs[@]}"; do
     [ -n "$auth_dir" ] || continue
@@ -121,17 +121,17 @@ docker run --rm -t \
   -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
   -e HOME=/home/node \
   -e NODE_OPTIONS=--disable-warning=ExperimentalWarning \
-  -e OPENCLAW_SKIP_CHANNELS=1 \
-  -e OPENCLAW_SUPPRESS_NOTES=1 \
-  -e OPENCLAW_DOCKER_AUTH_DIRS_RESOLVED="$AUTH_DIRS_CSV" \
-  -e OPENCLAW_DOCKER_AUTH_FILES_RESOLVED="$AUTH_FILES_CSV" \
-  -e OPENCLAW_LIVE_TEST=1 \
-  -e OPENCLAW_LIVE_GATEWAY_MODELS="${OPENCLAW_LIVE_GATEWAY_MODELS:-modern}" \
-  -e OPENCLAW_LIVE_GATEWAY_PROVIDERS="${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}" \
-  -e OPENCLAW_LIVE_GATEWAY_SMOKE="${OPENCLAW_LIVE_GATEWAY_SMOKE:-1}" \
-  -e OPENCLAW_LIVE_GATEWAY_MAX_MODELS="${OPENCLAW_LIVE_GATEWAY_MAX_MODELS:-8}" \
-  -e OPENCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS="${OPENCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS:-45000}" \
-  -e OPENCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS="${OPENCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS:-90000}" \
+  -e WINERYCLAW_SKIP_CHANNELS=1 \
+  -e WINERYCLAW_SUPPRESS_NOTES=1 \
+  -e WINERYCLAW_DOCKER_AUTH_DIRS_RESOLVED="$AUTH_DIRS_CSV" \
+  -e WINERYCLAW_DOCKER_AUTH_FILES_RESOLVED="$AUTH_FILES_CSV" \
+  -e WINERYCLAW_LIVE_TEST=1 \
+  -e WINERYCLAW_LIVE_GATEWAY_MODELS="${WINERYCLAW_LIVE_GATEWAY_MODELS:-modern}" \
+  -e WINERYCLAW_LIVE_GATEWAY_PROVIDERS="${WINERYCLAW_LIVE_GATEWAY_PROVIDERS:-}" \
+  -e WINERYCLAW_LIVE_GATEWAY_SMOKE="${WINERYCLAW_LIVE_GATEWAY_SMOKE:-1}" \
+  -e WINERYCLAW_LIVE_GATEWAY_MAX_MODELS="${WINERYCLAW_LIVE_GATEWAY_MAX_MODELS:-8}" \
+  -e WINERYCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS="${WINERYCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS:-45000}" \
+  -e WINERYCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS="${WINERYCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS:-90000}" \
   -v "$ROOT_DIR":/src:ro \
   -v "$CONFIG_DIR":/home/node/.openclaw \
   -v "$WORKSPACE_DIR":/home/node/.openclaw/workspace \

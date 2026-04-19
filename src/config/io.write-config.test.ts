@@ -84,7 +84,7 @@ describe("config io write", () => {
     "tightens world-writable state dir when writing the default config",
     async () => {
       await withSuiteHome(async (home) => {
-        const stateDir = path.join(home, ".openclaw");
+        const stateDir = path.join(home, ".wineryclaw");
         await fs.mkdir(stateDir, { recursive: true, mode: 0o777 });
         await fs.chmod(stateDir, 0o777);
 
@@ -102,9 +102,9 @@ describe("config io write", () => {
     },
   );
 
-  it("keeps writes inside an OPENCLAW_STATE_DIR override even when the real home config exists", async () => {
+  it("keeps writes inside an WINERYCLAW_STATE_DIR override even when the real home config exists", async () => {
     await withSuiteHome(async (home) => {
-      const liveConfigPath = path.join(home, ".openclaw", "openclaw.json");
+      const liveConfigPath = path.join(home, ".wineryclaw", "wineryclaw.json");
       await fs.mkdir(path.dirname(liveConfigPath), { recursive: true });
       await fs.writeFile(
         liveConfigPath,
@@ -113,14 +113,14 @@ describe("config io write", () => {
       );
 
       const overrideDir = path.join(home, "isolated-state");
-      const env = { OPENCLAW_STATE_DIR: overrideDir } as NodeJS.ProcessEnv;
+      const env = { WINERYCLAW_STATE_DIR: overrideDir } as NodeJS.ProcessEnv;
       const io = createConfigIO({
         env,
         homedir: () => home,
         logger: silentLogger,
       });
 
-      expect(io.configPath).toBe(path.join(overrideDir, "openclaw.json"));
+      expect(io.configPath).toBe(path.join(overrideDir, "wineryclaw.json"));
 
       await io.writeConfigFile({
         agents: { list: [{ id: "main", default: true }] },
@@ -134,7 +134,7 @@ describe("config io write", () => {
       expect(livePersisted.gateway).toEqual({ mode: "local", port: 18789 });
 
       const overridePersisted = JSON.parse(
-        await fs.readFile(path.join(overrideDir, "openclaw.json"), "utf-8"),
+        await fs.readFile(path.join(overrideDir, "wineryclaw.json"), "utf-8"),
       ) as {
         session?: { store?: unknown };
       };
@@ -144,7 +144,7 @@ describe("config io write", () => {
 
   it("does not mutate caller config when unsetPaths is applied on first write", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".openclaw", "openclaw.json");
+      const configPath = path.join(home, ".wineryclaw", "wineryclaw.json");
       const io = createConfigIO({
         env: {} as NodeJS.ProcessEnv,
         homedir: () => home,

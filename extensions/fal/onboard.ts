@@ -1,8 +1,8 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-onboard";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/provider-onboard";
 
 export const FAL_DEFAULT_IMAGE_MODEL_REF = "fal/fal-ai/flux/dev";
 
-export function applyFalConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyFalConfig(cfg: WineryClawConfig): WineryClawConfig {
   if (cfg.agents?.defaults?.imageGenerationModel) {
     return cfg;
   }

@@ -2,7 +2,7 @@
   "name": "@openclaw/perplexity-plugin",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Perplexity plugin",
+  "description": "WineryClaw Perplexity plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import type { UpdateCheckResult } from "../infra/update-check.js";
 import { runExec } from "../process/exec.js";
 import { createEmptyTaskAuditSummary } from "../tasks/task-registry.audit.shared.js";
@@ -59,7 +59,7 @@ type StatusScanExecRunner = (
 
 export async function createStatusScanCoreBootstrap<TAgentStatus>(params: {
   coldStart: boolean;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   hasConfiguredChannels: boolean;
   opts: { timeoutMs?: number; all?: boolean };
   getTailnetHostname: (runner: StatusScanExecRunner) => Promise<string | null>;
@@ -68,7 +68,7 @@ export async function createStatusScanCoreBootstrap<TAgentStatus>(params: {
     fetchGit: boolean;
     includeRegistry: boolean;
   }) => Promise<UpdateCheckResult>;
-  getAgentLocalStatuses: (cfg: OpenClawConfig) => Promise<TAgentStatus>;
+  getAgentLocalStatuses: (cfg: WineryClawConfig) => Promise<TAgentStatus>;
 }) {
   const tailscaleMode = params.cfg.gateway?.tailscale?.mode ?? "off";
   const skipColdStartNetworkChecks = shouldSkipStatusScanNetworkChecks({
@@ -121,8 +121,8 @@ export async function createStatusScanCoreBootstrap<TAgentStatus>(params: {
 
 export async function createStatusScanBootstrap<TAgentStatus, TSummary>(params: {
   coldStart: boolean;
-  cfg: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  cfg: WineryClawConfig;
+  sourceConfig: WineryClawConfig;
   hasConfiguredChannels: boolean;
   opts: { timeoutMs?: number; all?: boolean };
   getTailnetHostname: (runner: StatusScanExecRunner) => Promise<string | null>;
@@ -131,10 +131,10 @@ export async function createStatusScanBootstrap<TAgentStatus, TSummary>(params: 
     fetchGit: boolean;
     includeRegistry: boolean;
   }) => Promise<UpdateCheckResult>;
-  getAgentLocalStatuses: (cfg: OpenClawConfig) => Promise<TAgentStatus>;
+  getAgentLocalStatuses: (cfg: WineryClawConfig) => Promise<TAgentStatus>;
   getStatusSummary: (params: {
-    config: OpenClawConfig;
-    sourceConfig: OpenClawConfig;
+    config: WineryClawConfig;
+    sourceConfig: WineryClawConfig;
   }) => Promise<TSummary>;
 }) {
   const core = await createStatusScanCoreBootstrap<TAgentStatus>({

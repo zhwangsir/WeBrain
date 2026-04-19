@@ -54,8 +54,8 @@ type docFrontmatterTranslator struct{}
 
 func (docFrontmatterTranslator) Translate(_ context.Context, text, _, _ string) (string, error) {
 	replacer := strings.NewReplacer(
-		"Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS", "在 Fly.io 上逐步部署 OpenClaw，包含持久化存储和 HTTPS",
-		"Deploying OpenClaw on Fly.io", "在 Fly.io 上部署 OpenClaw",
+		"Step-by-step Fly.io deployment for WineryClaw with persistent storage and HTTPS", "在 Fly.io 上逐步部署 WineryClaw，包含持久化存储和 HTTPS",
+		"Deploying WineryClaw on Fly.io", "在 Fly.io 上部署 WineryClaw",
 		"Setting up Fly volumes, secrets, and first-run config", "设置 Fly volume、密钥和首次运行配置",
 	)
 	return replacer.Replace(text), nil
@@ -71,13 +71,13 @@ type docFrontmatterFallbackTranslator struct{}
 
 func (docFrontmatterFallbackTranslator) Translate(_ context.Context, text, _, _ string) (string, error) {
 	switch text {
-	case "Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS":
+	case "Step-by-step Fly.io deployment for WineryClaw with persistent storage and HTTPS":
 		return strings.Join([]string{
 			"<frontmatter>",
 			"title: Fly.io",
-			"summary: \"在 Fly.io 上部署 OpenClaw 的逐步指南，包含持久化存储和 HTTPS 设置\"",
+			"summary: \"在 Fly.io 上部署 WineryClaw 的逐步指南，包含持久化存储和 HTTPS 设置\"",
 			"read_when:",
-			"  - 在 Fly.io 上部署 OpenClaw",
+			"  - 在 Fly.io 上部署 WineryClaw",
 			"  - 设置 Fly 卷、机密和初始运行配置",
 			"</frontmatter>",
 			"",
@@ -85,8 +85,8 @@ func (docFrontmatterFallbackTranslator) Translate(_ context.Context, text, _, _ 
 			"# Fly.io 部署",
 			"</body>",
 		}, "\n"), nil
-	case "Deploying OpenClaw on Fly.io":
-		return "在 Fly.io 上部署 OpenClaw", nil
+	case "Deploying WineryClaw on Fly.io":
+		return "在 Fly.io 上部署 WineryClaw", nil
 	case "Setting up Fly volumes, secrets, and first-run config":
 		return "设置 Fly 卷、机密和初始运行配置", nil
 	default:
@@ -823,9 +823,9 @@ func TestProcessFileDocUsesFieldLevelFrontmatterTranslation(t *testing.T) {
 	source := strings.Join([]string{
 		"---",
 		"title: Fly.io",
-		"summary: \"Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS\"",
+		"summary: \"Step-by-step Fly.io deployment for WineryClaw with persistent storage and HTTPS\"",
 		"read_when:",
-		"  - Deploying OpenClaw on Fly.io",
+		"  - Deploying WineryClaw on Fly.io",
 		"  - Setting up Fly volumes, secrets, and first-run config",
 		"---",
 		"",
@@ -849,10 +849,10 @@ func TestProcessFileDocUsesFieldLevelFrontmatterTranslation(t *testing.T) {
 		t.Fatalf("read output failed: %v", err)
 	}
 	text := string(output)
-	if !strings.Contains(text, "在 Fly.io 上逐步部署 OpenClaw，包含持久化存储和 HTTPS") {
+	if !strings.Contains(text, "在 Fly.io 上逐步部署 WineryClaw，包含持久化存储和 HTTPS") {
 		t.Fatalf("expected translated summary in output:\n%s", text)
 	}
-	if !strings.Contains(text, "在 Fly.io 上部署 OpenClaw") {
+	if !strings.Contains(text, "在 Fly.io 上部署 WineryClaw") {
 		t.Fatalf("expected translated read_when entry in output:\n%s", text)
 	}
 }
@@ -869,9 +869,9 @@ func TestProcessFileDocRejectsSuspiciousFrontmatterScalarExpansion(t *testing.T)
 	source := strings.Join([]string{
 		"---",
 		"title: Fly.io",
-		"summary: \"Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS\"",
+		"summary: \"Step-by-step Fly.io deployment for WineryClaw with persistent storage and HTTPS\"",
 		"read_when:",
-		"  - Deploying OpenClaw on Fly.io",
+		"  - Deploying WineryClaw on Fly.io",
 		"  - Setting up Fly volumes, secrets, and first-run config",
 		"---",
 		"",
@@ -895,10 +895,10 @@ func TestProcessFileDocRejectsSuspiciousFrontmatterScalarExpansion(t *testing.T)
 	if strings.Contains(text, "<frontmatter>") || strings.Contains(text, "<body>") {
 		t.Fatalf("expected suspicious frontmatter expansion to be rejected:\n%s", text)
 	}
-	if !strings.Contains(text, "summary: Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS") {
+	if !strings.Contains(text, "summary: Step-by-step Fly.io deployment for WineryClaw with persistent storage and HTTPS") {
 		t.Fatalf("expected original summary to be preserved after fallback:\n%s", text)
 	}
-	if !strings.Contains(text, "在 Fly.io 上部署 OpenClaw") {
+	if !strings.Contains(text, "在 Fly.io 上部署 WineryClaw") {
 		t.Fatalf("expected read_when translation to survive fallback:\n%s", text)
 	}
 }

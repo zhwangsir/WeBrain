@@ -1,5 +1,5 @@
 ---
-summary: "Get OpenClaw installed and run your first chat in minutes."
+summary: "Get WineryClaw installed and run your first chat in minutes."
 read_when:
   - First time setup from zero
   - You want the fastest path to a working chat
@@ -8,7 +8,7 @@ title: "Getting Started"
 
 # Getting Started
 
-Install OpenClaw, run onboarding, and chat with your AI assistant — all in
+Install WineryClaw, run onboarding, and chat with your AI assistant — all in
 about 5 minutes. By the end you will have a running Gateway, configured auth,
 and a working chat session.
 
@@ -27,11 +27,11 @@ Need to install Node? See [Node setup](/install/node).
 ## Quick setup
 
 <Steps>
-  <Step title="Install OpenClaw">
+  <Step title="Install WineryClaw">
     <Tabs>
       <Tab title="macOS / Linux">
         ```bash
-        curl -fsSL https://openclaw.ai/install.sh | bash
+        curl -fsSL bash ./install.sh | bash
         ```
         <img
   src="/assets/install-script.svg"
@@ -41,7 +41,7 @@ Need to install Node? See [Node setup](/install/node).
       </Tab>
       <Tab title="Windows (PowerShell)">
         ```powershell
-        iwr -useb https://openclaw.ai/install.ps1 | iex
+        iwr -useb powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install.ps1' -OutFile install.ps1; ./install.ps1" | iex
         ```
       </Tab>
     </Tabs>
@@ -94,7 +94,7 @@ Need to install Node? See [Node setup](/install/node).
   assets and `index.html`.
 
 ```bash
-mkdir -p "$HOME/.openclaw/control-ui-custom"
+mkdir -p "$HOME/.wineryclaw/control-ui-custom"
 # Copy your built static files into that directory.
 ```
 
@@ -105,7 +105,7 @@ Then set:
   "gateway": {
     "controlUi": {
       "enabled": true,
-      "root": "$HOME/.openclaw/control-ui-custom"
+      "root": "$HOME/.wineryclaw/control-ui-custom"
     }
   }
 }
@@ -138,11 +138,11 @@ openclaw dashboard
 </Columns>
 
 <Accordion title="Advanced: environment variables">
-  If you run OpenClaw as a service account or want custom paths:
+  If you run WineryClaw as a service account or want custom paths:
 
-- `OPENCLAW_HOME` — home directory for internal path resolution
-- `OPENCLAW_STATE_DIR` — override the state directory
-- `OPENCLAW_CONFIG_PATH` — override the config file path
+- `WINERYCLAW_HOME` — home directory for internal path resolution
+- `WINERYCLAW_STATE_DIR` — override the state directory
+- `WINERYCLAW_CONFIG_PATH` — override the config file path
 
 Full reference: [Environment variables](/help/environment).
 </Accordion>

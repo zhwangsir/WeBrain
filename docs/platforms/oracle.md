@@ -1,19 +1,19 @@
 ---
-summary: "OpenClaw on Oracle Cloud (Always Free ARM)"
+summary: "WineryClaw on Oracle Cloud (Always Free ARM)"
 read_when:
-  - Setting up OpenClaw on Oracle Cloud
-  - Looking for low-cost VPS hosting for OpenClaw
-  - Want 24/7 OpenClaw on a small server
+  - Setting up WineryClaw on Oracle Cloud
+  - Looking for low-cost VPS hosting for WineryClaw
+  - Want 24/7 WineryClaw on a small server
 title: "Oracle Cloud (Platform)"
 ---
 
-# OpenClaw on Oracle Cloud (OCI)
+# WineryClaw on Oracle Cloud (OCI)
 
 ## Goal
 
-Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier.
+Run a persistent WineryClaw Gateway on Oracle Cloud's **Always Free** ARM tier.
 
-Oracle’s free tier can be a great fit for OpenClaw (especially if you already have an OCI account), but it comes with tradeoffs:
+Oracle’s free tier can be a great fit for WineryClaw (especially if you already have an OCI account), but it comes with tradeoffs:
 
 - ARM architecture (most things work, but some binaries may be x86-only)
 - Capacity and signup can be finicky
@@ -96,10 +96,10 @@ tailscale status
 
 **From now on, connect via Tailscale:** `ssh ubuntu@openclaw` (or use the Tailscale IP).
 
-## 5) Install OpenClaw
+## 5) Install WineryClaw
 
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
+curl -fsSL bash ./install.sh | bash
 source ~/.bashrc
 ```
 
@@ -285,8 +285,8 @@ Most npm packages work fine. For binaries, look for `linux-arm64` or `aarch64` r
 
 All state lives in:
 
-- `~/.openclaw/` — `openclaw.json`, per-agent `auth-profiles.json`, channel/provider state, and session data
-- `~/.openclaw/workspace/` — workspace (SOUL.md, memory, artifacts)
+- `~/.wineryclaw/` — `wineryclaw.json`, per-agent `auth-profiles.json`, channel/provider state, and session data
+- `~/.wineryclaw/workspace/` — workspace (SOUL.md, memory, artifacts)
 
 Back up periodically:
 

@@ -12,7 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import ai.openclaw.app.ui.RootScreen
-import ai.openclaw.app.ui.OpenClawTheme
+import ai.openclaw.app.ui.WineryClawTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
     }
 
     setContent {
-      OpenClawTheme {
+      WineryClawTheme {
         Surface(modifier = Modifier) {
           RootScreen(viewModel = viewModel)
         }

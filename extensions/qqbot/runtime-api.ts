@@ -1,8 +1,8 @@
-export type { ChannelPlugin, OpenClawPluginApi, PluginRuntime } from "openclaw/plugin-sdk/core";
-export type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+export type { ChannelPlugin, WineryClawPluginApi, PluginRuntime } from "openclaw/plugin-sdk/core";
+export type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 export type {
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  WineryClawPluginService,
+  WineryClawPluginServiceContext,
   PluginLogger,
 } from "openclaw/plugin-sdk/core";
 export type { ResolvedQQBotAccount, QQBotAccountConfig } from "./src/types.js";

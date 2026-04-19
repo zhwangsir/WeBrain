@@ -18,7 +18,7 @@ const hookMocks = vi.hoisted(() => ({
 }));
 
 let cfg: Record<string, unknown> = {};
-let lastCreateOpenClawToolsContext: Record<string, unknown> | undefined;
+let lastCreateWineryClawToolsContext: Record<string, unknown> | undefined;
 
 // Perf: keep this suite pure unit. Mock heavyweight config/session modules.
 vi.mock("../config/config.js", () => ({
@@ -94,8 +94,8 @@ vi.mock("../agents/openclaw-tools.js", () => {
       execute: async () => ({
         ok: true,
         route: {
-          agentTo: lastCreateOpenClawToolsContext?.agentTo,
-          agentThreadId: lastCreateOpenClawToolsContext?.agentThreadId,
+          agentTo: lastCreateWineryClawToolsContext?.agentTo,
+          agentThreadId: lastCreateWineryClawToolsContext?.agentThreadId,
         },
       }),
     },
@@ -179,8 +179,8 @@ vi.mock("../agents/openclaw-tools.js", () => {
   ];
 
   return {
-    createOpenClawTools: (ctx: Record<string, unknown>) => {
-      lastCreateOpenClawToolsContext = ctx;
+    createWineryClawTools: (ctx: Record<string, unknown>) => {
+      lastCreateWineryClawToolsContext = ctx;
       return tools;
     },
   };
@@ -244,11 +244,11 @@ afterAll(async () => {
 });
 
 beforeEach(() => {
-  delete process.env.OPENCLAW_GATEWAY_TOKEN;
-  delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+  delete process.env.WINERYCLAW_GATEWAY_TOKEN;
+  delete process.env.WINERYCLAW_GATEWAY_PASSWORD;
   pluginHttpHandlers = [];
   cfg = {};
-  lastCreateOpenClawToolsContext = undefined;
+  lastCreateWineryClawToolsContext = undefined;
   hookMocks.resolveToolLoopDetectionConfig.mockClear();
   hookMocks.resolveToolLoopDetectionConfig.mockImplementation(() => ({ warnAt: 3 }));
   hookMocks.runBeforeToolCallHook.mockClear();
@@ -403,8 +403,8 @@ describe("POST /tools/invoke", () => {
     const body = await res.json();
     expect(body.ok).toBe(true);
     expect(body).toHaveProperty("result");
-    expect(lastCreateOpenClawToolsContext?.allowMediaInvokeCommands).toBe(true);
-    expect(lastCreateOpenClawToolsContext?.disablePluginTools).toBe(true);
+    expect(lastCreateWineryClawToolsContext?.allowMediaInvokeCommands).toBe(true);
+    expect(lastCreateWineryClawToolsContext?.disablePluginTools).toBe(true);
     expect(hookMocks.runBeforeToolCallHook).toHaveBeenCalledWith(
       expect.objectContaining({
         toolName: "agents_list",
@@ -422,7 +422,7 @@ describe("POST /tools/invoke", () => {
     const res = await invokeAgentsListAuthed({ sessionKey: "main" });
 
     expect(res.status).toBe(200);
-    expect(lastCreateOpenClawToolsContext?.allowGatewaySubagentBinding).toBe(true);
+    expect(lastCreateWineryClawToolsContext?.allowGatewaySubagentBinding).toBe(true);
   });
 
   it("keeps plugin tools enabled for non-core tool invokes", async () => {
@@ -435,7 +435,7 @@ describe("POST /tools/invoke", () => {
     });
 
     expect(res.status).toBe(200);
-    expect(lastCreateOpenClawToolsContext?.disablePluginTools).toBe(false);
+    expect(lastCreateWineryClawToolsContext?.disablePluginTools).toBe(false);
   });
 
   it("blocks tool execution when before_tool_call rejects the invoke", async () => {
@@ -484,7 +484,7 @@ describe("POST /tools/invoke", () => {
       sessionKey: "main",
     });
     expect(writeRes.status).toBe(200);
-    expect(lastCreateOpenClawToolsContext?.senderIsOwner).toBe(false);
+    expect(lastCreateWineryClawToolsContext?.senderIsOwner).toBe(false);
 
     const adminRes = await invokeTool({
       port: sharedPort,
@@ -493,7 +493,7 @@ describe("POST /tools/invoke", () => {
       sessionKey: "main",
     });
     expect(adminRes.status).toBe(200);
-    expect(lastCreateOpenClawToolsContext?.senderIsOwner).toBe(true);
+    expect(lastCreateWineryClawToolsContext?.senderIsOwner).toBe(true);
   });
 
   it("uses before_tool_call adjusted params for HTTP tool execution", async () => {

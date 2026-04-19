@@ -22,15 +22,15 @@ if ! docker run --rm "${DOCKER_ENV_ARGS[@]}" -i "$IMAGE_NAME" bash -s >"$RUN_LOG
 set -euo pipefail
 
 if [ -f dist/index.mjs ]; then
-  OPENCLAW_ENTRY="dist/index.mjs"
+  WINERYCLAW_ENTRY="dist/index.mjs"
 elif [ -f dist/index.js ]; then
-  OPENCLAW_ENTRY="dist/index.js"
+  WINERYCLAW_ENTRY="dist/index.js"
 else
   echo "Missing dist/index.(m)js (build output):"
   ls -la dist || true
   exit 1
 fi
-export OPENCLAW_ENTRY
+export WINERYCLAW_ENTRY
 
 sanitize_env_string() {
   local value="${1:-}"
@@ -53,7 +53,7 @@ fi
 home_dir=$(mktemp -d "/tmp/openclaw-plugins-e2e.XXXXXX")
 export HOME="$home_dir"
 BUNDLED_PLUGIN_ROOT_DIR="extensions"
-OPENCLAW_PLUGIN_HOME="$HOME/.openclaw/$BUNDLED_PLUGIN_ROOT_DIR"
+WINERYCLAW_PLUGIN_HOME="$HOME/.openclaw/$BUNDLED_PLUGIN_ROOT_DIR"
 
 gateway_pid=""
 
@@ -143,7 +143,7 @@ stop_gateway() {
 start_gateway() {
   local log_file="$1"
   : > "$log_file"
-  node "$OPENCLAW_ENTRY" gateway --port 18789 --bind loopback --allow-unconfigured \
+  node "$WINERYCLAW_ENTRY" gateway --port 18789 --bind loopback --allow-unconfigured \
     >"$log_file" 2>&1 &
   gateway_pid=$!
 
@@ -168,7 +168,7 @@ start_gateway() {
 
 wait_for_gateway_health() {
   for _ in $(seq 1 120); do
-    if node "$OPENCLAW_ENTRY" gateway health \
+    if node "$WINERYCLAW_ENTRY" gateway health \
       --url ws://127.0.0.1:18789 \
       --token plugin-e2e-token \
       --json >/dev/null 2>&1; then
@@ -186,7 +186,7 @@ run_gateway_chat_json() {
   local message="$2"
   local output_file="$3"
   local timeout_ms="${4:-45000}"
-  node - <<'NODE' "$OPENCLAW_ENTRY" "$session_key" "$message" "$output_file" "$timeout_ms"
+  node - <<'NODE' "$WINERYCLAW_ENTRY" "$session_key" "$message" "$output_file" "$timeout_ms"
 const { execFileSync } = require("node:child_process");
 const fs = require("node:fs");
 const { randomUUID } = require("node:crypto");
@@ -414,7 +414,7 @@ NODE
 }
 
 demo_plugin_id="demo-plugin"
-demo_plugin_root="$OPENCLAW_PLUGIN_HOME/$demo_plugin_id"
+demo_plugin_root="$WINERYCLAW_PLUGIN_HOME/$demo_plugin_id"
 mkdir -p "$demo_plugin_root"
 
 cat > "$demo_plugin_root/index.js" <<'JS'
@@ -441,8 +441,8 @@ cat > "$demo_plugin_root/openclaw.plugin.json" <<'JSON'
 JSON
 record_fixture_plugin_trust "$demo_plugin_id" "$demo_plugin_root" 1
 
-node "$OPENCLAW_ENTRY" plugins list --json > /tmp/plugins.json
-node "$OPENCLAW_ENTRY" plugins inspect demo-plugin --json > /tmp/plugins-inspect.json
+node "$WINERYCLAW_ENTRY" plugins list --json > /tmp/plugins.json
+node "$WINERYCLAW_ENTRY" plugins inspect demo-plugin --json > /tmp/plugins-inspect.json
 
 node - <<'NODE'
 const fs = require("node:fs");
@@ -507,9 +507,9 @@ cat > "$pack_dir/package/openclaw.plugin.json" <<'JSON'
 JSON
 tar -czf /tmp/demo-plugin-tgz.tgz -C "$pack_dir" package
 
-run_logged install-tgz node "$OPENCLAW_ENTRY" plugins install /tmp/demo-plugin-tgz.tgz
-node "$OPENCLAW_ENTRY" plugins list --json > /tmp/plugins2.json
-node "$OPENCLAW_ENTRY" plugins inspect demo-plugin-tgz --json > /tmp/plugins2-inspect.json
+run_logged install-tgz node "$WINERYCLAW_ENTRY" plugins install /tmp/demo-plugin-tgz.tgz
+node "$WINERYCLAW_ENTRY" plugins list --json > /tmp/plugins2.json
+node "$WINERYCLAW_ENTRY" plugins inspect demo-plugin-tgz --json > /tmp/plugins2-inspect.json
 
 node - <<'NODE'
 const fs = require("node:fs");
@@ -555,9 +555,9 @@ cat > "$dir_plugin/openclaw.plugin.json" <<'JSON'
 }
 JSON
 
-run_logged install-dir node "$OPENCLAW_ENTRY" plugins install "$dir_plugin"
-node "$OPENCLAW_ENTRY" plugins list --json > /tmp/plugins3.json
-node "$OPENCLAW_ENTRY" plugins inspect demo-plugin-dir --json > /tmp/plugins3-inspect.json
+run_logged install-dir node "$WINERYCLAW_ENTRY" plugins install "$dir_plugin"
+node "$WINERYCLAW_ENTRY" plugins list --json > /tmp/plugins3.json
+node "$WINERYCLAW_ENTRY" plugins inspect demo-plugin-dir --json > /tmp/plugins3-inspect.json
 
 node - <<'NODE'
 const fs = require("node:fs");
@@ -604,9 +604,9 @@ cat > "$file_pack_dir/package/openclaw.plugin.json" <<'JSON'
 }
 JSON
 
-run_logged install-file node "$OPENCLAW_ENTRY" plugins install "file:$file_pack_dir/package"
-node "$OPENCLAW_ENTRY" plugins list --json > /tmp/plugins4.json
-node "$OPENCLAW_ENTRY" plugins inspect demo-plugin-file --json > /tmp/plugins4-inspect.json
+run_logged install-file node "$WINERYCLAW_ENTRY" plugins install "file:$file_pack_dir/package"
+node "$WINERYCLAW_ENTRY" plugins list --json > /tmp/plugins4.json
+node "$WINERYCLAW_ENTRY" plugins inspect demo-plugin-file --json > /tmp/plugins4-inspect.json
 
 node - <<'NODE'
 const fs = require("node:fs");
@@ -626,7 +626,7 @@ NODE
 
 echo "Testing /plugin alias with Claude bundle restart semantics..."
 bundle_plugin_id="claude-bundle-e2e"
-bundle_root="$OPENCLAW_PLUGIN_HOME/$bundle_plugin_id"
+bundle_root="$WINERYCLAW_PLUGIN_HOME/$bundle_plugin_id"
 mkdir -p "$bundle_root/.claude-plugin" "$bundle_root/commands"
 cat > "$bundle_root/.claude-plugin/plugin.json" <<'JSON'
 {
@@ -873,7 +873,7 @@ cat > "$HOME/.claude/plugins/known_marketplaces.json" <<JSON
 }
 JSON
 
-node "$OPENCLAW_ENTRY" plugins marketplace list claude-fixtures --json > /tmp/marketplace-list.json
+node "$WINERYCLAW_ENTRY" plugins marketplace list claude-fixtures --json > /tmp/marketplace-list.json
 
 node - <<'NODE'
 const fs = require("node:fs");
@@ -889,11 +889,11 @@ if (!names.includes("marketplace-shortcut") || !names.includes("marketplace-dire
 console.log("ok");
 NODE
 
-run_logged install-marketplace-shortcut node "$OPENCLAW_ENTRY" plugins install marketplace-shortcut@claude-fixtures
-run_logged install-marketplace-direct node "$OPENCLAW_ENTRY" plugins install marketplace-direct --marketplace claude-fixtures
-node "$OPENCLAW_ENTRY" plugins list --json > /tmp/plugins-marketplace.json
-node "$OPENCLAW_ENTRY" plugins inspect marketplace-shortcut --json > /tmp/plugins-marketplace-shortcut-inspect.json
-node "$OPENCLAW_ENTRY" plugins inspect marketplace-direct --json > /tmp/plugins-marketplace-direct-inspect.json
+run_logged install-marketplace-shortcut node "$WINERYCLAW_ENTRY" plugins install marketplace-shortcut@claude-fixtures
+run_logged install-marketplace-direct node "$WINERYCLAW_ENTRY" plugins install marketplace-direct --marketplace claude-fixtures
+node "$WINERYCLAW_ENTRY" plugins list --json > /tmp/plugins-marketplace.json
+node "$WINERYCLAW_ENTRY" plugins inspect marketplace-shortcut --json > /tmp/plugins-marketplace-shortcut-inspect.json
+node "$WINERYCLAW_ENTRY" plugins inspect marketplace-direct --json > /tmp/plugins-marketplace-direct-inspect.json
 
 node - <<'NODE'
 const fs = require("node:fs");
@@ -959,10 +959,10 @@ write_fixture_plugin \
   "0.0.2" \
   "demo.marketplace.shortcut.v2" \
   "Marketplace Shortcut"
-run_logged update-marketplace-shortcut-dry-run node "$OPENCLAW_ENTRY" plugins update marketplace-shortcut --dry-run
-run_logged update-marketplace-shortcut node "$OPENCLAW_ENTRY" plugins update marketplace-shortcut
-node "$OPENCLAW_ENTRY" plugins list --json > /tmp/plugins-marketplace-updated.json
-node "$OPENCLAW_ENTRY" plugins inspect marketplace-shortcut --json > /tmp/plugins-marketplace-updated-inspect.json
+run_logged update-marketplace-shortcut-dry-run node "$WINERYCLAW_ENTRY" plugins update marketplace-shortcut --dry-run
+run_logged update-marketplace-shortcut node "$WINERYCLAW_ENTRY" plugins update marketplace-shortcut
+node "$WINERYCLAW_ENTRY" plugins list --json > /tmp/plugins-marketplace-updated.json
+node "$WINERYCLAW_ENTRY" plugins inspect marketplace-shortcut --json > /tmp/plugins-marketplace-updated-inspect.json
 
 node - <<'NODE'
 const fs = require("node:fs");

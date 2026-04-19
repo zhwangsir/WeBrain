@@ -13,7 +13,7 @@ vi.mock("openclaw/plugin-sdk/config-runtime", async () => {
   };
 });
 
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   getSessionBindingService,
   registerSessionBindingAdapter,
@@ -49,7 +49,7 @@ const baseCfg = {
       },
     },
   },
-} satisfies OpenClawConfig;
+} satisfies WineryClawConfig;
 
 function createDmClient(channelId: string): DiscordClient {
   return {

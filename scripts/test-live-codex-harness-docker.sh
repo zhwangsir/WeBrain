@@ -3,12 +3,12 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/scripts/lib/live-docker-auth.sh"
-IMAGE_NAME="${OPENCLAW_IMAGE:-openclaw:local}"
-LIVE_IMAGE_NAME="${OPENCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
-CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}"
-WORKSPACE_DIR="${OPENCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
-PROFILE_FILE="${OPENCLAW_PROFILE_FILE:-$HOME/.profile}"
-CLI_TOOLS_DIR="${OPENCLAW_DOCKER_CLI_TOOLS_DIR:-$HOME/.cache/openclaw/docker-cli-tools}"
+IMAGE_NAME="${WINERYCLAW_IMAGE:-openclaw:local}"
+LIVE_IMAGE_NAME="${WINERYCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
+CONFIG_DIR="${WINERYCLAW_CONFIG_DIR:-$HOME/.openclaw}"
+WORKSPACE_DIR="${WINERYCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
+PROFILE_FILE="${WINERYCLAW_PROFILE_FILE:-$HOME/.profile}"
+CLI_TOOLS_DIR="${WINERYCLAW_DOCKER_CLI_TOOLS_DIR:-$HOME/.cache/openclaw/docker-cli-tools}"
 
 mkdir -p "$CLI_TOOLS_DIR"
 
@@ -42,7 +42,7 @@ read -r -d '' LIVE_TEST_CMD <<'EOF' || true
 set -euo pipefail
 [ -f "$HOME/.profile" ] && source "$HOME/.profile" || true
 export PATH="$HOME/.npm-global/bin:$PATH"
-IFS=',' read -r -a auth_files <<<"${OPENCLAW_DOCKER_AUTH_FILES_RESOLVED:-}"
+IFS=',' read -r -a auth_files <<<"${WINERYCLAW_DOCKER_AUTH_FILES_RESOLVED:-}"
 if ((${#auth_files[@]} > 0)); then
   for auth_file in "${auth_files[@]}"; do
     [ -n "$auth_file" ] || continue
@@ -77,9 +77,9 @@ EOF
 "$ROOT_DIR/scripts/test-live-build-docker.sh"
 
 echo "==> Run Codex harness live test in Docker"
-echo "==> Model: ${OPENCLAW_LIVE_CODEX_HARNESS_MODEL:-codex/gpt-5.4}"
-echo "==> Image probe: ${OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE:-1}"
-echo "==> MCP probe: ${OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE:-1}"
+echo "==> Model: ${WINERYCLAW_LIVE_CODEX_HARNESS_MODEL:-codex/gpt-5.4}"
+echo "==> Image probe: ${WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE:-1}"
+echo "==> MCP probe: ${WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE:-1}"
 echo "==> Harness fallback: none"
 echo "==> Auth files: ${AUTH_FILES_CSV:-none}"
 docker run --rm -t \
@@ -89,16 +89,16 @@ docker run --rm -t \
   -e HOME=/home/node \
   -e NODE_OPTIONS=--disable-warning=ExperimentalWarning \
   -e OPENAI_API_KEY \
-  -e OPENCLAW_AGENT_HARNESS_FALLBACK=none \
-  -e OPENCLAW_CODEX_APP_SERVER_BIN="${OPENCLAW_CODEX_APP_SERVER_BIN:-codex}" \
-  -e OPENCLAW_DOCKER_AUTH_FILES_RESOLVED="$AUTH_FILES_CSV" \
-  -e OPENCLAW_LIVE_CODEX_HARNESS=1 \
-  -e OPENCLAW_LIVE_CODEX_HARNESS_DEBUG="${OPENCLAW_LIVE_CODEX_HARNESS_DEBUG:-}" \
-  -e OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE="${OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE:-1}" \
-  -e OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE="${OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE:-1}" \
-  -e OPENCLAW_LIVE_CODEX_HARNESS_MODEL="${OPENCLAW_LIVE_CODEX_HARNESS_MODEL:-codex/gpt-5.4}" \
-  -e OPENCLAW_LIVE_TEST=1 \
-  -e OPENCLAW_VITEST_FS_MODULE_CACHE=0 \
+  -e WINERYCLAW_AGENT_HARNESS_FALLBACK=none \
+  -e WINERYCLAW_CODEX_APP_SERVER_BIN="${WINERYCLAW_CODEX_APP_SERVER_BIN:-codex}" \
+  -e WINERYCLAW_DOCKER_AUTH_FILES_RESOLVED="$AUTH_FILES_CSV" \
+  -e WINERYCLAW_LIVE_CODEX_HARNESS=1 \
+  -e WINERYCLAW_LIVE_CODEX_HARNESS_DEBUG="${WINERYCLAW_LIVE_CODEX_HARNESS_DEBUG:-}" \
+  -e WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE="${WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE:-1}" \
+  -e WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE="${WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE:-1}" \
+  -e WINERYCLAW_LIVE_CODEX_HARNESS_MODEL="${WINERYCLAW_LIVE_CODEX_HARNESS_MODEL:-codex/gpt-5.4}" \
+  -e WINERYCLAW_LIVE_TEST=1 \
+  -e WINERYCLAW_VITEST_FS_MODULE_CACHE=0 \
   -v "$ROOT_DIR":/src:ro \
   -v "$CONFIG_DIR":/home/node/.openclaw \
   -v "$WORKSPACE_DIR":/home/node/.openclaw/workspace \

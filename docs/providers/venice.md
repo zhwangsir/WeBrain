@@ -1,7 +1,7 @@
 ---
-summary: "Use Venice AI privacy-focused models in OpenClaw"
+summary: "Use Venice AI privacy-focused models in WineryClaw"
 read_when:
-  - You want privacy-focused inference in OpenClaw
+  - You want privacy-focused inference in WineryClaw
   - You want Venice AI setup guidance
 title: "Venice AI"
 ---
@@ -10,7 +10,7 @@ title: "Venice AI"
 
 Venice AI provides **privacy-focused AI inference** with support for uncensored models and access to major proprietary models through their anonymized proxy. All inference is private by default — no training on your data, no logging.
 
-## Why Venice in OpenClaw
+## Why Venice in WineryClaw
 
 - **Private inference** for open-source models (no logging).
 - **Uncensored models** when you need them.
@@ -49,7 +49,7 @@ Anonymized models are **not** fully private. Venice strips metadata before forwa
     2. Go to **Settings > API Keys > Create new key**
     3. Copy your API key (format: `vapi_xxxxxxxxxxxx`)
   </Step>
-  <Step title="Configure OpenClaw">
+  <Step title="Configure WineryClaw">
     Choose your preferred setup method:
 
     <Tabs>
@@ -88,7 +88,7 @@ Anonymized models are **not** fully private. Venice strips metadata before forwa
 
 ## Model selection
 
-After setup, OpenClaw shows all available Venice models. Pick based on your needs:
+After setup, WineryClaw shows all available Venice models. Pick based on your needs:
 
 - **Default model**: `venice/kimi-k2-5` for strong private reasoning plus vision.
 - **High-capability option**: `venice/claude-opus-4-6` for the strongest anonymized Venice path.
@@ -182,7 +182,7 @@ Use the table below to pick the right model for your use case.
 
 ## Model discovery
 
-OpenClaw automatically discovers models from the Venice API when `VENICE_API_KEY` is set. If the API is unreachable, it falls back to a static catalog.
+WineryClaw automatically discovers models from the Venice API when `VENICE_API_KEY` is set. If the API is unreachable, it falls back to a static catalog.
 
 The `/models` endpoint is public (no auth needed for listing), but inference requires a valid API key.
 

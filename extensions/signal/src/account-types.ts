@@ -1,6 +1,6 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 
 export type SignalAccountConfig = Omit<
-  Exclude<NonNullable<OpenClawConfig["channels"]>["signal"], undefined>,
+  Exclude<NonNullable<WineryClawConfig["channels"]>["signal"], undefined>,
   "accounts"
 >;

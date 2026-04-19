@@ -42,7 +42,7 @@ describe("config observe recovery", () => {
     auditPath: string;
     warn: ReturnType<typeof vi.fn>;
   } {
-    const configPath = path.join(home, ".openclaw", "openclaw.json");
+    const configPath = path.join(home, ".wineryclaw", "wineryclaw.json");
     return {
       deps: {
         fs,
@@ -52,7 +52,7 @@ describe("config observe recovery", () => {
         logger: { warn },
       },
       configPath,
-      auditPath: path.join(home, ".openclaw", "logs", "config-audit.jsonl"),
+      auditPath: path.join(home, ".wineryclaw", "logs", "config-audit.jsonl"),
       warn,
     };
   }

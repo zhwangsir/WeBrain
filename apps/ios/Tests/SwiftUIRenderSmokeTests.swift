@@ -1,8 +1,8 @@
-import OpenClawKit
+import WineryClawKit
 import SwiftUI
 import Testing
 import UIKit
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite struct SwiftUIRenderSmokeTests {
     @MainActor private static func host(_ view: some View) -> UIWindow {

@@ -1,15 +1,15 @@
 import { normalizeChatChannelId } from "../channels/ids.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 
 export function setPluginEnabledInConfig(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   pluginId: string,
   enabled: boolean,
-): OpenClawConfig {
+): WineryClawConfig {
   const builtInChannelId = normalizeChatChannelId(pluginId);
   const resolvedId = builtInChannelId ?? pluginId;
 
-  const next: OpenClawConfig = {
+  const next: WineryClawConfig = {
     ...config,
     plugins: {
       ...config.plugins,

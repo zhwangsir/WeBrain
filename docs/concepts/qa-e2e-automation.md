@@ -9,7 +9,7 @@ title: "QA E2E Automation"
 
 # QA E2E Automation
 
-The private QA stack is meant to exercise OpenClaw in a more realistic,
+The private QA stack is meant to exercise WineryClaw in a more realistic,
 channel-shaped way than a single unit test can.
 
 Current pieces:
@@ -71,9 +71,9 @@ pnpm openclaw qa telegram
 ```
 
 That lane targets one real private Telegram group instead of provisioning a
-disposable server. It requires `OPENCLAW_QA_TELEGRAM_GROUP_ID`,
-`OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN`, and
-`OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN`, plus two distinct bots in the same
+disposable server. It requires `WINERYCLAW_QA_TELEGRAM_GROUP_ID`,
+`WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN`, and
+`WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN`, plus two distinct bots in the same
 private group. The SUT bot must have a Telegram username, and bot-to-bot
 observation works best when both bots have Bot-to-Bot Communication Mode
 enabled in `@BotFather`.
@@ -99,7 +99,7 @@ For a disposable Linux VM lane without bringing Docker into the QA path, run:
 pnpm openclaw qa suite --runner multipass --scenario channel-chat-baseline
 ```
 
-This boots a fresh Multipass guest, installs dependencies, builds OpenClaw
+This boots a fresh Multipass guest, installs dependencies, builds WineryClaw
 inside the guest, runs `qa suite`, then copies the normal QA report and
 summary back into `.artifacts/qa-e2e/...` on the host.
 It reuses the same scenario-selection behavior as `qa suite` on the host.

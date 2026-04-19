@@ -35,8 +35,8 @@ const buildGatewayInstallPlan = vi.fn(
     programArguments: ["/bin/node", "cli", "gateway", "--port", String(params.port)],
     workingDirectory: process.cwd(),
     environment: {
-      OPENCLAW_GATEWAY_PORT: String(params.port),
-      ...(params.token ? { OPENCLAW_GATEWAY_TOKEN: params.token } : {}),
+      WINERYCLAW_GATEWAY_PORT: String(params.port),
+      ...(params.token ? { WINERYCLAW_GATEWAY_TOKEN: params.token } : {}),
     },
   }),
 );
@@ -158,15 +158,15 @@ describe("daemon-cli coverage", () => {
   beforeEach(() => {
     daemonProgram = createDaemonProgram();
     envSnapshot = captureEnv([
-      "OPENCLAW_STATE_DIR",
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_GATEWAY_PORT",
-      "OPENCLAW_PROFILE",
+      "WINERYCLAW_STATE_DIR",
+      "WINERYCLAW_CONFIG_PATH",
+      "WINERYCLAW_GATEWAY_PORT",
+      "WINERYCLAW_PROFILE",
     ]);
-    process.env.OPENCLAW_STATE_DIR = "/tmp/openclaw-cli-state";
-    process.env.OPENCLAW_CONFIG_PATH = "/tmp/openclaw-cli-state/openclaw.json";
-    delete process.env.OPENCLAW_GATEWAY_PORT;
-    delete process.env.OPENCLAW_PROFILE;
+    process.env.WINERYCLAW_STATE_DIR = "/tmp/openclaw-cli-state";
+    process.env.WINERYCLAW_CONFIG_PATH = "/tmp/openclaw-cli-state/openclaw.json";
+    delete process.env.WINERYCLAW_GATEWAY_PORT;
+    delete process.env.WINERYCLAW_PROFILE;
     serviceReadCommand.mockResolvedValue(null);
     resolveGatewayProbeAuthSafeWithSecretInputs.mockClear();
     findExtraGatewayServices.mockClear();
@@ -199,10 +199,10 @@ describe("daemon-cli coverage", () => {
     serviceReadCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
-        OPENCLAW_PROFILE: "dev",
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon-state",
-        OPENCLAW_CONFIG_PATH: "/tmp/openclaw-daemon-state/openclaw.json",
-        OPENCLAW_GATEWAY_PORT: "19001",
+        WINERYCLAW_PROFILE: "dev",
+        WINERYCLAW_STATE_DIR: "/tmp/openclaw-daemon-state",
+        WINERYCLAW_CONFIG_PATH: "/tmp/openclaw-daemon-state/openclaw.json",
+        WINERYCLAW_GATEWAY_PORT: "19001",
       },
       sourcePath: "/tmp/ai.openclaw.gateway.plist",
     });

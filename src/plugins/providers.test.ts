@@ -1,12 +1,12 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { PluginAutoEnableResult } from "../config/plugin-auto-enable.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
 import { createEmptyPluginRegistry } from "./registry-empty.js";
 import type { ProviderPlugin } from "./types.js";
 
 type ResolveRuntimePluginRegistry = typeof import("./loader.js").resolveRuntimePluginRegistry;
-type LoadOpenClawPlugins = typeof import("./loader.js").loadOpenClawPlugins;
+type LoadWineryClawPlugins = typeof import("./loader.js").loadWineryClawPlugins;
 type IsPluginRegistryLoadInFlight = typeof import("./loader.js").isPluginRegistryLoadInFlight;
 type LoadPluginManifestRegistry =
   typeof import("./manifest-registry.js").loadPluginManifestRegistry;
@@ -14,7 +14,7 @@ type ApplyPluginAutoEnable = typeof import("../config/plugin-auto-enable.js").ap
 type SetActivePluginRegistry = typeof import("./runtime.js").setActivePluginRegistry;
 
 const resolveRuntimePluginRegistryMock = vi.fn<ResolveRuntimePluginRegistry>();
-const loadOpenClawPluginsMock = vi.fn<LoadOpenClawPlugins>();
+const loadWineryClawPluginsMock = vi.fn<LoadWineryClawPlugins>();
 const isPluginRegistryLoadInFlightMock = vi.fn<IsPluginRegistryLoadInFlight>((_) => false);
 const loadPluginManifestRegistryMock = vi.fn<LoadPluginManifestRegistry>();
 const applyPluginAutoEnableMock = vi.fn<ApplyPluginAutoEnable>();
@@ -153,7 +153,7 @@ function expectLastSetupRegistryLoad(params?: {
   env?: NodeJS.ProcessEnv;
   onlyPluginIds?: readonly string[];
 }) {
-  expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+  expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
     expect.objectContaining({
       cache: false,
       activate: false,
@@ -175,7 +175,7 @@ function getLastResolvedPluginConfig() {
 }
 
 function getLastSetupLoadedPluginConfig() {
-  const call = loadOpenClawPluginsMock.mock.calls.at(-1)?.[0];
+  const call = loadWineryClawPluginsMock.mock.calls.at(-1)?.[0];
   expect(call).toBeDefined();
   return (call?.config ?? undefined) as
     | {
@@ -200,10 +200,10 @@ function createBundledProviderCompatOptions(params?: { onlyPluginIds?: readonly 
 }
 
 function createAutoEnabledProviderConfig() {
-  const rawConfig: OpenClawConfig = {
+  const rawConfig: WineryClawConfig = {
     plugins: {},
   };
-  const autoEnabledConfig: OpenClawConfig = {
+  const autoEnabledConfig: WineryClawConfig = {
     ...rawConfig,
     plugins: {
       entries: {
@@ -271,8 +271,8 @@ describe("resolvePluginProviders", () => {
       diagnostics: [],
     });
     vi.doMock("./loader.js", () => ({
-      loadOpenClawPlugins: (...args: Parameters<LoadOpenClawPlugins>) =>
-        loadOpenClawPluginsMock(...args),
+      loadWineryClawPlugins: (...args: Parameters<LoadWineryClawPlugins>) =>
+        loadWineryClawPluginsMock(...args),
       isPluginRegistryLoadInFlight: (...args: Parameters<IsPluginRegistryLoadInFlight>) =>
         isPluginRegistryLoadInFlightMock(...args),
       resolveRuntimePluginRegistry: (...args: Parameters<ResolveRuntimePluginRegistry>) =>
@@ -308,7 +308,7 @@ describe("resolvePluginProviders", () => {
   beforeEach(() => {
     setActivePluginRegistry(createEmptyPluginRegistry());
     resolveRuntimePluginRegistryMock.mockReset();
-    loadOpenClawPluginsMock.mockReset();
+    loadWineryClawPluginsMock.mockReset();
     isPluginRegistryLoadInFlightMock.mockReset();
     isPluginRegistryLoadInFlightMock.mockReturnValue(false);
     const provider: ProviderPlugin = {
@@ -319,12 +319,12 @@ describe("resolvePluginProviders", () => {
     const registry = createEmptyPluginRegistry();
     registry.providers.push({ pluginId: "google", provider, source: "bundled" });
     resolveRuntimePluginRegistryMock.mockReturnValue(registry);
-    loadOpenClawPluginsMock.mockReturnValue(registry);
+    loadWineryClawPluginsMock.mockReturnValue(registry);
     loadPluginManifestRegistryMock.mockReset();
     applyPluginAutoEnableMock.mockReset();
     applyPluginAutoEnableMock.mockImplementation(
       (params): PluginAutoEnableResult => ({
-        config: params.config ?? ({} as OpenClawConfig),
+        config: params.config ?? ({} as WineryClawConfig),
         changes: [],
         autoEnabledReasons: {},
       }),
@@ -359,7 +359,7 @@ describe("resolvePluginProviders", () => {
   });
 
   it("forwards an explicit env to plugin loading", () => {
-    const env = { OPENCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { WINERYCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
 
     const providers = resolvePluginProviders({
       workspaceDir: "/workspace/explicit",
@@ -859,7 +859,7 @@ describe("resolvePluginProviders", () => {
       mode: "setup",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: ["setup-owned-provider"],
         activate: true,
@@ -897,7 +897,7 @@ describe("resolvePluginProviders", () => {
       mode: "setup",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         config: expect.objectContaining({
           plugins: expect.objectContaining({
@@ -933,7 +933,7 @@ describe("resolvePluginProviders", () => {
       mode: "setup",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadWineryClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         config: expect.objectContaining({
           plugins: expect.objectContaining({
@@ -968,7 +968,7 @@ describe("resolvePluginProviders", () => {
     });
 
     expect(providers).toEqual([]);
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadWineryClawPluginsMock).not.toHaveBeenCalled();
   });
 
   it("does not auto-activate untrusted workspace runtime owners when requested", () => {

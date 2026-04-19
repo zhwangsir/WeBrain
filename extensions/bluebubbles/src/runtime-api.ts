@@ -26,7 +26,7 @@ export type {
 } from "openclaw/plugin-sdk/channel-contract";
 export type {
   ChannelPlugin,
-  OpenClawConfig,
+  WineryClawConfig,
   PluginRuntime,
 } from "openclaw/plugin-sdk/channel-core";
 export { parseFiniteNumber } from "openclaw/plugin-sdk/infra-runtime";

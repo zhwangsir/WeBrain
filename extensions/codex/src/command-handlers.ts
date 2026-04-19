@@ -141,7 +141,7 @@ async function resumeThread(
     return "Usage: /codex resume <thread-id>";
   }
   if (!ctx.sessionFile) {
-    return "Cannot attach a Codex thread because this command did not include an OpenClaw session file.";
+    return "Cannot attach a Codex thread because this command did not include an WineryClaw session file.";
   }
   const response = await deps.codexControlRequest(
     pluginConfig,
@@ -159,7 +159,7 @@ async function resumeThread(
     model: isJsonObject(response) ? readString(response, "model") : undefined,
     modelProvider: isJsonObject(response) ? readString(response, "modelProvider") : undefined,
   });
-  return `Attached this OpenClaw session to Codex thread ${effectiveThreadId}.`;
+  return `Attached this WineryClaw session to Codex thread ${effectiveThreadId}.`;
 }
 
 async function startThreadAction(
@@ -170,11 +170,11 @@ async function startThreadAction(
   label: string,
 ): Promise<string> {
   if (!ctx.sessionFile) {
-    return `Cannot start Codex ${label} because this command did not include an OpenClaw session file.`;
+    return `Cannot start Codex ${label} because this command did not include an WineryClaw session file.`;
   }
   const binding = await deps.readCodexAppServerBinding(ctx.sessionFile);
   if (!binding?.threadId) {
-    return `No Codex thread is attached to this OpenClaw session yet.`;
+    return `No Codex thread is attached to this WineryClaw session yet.`;
   }
   await deps.codexControlRequest(pluginConfig, method, { threadId: binding.threadId });
   return `Started Codex ${label} for thread ${binding.threadId}.`;

@@ -12,5 +12,5 @@ export {
 } from "openclaw/plugin-sdk/webhook-ingress";
 export {
   resolveConfiguredSecretInputString,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/config-runtime";

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 
 export type SupportedGatewaySecretInputPath =
   | "gateway.auth.token"
@@ -20,7 +20,7 @@ export function isSupportedGatewaySecretInputPath(
 }
 
 export function readGatewaySecretInputValue(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   path: SupportedGatewaySecretInputPath,
 ): unknown {
   if (path === "gateway.auth.token") {
@@ -36,7 +36,7 @@ export function readGatewaySecretInputValue(
 }
 
 export function assignResolvedGatewaySecretInput(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   path: SupportedGatewaySecretInputPath;
   value: string | undefined;
 }): void {

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { resetLogger, setLoggerOverride } from "../logging/logger.js";
 import { createWarnLogCapture } from "../logging/test-helpers/warn-log-capture.js";
 import { __testing as setupRegistryRuntimeTesting } from "../plugins/setup-registry.runtime.js";
@@ -32,7 +32,7 @@ const EXPLICIT_ALLOWLIST_CONFIG = {
       },
     },
   },
-} as OpenClawConfig;
+} as WineryClawConfig;
 
 const BUNDLED_ALLOWLIST_CATALOG = [
   { provider: "anthropic", id: "claude-sonnet-4-6", name: "Claude Sonnet 4.5" },
@@ -48,7 +48,7 @@ const ANTHROPIC_OPUS_CATALOG = [
   },
 ];
 
-function resolveAnthropicOpusThinking(cfg: OpenClawConfig) {
+function resolveAnthropicOpusThinking(cfg: WineryClawConfig) {
   return resolveThinkingDefault({
     cfg,
     provider: "anthropic",
@@ -87,7 +87,7 @@ function createAgentFallbackConfig(params: {
           }
         : {}),
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createProviderWithModelsConfig(provider: string, models: Array<Record<string, unknown>>) {
@@ -100,12 +100,12 @@ function createProviderWithModelsConfig(provider: string, models: Array<Record<s
         },
       },
     },
-  } as Partial<OpenClawConfig>;
+  } as Partial<WineryClawConfig>;
 }
 
-function resolveConfiguredRefForTest(cfg: Partial<OpenClawConfig>) {
+function resolveConfiguredRefForTest(cfg: Partial<WineryClawConfig>) {
   return resolveConfiguredModelRef({
-    cfg: cfg as OpenClawConfig,
+    cfg: cfg as WineryClawConfig,
     defaultProvider: "openai",
     defaultModel: "gpt-5.4",
   });
@@ -154,11 +154,11 @@ describe("model-selection", () => {
     });
 
     it("returns true for setup-registered cli backends", () => {
-      expect(isCliProvider("claude-cli", {} as OpenClawConfig)).toBe(true);
+      expect(isCliProvider("claude-cli", {} as WineryClawConfig)).toBe(true);
     });
 
     it("returns false for provider ids", () => {
-      expect(isCliProvider("example-cli", {} as OpenClawConfig)).toBe(false);
+      expect(isCliProvider("example-cli", {} as WineryClawConfig)).toBe(false);
     });
   });
 
@@ -422,7 +422,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -442,7 +442,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -461,7 +461,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -480,7 +480,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -499,7 +499,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -521,7 +521,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       expect(
         inferUniqueProviderFromConfiguredModels({
@@ -534,7 +534,7 @@ describe("model-selection", () => {
 
   describe("buildModelAliasIndex", () => {
     it("should build alias index from config", () => {
-      const cfg: Partial<OpenClawConfig> = {
+      const cfg: Partial<WineryClawConfig> = {
         agents: {
           defaults: {
             models: {
@@ -546,7 +546,7 @@ describe("model-selection", () => {
       };
 
       const index = buildModelAliasIndex({
-        cfg: cfg as OpenClawConfig,
+        cfg: cfg as WineryClawConfig,
         defaultProvider: "anthropic",
       });
 
@@ -580,7 +580,7 @@ describe("model-selection", () => {
     });
 
     it("overlays configured provider metadata and alias onto matching catalog entries", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: WineryClawConfig = {
         agents: {
           defaults: {
             model: { primary: "openai/gpt-test-z" },
@@ -603,7 +603,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -624,7 +624,7 @@ describe("model-selection", () => {
     });
 
     it("applies configured provider metadata and alias to synthetic allowlist entries", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: WineryClawConfig = {
         agents: {
           defaults: {
             model: { primary: "nvidia/moonshotai/kimi-k2.5" },
@@ -648,7 +648,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       const result = buildAllowedModelSet({
         cfg,
@@ -739,7 +739,7 @@ describe("model-selection", () => {
     });
 
     it("strips trailing auth profile suffix before allowlist matching", () => {
-      const cfg: OpenClawConfig = {
+      const cfg: WineryClawConfig = {
         agents: {
           defaults: {
             models: {
@@ -747,7 +747,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       const result = resolveAllowedModelRef({
         cfg,
@@ -773,7 +773,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       // When session default is openai-codex, switching to a bare "kimi-k2.5"
       // should resolve to opencode-go/kimi-k2.5, not openai-codex/kimi-k2.5
@@ -902,7 +902,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -917,7 +917,7 @@ describe("model-selection", () => {
       setLoggerOverride({ level: "silent", consoleLevel: "warn" });
       const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
       try {
-        const cfg: Partial<OpenClawConfig> = {
+        const cfg: Partial<WineryClawConfig> = {
           agents: {
             defaults: {
               model: { primary: "claude-3-5-sonnet" },
@@ -926,7 +926,7 @@ describe("model-selection", () => {
         };
 
         const result = resolveConfiguredModelRef({
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as WineryClawConfig,
           defaultProvider: "google",
           defaultModel: "gemini-pro",
         });
@@ -945,7 +945,7 @@ describe("model-selection", () => {
     it("sanitizes control characters in providerless-model warnings", () => {
       const warnLogs = createWarnLogCapture("openclaw-model-selection-test");
       try {
-        const cfg: Partial<OpenClawConfig> = {
+        const cfg: Partial<WineryClawConfig> = {
           agents: {
             defaults: {
               model: { primary: "\u001B[31mclaude-3-5-sonnet\nspoof" },
@@ -954,7 +954,7 @@ describe("model-selection", () => {
         };
 
         const result = resolveConfiguredModelRef({
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as WineryClawConfig,
           defaultProvider: "google",
           defaultModel: "gemini-pro",
         });
@@ -985,7 +985,7 @@ describe("model-selection", () => {
               },
             },
           },
-        } as OpenClawConfig;
+        } as WineryClawConfig;
 
         const result = resolveConfiguredModelRef({
           cfg,
@@ -1003,9 +1003,9 @@ describe("model-selection", () => {
     });
 
     it("should use default provider/model if config is empty", () => {
-      const cfg: Partial<OpenClawConfig> = {};
+      const cfg: Partial<WineryClawConfig> = {};
       const result = resolveConfiguredModelRef({
-        cfg: cfg as OpenClawConfig,
+        cfg: cfg as WineryClawConfig,
         defaultProvider: "openai",
         defaultModel: "gpt-4",
       });
@@ -1051,7 +1051,7 @@ describe("model-selection", () => {
             model: { primary: "google-vertex/gemini-3.1-flash-lite" },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       const result = resolveConfiguredModelRef({
         cfg,
@@ -1076,7 +1076,7 @@ describe("model-selection", () => {
       setLoggerOverride({ level: "silent", consoleLevel: "warn" });
       const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
       try {
-        const cfg: Partial<OpenClawConfig> = {
+        const cfg: Partial<WineryClawConfig> = {
           agents: {
             defaults: {
               model: { primary: "openai/" },
@@ -1085,7 +1085,7 @@ describe("model-selection", () => {
         };
 
         const result = resolveConfiguredModelRef({
-          cfg: cfg as OpenClawConfig,
+          cfg: cfg as WineryClawConfig,
           defaultProvider: "openai",
           defaultModel: "gpt-5.4",
         });
@@ -1115,7 +1115,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       expect(resolveAnthropicOpusThinking(cfg)).toBe("high");
     });
@@ -1131,7 +1131,7 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       expect(
         resolveThinkingDefault({
@@ -1153,13 +1153,13 @@ describe("model-selection", () => {
             },
           },
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       expect(resolveAnthropicOpusThinking(cfg)).toBe("adaptive");
     });
 
     it("falls back to low when no provider thinking hook is active", () => {
-      const cfg = {} as OpenClawConfig;
+      const cfg = {} as WineryClawConfig;
 
       expect(resolveAnthropicOpusThinking(cfg)).toBe("low");
 
@@ -1225,7 +1225,7 @@ describe("resolveSubagentConfiguredModelSelection", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(resolveSubagentConfiguredModelSelection({ cfg, agentId: "research" })).toBe(
       "anthropic/claude-opus-4-6",
@@ -1247,7 +1247,7 @@ describe("resolveSubagentConfiguredModelSelection", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(resolveSubagentConfiguredModelSelection({ cfg, agentId: "research" })).toBe(
       "google/gemini-2.5-pro",

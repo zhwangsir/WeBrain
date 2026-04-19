@@ -173,7 +173,7 @@ class PermissionRequester(private val activity: ComponentActivity) {
 
   private fun buildRationaleMessage(permissions: List<String>): String {
     val labels = permissions.map { permissionLabel(it) }
-    return "OpenClaw needs ${labels.joinToString(", ")} permissions to continue."
+    return "WineryClaw needs ${labels.joinToString(", ")} permissions to continue."
   }
 
   private fun buildSettingsMessage(permissions: List<String>): String {

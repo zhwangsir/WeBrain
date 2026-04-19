@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   createReplyDispatcher,
   resetInboundDedupe,
@@ -118,7 +118,7 @@ const replySpyHoisted = vi.hoisted(() => ({
     (
       ctx: MsgContext,
       opts?: GetReplyOptions,
-      configOverride?: OpenClawConfig,
+      configOverride?: WineryClawConfig,
     ) => Promise<ReplyPayloadLike | ReplyPayloadLike[] | undefined>
   >,
 }));
@@ -205,7 +205,7 @@ function normalizeLowercaseStringOrEmptyForTest(value: string | undefined): stri
   return value?.trim().toLowerCase() ?? "";
 }
 
-function resolveDefaultModelForAgentForTest(params: { cfg: OpenClawConfig }): {
+function resolveDefaultModelForAgentForTest(params: { cfg: WineryClawConfig }): {
   provider: string;
   model: string;
 } {
@@ -220,7 +220,7 @@ function resolveDefaultModelForAgentForTest(params: { cfg: OpenClawConfig }): {
   };
 }
 
-function createModelsProviderDataFromConfig(cfg: OpenClawConfig): {
+function createModelsProviderDataFromConfig(cfg: WineryClawConfig): {
   byProvider: Map<string, Set<string>>;
   providers: string[];
   resolvedDefault: { provider: string; model: string };
@@ -410,7 +410,7 @@ export const getOnHandler = (event: string) => {
   return handler as (ctx: Record<string, unknown>) => Promise<void>;
 };
 
-const DEFAULT_TELEGRAM_TEST_CONFIG: OpenClawConfig = {
+const DEFAULT_TELEGRAM_TEST_CONFIG: WineryClawConfig = {
   agents: {
     defaults: {
       envelopeTimezone: "utc",
@@ -544,7 +544,7 @@ beforeEach(() => {
   listSkillCommandsForAgents.mockReset();
   listSkillCommandsForAgents.mockReturnValue([]);
   buildModelsProviderData.mockReset();
-  buildModelsProviderData.mockImplementation(async (cfg: OpenClawConfig) => {
+  buildModelsProviderData.mockImplementation(async (cfg: WineryClawConfig) => {
     return createModelsProviderDataFromConfig(cfg);
   });
   middlewareUseSpy.mockReset();

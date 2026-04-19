@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { dispatchInboundReplyWithBase } from "openclaw/plugin-sdk/inbound-reply-dispatch";
 import { buildQaTarget, sendQaBusMessage, type QaBusMessage } from "./bus-client.js";
 import { getQaChannelRuntime } from "./runtime.js";
@@ -19,7 +19,7 @@ export async function handleQaInbound(params: {
     threadId: inbound.threadId,
   });
   const route = runtime.channel.routing.resolveAgentRoute({
-    cfg: params.config as OpenClawConfig,
+    cfg: params.config as WineryClawConfig,
     channel: params.channelId,
     accountId: params.account.accountId,
     peer: {
@@ -39,7 +39,7 @@ export async function handleQaInbound(params: {
     from: inbound.senderName || inbound.senderId,
     timestamp: inbound.timestamp,
     previousTimestamp,
-    envelope: runtime.channel.reply.resolveEnvelopeFormatOptions(params.config as OpenClawConfig),
+    envelope: runtime.channel.reply.resolveEnvelopeFormatOptions(params.config as WineryClawConfig),
     body: inbound.text,
   });
 
@@ -84,7 +84,7 @@ export async function handleQaInbound(params: {
   });
 
   await dispatchInboundReplyWithBase({
-    cfg: params.config as OpenClawConfig,
+    cfg: params.config as WineryClawConfig,
     channel: params.channelId,
     accountId: params.account.accountId,
     route,

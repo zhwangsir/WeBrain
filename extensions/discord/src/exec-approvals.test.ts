@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { describe, expect, it } from "vitest";
 import {
   getDiscordExecApprovalApprovers,
@@ -7,9 +7,9 @@ import {
 } from "./exec-approvals.js";
 
 function buildConfig(
-  execApprovals?: NonNullable<NonNullable<OpenClawConfig["channels"]>["discord"]>["execApprovals"],
-  channelOverrides?: Partial<NonNullable<NonNullable<OpenClawConfig["channels"]>["discord"]>>,
-): OpenClawConfig {
+  execApprovals?: NonNullable<NonNullable<WineryClawConfig["channels"]>["discord"]>["execApprovals"],
+  channelOverrides?: Partial<NonNullable<NonNullable<WineryClawConfig["channels"]>["discord"]>>,
+): WineryClawConfig {
   return {
     channels: {
       discord: {
@@ -18,7 +18,7 @@ function buildConfig(
         execApprovals,
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 describe("discord exec approvals", () => {
@@ -39,7 +39,7 @@ describe("discord exec approvals", () => {
         cfg: {
           ...buildConfig(),
           commands: { ownerAllowFrom: ["discord:789"] },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
       }),
     ).toBe(true);
     expect(
@@ -75,7 +75,7 @@ describe("discord exec approvals", () => {
     const cfg = {
       ...buildConfig(),
       commands: { ownerAllowFrom: ["discord:123", "user:456", "789"] },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(getDiscordExecApprovalApprovers({ cfg })).toEqual(["123", "456", "789"]);
     expect(isDiscordExecApprovalApprover({ cfg, senderId: "456" })).toBe(true);

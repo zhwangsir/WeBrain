@@ -106,10 +106,10 @@ export {
   wrapExternalContent,
 } from "openclaw/plugin-sdk/browser-security-runtime";
 export type { AnyAgentTool, NodeListNode } from "openclaw/plugin-sdk/browser-setup-tools";
-export type { OpenClawConfig } from "openclaw/plugin-sdk/browser-config-runtime";
+export type { WineryClawConfig } from "openclaw/plugin-sdk/browser-config-runtime";
 export type {
   GatewayRequestHandlers,
   GatewayRpcOpts,
   NodeSession,
-  OpenClawPluginService,
+  WineryClawPluginService,
 } from "openclaw/plugin-sdk/browser-node-runtime";

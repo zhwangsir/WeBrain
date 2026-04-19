@@ -145,7 +145,7 @@ function getExtensionFromUrl(url: string): string | null {
 
 /**
  * Download all images from a message and return attachment metadata.
- * Format matches OpenClaw's expected attachment structure.
+ * Format matches WineryClaw's expected attachment structure.
  */
 export async function downloadMessageImages(
   content: unknown,

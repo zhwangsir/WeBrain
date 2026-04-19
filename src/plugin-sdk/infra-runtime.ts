@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   drainPendingDeliveries as coreDrainPendingDeliveries,
   type DeliverFn,
@@ -43,7 +43,7 @@ export async function drainPendingDeliveries(opts: DrainPendingDeliveriesOptions
  */
 export async function drainReconnectQueue(opts: {
   accountId: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   log: RecoveryLogger;
   stateDir?: string;
   deliver?: DeliverFn;

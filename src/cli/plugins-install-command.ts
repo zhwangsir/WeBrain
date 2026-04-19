@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { collectChannelDoctorStaleConfigMutations } from "../commands/doctor/shared/channel-doctor.js";
 import { loadConfig, readConfigFileSnapshot } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { installHooksFromNpmSpec, installHooksFromPath } from "../hooks/install.js";
 import { resolveArchiveKind } from "../infra/archive.js";
 import { parseClawHubPluginSpec } from "../infra/clawhub.js";
@@ -49,7 +49,7 @@ function resolveInstallSafetyOverrides(overrides: InstallSafetyOverrides): Insta
 }
 
 async function installBundledPluginSource(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   rawSpec: string;
   bundledSource: BundledPluginSource;
   warning: string;
@@ -79,7 +79,7 @@ async function installBundledPluginSource(params: {
 }
 
 async function tryInstallHookPackFromLocalPath(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   resolvedPath: string;
   installMode: "install" | "update";
   safetyOverrides?: InstallSafetyOverrides;
@@ -159,7 +159,7 @@ async function tryInstallHookPackFromLocalPath(params: {
 }
 
 async function tryInstallHookPackFromNpmSpec(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   installMode: "install" | "update";
   spec: string;
   pin?: boolean;
@@ -216,7 +216,7 @@ function buildInvalidPluginInstallConfigError(message: string): Error {
 
 async function loadConfigFromSnapshotForInstall(
   request: PluginInstallRequestContext,
-): Promise<OpenClawConfig> {
+): Promise<WineryClawConfig> {
   if (resolvePluginInstallInvalidConfigPolicy(request) !== "allow-bundled-recovery") {
     throw buildInvalidPluginInstallConfigError(
       "Config invalid; run `openclaw doctor --fix` before installing plugins.",
@@ -248,7 +248,7 @@ async function loadConfigFromSnapshotForInstall(
 
 export async function loadConfigForInstall(
   request: PluginInstallRequestContext,
-): Promise<OpenClawConfig> {
+): Promise<WineryClawConfig> {
   try {
     return loadConfig();
   } catch (err) {

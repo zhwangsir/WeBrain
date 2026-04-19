@@ -1,6 +1,6 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import type { PluginRuntime } from "./runtime/types.js";
-import type { OpenClawPluginApi, PluginLogger } from "./types.js";
+import type { WineryClawPluginApi, PluginLogger } from "./types.js";
 
 export type BuildPluginApiParams = {
   id: string;
@@ -9,15 +9,15 @@ export type BuildPluginApiParams = {
   description?: string;
   source: string;
   rootDir?: string;
-  registrationMode: OpenClawPluginApi["registrationMode"];
-  config: OpenClawConfig;
+  registrationMode: WineryClawPluginApi["registrationMode"];
+  config: WineryClawConfig;
   pluginConfig?: Record<string, unknown>;
   runtime: PluginRuntime;
   logger: PluginLogger;
   resolvePath: (input: string) => string;
   handlers?: Partial<
     Pick<
-      OpenClawPluginApi,
+      WineryClawPluginApi,
       | "registerTool"
       | "registerHook"
       | "registerHttpRoute"
@@ -60,57 +60,57 @@ export type BuildPluginApiParams = {
   >;
 };
 
-const noopRegisterTool: OpenClawPluginApi["registerTool"] = () => {};
-const noopRegisterHook: OpenClawPluginApi["registerHook"] = () => {};
-const noopRegisterHttpRoute: OpenClawPluginApi["registerHttpRoute"] = () => {};
-const noopRegisterChannel: OpenClawPluginApi["registerChannel"] = () => {};
-const noopRegisterGatewayMethod: OpenClawPluginApi["registerGatewayMethod"] = () => {};
-const noopRegisterCli: OpenClawPluginApi["registerCli"] = () => {};
-const noopRegisterReload: OpenClawPluginApi["registerReload"] = () => {};
-const noopRegisterNodeHostCommand: OpenClawPluginApi["registerNodeHostCommand"] = () => {};
-const noopRegisterSecurityAuditCollector: OpenClawPluginApi["registerSecurityAuditCollector"] =
+const noopRegisterTool: WineryClawPluginApi["registerTool"] = () => {};
+const noopRegisterHook: WineryClawPluginApi["registerHook"] = () => {};
+const noopRegisterHttpRoute: WineryClawPluginApi["registerHttpRoute"] = () => {};
+const noopRegisterChannel: WineryClawPluginApi["registerChannel"] = () => {};
+const noopRegisterGatewayMethod: WineryClawPluginApi["registerGatewayMethod"] = () => {};
+const noopRegisterCli: WineryClawPluginApi["registerCli"] = () => {};
+const noopRegisterReload: WineryClawPluginApi["registerReload"] = () => {};
+const noopRegisterNodeHostCommand: WineryClawPluginApi["registerNodeHostCommand"] = () => {};
+const noopRegisterSecurityAuditCollector: WineryClawPluginApi["registerSecurityAuditCollector"] =
   () => {};
-const noopRegisterService: OpenClawPluginApi["registerService"] = () => {};
-const noopRegisterCliBackend: OpenClawPluginApi["registerCliBackend"] = () => {};
-const noopRegisterTextTransforms: OpenClawPluginApi["registerTextTransforms"] = () => {};
-const noopRegisterConfigMigration: OpenClawPluginApi["registerConfigMigration"] = () => {};
-const noopRegisterAutoEnableProbe: OpenClawPluginApi["registerAutoEnableProbe"] = () => {};
-const noopRegisterProvider: OpenClawPluginApi["registerProvider"] = () => {};
-const noopRegisterSpeechProvider: OpenClawPluginApi["registerSpeechProvider"] = () => {};
-const noopRegisterRealtimeTranscriptionProvider: OpenClawPluginApi["registerRealtimeTranscriptionProvider"] =
+const noopRegisterService: WineryClawPluginApi["registerService"] = () => {};
+const noopRegisterCliBackend: WineryClawPluginApi["registerCliBackend"] = () => {};
+const noopRegisterTextTransforms: WineryClawPluginApi["registerTextTransforms"] = () => {};
+const noopRegisterConfigMigration: WineryClawPluginApi["registerConfigMigration"] = () => {};
+const noopRegisterAutoEnableProbe: WineryClawPluginApi["registerAutoEnableProbe"] = () => {};
+const noopRegisterProvider: WineryClawPluginApi["registerProvider"] = () => {};
+const noopRegisterSpeechProvider: WineryClawPluginApi["registerSpeechProvider"] = () => {};
+const noopRegisterRealtimeTranscriptionProvider: WineryClawPluginApi["registerRealtimeTranscriptionProvider"] =
   () => {};
-const noopRegisterRealtimeVoiceProvider: OpenClawPluginApi["registerRealtimeVoiceProvider"] =
+const noopRegisterRealtimeVoiceProvider: WineryClawPluginApi["registerRealtimeVoiceProvider"] =
   () => {};
-const noopRegisterMediaUnderstandingProvider: OpenClawPluginApi["registerMediaUnderstandingProvider"] =
+const noopRegisterMediaUnderstandingProvider: WineryClawPluginApi["registerMediaUnderstandingProvider"] =
   () => {};
-const noopRegisterImageGenerationProvider: OpenClawPluginApi["registerImageGenerationProvider"] =
+const noopRegisterImageGenerationProvider: WineryClawPluginApi["registerImageGenerationProvider"] =
   () => {};
-const noopRegisterVideoGenerationProvider: OpenClawPluginApi["registerVideoGenerationProvider"] =
+const noopRegisterVideoGenerationProvider: WineryClawPluginApi["registerVideoGenerationProvider"] =
   () => {};
-const noopRegisterMusicGenerationProvider: OpenClawPluginApi["registerMusicGenerationProvider"] =
+const noopRegisterMusicGenerationProvider: WineryClawPluginApi["registerMusicGenerationProvider"] =
   () => {};
-const noopRegisterWebFetchProvider: OpenClawPluginApi["registerWebFetchProvider"] = () => {};
-const noopRegisterWebSearchProvider: OpenClawPluginApi["registerWebSearchProvider"] = () => {};
-const noopRegisterInteractiveHandler: OpenClawPluginApi["registerInteractiveHandler"] = () => {};
-const noopOnConversationBindingResolved: OpenClawPluginApi["onConversationBindingResolved"] =
+const noopRegisterWebFetchProvider: WineryClawPluginApi["registerWebFetchProvider"] = () => {};
+const noopRegisterWebSearchProvider: WineryClawPluginApi["registerWebSearchProvider"] = () => {};
+const noopRegisterInteractiveHandler: WineryClawPluginApi["registerInteractiveHandler"] = () => {};
+const noopOnConversationBindingResolved: WineryClawPluginApi["onConversationBindingResolved"] =
   () => {};
-const noopRegisterCommand: OpenClawPluginApi["registerCommand"] = () => {};
-const noopRegisterContextEngine: OpenClawPluginApi["registerContextEngine"] = () => {};
-const noopRegisterCompactionProvider: OpenClawPluginApi["registerCompactionProvider"] = () => {};
-const noopRegisterAgentHarness: OpenClawPluginApi["registerAgentHarness"] = () => {};
-const noopRegisterMemoryCapability: OpenClawPluginApi["registerMemoryCapability"] = () => {};
-const noopRegisterMemoryPromptSection: OpenClawPluginApi["registerMemoryPromptSection"] = () => {};
-const noopRegisterMemoryPromptSupplement: OpenClawPluginApi["registerMemoryPromptSupplement"] =
+const noopRegisterCommand: WineryClawPluginApi["registerCommand"] = () => {};
+const noopRegisterContextEngine: WineryClawPluginApi["registerContextEngine"] = () => {};
+const noopRegisterCompactionProvider: WineryClawPluginApi["registerCompactionProvider"] = () => {};
+const noopRegisterAgentHarness: WineryClawPluginApi["registerAgentHarness"] = () => {};
+const noopRegisterMemoryCapability: WineryClawPluginApi["registerMemoryCapability"] = () => {};
+const noopRegisterMemoryPromptSection: WineryClawPluginApi["registerMemoryPromptSection"] = () => {};
+const noopRegisterMemoryPromptSupplement: WineryClawPluginApi["registerMemoryPromptSupplement"] =
   () => {};
-const noopRegisterMemoryCorpusSupplement: OpenClawPluginApi["registerMemoryCorpusSupplement"] =
+const noopRegisterMemoryCorpusSupplement: WineryClawPluginApi["registerMemoryCorpusSupplement"] =
   () => {};
-const noopRegisterMemoryFlushPlan: OpenClawPluginApi["registerMemoryFlushPlan"] = () => {};
-const noopRegisterMemoryRuntime: OpenClawPluginApi["registerMemoryRuntime"] = () => {};
-const noopRegisterMemoryEmbeddingProvider: OpenClawPluginApi["registerMemoryEmbeddingProvider"] =
+const noopRegisterMemoryFlushPlan: WineryClawPluginApi["registerMemoryFlushPlan"] = () => {};
+const noopRegisterMemoryRuntime: WineryClawPluginApi["registerMemoryRuntime"] = () => {};
+const noopRegisterMemoryEmbeddingProvider: WineryClawPluginApi["registerMemoryEmbeddingProvider"] =
   () => {};
-const noopOn: OpenClawPluginApi["on"] = () => {};
+const noopOn: WineryClawPluginApi["on"] = () => {};
 
-export function buildPluginApi(params: BuildPluginApiParams): OpenClawPluginApi {
+export function buildPluginApi(params: BuildPluginApiParams): WineryClawPluginApi {
   const handlers = params.handlers ?? {};
   return {
     id: params.id,

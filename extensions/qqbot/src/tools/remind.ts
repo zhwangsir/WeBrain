@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+import type { WineryClawPluginApi } from "openclaw/plugin-sdk/core";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/text-runtime";
 
 interface RemindParams {
@@ -183,7 +183,7 @@ function formatDelay(ms: number): string {
   return `${hours}h${minutes}m`;
 }
 
-export function registerRemindTool(api: OpenClawPluginApi): void {
+export function registerRemindTool(api: WineryClawPluginApi): void {
   api.registerTool(
     {
       name: "qqbot_remind",

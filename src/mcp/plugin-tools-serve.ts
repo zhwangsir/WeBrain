@@ -1,5 +1,5 @@
 /**
- * Standalone MCP server that exposes OpenClaw plugin-registered tools
+ * Standalone MCP server that exposes WineryClaw plugin-registered tools
  * (e.g. memory-lancedb's memory_recall, memory_store, memory_forget)
  * so ACP sessions running Claude Code can use them.
  *
@@ -16,7 +16,7 @@ import {
 } from "../agents/pi-tools.before-tool-call.js";
 import type { AnyAgentTool } from "../agents/tools/common.js";
 import { loadConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { routeLogsToStderr } from "../logging/console.js";
 import { resolvePluginTools } from "../plugins/tools.js";
@@ -31,7 +31,7 @@ function resolveJsonSchemaForTool(tool: AnyAgentTool): Record<string, unknown> {
   return { type: "object", properties: {} };
 }
 
-function resolveTools(config: OpenClawConfig): AnyAgentTool[] {
+function resolveTools(config: WineryClawConfig): AnyAgentTool[] {
   return resolvePluginTools({
     context: { config },
     suppressNameConflicts: true,
@@ -40,7 +40,7 @@ function resolveTools(config: OpenClawConfig): AnyAgentTool[] {
 
 export function createPluginToolsMcpServer(
   params: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     tools?: AnyAgentTool[];
   } = {},
 ): Server {

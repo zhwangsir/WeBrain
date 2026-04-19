@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { buildSessionStartupContextPrelude, shouldApplyStartupContext } from "./startup-context.js";
 
 const tmpDirs: string[] = [];
@@ -32,7 +32,7 @@ describe("buildSessionStartupContextPrelude", () => {
       workspaceDir,
       cfg: {
         agents: { defaults: { userTimezone: "America/Chicago" } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       nowMs: Date.UTC(2026, 3, 11, 18, 0, 0),
     });
 
@@ -76,7 +76,7 @@ describe("buildSessionStartupContextPrelude", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       nowMs: Date.UTC(2026, 3, 11, 18, 0, 0),
     });
 
@@ -102,7 +102,7 @@ describe("buildSessionStartupContextPrelude", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       nowMs: Date.UTC(2026, 3, 11, 18, 0, 0),
     });
 
@@ -126,7 +126,7 @@ describe("buildSessionStartupContextPrelude", () => {
       workspaceDir,
       cfg: {
         agents: { defaults: { userTimezone: "America/New_York" } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       nowMs: Date.UTC(2026, 2, 9, 4, 30, 0),
     });
 
@@ -155,7 +155,7 @@ describe("buildSessionStartupContextPrelude", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       nowMs: Date.UTC(2026, 3, 11, 18, 0, 0),
     });
 
@@ -175,12 +175,12 @@ describe("shouldApplyStartupContext", () => {
   it("honors enabled=false and applyOn overrides", () => {
     const disabledCfg = {
       agents: { defaults: { startupContext: { enabled: false } } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     expect(shouldApplyStartupContext({ cfg: disabledCfg, action: "new" })).toBe(false);
 
     const applyOnCfg = {
       agents: { defaults: { startupContext: { applyOn: ["new"] } } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     expect(shouldApplyStartupContext({ cfg: applyOnCfg, action: "new" })).toBe(true);
     expect(shouldApplyStartupContext({ cfg: applyOnCfg, action: "reset" })).toBe(false);
   });

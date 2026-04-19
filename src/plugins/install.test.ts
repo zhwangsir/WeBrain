@@ -702,7 +702,7 @@ describe("installPluginFromArchive", () => {
       return;
     }
     expect(result.error).toContain("openclaw.extensions");
-    expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS);
+    expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_WINERYCLAW_EXTENSIONS);
   });
 
   it("rejects legacy plugin package shape when openclaw.extensions is missing", async () => {
@@ -734,7 +734,7 @@ describe("installPluginFromArchive", () => {
     if (!result.ok) {
       expect(result.error).toContain("package.json missing openclaw.extensions");
       expect(result.error).toContain("update the plugin package");
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_WINERYCLAW_EXTENSIONS);
       return;
     }
     expect.unreachable("expected install to fail without openclaw.extensions");
@@ -1268,7 +1268,7 @@ describe("installPluginFromArchive", () => {
   });
 
   it("fails package installs when manifest traversal exceeds the directory cap", async () => {
-    vi.stubEnv("OPENCLAW_INSTALL_SCAN_MAX_DIRECTORIES", "4");
+    vi.stubEnv("WINERYCLAW_INSTALL_SCAN_MAX_DIRECTORIES", "4");
 
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     fs.writeFileSync(
@@ -1296,7 +1296,7 @@ describe("installPluginFromArchive", () => {
   });
 
   it("fails package installs when manifest traversal exceeds the depth cap", async () => {
-    vi.stubEnv("OPENCLAW_INSTALL_SCAN_MAX_DEPTH", "2");
+    vi.stubEnv("WINERYCLAW_INSTALL_SCAN_MAX_DEPTH", "2");
 
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     fs.writeFileSync(
@@ -2129,7 +2129,7 @@ describe("installPluginFromDir", () => {
       hostVersion: "2026.3.21",
       minHostVersion: ">=2026.3.22",
       expectedCode: PLUGIN_INSTALL_ERROR_CODE.INCOMPATIBLE_HOST_VERSION,
-      expectedMessageIncludes: ["requires OpenClaw >=2026.3.22, but this host is 2026.3.21"],
+      expectedMessageIncludes: ["requires WineryClaw >=2026.3.22, but this host is 2026.3.21"],
     },
     {
       name: "rejects plugins with invalid minHostVersion metadata",

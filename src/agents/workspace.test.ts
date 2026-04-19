@@ -20,17 +20,17 @@ import {
 } from "./workspace.js";
 
 describe("resolveDefaultAgentWorkspaceDir", () => {
-  it("uses OPENCLAW_HOME for default workspace resolution", () => {
+  it("uses WINERYCLAW_HOME for default workspace resolution", () => {
     const dir = resolveDefaultAgentWorkspaceDir({
-      OPENCLAW_HOME: "/srv/openclaw-home",
+      WINERYCLAW_HOME: "/srv/openclaw-home",
       HOME: "/home/other",
     } as NodeJS.ProcessEnv);
 
-    expect(dir).toBe(path.join(path.resolve("/srv/openclaw-home"), ".openclaw", "workspace"));
+    expect(dir).toBe(path.join(path.resolve("/srv/openclaw-home"), ".wineryclaw", "workspace"));
   });
 });
 
-const WORKSPACE_STATE_PATH_SEGMENTS = [".openclaw", "workspace-state.json"] as const;
+const WORKSPACE_STATE_PATH_SEGMENTS = [".wineryclaw", "workspace-state.json"] as const;
 
 async function readWorkspaceState(dir: string): Promise<{
   version: number;
@@ -154,7 +154,7 @@ describe("ensureAgentWorkspace", () => {
 
   it("migrates legacy onboardingCompletedAt markers to setupCompletedAt", async () => {
     const tempDir = await makeTempWorkspace("openclaw-workspace-");
-    await fs.mkdir(path.join(tempDir, ".openclaw"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, ".wineryclaw"), { recursive: true });
     await fs.writeFile(
       path.join(tempDir, ...WORKSPACE_STATE_PATH_SEGMENTS),
       JSON.stringify({

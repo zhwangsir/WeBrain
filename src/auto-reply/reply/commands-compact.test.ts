@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveAgentDir } from "../../agents/agent-scope.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { handleCompactCommand } from "./commands-compact.js";
 import type { HandleCommandsParams } from "./commands-types.js";
 
@@ -36,7 +36,7 @@ const { compactEmbeddedPiSession, incrementCompactionCount, resolveSessionFilePa
 
 function buildCompactParams(
   commandBodyNormalized: string,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ): HandleCommandsParams {
   return {
     cfg,
@@ -71,7 +71,7 @@ describe("handleCompactCommand", () => {
       buildCompactParams("/status", {
         commands: { text: true },
         channels: { whatsapp: { allowFrom: ["*"] } },
-      } as OpenClawConfig),
+      } as WineryClawConfig),
       true,
     );
 
@@ -83,7 +83,7 @@ describe("handleCompactCommand", () => {
     const params = buildCompactParams("/compact", {
       commands: { text: true },
       channels: { whatsapp: { allowFrom: ["*"] } },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     const result = await handleCompactCommand(
       {
@@ -113,7 +113,7 @@ describe("handleCompactCommand", () => {
           commands: { text: true },
           channels: { whatsapp: { allowFrom: ["*"] } },
           session: { store: "/tmp/openclaw-session-store.json" },
-        } as OpenClawConfig),
+        } as WineryClawConfig),
         ctx: {
           Provider: "whatsapp",
           Surface: "whatsapp",
@@ -175,7 +175,7 @@ describe("handleCompactCommand", () => {
           commands: { text: true },
           channels: { whatsapp: { allowFrom: ["*"] } },
           session: { store: "/tmp/openclaw-session-store.json" },
-        } as OpenClawConfig),
+        } as WineryClawConfig),
         agentId: "main",
         sessionKey: "agent:target:whatsapp:direct:12345",
         sessionEntry: {
@@ -209,7 +209,7 @@ describe("handleCompactCommand", () => {
         ...buildCompactParams("/compact", {
           commands: { text: true },
           channels: { whatsapp: { allowFrom: ["*"] } },
-        } as OpenClawConfig),
+        } as WineryClawConfig),
         agentId: "main",
         agentDir: "/tmp/main-agent",
         sessionKey: "agent:target:whatsapp:direct:12345",
@@ -240,7 +240,7 @@ describe("handleCompactCommand", () => {
         ...buildCompactParams("/compact", {
           commands: { text: true },
           channels: { whatsapp: { allowFrom: ["*"] } },
-        } as OpenClawConfig),
+        } as WineryClawConfig),
         sessionKey: "agent:target:whatsapp:direct:12345",
         sessionEntry: {
           sessionId: "wrapper-session",
@@ -297,7 +297,7 @@ describe("handleCompactCommand", () => {
         ...buildCompactParams("/compact", {
           commands: { text: true },
           channels: { whatsapp: { allowFrom: ["*"] } },
-        } as OpenClawConfig),
+        } as WineryClawConfig),
         sessionKey: "agent:target:whatsapp:direct:12345",
         sessionEntry: {
           sessionId: "wrapper-session",

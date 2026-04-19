@@ -1,5 +1,5 @@
 ---
-summary: "Install OpenClaw — installer script, npm/pnpm/bun, from source, Docker, and more"
+summary: "Install WineryClaw — installer script, npm/pnpm/bun, from source, Docker, and more"
 read_when:
   - You need an install method other than the Getting Started quickstart
   - You want to deploy to a cloud platform
@@ -11,17 +11,17 @@ title: "Install"
 
 ## Recommended: installer script
 
-The fastest way to install. It detects your OS, installs Node if needed, installs OpenClaw, and launches onboarding.
+The fastest way to install. It detects your OS, installs Node if needed, installs WineryClaw, and launches onboarding.
 
 <Tabs>
   <Tab title="macOS / Linux / WSL2">
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash
+    curl -fsSL bash ./install.sh | bash
     ```
   </Tab>
   <Tab title="Windows (PowerShell)">
     ```powershell
-    iwr -useb https://openclaw.ai/install.ps1 | iex
+    iwr -useb powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install.ps1' -OutFile install.ps1; ./install.ps1" | iex
     ```
   </Tab>
 </Tabs>
@@ -31,12 +31,12 @@ To install without running onboarding:
 <Tabs>
   <Tab title="macOS / Linux / WSL2">
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard
+    curl -fsSL bash ./install.sh | bash -s -- --no-onboard
     ```
   </Tab>
   <Tab title="Windows (PowerShell)">
     ```powershell
-    & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
+    & ([scriptblock]::Create((iwr -useb powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install.ps1' -OutFile install.ps1; ./install.ps1"))) -NoOnboard
     ```
   </Tab>
 </Tabs>
@@ -53,11 +53,11 @@ For all flags and CI/automation options, see [Installer internals](/install/inst
 
 ### Local prefix installer (`install-cli.sh`)
 
-Use this when you want OpenClaw and Node kept under a local prefix such as
+Use this when you want WineryClaw and Node kept under a local prefix such as
 `~/.openclaw`, without depending on a system-wide Node install:
 
 ```bash
-curl -fsSL https://openclaw.ai/install-cli.sh | bash
+curl -fsSL bash ./install-cli.sh | bash
 ```
 
 It supports npm installs by default, plus git-checkout installs under the same
@@ -164,7 +164,7 @@ If you want managed startup after install:
 
 ## Hosting and deployment
 
-Deploy OpenClaw on a cloud server or VPS:
+Deploy WineryClaw on a cloud server or VPS:
 
 <CardGroup cols={3}>
   <Card title="VPS" href="/vps">Any Linux VPS</Card>
@@ -183,13 +183,13 @@ Deploy OpenClaw on a cloud server or VPS:
 
 <CardGroup cols={3}>
   <Card title="Updating" href="/install/updating" icon="refresh-cw">
-    Keep OpenClaw up to date.
+    Keep WineryClaw up to date.
   </Card>
   <Card title="Migrating" href="/install/migrating" icon="arrow-right">
     Move to a new machine.
   </Card>
   <Card title="Uninstall" href="/install/uninstall" icon="trash-2">
-    Remove OpenClaw completely.
+    Remove WineryClaw completely.
   </Card>
 </CardGroup>
 

@@ -26,35 +26,35 @@ describe("gateway cli backend connect", () => {
     async () => {
       const envSnapshot = captureEnv([
         "HOME",
-        "OPENCLAW_STATE_DIR",
-        "OPENCLAW_CONFIG_PATH",
-        "OPENCLAW_GATEWAY_TOKEN",
-        "OPENCLAW_SKIP_CHANNELS",
-        "OPENCLAW_SKIP_PROVIDERS",
-        "OPENCLAW_SKIP_GMAIL_WATCHER",
-        "OPENCLAW_SKIP_CRON",
-        "OPENCLAW_SKIP_CANVAS_HOST",
-        "OPENCLAW_SKIP_BROWSER_CONTROL_SERVER",
-        "OPENCLAW_BUNDLED_PLUGINS_DIR",
-        "OPENCLAW_TEST_MINIMAL_GATEWAY",
+        "WINERYCLAW_STATE_DIR",
+        "WINERYCLAW_CONFIG_PATH",
+        "WINERYCLAW_GATEWAY_TOKEN",
+        "WINERYCLAW_SKIP_CHANNELS",
+        "WINERYCLAW_SKIP_PROVIDERS",
+        "WINERYCLAW_SKIP_GMAIL_WATCHER",
+        "WINERYCLAW_SKIP_CRON",
+        "WINERYCLAW_SKIP_CANVAS_HOST",
+        "WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER",
+        "WINERYCLAW_BUNDLED_PLUGINS_DIR",
+        "WINERYCLAW_TEST_MINIMAL_GATEWAY",
       ]);
 
       const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-gateway-connect-home-"));
-      const configPath = path.join(tempHome, ".openclaw", "openclaw.json");
+      const configPath = path.join(tempHome, ".wineryclaw", "wineryclaw.json");
       const bundledPluginsDir = path.join(tempHome, "openclaw-test-no-bundled-extensions");
       const token = `test-${Date.now()}`;
       process.env.HOME = tempHome;
-      process.env.OPENCLAW_STATE_DIR = path.join(tempHome, ".openclaw");
-      process.env.OPENCLAW_CONFIG_PATH = configPath;
-      process.env.OPENCLAW_GATEWAY_TOKEN = token;
-      process.env.OPENCLAW_SKIP_CHANNELS = "1";
-      process.env.OPENCLAW_SKIP_PROVIDERS = "1";
-      process.env.OPENCLAW_SKIP_GMAIL_WATCHER = "1";
-      process.env.OPENCLAW_SKIP_CRON = "1";
-      process.env.OPENCLAW_SKIP_CANVAS_HOST = "1";
-      process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
-      process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = bundledPluginsDir;
-      process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = "1";
+      process.env.WINERYCLAW_STATE_DIR = path.join(tempHome, ".wineryclaw");
+      process.env.WINERYCLAW_CONFIG_PATH = configPath;
+      process.env.WINERYCLAW_GATEWAY_TOKEN = token;
+      process.env.WINERYCLAW_SKIP_CHANNELS = "1";
+      process.env.WINERYCLAW_SKIP_PROVIDERS = "1";
+      process.env.WINERYCLAW_SKIP_GMAIL_WATCHER = "1";
+      process.env.WINERYCLAW_SKIP_CRON = "1";
+      process.env.WINERYCLAW_SKIP_CANVAS_HOST = "1";
+      process.env.WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
+      process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = bundledPluginsDir;
+      process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY = "1";
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.mkdir(bundledPluginsDir, { recursive: true });
       await fs.writeFile(

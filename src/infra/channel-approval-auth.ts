@@ -1,5 +1,5 @@
 import { getChannelPlugin, resolveChannelApprovalCapability } from "../channels/plugins/index.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { normalizeMessageChannel } from "../utils/message-channel.js";
 
 export type ApprovalCommandAuthorization = {
@@ -9,7 +9,7 @@ export type ApprovalCommandAuthorization = {
 };
 
 export function resolveApprovalCommandAuthorization(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   channel?: string | null;
   accountId?: string | null;
   senderId?: string | null;

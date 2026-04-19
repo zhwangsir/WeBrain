@@ -8,13 +8,13 @@ title: Feishu
 
 # Feishu bot
 
-Feishu (Lark) is a team chat platform used by companies for messaging and collaboration. This plugin connects OpenClaw to a Feishu/Lark bot using the platform’s WebSocket event subscription so messages can be received without exposing a public webhook URL.
+Feishu (Lark) is a team chat platform used by companies for messaging and collaboration. This plugin connects WineryClaw to a Feishu/Lark bot using the platform’s WebSocket event subscription so messages can be received without exposing a public webhook URL.
 
 ---
 
 ## Bundled plugin
 
-Feishu ships bundled with current OpenClaw releases, so no separate plugin install
+Feishu ships bundled with current WineryClaw releases, so no separate plugin install
 is required.
 
 If you are using an older build or a custom install that does not include bundled
@@ -32,7 +32,7 @@ There are two ways to add the Feishu channel:
 
 ### Method 1: onboarding (recommended)
 
-If you just installed OpenClaw, run onboarding:
+If you just installed WineryClaw, run onboarding:
 
 ```bash
 openclaw onboard
@@ -41,7 +41,7 @@ openclaw onboard
 The wizard guides you through:
 
 1. Creating a Feishu app and collecting credentials
-2. Configuring app credentials in OpenClaw
+2. Configuring app credentials in WineryClaw
 3. Starting the gateway
 
 ✅ **After configuration**, check gateway status:
@@ -162,7 +162,7 @@ In **Event Subscription**:
 
 ---
 
-## Step 2: Configure OpenClaw
+## Step 2: Configure WineryClaw
 
 ### Configure with the wizard (recommended)
 
@@ -174,7 +174,7 @@ Choose **Feishu** and paste your App ID + App Secret.
 
 ### Configure via config file
 
-Edit `~/.openclaw/openclaw.json`:
+Edit `~/.wineryclaw/wineryclaw.json`:
 
 ```json5
 {
@@ -618,12 +618,12 @@ Use `bindings` to route Feishu DMs or groups to different agents.
       {
         id: "clawd-fan",
         workspace: "/home/user/clawd-fan",
-        agentDir: "/home/user/.openclaw/agents/clawd-fan/agent",
+        agentDir: "/home/user/.wineryclaw/agents/clawd-fan/agent",
       },
       {
         id: "clawd-xi",
         workspace: "/home/user/clawd-xi",
-        agentDir: "/home/user/.openclaw/agents/clawd-xi/agent",
+        agentDir: "/home/user/.wineryclaw/agents/clawd-xi/agent",
       },
     ],
   },

@@ -62,7 +62,7 @@ describe("control UI routing", () => {
   });
 
   it("honors explicit base path overrides", async () => {
-    window.__OPENCLAW_CONTROL_UI_BASE_PATH__ = "/openclaw";
+    window.__WINERYCLAW_CONTROL_UI_BASE_PATH__ = "/openclaw";
     const app = mountApp("/openclaw/sessions");
     await app.updateComplete;
 

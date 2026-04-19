@@ -1,5 +1,5 @@
 import type {
-  OpenClawPluginCommandDefinition,
+  WineryClawPluginCommandDefinition,
   PluginCommandContext,
 } from "openclaw/plugin-sdk/plugin-entry";
 import { handleCodexSubcommand, type CodexCommandDeps } from "./command-handlers.js";
@@ -7,7 +7,7 @@ import { handleCodexSubcommand, type CodexCommandDeps } from "./command-handlers
 export function createCodexCommand(options: {
   pluginConfig?: unknown;
   deps?: Partial<CodexCommandDeps>;
-}): OpenClawPluginCommandDefinition {
+}): WineryClawPluginCommandDefinition {
   return {
     name: "codex",
     description: "Inspect and control the Codex app-server harness",

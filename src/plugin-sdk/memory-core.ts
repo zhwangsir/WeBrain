@@ -29,8 +29,8 @@ export type {
   MemoryPluginPublicArtifactsProvider,
   MemoryPluginRuntime,
   MemoryPromptSectionBuilder,
-  OpenClawConfig,
-  OpenClawPluginApi,
+  WineryClawConfig,
+  WineryClawPluginApi,
 } from "./memory-core-host-runtime-core.js";
 export {
   colorize,

@@ -1,7 +1,7 @@
 import Foundation
 import SwabbleKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct VoiceWakeRuntimeTests {
     @Test func `trims after trigger keeps post speech`() {

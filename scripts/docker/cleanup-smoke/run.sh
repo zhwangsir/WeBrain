@@ -3,8 +3,8 @@ set -euo pipefail
 
 cd /repo
 
-export OPENCLAW_STATE_DIR="/tmp/openclaw-test"
-export OPENCLAW_CONFIG_PATH="${OPENCLAW_STATE_DIR}/openclaw.json"
+export WINERYCLAW_STATE_DIR="/tmp/openclaw-test"
+export WINERYCLAW_CONFIG_PATH="${WINERYCLAW_STATE_DIR}/openclaw.json"
 
 echo "==> Build"
 if ! pnpm build >/tmp/openclaw-cleanup-build.log 2>&1; then
@@ -13,11 +13,11 @@ if ! pnpm build >/tmp/openclaw-cleanup-build.log 2>&1; then
 fi
 
 echo "==> Seed state"
-mkdir -p "${OPENCLAW_STATE_DIR}/credentials"
-mkdir -p "${OPENCLAW_STATE_DIR}/agents/main/sessions"
-echo '{}' >"${OPENCLAW_CONFIG_PATH}"
-echo 'creds' >"${OPENCLAW_STATE_DIR}/credentials/marker.txt"
-echo 'session' >"${OPENCLAW_STATE_DIR}/agents/main/sessions/sessions.json"
+mkdir -p "${WINERYCLAW_STATE_DIR}/credentials"
+mkdir -p "${WINERYCLAW_STATE_DIR}/agents/main/sessions"
+echo '{}' >"${WINERYCLAW_CONFIG_PATH}"
+echo 'creds' >"${WINERYCLAW_STATE_DIR}/credentials/marker.txt"
+echo 'session' >"${WINERYCLAW_STATE_DIR}/agents/main/sessions/sessions.json"
 
 echo "==> Reset (config+creds+sessions)"
 if ! pnpm openclaw reset --scope config+creds+sessions --yes --non-interactive >/tmp/openclaw-cleanup-reset.log 2>&1; then
@@ -25,13 +25,13 @@ if ! pnpm openclaw reset --scope config+creds+sessions --yes --non-interactive >
   exit 1
 fi
 
-test ! -f "${OPENCLAW_CONFIG_PATH}"
-test ! -d "${OPENCLAW_STATE_DIR}/credentials"
-test ! -d "${OPENCLAW_STATE_DIR}/agents/main/sessions"
+test ! -f "${WINERYCLAW_CONFIG_PATH}"
+test ! -d "${WINERYCLAW_STATE_DIR}/credentials"
+test ! -d "${WINERYCLAW_STATE_DIR}/agents/main/sessions"
 
 echo "==> Recreate minimal config"
-mkdir -p "${OPENCLAW_STATE_DIR}/credentials"
-echo '{}' >"${OPENCLAW_CONFIG_PATH}"
+mkdir -p "${WINERYCLAW_STATE_DIR}/credentials"
+echo '{}' >"${WINERYCLAW_CONFIG_PATH}"
 
 echo "==> Uninstall (state only)"
 if ! pnpm openclaw uninstall --state --yes --non-interactive >/tmp/openclaw-cleanup-uninstall.log 2>&1; then
@@ -39,6 +39,6 @@ if ! pnpm openclaw uninstall --state --yes --non-interactive >/tmp/openclaw-clea
   exit 1
 fi
 
-test ! -d "${OPENCLAW_STATE_DIR}"
+test ! -d "${WINERYCLAW_STATE_DIR}"
 
 echo "OK"

@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   clearMemoryEmbeddingProviders,
   registerMemoryEmbeddingProvider,
 } from "../plugins/memory-embedding-providers.js";
 import { resolveMemorySearchConfig, resolveMemorySearchSyncConfig } from "./memory-search.js";
 
-const asConfig = (cfg: OpenClawConfig): OpenClawConfig => cfg;
+const asConfig = (cfg: WineryClawConfig): WineryClawConfig => cfg;
 
 function registerBaseMemoryEmbeddingProviders(options?: { includeGemini?: boolean }): void {
   registerMemoryEmbeddingProvider({
@@ -64,7 +64,7 @@ describe("memory search config", () => {
     clearMemoryEmbeddingProviders();
   });
 
-  function configWithDefaultProvider(provider: string): OpenClawConfig {
+  function configWithDefaultProvider(provider: string): WineryClawConfig {
     return asConfig({
       agents: {
         defaults: {

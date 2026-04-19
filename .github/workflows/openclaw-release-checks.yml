@@ -1,4 +1,4 @@
-name: OpenClaw Release Checks
+name: WineryClaw Release Checks
 
 on:
   workflow_dispatch:
@@ -102,8 +102,8 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENCLAW_LIVE_CACHE_TEST: "1"
-          OPENCLAW_LIVE_TEST: "1"
+          WINERYCLAW_LIVE_CACHE_TEST: "1"
+          WINERYCLAW_LIVE_TEST: "1"
         run: pnpm test:live:cache
 
       - name: Summarize validated ref

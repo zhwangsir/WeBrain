@@ -1,7 +1,7 @@
-import type { OpenClawConfig } from "./types.js";
+import type { WineryClawConfig } from "./types.js";
 
 export type RuntimeConfigSnapshotRefreshParams = {
-  sourceConfig: OpenClawConfig;
+  sourceConfig: WineryClawConfig;
 };
 
 export type RuntimeConfigSnapshotRefreshHandler = {
@@ -11,20 +11,20 @@ export type RuntimeConfigSnapshotRefreshHandler = {
 
 export type RuntimeConfigWriteNotification = {
   configPath: string;
-  sourceConfig: OpenClawConfig;
-  runtimeConfig: OpenClawConfig;
+  sourceConfig: WineryClawConfig;
+  runtimeConfig: WineryClawConfig;
   persistedHash: string;
   writtenAtMs: number;
 };
 
-let runtimeConfigSnapshot: OpenClawConfig | null = null;
-let runtimeConfigSourceSnapshot: OpenClawConfig | null = null;
+let runtimeConfigSnapshot: WineryClawConfig | null = null;
+let runtimeConfigSourceSnapshot: WineryClawConfig | null = null;
 let runtimeConfigSnapshotRefreshHandler: RuntimeConfigSnapshotRefreshHandler | null = null;
 const runtimeConfigWriteListeners = new Set<(event: RuntimeConfigWriteNotification) => void>();
 
 export function setRuntimeConfigSnapshot(
-  config: OpenClawConfig,
-  sourceConfig?: OpenClawConfig,
+  config: WineryClawConfig,
+  sourceConfig?: WineryClawConfig,
 ): void {
   runtimeConfigSnapshot = config;
   runtimeConfigSourceSnapshot = sourceConfig ?? null;
@@ -39,11 +39,11 @@ export function clearRuntimeConfigSnapshot(): void {
   resetConfigRuntimeState();
 }
 
-export function getRuntimeConfigSnapshot(): OpenClawConfig | null {
+export function getRuntimeConfigSnapshot(): WineryClawConfig | null {
   return runtimeConfigSnapshot;
 }
 
-export function getRuntimeConfigSourceSnapshot(): OpenClawConfig | null {
+export function getRuntimeConfigSourceSnapshot(): WineryClawConfig | null {
   return runtimeConfigSourceSnapshot;
 }
 
@@ -76,7 +76,7 @@ export function notifyRuntimeConfigWriteListeners(event: RuntimeConfigWriteNotif
   }
 }
 
-export function loadPinnedRuntimeConfig(loadFresh: () => OpenClawConfig): OpenClawConfig {
+export function loadPinnedRuntimeConfig(loadFresh: () => WineryClawConfig): WineryClawConfig {
   if (runtimeConfigSnapshot) {
     return runtimeConfigSnapshot;
   }
@@ -86,10 +86,10 @@ export function loadPinnedRuntimeConfig(loadFresh: () => OpenClawConfig): OpenCl
 }
 
 export async function finalizeRuntimeSnapshotWrite(params: {
-  nextSourceConfig: OpenClawConfig;
+  nextSourceConfig: WineryClawConfig;
   hadRuntimeSnapshot: boolean;
   hadBothSnapshots: boolean;
-  loadFreshConfig: () => OpenClawConfig;
+  loadFreshConfig: () => WineryClawConfig;
   notifyCommittedWrite: () => void;
   createRefreshError: (detail: string, cause: unknown) => Error;
   formatRefreshError: (error: unknown) => string;

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   __testing as sessionBindingTesting,
   registerSessionBindingAdapter,
@@ -11,7 +11,7 @@ const baseCfg = {
   agents: {
     list: [{ id: "main" }, { id: "codex" }],
   },
-} satisfies OpenClawConfig;
+} satisfies WineryClawConfig;
 
 describe("resolveBlueBubblesConversationRoute", () => {
   beforeEach(() => {

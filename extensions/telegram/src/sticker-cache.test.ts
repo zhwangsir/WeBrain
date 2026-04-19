@@ -8,14 +8,14 @@ const TEST_CACHE_FILE = path.join(TEST_CACHE_DIR, "sticker-cache.json");
 
 describe("sticker-cache", () => {
   beforeEach(() => {
-    process.env.OPENCLAW_STATE_DIR = "/tmp/openclaw-test-sticker-cache";
+    process.env.WINERYCLAW_STATE_DIR = "/tmp/openclaw-test-sticker-cache";
     fs.rmSync("/tmp/openclaw-test-sticker-cache", { recursive: true, force: true });
     fs.mkdirSync(TEST_CACHE_DIR, { recursive: true });
   });
 
   afterEach(() => {
     fs.rmSync("/tmp/openclaw-test-sticker-cache", { recursive: true, force: true });
-    delete process.env.OPENCLAW_STATE_DIR;
+    delete process.env.WINERYCLAW_STATE_DIR;
   });
 
   describe("getCachedSticker", () => {

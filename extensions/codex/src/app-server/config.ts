@@ -110,8 +110,8 @@ export function resolveCodexAppServerRuntimeOptions(
   const config = readCodexPluginConfig(params.pluginConfig).appServer ?? {};
   const transport = resolveTransport(config.transport);
   const command =
-    readNonEmptyString(config.command) ?? env.OPENCLAW_CODEX_APP_SERVER_BIN ?? "codex";
-  const args = resolveArgs(config.args, env.OPENCLAW_CODEX_APP_SERVER_ARGS);
+    readNonEmptyString(config.command) ?? env.WINERYCLAW_CODEX_APP_SERVER_BIN ?? "codex";
+  const args = resolveArgs(config.args, env.WINERYCLAW_CODEX_APP_SERVER_ARGS);
   const headers = normalizeHeaders(config.headers);
   const authToken = readNonEmptyString(config.authToken);
   const url = readNonEmptyString(config.url);
@@ -133,15 +133,15 @@ export function resolveCodexAppServerRuntimeOptions(
     requestTimeoutMs: normalizePositiveNumber(config.requestTimeoutMs, 60_000),
     approvalPolicy:
       resolveApprovalPolicy(config.approvalPolicy) ??
-      resolveApprovalPolicy(env.OPENCLAW_CODEX_APP_SERVER_APPROVAL_POLICY) ??
+      resolveApprovalPolicy(env.WINERYCLAW_CODEX_APP_SERVER_APPROVAL_POLICY) ??
       "never",
     sandbox:
       resolveSandbox(config.sandbox) ??
-      resolveSandbox(env.OPENCLAW_CODEX_APP_SERVER_SANDBOX) ??
+      resolveSandbox(env.WINERYCLAW_CODEX_APP_SERVER_SANDBOX) ??
       "workspace-write",
     approvalsReviewer:
       resolveApprovalsReviewer(config.approvalsReviewer) ??
-      (env.OPENCLAW_CODEX_APP_SERVER_GUARDIAN === "1" ? "guardian_subagent" : "user"),
+      (env.WINERYCLAW_CODEX_APP_SERVER_GUARDIAN === "1" ? "guardian_subagent" : "user"),
     ...(readNonEmptyString(config.serviceTier)
       ? { serviceTier: readNonEmptyString(config.serviceTier) }
       : {}),

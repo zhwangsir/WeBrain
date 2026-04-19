@@ -6,7 +6,7 @@ import {
 } from "openclaw/plugin-sdk/channel-inbound";
 import { createChannelPairingChallengeIssuer } from "openclaw/plugin-sdk/channel-pairing";
 import { hasControlCommand, resolveControlCommandGate } from "openclaw/plugin-sdk/command-auth";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
@@ -72,7 +72,7 @@ function isDownloadableLineMessageType(
 }
 
 export interface LineHandlerContext {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   account: ResolvedLineAccount;
   runtime: RuntimeEnv;
   mediaMaxBytes: number;
@@ -454,7 +454,7 @@ function resolveEventRawText(event: MessageEvent | PostbackEvent): string {
 }
 
 function resolveLineCommandAuthorized(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   event: MessageEvent | PostbackEvent;
   senderId?: string;
   allow: NormalizedAllowFrom;

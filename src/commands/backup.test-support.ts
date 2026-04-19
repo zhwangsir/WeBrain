@@ -25,11 +25,11 @@ export function createBackupTestRuntime(): RuntimeEnv {
 }
 
 export async function mockStateOnlyBackupPlan(stateDir: string) {
-  await fs.writeFile(path.join(stateDir, "openclaw.json"), JSON.stringify({}), "utf8");
+  await fs.writeFile(path.join(stateDir, "wineryclaw.json"), JSON.stringify({}), "utf8");
   vi.spyOn(backupShared, "resolveBackupPlanFromDisk").mockResolvedValue(
     await resolveBackupPlanFromPaths({
       stateDir,
-      configPath: path.join(stateDir, "openclaw.json"),
+      configPath: path.join(stateDir, "wineryclaw.json"),
       oauthDir: path.join(stateDir, "credentials"),
       includeWorkspace: false,
       configInsideState: true,

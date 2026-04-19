@@ -90,7 +90,7 @@ jobs:
                 lockReason: "off-topic",
                 commentTriggers: ["moltbook"],
                 message:
-                  "OpenClaw is not affiliated with Moltbook, and issues related to Moltbook should not be submitted here.",
+                  "WineryClaw is not affiliated with Moltbook, and issues related to Moltbook should not be submitted here.",
               },
             ];
 

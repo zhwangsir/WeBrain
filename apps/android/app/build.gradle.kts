@@ -57,7 +57,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            assets.directories.add("../../shared/OpenClawKit/Sources/OpenClawKit/Resources")
+            assets.directories.add("../../shared/WineryClawKit/Sources/WineryClawKit/Resources")
         }
     }
 

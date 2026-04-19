@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { WineryClawConfig } from "./types.openclaw.js";
 
 export type PluginAutoEnableCandidate =
   | {
@@ -40,7 +40,7 @@ export type PluginAutoEnableCandidate =
     };
 
 export type PluginAutoEnableResult = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   changes: string[];
   autoEnabledReasons: Record<string, string[]>;
 };

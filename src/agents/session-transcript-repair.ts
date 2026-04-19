@@ -8,7 +8,7 @@ import { extractToolCallsFromAssistant, extractToolResultId } from "./tool-call-
 
 const TOOL_CALL_NAME_MAX_CHARS = 64;
 const TOOL_CALL_NAME_RE = /^[A-Za-z0-9_:.-]+$/;
-const REDACTED_SESSIONS_SPAWN_ATTACHMENT_CONTENT = "__OPENCLAW_REDACTED__";
+const REDACTED_SESSIONS_SPAWN_ATTACHMENT_CONTENT = "__WINERYCLAW_REDACTED__";
 const SESSIONS_SPAWN_ATTACHMENT_METADATA_KEYS = ["name", "encoding", "mimeType"] as const;
 
 type RawToolCallBlock = {

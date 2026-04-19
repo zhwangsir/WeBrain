@@ -36,8 +36,8 @@ describe("buildGuardedModelFetch", () => {
     resolveProviderRequestPolicyConfigMock
       .mockClear()
       .mockReturnValue({ allowPrivateNetwork: false });
-    delete process.env.OPENCLAW_DEBUG_PROXY_ENABLED;
-    delete process.env.OPENCLAW_DEBUG_PROXY_URL;
+    delete process.env.WINERYCLAW_DEBUG_PROXY_ENABLED;
+    delete process.env.WINERYCLAW_DEBUG_PROXY_URL;
   });
 
   it("pushes provider capture metadata into the shared guarded fetch seam", async () => {
@@ -71,8 +71,8 @@ describe("buildGuardedModelFetch", () => {
   });
 
   it("does not force explicit debug proxy overrides onto plain HTTP model transports", async () => {
-    process.env.OPENCLAW_DEBUG_PROXY_ENABLED = "1";
-    process.env.OPENCLAW_DEBUG_PROXY_URL = "http://127.0.0.1:7799";
+    process.env.WINERYCLAW_DEBUG_PROXY_ENABLED = "1";
+    process.env.WINERYCLAW_DEBUG_PROXY_URL = "http://127.0.0.1:7799";
 
     const { buildGuardedModelFetch } = await import("./provider-transport-fetch.js");
     const model = {

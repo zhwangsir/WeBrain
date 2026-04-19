@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import type {
   MemorySearchConfig,
-  OpenClawConfig,
+  WineryClawConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MemoryIndexManager } from "./index.js";
@@ -95,8 +95,8 @@ describe("memory watcher config", () => {
     await fs.writeFile(path.join(extraDir, seedFile.name), seedFile.contents);
   }
 
-  function createWatcherConfig(overrides?: Partial<MemorySearchConfig>): OpenClawConfig {
-    const defaults: NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]> = {
+  function createWatcherConfig(overrides?: Partial<MemorySearchConfig>): WineryClawConfig {
+    const defaults: NonNullable<NonNullable<WineryClawConfig["agents"]>["defaults"]> = {
       workspace: workspaceDir,
       memorySearch: {
         provider: "openai",
@@ -113,10 +113,10 @@ describe("memory watcher config", () => {
         defaults,
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
   }
 
-  async function expectWatcherManager(cfg: OpenClawConfig) {
+  async function expectWatcherManager(cfg: WineryClawConfig) {
     const result = await getMemorySearchManager({ cfg, agentId: "main" });
     expect(result.manager).not.toBeNull();
     if (!result.manager) {

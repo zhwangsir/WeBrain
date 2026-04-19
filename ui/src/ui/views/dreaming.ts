@@ -250,40 +250,17 @@ const STARS: {
 ];
 
 const sleepingLobster = html`
-  <svg viewBox="0 0 120 120" fill="none">
+  <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="dream-lob-g" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ff4d4d" />
-        <stop offset="100%" stop-color="#991b1b" />
+      <linearGradient id="drt-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#5BA3F5" />
+        <stop offset="50%" stop-color="#4A90E2" />
+        <stop offset="100%" stop-color="#3A7BD5" />
       </linearGradient>
     </defs>
-    <path
-      d="M60 10C30 10 15 35 15 55C15 75 30 95 45 100L45 110L55 110L55 100C55 100 60 102 65 100L65 110L75 110L75 100C90 95 105 75 105 55C105 35 90 10 60 10Z"
-      fill="url(#dream-lob-g)"
-    />
-    <path d="M20 45C5 40 0 50 5 60C10 70 20 65 25 55C28 48 25 45 20 45Z" fill="url(#dream-lob-g)" />
-    <path
-      d="M100 45C115 40 120 50 115 60C110 70 100 65 95 55C92 48 95 45 100 45Z"
-      fill="url(#dream-lob-g)"
-    />
-    <path d="M45 15Q38 8 35 14" stroke="#ff4d4d" stroke-width="3" stroke-linecap="round" />
-    <path d="M75 15Q82 8 85 14" stroke="#ff4d4d" stroke-width="3" stroke-linecap="round" />
-    <path
-      d="M39 36Q45 32 51 36"
-      stroke="#050810"
-      stroke-width="2.5"
-      stroke-linecap="round"
-      fill="none"
-    />
-    <path
-      d="M69 36Q75 32 81 36"
-      stroke="#050810"
-      stroke-width="2.5"
-      stroke-linecap="round"
-      fill="none"
-    />
-  </svg>
-`;
+    <rect width="64" height="64" rx="12" fill="url(#drt-glow)" opacity="0.85"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="bold">DRT</text>
+  </svg>`
 
 export function renderDreaming(props: DreamingProps) {
   const idle = !props.active;

@@ -1,8 +1,8 @@
 import type { MarkdownTableMode } from "./types.base.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { WineryClawConfig } from "./types.openclaw.js";
 
 export type ResolveMarkdownTableModeParams = {
-  cfg?: Partial<OpenClawConfig>;
+  cfg?: Partial<WineryClawConfig>;
   channel?: string | null;
   accountId?: string | null;
 };

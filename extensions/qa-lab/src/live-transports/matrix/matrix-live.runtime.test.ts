@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { __testing as liveTesting } from "./matrix-live.runtime.js";
 
@@ -8,7 +8,7 @@ afterEach(() => {
 
 describe("matrix live qa runtime", () => {
   it("injects a temporary Matrix account into the QA gateway config", () => {
-    const baseCfg: OpenClawConfig = {
+    const baseCfg: WineryClawConfig = {
       plugins: {
         allow: ["memory-core", "qa-channel"],
         entries: {

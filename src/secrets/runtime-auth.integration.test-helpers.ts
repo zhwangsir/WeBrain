@@ -3,7 +3,7 @@ import path from "node:path";
 import { expect, vi } from "vitest";
 import { ensureAuthProfileStore, type AuthProfileStore } from "../agents/auth-profiles.js";
 import { clearConfigCache, clearRuntimeConfigSnapshot, loadConfig } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { captureEnv } from "../test-utils/env.js";
 import { clearSecretsRuntimeSnapshot } from "./runtime.js";
 
@@ -38,8 +38,8 @@ export type SecretsRuntimeEnvSnapshot = ReturnType<typeof captureEnv>;
 
 const allowInsecureTempSecretFile = process.platform === "win32";
 
-export function asConfig(value: unknown): OpenClawConfig {
-  return value as OpenClawConfig;
+export function asConfig(value: unknown): WineryClawConfig {
+  return value as WineryClawConfig;
 }
 
 export function loadAuthStoreWithProfiles(
@@ -52,7 +52,7 @@ export function loadAuthStoreWithProfiles(
 }
 
 export async function createOpenAIFileRuntimeFixture(home: string) {
-  const configDir = path.join(home, ".openclaw");
+  const configDir = path.join(home, ".wineryclaw");
   const secretFile = path.join(configDir, "secrets.json");
   const agentDir = path.join(configDir, "agents", "main", "agent");
   const authStorePath = path.join(agentDir, "auth-profiles.json");
@@ -90,7 +90,7 @@ export async function createOpenAIFileRuntimeFixture(home: string) {
   };
 }
 
-export function createOpenAIFileRuntimeConfig(secretFile: string): OpenClawConfig {
+export function createOpenAIFileRuntimeConfig(secretFile: string): WineryClawConfig {
   return asConfig({
     secrets: {
       providers: {
@@ -128,14 +128,14 @@ export function beginSecretsRuntimeIsolationForTest(): SecretsRuntimeEnvSnapshot
   secretsRuntimePluginMocks.resolvePluginWebSearchProvidersMock.mockReset();
   secretsRuntimePluginMocks.resolvePluginWebSearchProvidersMock.mockReturnValue([]);
   const envSnapshot = captureEnv([
-    "OPENCLAW_BUNDLED_PLUGINS_DIR",
-    "OPENCLAW_DISABLE_BUNDLED_PLUGINS",
-    "OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE",
-    "OPENCLAW_VERSION",
+    "WINERYCLAW_BUNDLED_PLUGINS_DIR",
+    "WINERYCLAW_DISABLE_BUNDLED_PLUGINS",
+    "WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE",
+    "WINERYCLAW_VERSION",
   ]);
-  delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
-  process.env.OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE = "1";
-  delete process.env.OPENCLAW_VERSION;
+  delete process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
+  process.env.WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE = "1";
+  delete process.env.WINERYCLAW_VERSION;
   return envSnapshot;
 }
 

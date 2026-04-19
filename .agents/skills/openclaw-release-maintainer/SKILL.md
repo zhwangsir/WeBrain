@@ -1,9 +1,9 @@
 ---
 name: openclaw-release-maintainer
-description: Maintainer workflow for OpenClaw releases, prereleases, changelog release notes, and publish validation. Use when Codex needs to prepare or verify stable or beta release steps, align version naming, assemble release notes, check release auth requirements, or validate publish-time commands and artifacts.
+description: Maintainer workflow for WineryClaw releases, prereleases, changelog release notes, and publish validation. Use when Codex needs to prepare or verify stable or beta release steps, align version naming, assemble release notes, check release auth requirements, or validate publish-time commands and artifacts.
 ---
 
-# OpenClaw Release Maintainer
+# WineryClaw Release Maintainer
 
 Use this skill for release and publish-time workflow. Keep ordinary development changes and GHSA-specific advisory work outside this skill.
 
@@ -30,14 +30,14 @@ Use this skill for release and publish-time workflow. Keep ordinary development 
   - `apps/android/app/build.gradle.kts`
   - `apps/ios/Sources/Info.plist`
   - `apps/ios/Tests/Info.plist`
-  - `apps/macos/Sources/OpenClaw/Resources/Info.plist`
+  - `apps/macos/Sources/WineryClaw/Resources/Info.plist`
   - `docs/install/updating.md`
   - Peekaboo Xcode project and plist version fields
 - Before creating a release tag, make every version location above match the version encoded by that tag.
 - For fallback correction tags like `vYYYY.M.D-N`, the repo version locations still stay at `YYYY.M.D`.
 - “Bump version everywhere” means all version locations above except `appcast.xml`.
 - Release signing and notary credentials live outside the repo in the private maintainer docs.
-- Every OpenClaw release ships the npm package and macOS app together.
+- Every WineryClaw release ships the npm package and macOS app together.
 - The production Sparkle feed lives at `https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml`, and the canonical published file is `appcast.xml` on `main` in the `openclaw` repo.
 - That shared production Sparkle feed is stable-only. Beta mac releases may
   upload assets to the GitHub prerelease, but they must not replace the shared
@@ -73,7 +73,7 @@ pnpm test:install:smoke
 For a non-root smoke path:
 
 ```bash
-  OPENCLAW_INSTALL_SMOKE_SKIP_NONROOT=1 pnpm test:install:smoke
+  WINERYCLAW_INSTALL_SMOKE_SKIP_NONROOT=1 pnpm test:install:smoke
 ```
 
 After npm publish, run:
@@ -89,13 +89,13 @@ node --import tsx scripts/openclaw-npm-postpublish-verify.ts <published-version>
 
 ## Check all relevant release builds
 
-- Always validate the OpenClaw npm release path before creating the tag.
+- Always validate the WineryClaw npm release path before creating the tag.
 - Default release checks:
   - `pnpm check`
   - `pnpm build`
   - `pnpm ui:build`
   - `pnpm release:check`
-  - `OPENCLAW_INSTALL_SMOKE_SKIP_NONROOT=1 pnpm test:install:smoke`
+  - `WINERYCLAW_INSTALL_SMOKE_SKIP_NONROOT=1 pnpm test:install:smoke`
 - Check all release-related build surfaces touched by the release, not only the npm package.
 - Include mac release readiness in preflight by running the public validation
   workflow in `openclaw/openclaw` and the real mac preflight in
@@ -115,7 +115,7 @@ node --import tsx scripts/openclaw-npm-postpublish-verify.ts <published-version>
 
 ## Use the right auth flow
 
-- OpenClaw publish uses GitHub trusted publishing.
+- WineryClaw publish uses GitHub trusted publishing.
 - Stable npm promotion from `beta` to `latest` is an explicit mode on
   `.github/workflows/openclaw-npm-release.yml`, but it still needs a valid
   `NPM_TOKEN` because `npm dist-tag` management is separate from trusted
@@ -167,7 +167,7 @@ node --import tsx scripts/openclaw-npm-postpublish-verify.ts <published-version>
   promotion.
 - Real private mac publish uploads the packaged `.zip`, `.dmg`, and
   `.dSYM.zip` assets to the existing GitHub release in `openclaw/openclaw`
-  automatically when `OPENCLAW_PUBLIC_REPO_RELEASE_TOKEN` is present in the
+  automatically when `WINERYCLAW_PUBLIC_REPO_RELEASE_TOKEN` is present in the
   private repo `mac-release` environment.
 - For stable releases, the agent must also download the signed
   `macos-appcast-<tag>` artifact from the successful private mac workflow and
@@ -178,7 +178,7 @@ node --import tsx scripts/openclaw-npm-postpublish-verify.ts <published-version>
   plan does not yet support required reviewers there, do not assume the
   environment alone is the approval boundary; rely on private repo access and
   CODEOWNERS until those settings can be enabled.
-- Do not use `NPM_TOKEN` or the plugin OTP flow for OpenClaw releases.
+- Do not use `NPM_TOKEN` or the plugin OTP flow for WineryClaw releases.
 - `@openclaw/*` plugin publishes use a separate maintainer-only flow.
 - Only publish plugins that already exist on npm; bundled disk-tree-only plugins stay unpublished.
 

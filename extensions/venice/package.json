@@ -2,7 +2,7 @@
   "name": "@openclaw/venice-provider",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Venice provider plugin",
+  "description": "WineryClaw Venice provider plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

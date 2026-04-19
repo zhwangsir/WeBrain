@@ -1,14 +1,14 @@
 ---
-summary: "Use Amazon Bedrock Mantle (OpenAI-compatible) models with OpenClaw"
+summary: "Use Amazon Bedrock Mantle (OpenAI-compatible) models with WineryClaw"
 read_when:
-  - You want to use Bedrock Mantle hosted OSS models with OpenClaw
+  - You want to use Bedrock Mantle hosted OSS models with WineryClaw
   - You need the Mantle OpenAI-compatible endpoint for GPT-OSS, Qwen, Kimi, or GLM
 title: "Amazon Bedrock Mantle"
 ---
 
 # Amazon Bedrock Mantle
 
-OpenClaw includes a bundled **Amazon Bedrock Mantle** provider that connects to
+WineryClaw includes a bundled **Amazon Bedrock Mantle** provider that connects to
 the Mantle OpenAI-compatible endpoint. Mantle hosts open-source and
 third-party models (GPT-OSS, Qwen, Kimi, GLM, and similar) through a standard
 `/v1/chat/completions` surface backed by Bedrock infrastructure.
@@ -69,12 +69,12 @@ Choose your preferred auth method and follow the setup steps.
         openclaw models list
         ```
 
-        OpenClaw generates a Mantle bearer token from the credential chain automatically.
+        WineryClaw generates a Mantle bearer token from the credential chain automatically.
       </Step>
     </Steps>
 
     <Tip>
-    When `AWS_BEARER_TOKEN_BEDROCK` is not set, OpenClaw mints the bearer token for you from the AWS default credential chain, including shared credentials/config profiles, SSO, web identity, and instance or task roles.
+    When `AWS_BEARER_TOKEN_BEDROCK` is not set, WineryClaw mints the bearer token for you from the AWS default credential chain, including shared credentials/config profiles, SSO, web identity, and instance or task roles.
     </Tip>
 
   </Tab>
@@ -82,8 +82,8 @@ Choose your preferred auth method and follow the setup steps.
 
 ## Automatic model discovery
 
-When `AWS_BEARER_TOKEN_BEDROCK` is set, OpenClaw uses it directly. Otherwise,
-OpenClaw attempts to generate a Mantle bearer token from the AWS default
+When `AWS_BEARER_TOKEN_BEDROCK` is set, WineryClaw uses it directly. Otherwise,
+WineryClaw attempts to generate a Mantle bearer token from the AWS default
 credential chain. It then discovers available Mantle models by querying the
 region's `/v1/models` endpoint.
 
@@ -137,13 +137,13 @@ If you prefer explicit config instead of auto-discovery:
 <AccordionGroup>
   <Accordion title="Reasoning support">
     Reasoning support is inferred from model IDs containing patterns like
-    `thinking`, `reasoner`, or `gpt-oss-120b`. OpenClaw sets `reasoning: true`
+    `thinking`, `reasoner`, or `gpt-oss-120b`. WineryClaw sets `reasoning: true`
     automatically for matching models during discovery.
   </Accordion>
 
   <Accordion title="Endpoint unavailability">
     If the Mantle endpoint is unavailable or returns no models, the provider is
-    silently skipped. OpenClaw does not error; other configured providers
+    silently skipped. WineryClaw does not error; other configured providers
     continue to work normally.
   </Accordion>
 

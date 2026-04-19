@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import type { Command } from "commander";
 import JSON5 from "json5";
-import { readBestEffortConfig, type OpenClawConfig } from "../config/config.js";
+import { readBestEffortConfig, type WineryClawConfig } from "../config/config.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import {
   collectExecPolicyScopeSnapshots,
@@ -31,7 +31,7 @@ type ExecApprovalsSnapshot = {
 };
 
 type ConfigSnapshotLike = {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 };
 type ApprovalsTargetSource = "gateway" | "node" | "local";
 type EffectivePolicyReport = {
@@ -165,7 +165,7 @@ function formatCliError(err: unknown): string {
 async function loadConfigForApprovalsTarget(params: {
   opts: ExecApprovalsCliOpts;
   source: ApprovalsTargetSource;
-}): Promise<OpenClawConfig | null> {
+}): Promise<WineryClawConfig | null> {
   try {
     if (params.source === "local") {
       return await readBestEffortConfig();
@@ -182,7 +182,7 @@ async function loadConfigForApprovalsTarget(params: {
 }
 
 function buildEffectivePolicyReport(params: {
-  cfg: OpenClawConfig | null;
+  cfg: WineryClawConfig | null;
   source: ApprovalsTargetSource;
   approvals: ExecApprovalsFile;
   hostPath: string;

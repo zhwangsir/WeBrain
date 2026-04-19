@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { expect } from "vitest";
 import { createChannelConversationBindingManager } from "../../../src/channels/plugins/conversation-bindings.js";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 import {
   getSessionBindingService,
   type SessionBindingCapabilities,
@@ -124,7 +124,7 @@ async function createContractMatrixThreadBindingManager() {
 
 const baseSessionBindingCfg = {
   session: { mainKey: "main", scope: "per-sender" },
-} satisfies OpenClawConfig;
+} satisfies WineryClawConfig;
 
 const sessionBindingContractEntries: Record<
   SessionBindingContractChannelId,
@@ -203,7 +203,7 @@ const sessionBindingContractEntries: Record<
       const { createThreadBindingManager } = await getContractApi<{
         createThreadBindingManager: (params: {
           accountId: string;
-          cfg?: OpenClawConfig;
+          cfg?: WineryClawConfig;
           persist: boolean;
           enableSweeper: boolean;
         }) => unknown;
@@ -223,7 +223,7 @@ const sessionBindingContractEntries: Record<
       const { createThreadBindingManager } = await getContractApi<{
         createThreadBindingManager: (params: {
           accountId: string;
-          cfg?: OpenClawConfig;
+          cfg?: WineryClawConfig;
           persist: boolean;
           enableSweeper: boolean;
         }) => unknown;
@@ -277,7 +277,7 @@ const sessionBindingContractEntries: Record<
       const { createFeishuThreadBindingManager } = await getContractApi<{
         createFeishuThreadBindingManager: (params: {
           accountId?: string;
-          cfg: OpenClawConfig;
+          cfg: WineryClawConfig;
         }) => unknown;
       }>("feishu");
       createFeishuThreadBindingManager({
@@ -293,7 +293,7 @@ const sessionBindingContractEntries: Record<
       const { createFeishuThreadBindingManager } = await getContractApi<{
         createFeishuThreadBindingManager: (params: {
           accountId?: string;
-          cfg: OpenClawConfig;
+          cfg: WineryClawConfig;
         }) => unknown;
       }>("feishu");
       createFeishuThreadBindingManager({

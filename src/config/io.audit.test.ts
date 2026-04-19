@@ -13,7 +13,7 @@ import {
 function createRenameAuditRecord(home: string) {
   return finalizeConfigWriteAuditRecord({
     base: createConfigWriteAuditRecordBase({
-      configPath: path.join(home, ".openclaw", "openclaw.json"),
+      configPath: path.join(home, ".wineryclaw", "wineryclaw.json"),
       env: {} as NodeJS.ProcessEnv,
       existsBefore: true,
       previousHash: "prev-hash",
@@ -49,7 +49,7 @@ function createRenameAuditRecord(home: string) {
 }
 
 function readAuditLog(home: string): unknown[] {
-  const auditPath = path.join(home, ".openclaw", "logs", "config-audit.jsonl");
+  const auditPath = path.join(home, ".wineryclaw", "logs", "config-audit.jsonl");
   return fs
     .readFileSync(auditPath, "utf-8")
     .trim()
@@ -74,11 +74,11 @@ describe("config io audit helpers", () => {
       {
         HOME: "undefined",
         USERPROFILE: "null",
-        OPENCLAW_HOME: "undefined",
+        WINERYCLAW_HOME: "undefined",
       } as NodeJS.ProcessEnv,
       () => home,
     );
-    expect(auditPath).toBe(path.join(home, ".openclaw", "logs", "config-audit.jsonl"));
+    expect(auditPath).toBe(path.join(home, ".wineryclaw", "logs", "config-audit.jsonl"));
     expect(auditPath.startsWith(path.resolve("undefined"))).toBe(false);
   });
 
@@ -99,9 +99,9 @@ describe("config io audit helpers", () => {
     const base = createConfigWriteAuditRecordBase({
       configPath: "/tmp/openclaw.json",
       env: {
-        OPENCLAW_WATCH_MODE: "1",
-        OPENCLAW_WATCH_SESSION: "watch-session-1",
-        OPENCLAW_WATCH_COMMAND: "gateway --force",
+        WINERYCLAW_WATCH_MODE: "1",
+        WINERYCLAW_WATCH_SESSION: "watch-session-1",
+        WINERYCLAW_WATCH_COMMAND: "gateway --force",
       } as NodeJS.ProcessEnv,
       existsBefore: true,
       previousHash: "prev-hash",

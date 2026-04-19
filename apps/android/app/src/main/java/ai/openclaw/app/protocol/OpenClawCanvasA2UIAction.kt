@@ -3,7 +3,7 @@ package ai.openclaw.app.protocol
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-object OpenClawCanvasA2UIAction {
+object WineryClawCanvasA2UIAction {
   fun extractActionName(userAction: JsonObject): String? {
     val name =
       (userAction["name"] as? JsonPrimitive)

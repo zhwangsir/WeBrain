@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { resolveMainSessionKey } from "../config/sessions.js";
 import { runHeartbeatOnce } from "./heartbeat-runner.js";
 import {
@@ -34,8 +34,8 @@ describe("Ghost reminder bug (issue #13317)", () => {
     tmpDir: string;
     storePath: string;
     target?: "telegram" | "none";
-  }): Promise<{ cfg: OpenClawConfig; sessionKey: string }> => {
-    const cfg: OpenClawConfig = {
+  }): Promise<{ cfg: WineryClawConfig; sessionKey: string }> => {
+    const cfg: WineryClawConfig = {
       agents: {
         defaults: {
           workspace: params.tmpDir,
@@ -283,7 +283,7 @@ describe("Ghost reminder bug (issue #13317)", () => {
 
   it("routes wake-triggered heartbeat replies using queued system-event delivery context", async () => {
     await withTempHeartbeatSandbox(async ({ tmpDir, storePath, replySpy }) => {
-      const cfg: OpenClawConfig = {
+      const cfg: WineryClawConfig = {
         agents: {
           defaults: {
             workspace: tmpDir,
@@ -343,7 +343,7 @@ describe("Ghost reminder bug (issue #13317)", () => {
 
   it("does not reuse stale turn-source routing for isolated wake runs", async () => {
     await withTempHeartbeatSandbox(async ({ tmpDir, storePath, replySpy }) => {
-      const cfg: OpenClawConfig = {
+      const cfg: WineryClawConfig = {
         agents: {
           defaults: {
             workspace: tmpDir,
@@ -411,7 +411,7 @@ describe("Ghost reminder bug (issue #13317)", () => {
 
   it("keeps exec-event delivery pinned to the original Telegram topic when session route drifts", async () => {
     await withTempHeartbeatSandbox(async ({ tmpDir, storePath }) => {
-      const cfg: OpenClawConfig = {
+      const cfg: WineryClawConfig = {
         agents: {
           defaults: {
             workspace: tmpDir,

@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { SessionBindingRecord } from "../../infra/outbound/session-binding-service.js";
 import type {
   AcpRuntime,
@@ -67,14 +67,14 @@ const internalHookMocks = vi.hoisted(() => ({
 }));
 const acpMocks = vi.hoisted(() => ({
   listAcpSessionEntries: vi.fn(async () => []),
-  readAcpSessionEntry: vi.fn<(params: { sessionKey: string; cfg?: OpenClawConfig }) => unknown>(
+  readAcpSessionEntry: vi.fn<(params: { sessionKey: string; cfg?: WineryClawConfig }) => unknown>(
     () => null,
   ),
   getAcpRuntimeBackend: vi.fn<() => unknown>(() => null),
   upsertAcpSessionMeta: vi.fn<
     (params: {
       sessionKey: string;
-      cfg?: OpenClawConfig;
+      cfg?: WineryClawConfig;
       mutate: (
         current: Record<string, unknown> | undefined,
         entry: { acp?: Record<string, unknown> } | undefined,
@@ -139,7 +139,7 @@ const ttsMocks = vi.hoisted(() => {
     normalizeTtsAutoMode: vi.fn((value: unknown) =>
       typeof value === "string" ? value : undefined,
     ),
-    resolveTtsConfig: vi.fn((_cfg: OpenClawConfig) => ({ mode: "final" })),
+    resolveTtsConfig: vi.fn((_cfg: WineryClawConfig) => ({ mode: "final" })),
   };
 });
 const threadInfoMocks = vi.hoisted(() => ({
@@ -321,7 +321,7 @@ vi.mock("./dispatch-acp-manager.runtime.js", () => ({
 vi.mock("../../tts/tts.js", () => ({
   maybeApplyTtsToPayload: (params: unknown) => ttsMocks.maybeApplyTtsToPayload(params),
   normalizeTtsAutoMode: (value: unknown) => ttsMocks.normalizeTtsAutoMode(value),
-  resolveTtsConfig: (cfg: OpenClawConfig) => ttsMocks.resolveTtsConfig(cfg),
+  resolveTtsConfig: (cfg: WineryClawConfig) => ttsMocks.resolveTtsConfig(cfg),
 }));
 vi.mock("../../tts/tts.runtime.js", () => ({
   maybeApplyTtsToPayload: (params: unknown) => ttsMocks.maybeApplyTtsToPayload(params),
@@ -338,17 +338,17 @@ vi.mock("./dispatch-acp-tts.runtime.js", () => ({
   maybeApplyTtsToPayload: (params: unknown) => ttsMocks.maybeApplyTtsToPayload(params),
 }));
 vi.mock("./dispatch-acp-session.runtime.js", () => ({
-  readAcpSessionEntry: (params: { sessionKey: string; cfg?: OpenClawConfig }) =>
+  readAcpSessionEntry: (params: { sessionKey: string; cfg?: WineryClawConfig }) =>
     acpMocks.readAcpSessionEntry(params),
 }));
 vi.mock("../../tts/tts-config.js", () => ({
   normalizeTtsAutoMode: (value: unknown) => ttsMocks.normalizeTtsAutoMode(value),
-  resolveConfiguredTtsMode: (cfg: OpenClawConfig) => ttsMocks.resolveTtsConfig(cfg).mode,
+  resolveConfiguredTtsMode: (cfg: WineryClawConfig) => ttsMocks.resolveTtsConfig(cfg).mode,
   shouldAttemptTtsPayload: () => true,
 }));
 
 const noAbortResult = { handled: false, aborted: false } as const;
-const emptyConfig = {} as OpenClawConfig;
+const emptyConfig = {} as WineryClawConfig;
 let dispatchReplyFromConfig: typeof import("./dispatch-from-config.js").dispatchReplyFromConfig;
 let resetInboundDedupe: typeof import("./inbound-dedupe.js").resetInboundDedupe;
 let tryDispatchAcpReplyHook: typeof import("../../plugin-sdk/acp-runtime.js").tryDispatchAcpReplyHook;
@@ -437,7 +437,7 @@ function createAcpRuntime(events: AcpRuntimeEvent[]): MockAcpRuntime {
 
 function createMockAcpSessionManager() {
   return {
-    resolveSession: (params: { cfg: OpenClawConfig; sessionKey: string }) => {
+    resolveSession: (params: { cfg: WineryClawConfig; sessionKey: string }) => {
       const entry = acpMocks.readAcpSessionEntry({
         cfg: params.cfg,
         sessionKey: params.sessionKey,
@@ -481,7 +481,7 @@ function createMockAcpSessionManager() {
     }),
     runTurn: vi.fn(
       async (params: {
-        cfg: OpenClawConfig;
+        cfg: WineryClawConfig;
         sessionKey: string;
         text?: string;
         attachments?: unknown[];
@@ -658,7 +658,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => ({ text: "hi" }) satisfies ReplyPayload;
     await dispatchReplyFromConfig({ ctx, cfg, dispatcher, replyResolver });
 
@@ -683,7 +683,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => ({ text: "hi" }) satisfies ReplyPayload;
     await dispatchReplyFromConfig({ ctx, cfg, dispatcher, replyResolver });
 
@@ -903,7 +903,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => ({ text: "hi" }) satisfies ReplyPayload;
     await dispatchReplyFromConfig({ ctx, cfg, dispatcher, replyResolver });
 
@@ -927,7 +927,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => ({ text: "hi" }) satisfies ReplyPayload;
     await dispatchReplyFromConfig({ ctx, cfg, dispatcher, replyResolver });
 
@@ -956,7 +956,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       expect(opts?.onToolResult).toBeDefined();
       await opts?.onToolResult?.({
@@ -989,7 +989,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       expect(opts?.onToolResult).toBeDefined();
       expect(typeof opts?.onToolResult).toBe("function");
@@ -1012,7 +1012,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       expect(opts?.onToolResult).toBeDefined();
       await opts?.onToolResult?.({ text: "🔧 exec: ls" });
@@ -1046,7 +1046,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       await opts?.onToolResult?.({ text: "🔧 exec: ls" });
       return { text: "done" } satisfies ReplyPayload;
@@ -1072,7 +1072,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       await opts?.onToolResult?.({
         text: "Approval required.\n\n```txt\n/approve 117ba06d allow-once\n```",
@@ -1117,7 +1117,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       // Simulate tool result emission
       await opts?.onToolResult?.({ text: "🔧 exec: ls" });
@@ -1144,7 +1144,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       expect(opts?.onToolResult).toBeDefined();
       await opts?.onToolResult?.({ text: "🔧 tools/sessions_send" });
@@ -1176,7 +1176,7 @@ describe("dispatchReplyFromConfig", () => {
           verboseDefault: "on",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "telegram",
@@ -1186,7 +1186,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       await opts?.onPlanUpdate?.({
         phase: "update",
@@ -1226,7 +1226,7 @@ describe("dispatchReplyFromConfig", () => {
           verboseDefault: "on",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "telegram",
@@ -1236,7 +1236,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       await opts?.onPatchSummary?.({
         phase: "end",
@@ -1268,7 +1268,7 @@ describe("dispatchReplyFromConfig", () => {
           verboseDefault: "on",
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "telegram",
@@ -1279,7 +1279,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       await opts?.onPlanUpdate?.({
         phase: "update",
@@ -1316,7 +1316,7 @@ describe("dispatchReplyFromConfig", () => {
     const replyResolver = async (
       _ctx: MsgContext,
       opts?: GetReplyOptions,
-      _cfg?: OpenClawConfig,
+      _cfg?: WineryClawConfig,
     ) => {
       await opts?.onToolResult?.({
         text: "Approval required.\n\n```txt\n/approve 117ba06d allow-once\n```",
@@ -1449,7 +1449,7 @@ describe("dispatchReplyFromConfig", () => {
         dispatch: { enabled: true },
         stream: { coalesceIdleMs: 0, maxChunkChars: 128 },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -1518,7 +1518,7 @@ describe("dispatchReplyFromConfig", () => {
           dispatch: { enabled: true },
           stream: { coalesceIdleMs: 0, maxChunkChars: 128 },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       dispatcher,
       replyOptions: {
         runId: "run-acp-lifecycle-end",
@@ -1580,7 +1580,7 @@ describe("dispatchReplyFromConfig", () => {
           dispatch: { enabled: true },
           stream: { coalesceIdleMs: 0, maxChunkChars: 128 },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       dispatcher,
       replyOptions: {
         runId: "run-acp-lifecycle-error",
@@ -1647,7 +1647,7 @@ describe("dispatchReplyFromConfig", () => {
         enabled: true,
         dispatch: { enabled: true },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -1729,7 +1729,7 @@ describe("dispatchReplyFromConfig", () => {
         enabled: true,
         dispatch: { enabled: true },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -1787,7 +1787,7 @@ describe("dispatchReplyFromConfig", () => {
           defaultAccount: "work",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const replyResolver = vi.fn(async () => undefined);
     const ctx = buildTestCtx({
@@ -1853,7 +1853,7 @@ describe("dispatchReplyFromConfig", () => {
         dispatch: { enabled: true },
         stream: { coalesceIdleMs: 0, maxChunkChars: 256 },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -1906,7 +1906,7 @@ describe("dispatchReplyFromConfig", () => {
         dispatch: { enabled: true },
         stream: { coalesceIdleMs: 0, maxChunkChars: 256 },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -1951,7 +1951,7 @@ describe("dispatchReplyFromConfig", () => {
         enabled: true,
         dispatch: { enabled: true },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -2001,7 +2001,7 @@ describe("dispatchReplyFromConfig", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "discord",
@@ -2234,7 +2234,7 @@ describe("dispatchReplyFromConfig", () => {
 
   it("emits diagnostics when enabled", async () => {
     setNoAbort();
-    const cfg = { diagnostics: { enabled: true } } as OpenClawConfig;
+    const cfg = { diagnostics: { enabled: true } } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({
       Provider: "slack",
@@ -2405,7 +2405,7 @@ describe("dispatchReplyFromConfig", () => {
     expect(replyResolver).not.toHaveBeenCalled();
   });
 
-  it("falls back to OpenClaw once per startup when a bound plugin is missing", async () => {
+  it("falls back to WineryClaw once per startup when a bound plugin is missing", async () => {
     setNoAbort();
     hookMocks.runner.hasHooks.mockImplementation(
       ((hookName?: string) =>
@@ -2490,7 +2490,7 @@ describe("dispatchReplyFromConfig", () => {
     expect(hookMocks.runner.runInboundClaim).not.toHaveBeenCalled();
   });
 
-  it("falls back to OpenClaw when the bound plugin is loaded but has no inbound_claim handler", async () => {
+  it("falls back to WineryClaw when the bound plugin is loaded but has no inbound_claim handler", async () => {
     setNoAbort();
     hookMocks.runner.hasHooks.mockImplementation(
       ((hookName?: string) =>
@@ -2667,7 +2667,7 @@ describe("dispatchReplyFromConfig", () => {
 
   it("marks diagnostics skipped for duplicate inbound messages", async () => {
     setNoAbort();
-    const cfg = { diagnostics: { enabled: true } } as OpenClawConfig;
+    const cfg = { diagnostics: { enabled: true } } as WineryClawConfig;
     const ctx = buildTestCtx({
       Provider: "whatsapp",
       OriginatingChannel: "whatsapp",
@@ -2700,13 +2700,13 @@ describe("dispatchReplyFromConfig", () => {
 
     const overrideCfg = {
       agents: { defaults: { userTimezone: "America/New_York" } },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
-    let receivedCfg: OpenClawConfig | undefined;
+    let receivedCfg: WineryClawConfig | undefined;
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      cfgArg?: OpenClawConfig,
+      cfgArg?: WineryClawConfig,
     ) => {
       receivedCfg = cfgArg;
       return { text: "hi" } satisfies ReplyPayload;
@@ -2725,15 +2725,15 @@ describe("dispatchReplyFromConfig", () => {
 
   it("does not pass cfg as implicit configOverride when configOverride is not provided", async () => {
     setNoAbort();
-    const cfg = { agents: { defaults: { userTimezone: "UTC" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { userTimezone: "UTC" } } } as WineryClawConfig;
     const dispatcher = createDispatcher();
     const ctx = buildTestCtx({ Provider: "telegram", Surface: "telegram" });
 
-    let receivedCfg: OpenClawConfig | undefined;
+    let receivedCfg: WineryClawConfig | undefined;
     const replyResolver = async (
       _ctx: MsgContext,
       _opts?: GetReplyOptions,
-      cfgArg?: OpenClawConfig,
+      cfgArg?: WineryClawConfig,
     ) => {
       receivedCfg = cfgArg;
       return { text: "hi" } satisfies ReplyPayload;

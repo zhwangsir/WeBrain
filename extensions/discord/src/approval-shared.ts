@@ -1,5 +1,5 @@
 import { doesApprovalRequestMatchChannelAccount } from "openclaw/plugin-sdk/approval-native-runtime";
-import type { DiscordExecApprovalConfig, OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { DiscordExecApprovalConfig, WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ExecApprovalRequest, PluginApprovalRequest } from "openclaw/plugin-sdk/infra-runtime";
 import { resolveDiscordAccount } from "./accounts.js";
 import {
@@ -11,7 +11,7 @@ import { getDiscordExecApprovalApprovers } from "./exec-approvals.js";
 type ApprovalRequest = ExecApprovalRequest | PluginApprovalRequest;
 
 export function shouldHandleDiscordApprovalRequest(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   request: ApprovalRequest;
   configOverride?: DiscordExecApprovalConfig | null;

@@ -1,11 +1,11 @@
 ---
 name: security-triage
-description: Triage GitHub security advisories for OpenClaw with high-confidence close/keep decisions, exact tag and commit verification, trust-model checks, optional hardening notes, and a final reply ready to post and copy to clipboard.
+description: Triage GitHub security advisories for WineryClaw with high-confidence close/keep decisions, exact tag and commit verification, trust-model checks, optional hardening notes, and a final reply ready to post and copy to clipboard.
 ---
 
 # Security Triage
 
-Use when reviewing OpenClaw security advisories, drafts, or GHSA reports.
+Use when reviewing WineryClaw security advisories, drafts, or GHSA reports.
 
 Goal: high-confidence maintainers' triage without over-closing real issues or shipping unnecessary regressions.
 

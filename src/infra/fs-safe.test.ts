@@ -610,21 +610,21 @@ describe("tilde expansion in file tools", () => {
   it("keeps tilde expansion behavior aligned", async () => {
     const { expandHomePrefix } = await import("./home-dir.js");
     const originalHome = process.env.HOME;
-    const originalOpenClawHome = process.env.OPENCLAW_HOME;
+    const originalWineryClawHome = process.env.WINERYCLAW_HOME;
     const fakeHome = path.resolve(path.sep, "tmp", "fake-home-test");
     process.env.HOME = fakeHome;
-    process.env.OPENCLAW_HOME = fakeHome;
+    process.env.WINERYCLAW_HOME = fakeHome;
     try {
       const result = expandHomePrefix("~/file.txt");
       expect(path.normalize(result)).toBe(path.join(fakeHome, "file.txt"));
     } finally {
       process.env.HOME = originalHome;
-      process.env.OPENCLAW_HOME = originalOpenClawHome;
+      process.env.WINERYCLAW_HOME = originalWineryClawHome;
     }
 
     const root = await tempDirs.make("openclaw-tilde-test-");
     process.env.HOME = root;
-    process.env.OPENCLAW_HOME = root;
+    process.env.WINERYCLAW_HOME = root;
     try {
       await fs.writeFile(path.join(root, "hello.txt"), "tilde-works");
       const result = await openFileWithinRoot({
@@ -645,7 +645,7 @@ describe("tilde expansion in file tools", () => {
       expect(content).toBe("tilde-write-works");
     } finally {
       process.env.HOME = originalHome;
-      process.env.OPENCLAW_HOME = originalOpenClawHome;
+      process.env.WINERYCLAW_HOME = originalWineryClawHome;
     }
 
     const outsideRoot = await tempDirs.make("openclaw-tilde-outside-");

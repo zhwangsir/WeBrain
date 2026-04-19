@@ -5,7 +5,7 @@ import path from "node:path";
 import { Command } from "commander";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { TEST_BUNDLED_RUNTIME_SIDECAR_PATHS } from "../../test/helpers/bundled-runtime-sidecars.js";
-import type { OpenClawConfig, ConfigFileSnapshot } from "../config/types.openclaw.js";
+import type { WineryClawConfig, ConfigFileSnapshot } from "../config/types.openclaw.js";
 import type { UpdateRunResult } from "../infra/update-runner.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { createCliRuntimeCapture } from "./test-runtime-capture.js";
@@ -47,8 +47,8 @@ vi.mock("../infra/update-runner.js", () => ({
 }));
 
 vi.mock("../infra/openclaw-root.js", () => ({
-  resolveOpenClawPackageRoot: vi.fn(),
-  resolveOpenClawPackageRootSync: vi.fn(() => process.cwd()),
+  resolveWineryClawPackageRoot: vi.fn(),
+  resolveWineryClawPackageRootSync: vi.fn(() => process.cwd()),
 }));
 
 vi.mock("../config/config.js", () => ({
@@ -181,7 +181,7 @@ vi.mock("../runtime.js", () => ({
 }));
 
 const { runGatewayUpdate } = await import("../infra/update-runner.js");
-const { resolveOpenClawPackageRoot } = await import("../infra/openclaw-root.js");
+const { resolveWineryClawPackageRoot } = await import("../infra/openclaw-root.js");
 const { readConfigFileSnapshot, replaceConfigFile } = await import("../config/config.js");
 const { checkUpdateStatus, fetchNpmPackageTargetStatus, fetchNpmTagVersion, resolveNpmChannelTag } =
   await import("../infra/update-check.js");
@@ -209,7 +209,7 @@ describe("update-cli", () => {
     return dir;
   };
 
-  const baseConfig = {} as OpenClawConfig;
+  const baseConfig = {} as WineryClawConfig;
   const baseSnapshot: ConfigFileSnapshot = {
     path: "/tmp/openclaw-config.json",
     exists: true,
@@ -240,7 +240,7 @@ describe("update-cli", () => {
   };
 
   const mockPackageInstallStatus = (root: string) => {
-    vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue(root);
+    vi.mocked(resolveWineryClawPackageRoot).mockResolvedValue(root);
     vi.mocked(checkUpdateStatus).mockResolvedValue({
       root,
       installKind: "package",
@@ -359,7 +359,7 @@ describe("update-cli", () => {
       return child;
     });
     vi.mocked(defaultRuntime.exit).mockImplementation(() => {});
-    vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue(process.cwd());
+    vi.mocked(resolveWineryClawPackageRoot).mockResolvedValue(process.cwd());
     vi.mocked(readConfigFileSnapshot).mockResolvedValue(baseSnapshot);
     vi.mocked(fetchNpmTagVersion).mockResolvedValue({
       tag: "latest",
@@ -467,8 +467,8 @@ describe("update-cli", () => {
       expect.objectContaining({
         stdio: "inherit",
         env: expect.objectContaining({
-          OPENCLAW_UPDATE_POST_CORE: "1",
-          OPENCLAW_UPDATE_POST_CORE_CHANNEL: "dev",
+          WINERYCLAW_UPDATE_POST_CORE: "1",
+          WINERYCLAW_UPDATE_POST_CORE_CHANNEL: "dev",
         }),
       }),
     );
@@ -500,8 +500,8 @@ describe("update-cli", () => {
   it("post-core resume mode skips the core update and only runs post-update tasks", async () => {
     await withEnvAsync(
       {
-        OPENCLAW_UPDATE_POST_CORE: "1",
-        OPENCLAW_UPDATE_POST_CORE_CHANNEL: "stable",
+        WINERYCLAW_UPDATE_POST_CORE: "1",
+        WINERYCLAW_UPDATE_POST_CORE_CHANNEL: "stable",
       },
       async () => {
         await updateCommand({ restart: false });
@@ -561,7 +561,7 @@ describe("update-cli", () => {
       },
       assert: () => {
         const logs = vi.mocked(defaultRuntime.log).mock.calls.map((call) => call[0]);
-        expect(logs.join("\n")).toContain("OpenClaw update status");
+        expect(logs.join("\n")).toContain("WineryClaw update status");
       },
     },
     {
@@ -624,7 +624,7 @@ describe("update-cli", () => {
       prepare: async () => {
         vi.mocked(readConfigFileSnapshot).mockResolvedValue({
           ...baseSnapshot,
-          config: { update: { channel: "beta" } } as OpenClawConfig,
+          config: { update: { channel: "beta" } } as WineryClawConfig,
         });
       },
       expectedChannel: "beta" as const,
@@ -678,7 +678,7 @@ describe("update-cli", () => {
     mockPackageInstallStatus(tempDir);
     vi.mocked(readConfigFileSnapshot).mockResolvedValue({
       ...baseSnapshot,
-      config: { update: { channel: "beta" } } as OpenClawConfig,
+      config: { update: { channel: "beta" } } as WineryClawConfig,
     });
     vi.mocked(resolveNpmChannelTag).mockResolvedValue({
       tag: "latest",
@@ -743,11 +743,11 @@ describe("update-cli", () => {
       expectedSpec: "github:openclaw/openclaw#main",
     },
     {
-      name: "OPENCLAW_UPDATE_PACKAGE_SPEC override",
+      name: "WINERYCLAW_UPDATE_PACKAGE_SPEC override",
       run: async () => {
         mockPackageInstallStatus(createCaseDir("openclaw-update"));
         await withEnvAsync(
-          { OPENCLAW_UPDATE_PACKAGE_SPEC: "http://10.211.55.2:8138/openclaw-next.tgz" },
+          { WINERYCLAW_UPDATE_PACKAGE_SPEC: "http://10.211.55.2:8138/openclaw-next.tgz" },
           async () => {
             await updateCommand({ yes: true, tag: "latest" });
           },
@@ -762,7 +762,7 @@ describe("update-cli", () => {
       readPackageName.mockResolvedValue("openclaw");
       readPackageVersion.mockResolvedValue("1.0.0");
       resolveGlobalManager.mockResolvedValue("npm");
-      vi.mocked(resolveOpenClawPackageRoot).mockResolvedValue(process.cwd());
+      vi.mocked(resolveWineryClawPackageRoot).mockResolvedValue(process.cwd());
       await run();
       expectPackageInstallSpec(expectedSpec);
     },
@@ -917,7 +917,7 @@ describe("update-cli", () => {
     const localAppData = createCaseDir("openclaw-localappdata");
     const portableGitMingw = path.join(
       localAppData,
-      "OpenClaw",
+      "WineryClaw",
       "deps",
       "portable-git",
       "mingw64",
@@ -925,7 +925,7 @@ describe("update-cli", () => {
     );
     const portableGitUsr = path.join(
       localAppData,
-      "OpenClaw",
+      "WineryClaw",
       "deps",
       "portable-git",
       "usr",
@@ -1246,8 +1246,8 @@ describe("update-cli", () => {
       invoke: async () => {
         await withEnvAsync(
           {
-            OPENCLAW_STATE_DIR: "./state",
-            OPENCLAW_CONFIG_PATH: "./config/openclaw.json",
+            WINERYCLAW_STATE_DIR: "./state",
+            WINERYCLAW_CONFIG_PATH: "./config/openclaw.json",
           },
           async () => {
             await updateCommand({});
@@ -1258,8 +1258,8 @@ describe("update-cli", () => {
         expect.objectContaining({
           cwd: root,
           env: expect.objectContaining({
-            OPENCLAW_STATE_DIR: path.resolve("./state"),
-            OPENCLAW_CONFIG_PATH: path.resolve("./config/openclaw.json"),
+            WINERYCLAW_STATE_DIR: path.resolve("./state"),
+            WINERYCLAW_CONFIG_PATH: path.resolve("./config/openclaw.json"),
           }),
           timeoutMs: 60_000,
         }),
@@ -1290,7 +1290,7 @@ describe("update-cli", () => {
         try {
           await withEnvAsync(
             {
-              OPENCLAW_STATE_DIR: "./state",
+              WINERYCLAW_STATE_DIR: "./state",
             },
             async () => {
               await updateCommand({});
@@ -1306,7 +1306,7 @@ describe("update-cli", () => {
         expect.objectContaining({
           cwd: expect.any(String),
           env: expect.objectContaining({
-            OPENCLAW_STATE_DIR: path.resolve(context?.originalCwd ?? process.cwd(), "./state"),
+            WINERYCLAW_STATE_DIR: path.resolve(context?.originalCwd ?? process.cwd(), "./state"),
           }),
           timeoutMs: 60_000,
         }),
@@ -1333,7 +1333,7 @@ describe("update-cli", () => {
   it("updateCommand continues after doctor sub-step and clears update flag", async () => {
     const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
     try {
-      await withEnvAsync({ OPENCLAW_UPDATE_IN_PROGRESS: undefined }, async () => {
+      await withEnvAsync({ WINERYCLAW_UPDATE_IN_PROGRESS: undefined }, async () => {
         vi.mocked(runGatewayUpdate).mockResolvedValue(makeOkUpdateResult());
         vi.mocked(runDaemonRestart).mockResolvedValue(true);
         vi.mocked(doctorCommand).mockResolvedValue(undefined);
@@ -1345,7 +1345,7 @@ describe("update-cli", () => {
           defaultRuntime,
           expect.objectContaining({ nonInteractive: true }),
         );
-        expect(process.env.OPENCLAW_UPDATE_IN_PROGRESS).toBeUndefined();
+        expect(process.env.WINERYCLAW_UPDATE_IN_PROGRESS).toBeUndefined();
 
         const logLines = vi.mocked(defaultRuntime.log).mock.calls.map((call) => String(call[0]));
         expect(
@@ -1434,7 +1434,7 @@ describe("update-cli", () => {
 
   it("updateWizardCommand offers dev checkout and forwards selections", async () => {
     const tempDir = createCaseDir("openclaw-update-wizard");
-    await withEnvAsync({ OPENCLAW_GIT_DIR: tempDir }, async () => {
+    await withEnvAsync({ WINERYCLAW_GIT_DIR: tempDir }, async () => {
       setTty(true);
 
       vi.mocked(checkUpdateStatus).mockResolvedValue({
@@ -1466,7 +1466,7 @@ describe("update-cli", () => {
 
   it("uses ~/openclaw as the default dev checkout directory", async () => {
     const homedirSpy = vi.spyOn(os, "homedir").mockReturnValue("/tmp/oc-home");
-    await withEnvAsync({ OPENCLAW_GIT_DIR: undefined }, async () => {
+    await withEnvAsync({ WINERYCLAW_GIT_DIR: undefined }, async () => {
       expect(resolveGitInstallDir()).toBe(path.posix.join("/tmp/oc-home", "openclaw"));
     });
     homedirSpy.mockRestore();

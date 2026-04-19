@@ -9,7 +9,7 @@ import {
 } from "@mariozechner/pi-coding-agent";
 import type { ThinkLevel } from "../../auto-reply/thinking.js";
 import { resolveChannelCapabilities } from "../../config/channel-capabilities.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import {
   captureCompactionCheckpointSnapshot,
   cleanupCompactionCheckpointSnapshot,
@@ -35,7 +35,7 @@ import { buildTtsSystemPromptHint } from "../../tts/tts.js";
 import { resolveUserPath } from "../../utils.js";
 import { normalizeMessageChannel } from "../../utils/message-channel.js";
 import { isReasoningTagProvider } from "../../utils/provider-utils.js";
-import { resolveOpenClawAgentDir } from "../agent-paths.js";
+import { resolveWineryClawAgentDir } from "../agent-paths.js";
 import { resolveSessionAgentIds } from "../agent-scope.js";
 import { makeBootstrapWarn, resolveBootstrapContextForRun } from "../bootstrap-files.js";
 import {
@@ -51,7 +51,7 @@ import {
 import { resolveContextWindowInfo } from "../context-window-guard.js";
 import { formatUserTime, resolveUserTimeFormat, resolveUserTimezone } from "../date-time.js";
 import { DEFAULT_CONTEXT_TOKENS, DEFAULT_MODEL, DEFAULT_PROVIDER } from "../defaults.js";
-import { resolveOpenClawDocsPath } from "../docs-path.js";
+import { resolveWineryClawDocsPath } from "../docs-path.js";
 import { resolveHeartbeatPromptForSystemPrompt } from "../heartbeat-system-prompt.js";
 import {
   applyAuthHeaderOverride,
@@ -60,7 +60,7 @@ import {
   resolveModelAuthMode,
 } from "../model-auth.js";
 import { supportsModelTools } from "../model-tool-support.js";
-import { ensureOpenClawModelsJson } from "../models-config.js";
+import { ensureWineryClawModelsJson } from "../models-config.js";
 import { resolveOwnerDisplaySetting } from "../owner-display.js";
 import { createBundleLspToolRuntime } from "../pi-bundle-lsp-runtime.js";
 import { createBundleMcpToolRuntime } from "../pi-bundle-mcp-tools.js";
@@ -71,7 +71,7 @@ import {
   setCompactionSafeguardCancelReason,
 } from "../pi-hooks/compaction-safeguard-runtime.js";
 import { createPreparedEmbeddedPiSettingsManager } from "../pi-project-settings.js";
-import { createOpenClawCodingTools } from "../pi-tools.js";
+import { createWineryClawCodingTools } from "../pi-tools.js";
 import { wrapStreamFnTextTransforms } from "../plugin-text-transforms.js";
 import { registerProviderStreamForModel } from "../provider-stream.js";
 import { ensureRuntimePluginsLoaded } from "../runtime-plugins.js";
@@ -163,7 +163,7 @@ function prepareCompactionSessionAgent(params: {
   effectiveModel: ProviderRuntimeModel;
   resolvedApiKey?: string;
   authStorage: unknown;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   provider: string;
   modelId: string;
   thinkLevel: ThinkLevel;
@@ -211,7 +211,7 @@ function prepareCompactionSessionAgent(params: {
 
 function resolveCompactionProviderStream(params: {
   effectiveModel: ProviderRuntimeModel;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   agentDir: string;
   effectiveWorkspace: string;
 }) {
@@ -342,8 +342,8 @@ export async function compactEmbeddedPiSessionDirect(
       reason,
     };
   };
-  const agentDir = params.agentDir ?? resolveOpenClawAgentDir();
-  await ensureOpenClawModelsJson(params.config, agentDir);
+  const agentDir = params.agentDir ?? resolveWineryClawAgentDir();
+  await ensureWineryClawModelsJson(params.config, agentDir);
   const { model, error, authStorage, modelRegistry } = await resolveModelAsync(
     provider,
     modelId,
@@ -494,7 +494,7 @@ export async function compactEmbeddedPiSessionDirect(
     );
 
     const runAbortController = new AbortController();
-    const toolsRaw = createOpenClawCodingTools({
+    const toolsRaw = createWineryClawCodingTools({
       exec: {
         elevated: params.bashElevated,
       },
@@ -665,7 +665,7 @@ export async function compactEmbeddedPiSessionDirect(
       isSubagentSessionKey(params.sessionKey) || isCronSessionKey(params.sessionKey)
         ? "minimal"
         : "full";
-    const docsPath = await resolveOpenClawDocsPath({
+    const docsPath = await resolveWineryClawDocsPath({
       workspaceDir: effectiveWorkspace,
       argv1: process.argv[1],
       cwd: effectiveWorkspace,

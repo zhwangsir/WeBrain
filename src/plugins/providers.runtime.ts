@@ -3,7 +3,7 @@ import { resolveBundledPluginCompatibleActivationInputs } from "./activation-con
 import { resolveManifestActivationPluginIds } from "./activation-planner.js";
 import {
   isPluginRegistryLoadInFlight,
-  loadOpenClawPlugins,
+  loadWineryClawPlugins,
   resolveRuntimePluginRegistry,
   type PluginLoadOptions,
 } from "./loader.js";
@@ -274,7 +274,7 @@ export function resolvePluginProviders(params: {
     if (!loadState) {
       return [];
     }
-    const registry = loadOpenClawPlugins(loadState.loadOptions);
+    const registry = loadWineryClawPlugins(loadState.loadOptions);
     return registry.providers.map((entry) => ({
       ...entry.provider,
       pluginId: entry.pluginId,

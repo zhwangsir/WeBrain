@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { formatErrorMessage } from "../errors.js";
 import {
   ackDelivery,
@@ -19,7 +19,7 @@ export type RecoverySummary = {
 
 export type DeliverFn = (
   params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
   } & QueuedDeliveryPayload & {
       skipQueue?: boolean;
     },
@@ -90,7 +90,7 @@ function releaseRecoveryEntry(entryId: string): void {
   entriesInProgress.delete(entryId);
 }
 
-function buildRecoveryDeliverParams(entry: QueuedDelivery, cfg: OpenClawConfig) {
+function buildRecoveryDeliverParams(entry: QueuedDelivery, cfg: WineryClawConfig) {
   return {
     cfg,
     channel: entry.channel,
@@ -172,7 +172,7 @@ export function isPermanentDeliveryError(error: string): boolean {
 
 async function drainQueuedEntry(opts: {
   entry: QueuedDelivery;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   deliver: DeliverFn;
   stateDir?: string;
   onRecovered?: (entry: QueuedDelivery) => void;
@@ -213,7 +213,7 @@ async function drainQueuedEntry(opts: {
 export async function drainPendingDeliveries(opts: {
   drainKey: string;
   logLabel: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   log: RecoveryLogger;
   stateDir?: string;
   deliver: DeliverFn;
@@ -325,7 +325,7 @@ export async function drainPendingDeliveries(opts: {
 export async function recoverPendingDeliveries(opts: {
   deliver: DeliverFn;
   log: RecoveryLogger;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   stateDir?: string;
   /** Maximum wall-clock time for recovery in ms. Remaining entries are deferred to next startup. Default: 60 000. */
   maxRecoveryMs?: number;

@@ -9,11 +9,11 @@ fi
 # shellcheck source=../install-sh-common/version-parse.sh
 source "$VERIFY_HELPER_PATH"
 
-INSTALL_URL="${OPENCLAW_INSTALL_URL:-https://openclaw.bot/install.sh}"
-MODELS_MODE="${OPENCLAW_E2E_MODELS:-both}" # both|openai|anthropic
-INSTALL_TAG="${OPENCLAW_INSTALL_TAG:-latest}"
-E2E_PREVIOUS_VERSION="${OPENCLAW_INSTALL_E2E_PREVIOUS:-}"
-SKIP_PREVIOUS="${OPENCLAW_INSTALL_E2E_SKIP_PREVIOUS:-0}"
+INSTALL_URL="${WINERYCLAW_INSTALL_URL:-https://openclaw.bot/install.sh}"
+MODELS_MODE="${WINERYCLAW_E2E_MODELS:-both}" # both|openai|anthropic
+INSTALL_TAG="${WINERYCLAW_INSTALL_TAG:-latest}"
+E2E_PREVIOUS_VERSION="${WINERYCLAW_INSTALL_E2E_PREVIOUS:-}"
+SKIP_PREVIOUS="${WINERYCLAW_INSTALL_E2E_SKIP_PREVIOUS:-0}"
 OPENAI_API_KEY="${OPENAI_API_KEY:-}"
 ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"
 ANTHROPIC_API_TOKEN="${ANTHROPIC_API_TOKEN:-}"
@@ -25,24 +25,24 @@ mkdir -p "$NPM_CONFIG_PREFIX"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
 
 if [[ "$MODELS_MODE" != "both" && "$MODELS_MODE" != "openai" && "$MODELS_MODE" != "anthropic" ]]; then
-  echo "ERROR: OPENCLAW_E2E_MODELS must be one of: both|openai|anthropic" >&2
+  echo "ERROR: WINERYCLAW_E2E_MODELS must be one of: both|openai|anthropic" >&2
   exit 2
 fi
 
 if [[ "$MODELS_MODE" == "both" ]]; then
   if [[ -z "$OPENAI_API_KEY" ]]; then
-    echo "ERROR: OPENCLAW_E2E_MODELS=both requires OPENAI_API_KEY." >&2
+    echo "ERROR: WINERYCLAW_E2E_MODELS=both requires OPENAI_API_KEY." >&2
     exit 2
   fi
   if [[ -z "$ANTHROPIC_API_TOKEN" && -z "$ANTHROPIC_API_KEY" ]]; then
-    echo "ERROR: OPENCLAW_E2E_MODELS=both requires ANTHROPIC_API_TOKEN or ANTHROPIC_API_KEY." >&2
+    echo "ERROR: WINERYCLAW_E2E_MODELS=both requires ANTHROPIC_API_TOKEN or ANTHROPIC_API_KEY." >&2
     exit 2
   fi
 elif [[ "$MODELS_MODE" == "openai" && -z "$OPENAI_API_KEY" ]]; then
-  echo "ERROR: OPENCLAW_E2E_MODELS=openai requires OPENAI_API_KEY." >&2
+  echo "ERROR: WINERYCLAW_E2E_MODELS=openai requires OPENAI_API_KEY." >&2
   exit 2
 elif [[ "$MODELS_MODE" == "anthropic" && -z "$ANTHROPIC_API_TOKEN" && -z "$ANTHROPIC_API_KEY" ]]; then
-  echo "ERROR: OPENCLAW_E2E_MODELS=anthropic requires ANTHROPIC_API_TOKEN or ANTHROPIC_API_KEY." >&2
+  echo "ERROR: WINERYCLAW_E2E_MODELS=anthropic requires ANTHROPIC_API_TOKEN or ANTHROPIC_API_KEY." >&2
   exit 2
 fi
 
@@ -65,7 +65,7 @@ fi
 echo "expected=$EXPECTED_VERSION previous=$PREVIOUS_VERSION"
 
 if [[ "$SKIP_PREVIOUS" == "1" ]]; then
-  echo "==> Skip preinstall previous (OPENCLAW_INSTALL_E2E_SKIP_PREVIOUS=1)"
+  echo "==> Skip preinstall previous (WINERYCLAW_INSTALL_E2E_SKIP_PREVIOUS=1)"
 else
   echo "==> Preinstall previous (forces installer upgrade path; avoids read() prompt)"
   quiet_npm install -g "openclaw@${PREVIOUS_VERSION}"
@@ -73,9 +73,9 @@ fi
 
 echo "==> Run official installer one-liner"
 if [[ "$INSTALL_TAG" == "beta" ]]; then
-  OPENCLAW_BETA=1 curl -fsSL "$INSTALL_URL" | bash
+  WINERYCLAW_BETA=1 curl -fsSL "$INSTALL_URL" | bash
 elif [[ "$INSTALL_TAG" != "latest" ]]; then
-  OPENCLAW_VERSION="$INSTALL_TAG" curl -fsSL "$INSTALL_URL" | bash
+  WINERYCLAW_VERSION="$INSTALL_TAG" curl -fsSL "$INSTALL_URL" | bash
 else
   curl -fsSL "$INSTALL_URL" | bash
 fi

@@ -29,7 +29,7 @@ import {
 import { loadConfig, writeConfigFile } from "../../config/config.js";
 import { resolveSessionTranscriptsDirForAgent } from "../../config/sessions/paths.js";
 import type { IdentityConfig } from "../../config/types.base.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { sameFileIdentity } from "../../infra/file-identity.js";
 import { SafeOpenError, readLocalFileSafely, writeFileWithinRoot } from "../../infra/fs-safe.js";
 import { assertNoPathAliasEscape } from "../../infra/path-alias-guards.js";
@@ -99,7 +99,7 @@ function resolveAgentWorkspaceFileOrRespondError(
   params: Record<string, unknown>,
   respond: RespondFn,
 ): {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   workspaceDir: string;
   name: string;
@@ -378,7 +378,7 @@ async function listAgentFiles(workspaceDir: string, options?: { hideBootstrap?: 
   return files;
 }
 
-function resolveAgentIdOrError(agentIdRaw: string, cfg: OpenClawConfig) {
+function resolveAgentIdOrError(agentIdRaw: string, cfg: WineryClawConfig) {
   const agentId = normalizeAgentId(agentIdRaw);
   const allowed = new Set(listAgentIds(cfg));
   if (!allowed.has(agentId)) {
@@ -410,7 +410,7 @@ function respondInvalidMethodParams(
   );
 }
 
-function isConfiguredAgent(cfg: OpenClawConfig, agentId: string): boolean {
+function isConfiguredAgent(cfg: WineryClawConfig, agentId: string): boolean {
   return findAgentEntryIndex(listAgentEntries(cfg), agentId) >= 0;
 }
 

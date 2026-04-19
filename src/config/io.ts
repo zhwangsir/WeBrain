@@ -83,7 +83,7 @@ import {
   type RuntimeConfigWriteNotification,
 } from "./runtime-snapshot.js";
 import { resolveShellEnvExpectedKeys } from "./shell-env-expected-keys.js";
-import type { OpenClawConfig, ConfigFileSnapshot, LegacyConfigIssue } from "./types.js";
+import type { WineryClawConfig, ConfigFileSnapshot, LegacyConfigIssue } from "./types.js";
 import {
   validateConfigObjectRawWithPlugins,
   validateConfigObjectWithPlugins,
@@ -214,11 +214,11 @@ export function resolveConfigSnapshotHash(snapshot: {
   return hashConfigRaw(snapshot.raw);
 }
 
-function coerceConfig(value: unknown): OpenClawConfig {
+function coerceConfig(value: unknown): WineryClawConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return {};
   }
-  return value as OpenClawConfig;
+  return value as WineryClawConfig;
 }
 
 function hasConfigMeta(value: unknown): boolean {
@@ -842,7 +842,7 @@ function warnOnConfigMiskeys(raw: unknown, logger: Pick<typeof console, "warn">)
   }
 }
 
-function stampConfigVersion(cfg: OpenClawConfig): OpenClawConfig {
+function stampConfigVersion(cfg: WineryClawConfig): WineryClawConfig {
   const now = new Date().toISOString();
   return {
     ...cfg,
@@ -854,14 +854,14 @@ function stampConfigVersion(cfg: OpenClawConfig): OpenClawConfig {
   };
 }
 
-function warnIfConfigFromFuture(cfg: OpenClawConfig, logger: Pick<typeof console, "warn">): void {
+function warnIfConfigFromFuture(cfg: WineryClawConfig, logger: Pick<typeof console, "warn">): void {
   const touched = cfg.meta?.lastTouchedVersion;
   if (!touched) {
     return;
   }
   if (shouldWarnOnTouchedVersion(VERSION, touched)) {
     logger.warn(
-      `Config was last written by a newer OpenClaw (${touched}); current version is ${VERSION}.`,
+      `Config was last written by a newer WineryClaw (${touched}); current version is ${VERSION}.`,
     );
   }
 }
@@ -940,7 +940,7 @@ function resolveConfigForRead(
 ): ConfigReadResolution {
   // Apply config.env to process.env BEFORE substitution so ${VAR} can reference config-defined vars.
   if (resolvedIncludes && typeof resolvedIncludes === "object" && "env" in resolvedIncludes) {
-    applyConfigEnvVars(resolvedIncludes as OpenClawConfig, env);
+    applyConfigEnvVars(resolvedIncludes as WineryClawConfig, env);
   }
 
   // Collect missing env var references as warnings instead of throwing,
@@ -986,9 +986,9 @@ function createConfigFileSnapshot(params: {
   exists: boolean;
   raw: string | null;
   parsed: unknown;
-  sourceConfig: OpenClawConfig;
+  sourceConfig: WineryClawConfig;
   valid: boolean;
-  runtimeConfig: OpenClawConfig;
+  runtimeConfig: WineryClawConfig;
   hash?: string;
   issues: ConfigFileSnapshot["issues"];
   warnings: ConfigFileSnapshot["warnings"];
@@ -1030,7 +1030,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
     return snapshot;
   }
 
-  function loadConfig(): OpenClawConfig {
+  function loadConfig(): WineryClawConfig {
     try {
       maybeLoadDotEnvForConfig(deps.env);
       if (!deps.fs.existsSync(configPath)) {
@@ -1087,7 +1087,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
         });
         return {};
       }
-      const preValidationDuplicates = findDuplicateAgentDirs(effectiveConfigRaw as OpenClawConfig, {
+      const preValidationDuplicates = findDuplicateAgentDirs(effectiveConfigRaw as WineryClawConfig, {
         env: deps.env,
         homedir: deps.homedir,
       });
@@ -1390,7 +1390,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
   }
 
   async function writeConfigFile(
-    cfg: OpenClawConfig,
+    cfg: WineryClawConfig,
     options: ConfigWriteOptions = {},
   ): Promise<{ persistedHash: string }> {
     clearConfigCache();
@@ -1455,7 +1455,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
     // persisted to disk (issue #56772).
     // Apply legacy web-search normalization so that migration results are still
     // persisted even though we bypass validated.config.
-    let cfgToWrite = persistCandidate as OpenClawConfig;
+    let cfgToWrite = persistCandidate as WineryClawConfig;
     try {
       if (deps.fs.existsSync(configPath)) {
         const currentRaw = await deps.fs.promises.readFile(configPath, "utf-8");
@@ -1469,7 +1469,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
             cfgToWrite,
             parsedRes.parsed,
             envForRestore,
-          ) as OpenClawConfig;
+          ) as WineryClawConfig;
         }
       }
     } catch {
@@ -1486,7 +1486,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
     });
     const outputConfigBase =
       envRefMap && changedPaths
-        ? (restoreEnvRefsFromMap(cfgToWrite, "", envRefMap, changedPaths) as OpenClawConfig)
+        ? (restoreEnvRefsFromMap(cfgToWrite, "", envRefMap, changedPaths) as WineryClawConfig)
         : cfgToWrite;
     let outputConfig = outputConfigBase;
     if (options.unsetPaths?.length) {
@@ -1530,7 +1530,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
         return;
       }
       const isVitest = deps.env.VITEST === "true";
-      const shouldLogInVitest = deps.env.OPENCLAW_TEST_CONFIG_OVERWRITE_LOG === "1";
+      const shouldLogInVitest = deps.env.WINERYCLAW_TEST_CONFIG_OVERWRITE_LOG === "1";
       if (isVitest && !shouldLogInVitest) {
         return;
       }
@@ -1549,7 +1549,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
       }
       // Tests often write minimal configs (missing meta, etc); keep output quiet unless requested.
       const isVitest = deps.env.VITEST === "true";
-      const shouldLogInVitest = deps.env.OPENCLAW_TEST_CONFIG_WRITE_ANOMALY_LOG === "1";
+      const shouldLogInVitest = deps.env.WINERYCLAW_TEST_CONFIG_WRITE_ANOMALY_LOG === "1";
       if (isVitest && !shouldLogInVitest) {
         return;
       }
@@ -1656,7 +1656,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
 }
 
 // NOTE: These wrappers intentionally do *not* cache the resolved config path at
-// module scope. `OPENCLAW_CONFIG_PATH` (and friends) are expected to work even
+// module scope. `WINERYCLAW_CONFIG_PATH` (and friends) are expected to work even
 // when set after the module has been imported (tests, one-off scripts, etc.).
 const AUTO_OWNER_DISPLAY_SECRET_BY_PATH = new Map<string, string>();
 const AUTO_OWNER_DISPLAY_SECRET_PERSIST_IN_FLIGHT = new Set<string>();
@@ -1672,8 +1672,8 @@ export function registerConfigWriteListener(
 }
 
 function isCompatibleTopLevelRuntimeProjectionShape(params: {
-  runtimeSnapshot: OpenClawConfig;
-  candidate: OpenClawConfig;
+  runtimeSnapshot: WineryClawConfig;
+  candidate: WineryClawConfig;
 }): boolean {
   const runtime = params.runtimeSnapshot as Record<string, unknown>;
   const candidate = params.candidate as Record<string, unknown>;
@@ -1700,7 +1700,7 @@ function isCompatibleTopLevelRuntimeProjectionShape(params: {
   return true;
 }
 
-export function projectConfigOntoRuntimeSourceSnapshot(config: OpenClawConfig): OpenClawConfig {
+export function projectConfigOntoRuntimeSourceSnapshot(config: WineryClawConfig): WineryClawConfig {
   const runtimeConfigSnapshot = getRuntimeConfigSnapshotState();
   const runtimeConfigSourceSnapshot = getRuntimeConfigSourceSnapshotState();
   if (!runtimeConfigSnapshot || !runtimeConfigSourceSnapshot) {
@@ -1728,18 +1728,18 @@ export function projectConfigOntoRuntimeSourceSnapshot(config: OpenClawConfig): 
   return coerceConfig(applyMergePatch(projectedSource, runtimePatch));
 }
 
-export function loadConfig(): OpenClawConfig {
+export function loadConfig(): WineryClawConfig {
   // First successful load becomes the process snapshot. Long-lived runtimes
   // should swap this snapshot via explicit reload/watcher paths instead of
   // reparsing openclaw.json on hot code paths.
   return loadPinnedRuntimeConfig(() => createConfigIO().loadConfig());
 }
 
-export function getRuntimeConfig(): OpenClawConfig {
+export function getRuntimeConfig(): WineryClawConfig {
   return loadConfig();
 }
 
-export async function readBestEffortConfig(): Promise<OpenClawConfig> {
+export async function readBestEffortConfig(): Promise<WineryClawConfig> {
   const snapshot = await readConfigFileSnapshot();
   return snapshot.valid ? loadConfig() : snapshot.config;
 }
@@ -1761,7 +1761,7 @@ export async function readSourceConfigSnapshotForWrite(): Promise<ReadConfigFile
 }
 
 export async function writeConfigFile(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   options: ConfigWriteOptions = {},
 ): Promise<void> {
   const io = createConfigIO();

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import type { ProviderRuntimeModel } from "../../../plugins/provider-runtime-model.types.js";
 import type { PluginHookBeforeAgentStartResult } from "../../../plugins/types.js";
 import {
@@ -98,7 +98,7 @@ export async function resolveHookModelSelection(params: {
 }
 
 export function resolveEffectiveRuntimeModel(params: {
-  cfg: OpenClawConfig | undefined;
+  cfg: WineryClawConfig | undefined;
   provider: string;
   modelId: string;
   runtimeModel: ProviderRuntimeModel;

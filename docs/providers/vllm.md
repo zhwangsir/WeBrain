@@ -1,16 +1,16 @@
 ---
-summary: "Run OpenClaw with vLLM (OpenAI-compatible local server)"
+summary: "Run WineryClaw with vLLM (OpenAI-compatible local server)"
 read_when:
-  - You want to run OpenClaw against a local vLLM server
+  - You want to run WineryClaw against a local vLLM server
   - You want OpenAI-compatible /v1 endpoints with your own models
 title: "vLLM"
 ---
 
 # vLLM
 
-vLLM can serve open-source (and some custom) models via an **OpenAI-compatible** HTTP API. OpenClaw connects to vLLM using the `openai-completions` API.
+vLLM can serve open-source (and some custom) models via an **OpenAI-compatible** HTTP API. WineryClaw connects to vLLM using the `openai-completions` API.
 
-OpenClaw can also **auto-discover** available models from vLLM when you opt in with `VLLM_API_KEY` (any value works if your server does not enforce auth) and you do not define an explicit `models.providers.vllm` entry.
+WineryClaw can also **auto-discover** available models from vLLM when you opt in with `VLLM_API_KEY` (any value works if your server does not enforce auth) and you do not define an explicit `models.providers.vllm` entry.
 
 | Property         | Value                                    |
 | ---------------- | ---------------------------------------- |
@@ -61,7 +61,7 @@ OpenClaw can also **auto-discover** available models from vLLM when you opt in w
 
 ## Model discovery (implicit provider)
 
-When `VLLM_API_KEY` is set (or an auth profile exists) and you **do not** define `models.providers.vllm`, OpenClaw queries:
+When `VLLM_API_KEY` is set (or an auth profile exists) and you **do not** define `models.providers.vllm`, WineryClaw queries:
 
 ```
 GET http://127.0.0.1:8000/v1/models
@@ -120,7 +120,7 @@ Use explicit config when:
     | Responses `store` | Not sent |
     | Prompt-cache hints | Not sent |
     | OpenAI reasoning-compat payload shaping | Not applied |
-    | Hidden OpenClaw attribution headers | Not injected on custom base URLs |
+    | Hidden WineryClaw attribution headers | Not injected on custom base URLs |
 
   </Accordion>
 
@@ -172,13 +172,13 @@ Use explicit config when:
     If requests fail with auth errors, set a real `VLLM_API_KEY` that matches your server configuration, or configure the provider explicitly under `models.providers.vllm`.
 
     <Tip>
-    If your vLLM server does not enforce auth, any non-empty value for `VLLM_API_KEY` works as an opt-in signal for OpenClaw.
+    If your vLLM server does not enforce auth, any non-empty value for `VLLM_API_KEY` works as an opt-in signal for WineryClaw.
     </Tip>
 
   </Accordion>
 
   <Accordion title="No models discovered">
-    Auto-discovery requires `VLLM_API_KEY` to be set **and** no explicit `models.providers.vllm` config entry. If you have defined the provider manually, OpenClaw skips discovery and uses only your declared models.
+    Auto-discovery requires `VLLM_API_KEY` to be set **and** no explicit `models.providers.vllm` config entry. If you have defined the provider manually, WineryClaw skips discovery and uses only your declared models.
   </Accordion>
 </AccordionGroup>
 

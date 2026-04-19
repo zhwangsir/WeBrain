@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { TlonSettingsStore } from "../settings.js";
 
 type ChannelAuthorization = {
@@ -7,7 +7,7 @@ type ChannelAuthorization = {
 };
 
 export function resolveChannelAuthorization(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   channelNest: string,
   settings?: TlonSettingsStore,
 ): { mode: "restricted" | "open"; allowedShips: string[] } {

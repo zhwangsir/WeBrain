@@ -39,7 +39,7 @@ function normalizedLogHaystack(log: { message?: string; id?: string; importer?: 
 }
 
 function buildInputOptions(options: InputOptionsArg): InputOptionsReturn {
-  if (process.env.OPENCLAW_BUILD_VERBOSE === "1") {
+  if (process.env.WINERYCLAW_BUILD_VERBOSE === "1") {
     return undefined;
   }
 

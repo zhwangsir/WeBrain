@@ -4,7 +4,7 @@ import {
 } from "openclaw/plugin-sdk/reply-payload";
 import {
   getAgentScopedMediaLocalRoots,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type PluginRuntime,
   type ReplyPayload,
 } from "./runtime-api.js";
@@ -15,7 +15,7 @@ type SendMattermostMessage = (
   to: string,
   text: string,
   opts: {
-    cfg?: OpenClawConfig;
+    cfg?: WineryClawConfig;
     accountId?: string;
     mediaUrl?: string;
     mediaLocalRoots?: readonly string[];
@@ -25,7 +25,7 @@ type SendMattermostMessage = (
 
 export async function deliverMattermostReplyPayload(params: {
   core: PluginRuntime;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   payload: ReplyPayload;
   to: string;
   accountId: string;

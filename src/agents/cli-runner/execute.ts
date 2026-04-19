@@ -114,7 +114,7 @@ const CLI_ENV_AUTH_LOG_KEYS = [
   "OPENROUTER_API_KEY",
 ] as const;
 
-const CLI_BACKEND_PRESERVE_ENV = "OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV";
+const CLI_BACKEND_PRESERVE_ENV = "WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV";
 
 function parseCliBackendPreserveEnv(raw: string | undefined): Set<string> {
   const trimmed = raw?.trim();

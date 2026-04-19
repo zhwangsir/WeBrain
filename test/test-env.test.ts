@@ -100,18 +100,18 @@ describe("installTestEnv", () => {
 
     process.env.HOME = realHome;
     process.env.USERPROFILE = realHome;
-    process.env.OPENCLAW_LIVE_TEST = "1";
-    process.env.OPENCLAW_LIVE_TEST_QUIET = "1";
-    process.env.OPENCLAW_CONFIG_PATH = "~/custom-openclaw.json5";
-    process.env.OPENCLAW_TEST_HOME = priorIsolatedHome;
-    process.env.OPENCLAW_STATE_DIR = path.join(priorIsolatedHome, ".openclaw");
+    process.env.WINERYCLAW_LIVE_TEST = "1";
+    process.env.WINERYCLAW_LIVE_TEST_QUIET = "1";
+    process.env.WINERYCLAW_CONFIG_PATH = "~/custom-openclaw.json5";
+    process.env.WINERYCLAW_TEST_HOME = priorIsolatedHome;
+    process.env.WINERYCLAW_STATE_DIR = path.join(priorIsolatedHome, ".openclaw");
 
     const testEnv = installTestEnv();
     cleanupFns.push(testEnv.cleanup);
 
     expect(testEnv.tempHome).not.toBe(realHome);
     expect(process.env.HOME).toBe(testEnv.tempHome);
-    expect(process.env.OPENCLAW_TEST_HOME).toBe(testEnv.tempHome);
+    expect(process.env.WINERYCLAW_TEST_HOME).toBe(testEnv.tempHome);
     expect(process.env.TEST_PROFILE_ONLY).toBe("from-profile");
 
     const copiedConfigPath = path.join(testEnv.tempHome, ".openclaw", "openclaw.json");
@@ -172,9 +172,9 @@ describe("installTestEnv", () => {
 
     process.env.HOME = realHome;
     process.env.USERPROFILE = realHome;
-    process.env.OPENCLAW_LIVE_TEST = "1";
-    process.env.OPENCLAW_LIVE_USE_REAL_HOME = "1";
-    process.env.OPENCLAW_LIVE_TEST_QUIET = "1";
+    process.env.WINERYCLAW_LIVE_TEST = "1";
+    process.env.WINERYCLAW_LIVE_USE_REAL_HOME = "1";
+    process.env.WINERYCLAW_LIVE_TEST_QUIET = "1";
 
     const testEnv = installTestEnv();
 
@@ -190,10 +190,10 @@ describe("installTestEnv", () => {
     process.env.HOME = realHome;
     process.env.USERPROFILE = realHome;
     delete process.env.LIVE;
-    delete process.env.OPENCLAW_LIVE_TEST;
-    delete process.env.OPENCLAW_LIVE_GATEWAY;
-    delete process.env.OPENCLAW_LIVE_USE_REAL_HOME;
-    delete process.env.OPENCLAW_LIVE_TEST_QUIET;
+    delete process.env.WINERYCLAW_LIVE_TEST;
+    delete process.env.WINERYCLAW_LIVE_GATEWAY;
+    delete process.env.WINERYCLAW_LIVE_USE_REAL_HOME;
+    delete process.env.WINERYCLAW_LIVE_TEST_QUIET;
 
     const testEnv = installTestEnv();
     cleanupFns.push(testEnv.cleanup);
@@ -208,9 +208,9 @@ describe("installTestEnv", () => {
 
     process.env.HOME = realHome;
     process.env.USERPROFILE = realHome;
-    process.env.OPENCLAW_LIVE_TEST = "1";
-    process.env.OPENCLAW_LIVE_USE_REAL_HOME = "1";
-    process.env.OPENCLAW_LIVE_TEST_QUIET = "1";
+    process.env.WINERYCLAW_LIVE_TEST = "1";
+    process.env.WINERYCLAW_LIVE_USE_REAL_HOME = "1";
+    process.env.WINERYCLAW_LIVE_TEST_QUIET = "1";
 
     vi.doMock("node:child_process", () => ({
       execFileSync: () => {

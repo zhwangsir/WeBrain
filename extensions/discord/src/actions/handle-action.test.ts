@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const runtimeModule = await import("./runtime.js");
@@ -23,7 +23,7 @@ describe("handleDiscordMessageAction", () => {
       },
       cfg: {
         channels: { discord: { token: "tok", actions: { moderation: true } } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       requesterSenderId: "trusted-sender-id",
       toolContext: { currentChannelProvider: "discord" },
     });
@@ -55,7 +55,7 @@ describe("handleDiscordMessageAction", () => {
       },
       cfg: {
         channels: { discord: { token: "tok" } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       toolContext: { currentMessageId: "9001" },
     });
 
@@ -81,7 +81,7 @@ describe("handleDiscordMessageAction", () => {
         },
         cfg: {
           channels: { discord: { token: "tok" } },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
       }),
     ).rejects.toThrow(/messageId required/i);
 

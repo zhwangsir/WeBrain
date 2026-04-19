@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { SandboxSshSettings } from "../../config/types.sandbox.js";
 import { normalizeSecretInputString } from "../../config/types.secrets.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
@@ -218,7 +218,7 @@ export function resolveSandboxSshConfig(params: {
 }
 
 export function resolveSandboxConfigForAgent(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
   agentId?: string,
 ): SandboxConfig {
   const agent = cfg?.agents?.defaults?.sandbox;

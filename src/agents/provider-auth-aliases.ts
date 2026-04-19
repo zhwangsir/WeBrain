@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { loadPluginManifestRegistry } from "../plugins/manifest-registry.js";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
 import type { PluginOrigin } from "../plugins/plugin-origin.types.js";
@@ -6,7 +6,7 @@ import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { normalizeProviderId } from "./provider-id.js";
 
 export type ProviderAuthAliasLookupParams = {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   includeUntrustedWorkspacePlugins?: boolean;
@@ -17,7 +17,7 @@ type ProviderAuthAliasCandidate = {
   target: string;
 };
 
-type PluginEntriesConfig = NonNullable<NonNullable<OpenClawConfig["plugins"]>["entries"]>;
+type PluginEntriesConfig = NonNullable<NonNullable<WineryClawConfig["plugins"]>["entries"]>;
 
 const PROVIDER_AUTH_ALIAS_ORIGIN_PRIORITY: Readonly<Record<PluginOrigin, number>> = {
   config: 0,
@@ -61,7 +61,7 @@ function findPluginEntry(
 
 function isWorkspacePluginTrustedForAuthAliases(
   plugin: PluginManifestRecord,
-  config: OpenClawConfig | undefined,
+  config: WineryClawConfig | undefined,
 ): boolean {
   const pluginsConfig = config?.plugins;
   if (pluginsConfig?.enabled === false) {

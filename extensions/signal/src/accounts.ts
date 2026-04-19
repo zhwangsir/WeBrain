@@ -2,7 +2,7 @@ import {
   createAccountListHelpers,
   normalizeAccountId,
   resolveMergedAccountConfig,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/account-resolution";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import type { SignalAccountConfig } from "./account-types.js";
@@ -20,7 +20,7 @@ const { listAccountIds, resolveDefaultAccountId } = createAccountListHelpers("si
 export const listSignalAccountIds = listAccountIds;
 export const resolveDefaultSignalAccountId = resolveDefaultAccountId;
 
-function mergeSignalAccountConfig(cfg: OpenClawConfig, accountId: string): SignalAccountConfig {
+function mergeSignalAccountConfig(cfg: WineryClawConfig, accountId: string): SignalAccountConfig {
   return resolveMergedAccountConfig<SignalAccountConfig>({
     channelConfig: cfg.channels?.signal as SignalAccountConfig | undefined,
     accounts: cfg.channels?.signal?.accounts as
@@ -31,7 +31,7 @@ function mergeSignalAccountConfig(cfg: OpenClawConfig, accountId: string): Signa
 }
 
 export function resolveSignalAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }): ResolvedSignalAccount {
   const accountId = normalizeAccountId(
@@ -62,7 +62,7 @@ export function resolveSignalAccount(params: {
   };
 }
 
-export function listEnabledSignalAccounts(cfg: OpenClawConfig): ResolvedSignalAccount[] {
+export function listEnabledSignalAccounts(cfg: WineryClawConfig): ResolvedSignalAccount[] {
   return listSignalAccountIds(cfg)
     .map((accountId) => resolveSignalAccount({ cfg, accountId }))
     .filter((account) => account.enabled);

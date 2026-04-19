@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
 import { startQaGatewayChild } from "../../gateway-child.js";
@@ -261,9 +261,9 @@ export const TELEGRAM_QA_STANDARD_SCENARIO_IDS = collectLiveTransportStandardSce
 });
 
 const TELEGRAM_QA_ENV_KEYS = [
-  "OPENCLAW_QA_TELEGRAM_GROUP_ID",
-  "OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN",
-  "OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN",
+  "WINERYCLAW_QA_TELEGRAM_GROUP_ID",
+  "WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN",
+  "WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN",
 ] as const;
 
 function resolveEnvValue(env: NodeJS.ProcessEnv, key: (typeof TELEGRAM_QA_ENV_KEYS)[number]) {
@@ -277,14 +277,14 @@ function resolveEnvValue(env: NodeJS.ProcessEnv, key: (typeof TELEGRAM_QA_ENV_KE
 export function resolveTelegramQaRuntimeEnv(
   env: NodeJS.ProcessEnv = process.env,
 ): TelegramQaRuntimeEnv {
-  const groupId = resolveEnvValue(env, "OPENCLAW_QA_TELEGRAM_GROUP_ID");
+  const groupId = resolveEnvValue(env, "WINERYCLAW_QA_TELEGRAM_GROUP_ID");
   if (!/^-?\d+$/u.test(groupId)) {
-    throw new Error("OPENCLAW_QA_TELEGRAM_GROUP_ID must be a numeric Telegram chat id.");
+    throw new Error("WINERYCLAW_QA_TELEGRAM_GROUP_ID must be a numeric Telegram chat id.");
   }
   return {
     groupId,
-    driverToken: resolveEnvValue(env, "OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN"),
-    sutToken: resolveEnvValue(env, "OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN"),
+    driverToken: resolveEnvValue(env, "WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN"),
+    sutToken: resolveEnvValue(env, "WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN"),
   };
 }
 
@@ -342,14 +342,14 @@ export function normalizeTelegramObservedMessage(
 }
 
 function buildTelegramQaConfig(
-  baseCfg: OpenClawConfig,
+  baseCfg: WineryClawConfig,
   params: {
     groupId: string;
     sutToken: string;
     driverBotId: number;
     sutAccountId: string;
   },
-): OpenClawConfig {
+): WineryClawConfig {
   const pluginAllow = [...new Set([...(baseCfg.plugins?.allow ?? []), "telegram"])];
   const pluginEntries = {
     ...baseCfg.plugins?.entries,
@@ -817,7 +817,7 @@ export async function runTelegramQaLive(params: {
   const sutAccountId = params.sutAccountId?.trim() || "sut";
   const scenarios = findScenario(params.scenarioIds);
   const observedMessages: TelegramObservedMessage[] = [];
-  const includeObservedMessageContent = process.env.OPENCLAW_QA_TELEGRAM_CAPTURE_CONTENT === "1";
+  const includeObservedMessageContent = process.env.WINERYCLAW_QA_TELEGRAM_CAPTURE_CONTENT === "1";
   const startedAt = new Date().toISOString();
 
   const driverIdentity = await getBotIdentity(runtimeEnv.driverToken);

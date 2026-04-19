@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { collectDiscordSecurityAuditFindings } from "../../test/helpers/channels/security-audit-contract.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 type DiscordAuditParams = Parameters<typeof collectDiscordSecurityAuditFindings>[0];
 type ResolvedDiscordAccount = DiscordAuditParams["account"];
@@ -45,7 +45,7 @@ describe("security audit discord native command findings", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         expectFinding: true,
       },
       {
@@ -67,7 +67,7 @@ describe("security audit discord native command findings", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         expectFinding: false,
       },
     ] as const;
@@ -79,7 +79,7 @@ describe("security audit discord native command findings", () => {
         throw new Error("discord config required");
       }
       const findings = await collectDiscordSecurityAuditFindings({
-        cfg: testCase.cfg as OpenClawConfig & { channels: { discord: DiscordAccountConfig } },
+        cfg: testCase.cfg as WineryClawConfig & { channels: { discord: DiscordAccountConfig } },
         account: createAccount(discord),
         accountId: "default",
         orderedAccountIds: ["default"],

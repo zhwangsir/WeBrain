@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { startQaGatewayChild, type QaCliBackendAuthMode } from "../../gateway-child.js";
 import { startQaMockOpenAiServer } from "../../mock-openai-server.js";
 import type { QaThinkingLevel } from "../../qa-gateway-config.js";
@@ -32,7 +32,7 @@ export async function startQaLiveLaneGateway(params: {
     requiredPluginIds: readonly string[];
     createGatewayConfig: (params: {
       baseUrl: string;
-    }) => Pick<OpenClawConfig, "channels" | "messages">;
+    }) => Pick<WineryClawConfig, "channels" | "messages">;
   };
   transportBaseUrl: string;
   controlUiAllowedOrigins?: string[];
@@ -43,7 +43,7 @@ export async function startQaLiveLaneGateway(params: {
   thinkingDefault?: QaThinkingLevel;
   claudeCliAuthMode?: QaCliBackendAuthMode;
   controlUiEnabled?: boolean;
-  mutateConfig?: (cfg: OpenClawConfig) => OpenClawConfig;
+  mutateConfig?: (cfg: WineryClawConfig) => WineryClawConfig;
 }) {
   const mock =
     params.providerMode === "mock-openai"

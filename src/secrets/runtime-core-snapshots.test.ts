@@ -40,14 +40,14 @@ type SecretsRuntimeEnvSnapshot = ReturnType<typeof captureEnv>;
 
 function beginSecretsRuntimeIsolationForTest(): SecretsRuntimeEnvSnapshot {
   const envSnapshot = captureEnv([
-    "OPENCLAW_BUNDLED_PLUGINS_DIR",
-    "OPENCLAW_DISABLE_BUNDLED_PLUGINS",
-    "OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE",
-    "OPENCLAW_VERSION",
+    "WINERYCLAW_BUNDLED_PLUGINS_DIR",
+    "WINERYCLAW_DISABLE_BUNDLED_PLUGINS",
+    "WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE",
+    "WINERYCLAW_VERSION",
   ]);
-  delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
-  process.env.OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE = "1";
-  delete process.env.OPENCLAW_VERSION;
+  delete process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
+  process.env.WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE = "1";
+  delete process.env.WINERYCLAW_VERSION;
   return envSnapshot;
 }
 
@@ -77,9 +77,9 @@ describe("secrets runtime snapshot core lanes", () => {
   async function prepareOpenAiRuntimeSnapshot(params?: { includeAuthStoreRefs?: boolean }) {
     return withEnvAsync(
       {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-        OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-        OPENCLAW_VERSION: undefined,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: undefined,
+        WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+        WINERYCLAW_VERSION: undefined,
       },
       async () =>
         prepareSecretsRuntimeSnapshot({

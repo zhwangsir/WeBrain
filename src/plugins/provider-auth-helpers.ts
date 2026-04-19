@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { OAuthCredentials } from "@mariozechner/pi-ai";
-import { resolveOpenClawAgentDir } from "../agents/agent-paths.js";
+import { resolveWineryClawAgentDir } from "../agents/agent-paths.js";
 import { buildAuthProfileId } from "../agents/auth-profiles/identity.js";
 import { upsertAuthProfile } from "../agents/auth-profiles/profiles.js";
 import { resolveProviderIdForAuth } from "../agents/provider-auth-aliases.js";
 import { resolveStateDir } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   coerceSecretRef,
   DEFAULT_SECRET_PROVIDER_ALIAS,
@@ -19,11 +19,11 @@ import type { SecretInputMode } from "./provider-auth-types.js";
 
 const ENV_REF_PATTERN = /^\$\{([A-Z][A-Z0-9_]*)\}$/;
 
-const resolveAuthAgentDir = (agentDir?: string) => agentDir ?? resolveOpenClawAgentDir();
+const resolveAuthAgentDir = (agentDir?: string) => agentDir ?? resolveWineryClawAgentDir();
 
 export type ApiKeyStorageOptions = {
   secretInputMode?: SecretInputMode;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 };
 
 export type WriteOAuthCredentialsOptions = {
@@ -44,7 +44,7 @@ function parseEnvSecretRef(value: string): SecretRef | null {
   return buildEnvSecretRef(match[1]);
 }
 
-function resolveProviderDefaultEnvSecretRef(provider: string, config?: OpenClawConfig): SecretRef {
+function resolveProviderDefaultEnvSecretRef(provider: string, config?: WineryClawConfig): SecretRef {
   const envVars = getProviderEnvVars(provider, {
     ...(config ? { config } : {}),
     includeUntrustedWorkspacePlugins: false,
@@ -130,7 +130,7 @@ export function upsertApiKeyProfile(params: {
 }
 
 export function applyAuthProfileConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   params: {
     profileId: string;
     provider: string;
@@ -139,7 +139,7 @@ export function applyAuthProfileConfig(
     displayName?: string;
     preferProfileFirst?: boolean;
   },
-): OpenClawConfig {
+): WineryClawConfig {
   const normalizedProvider = resolveProviderIdForAuth(params.provider, { config: cfg });
   const profiles = {
     ...cfg.auth?.profiles,

@@ -14,8 +14,8 @@ export function renderLoginGate(state: AppViewState) {
     <div class="login-gate">
       <div class="login-gate__card">
         <div class="login-gate__header">
-          <img class="login-gate__logo" src=${faviconSrc} alt="OpenClaw" />
-          <div class="login-gate__title">OpenClaw</div>
+          <img class="login-gate__logo" src=${faviconSrc} alt="WineryClaw" />
+          <div class="login-gate__title">WineryClaw</div>
           <div class="login-gate__sub">${t("login.subtitle")}</div>
         </div>
         <div class="login-gate__form">
@@ -42,7 +42,7 @@ export function renderLoginGate(state: AppViewState) {
                   const v = (e.target as HTMLInputElement).value;
                   state.applySettings({ ...state.settings, token: v });
                 }}
-                placeholder="OPENCLAW_GATEWAY_TOKEN (${t("login.passwordPlaceholder")})"
+                placeholder="WINERYCLAW_GATEWAY_TOKEN (${t("login.passwordPlaceholder")})"
                 @keydown=${(e: KeyboardEvent) => {
                   if (e.key === "Enter") {
                     state.connect();
@@ -117,7 +117,7 @@ export function renderLoginGate(state: AppViewState) {
           <div class="login-gate__docs">
             <a
               class="session-link"
-              href="https://docs.openclaw.ai/web/dashboard"
+              href="../docs/web/dashboard"
               target="_blank"
               rel="noreferrer"
               >${t("overview.connection.docsLink")}</a

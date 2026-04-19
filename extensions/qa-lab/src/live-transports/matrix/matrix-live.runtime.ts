@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { startQaGatewayChild } from "../../gateway-child.js";
 import type { QaReportCheck } from "../../report.js";
@@ -120,7 +120,7 @@ function buildMatrixQaSummary(params: {
 }
 
 function buildMatrixQaConfig(
-  baseCfg: OpenClawConfig,
+  baseCfg: WineryClawConfig,
   params: {
     driverUserId: string;
     homeserver: string;
@@ -130,7 +130,7 @@ function buildMatrixQaConfig(
     sutDeviceId?: string;
     sutUserId: string;
   },
-): OpenClawConfig {
+): WineryClawConfig {
   const pluginAllow = [...new Set([...(baseCfg.plugins?.allow ?? []), "matrix"])];
   return {
     ...baseCfg,
@@ -277,7 +277,7 @@ export async function runMatrixQaLive(params: {
   const sutAccountId = params.sutAccountId?.trim() || "sut";
   const scenarios = findMatrixQaScenarios(params.scenarioIds);
   const observedEvents: MatrixQaObservedEvent[] = [];
-  const includeObservedEventContent = process.env.OPENCLAW_QA_MATRIX_CAPTURE_CONTENT === "1";
+  const includeObservedEventContent = process.env.WINERYCLAW_QA_MATRIX_CAPTURE_CONTENT === "1";
   const startedAtDate = new Date();
   const startedAt = startedAtDate.toISOString();
   const runSuffix = randomUUID().slice(0, 8);
@@ -293,7 +293,7 @@ export async function runMatrixQaLive(params: {
         driverLocalpart: `qa-driver-${runSuffix}`,
         observerLocalpart: `qa-observer-${runSuffix}`,
         registrationToken: harness.registrationToken,
-        roomName: `OpenClaw Matrix QA ${runSuffix}`,
+        roomName: `WineryClaw Matrix QA ${runSuffix}`,
         sutLocalpart: `qa-sut-${runSuffix}`,
       });
     } catch (error) {

@@ -7,7 +7,7 @@ title: "config"
 
 # `openclaw config`
 
-Config helpers for non-interactive edits in `openclaw.json`: get/set/unset/file/schema/validate
+Config helpers for non-interactive edits in `wineryclaw.json`: get/set/unset/file/schema/validate
 values by path and print the active config file. Run without a subcommand to
 open the configure wizard (same as `openclaw configure`).
 
@@ -48,7 +48,7 @@ openclaw config validate --json
 
 ### `config schema`
 
-Print the generated JSON schema for `openclaw.json` to stdout as JSON.
+Print the generated JSON schema for `wineryclaw.json` to stdout as JSON.
 
 What it includes:
 
@@ -216,7 +216,7 @@ openclaw config set secrets.providers.vault \
 
 ## Dry run
 
-Use `--dry-run` to validate changes without writing `openclaw.json`.
+Use `--dry-run` to validate changes without writing `wineryclaw.json`.
 
 ```bash
 openclaw config set channels.discord.token \
@@ -291,7 +291,7 @@ Success example:
 {
   "ok": true,
   "operations": 1,
-  "configPath": "~/.openclaw/openclaw.json",
+  "configPath": "~/.wineryclaw/wineryclaw.json",
   "inputModes": ["builder"],
   "checks": {
     "schema": false,
@@ -309,7 +309,7 @@ Failure example:
 {
   "ok": false,
   "operations": 1,
-  "configPath": "~/.openclaw/openclaw.json",
+  "configPath": "~/.wineryclaw/wineryclaw.json",
   "inputModes": ["builder"],
   "checks": {
     "schema": false,
@@ -338,7 +338,7 @@ If dry-run fails:
 
 ## Subcommands
 
-- `config file`: Print the active config file path (resolved from `OPENCLAW_CONFIG_PATH` or default location).
+- `config file`: Print the active config file path (resolved from `WINERYCLAW_CONFIG_PATH` or default location).
 
 Restart the gateway after edits.
 

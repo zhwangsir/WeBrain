@@ -4,7 +4,7 @@ import {
   normalizeAccountId,
   resolveMergedAccountConfig,
 } from "openclaw/plugin-sdk/account-resolution";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import type { ResolvedZalouserAccount, ZalouserAccountConfig, ZalouserConfig } from "./types.js";
 
@@ -21,7 +21,7 @@ const {
 } = createAccountListHelpers("zalouser");
 export { listZalouserAccountIds, resolveDefaultZalouserAccountId };
 
-function mergeZalouserAccountConfig(cfg: OpenClawConfig, accountId: string): ZalouserAccountConfig {
+function mergeZalouserAccountConfig(cfg: WineryClawConfig, accountId: string): ZalouserAccountConfig {
   const merged = resolveMergedAccountConfig<ZalouserAccountConfig>({
     channelConfig: cfg.channels?.zalouser as ZalouserAccountConfig | undefined,
     accounts: (cfg.channels?.zalouser as ZalouserConfig | undefined)?.accounts as
@@ -53,7 +53,7 @@ function resolveProfile(config: ZalouserAccountConfig, accountId: string): strin
   return "default";
 }
 
-function resolveZalouserAccountBase(params: { cfg: OpenClawConfig; accountId?: string | null }) {
+function resolveZalouserAccountBase(params: { cfg: WineryClawConfig; accountId?: string | null }) {
   const accountId = normalizeAccountId(
     params.accountId ?? resolveDefaultZalouserAccountId(params.cfg),
   );
@@ -69,7 +69,7 @@ function resolveZalouserAccountBase(params: { cfg: OpenClawConfig; accountId?: s
 }
 
 export async function resolveZalouserAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }): Promise<ResolvedZalouserAccount> {
   const { accountId, enabled, merged, profile } = resolveZalouserAccountBase(params);
@@ -86,7 +86,7 @@ export async function resolveZalouserAccount(params: {
 }
 
 export function resolveZalouserAccountSync(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }): ResolvedZalouserAccount {
   const { accountId, enabled, merged, profile } = resolveZalouserAccountBase(params);
@@ -102,7 +102,7 @@ export function resolveZalouserAccountSync(params: {
 }
 
 export async function listEnabledZalouserAccounts(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ): Promise<ResolvedZalouserAccount[]> {
   const ids = listZalouserAccountIds(cfg);
   const accounts = await Promise.all(

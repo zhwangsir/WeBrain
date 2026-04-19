@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   loadAuthStoreWithProfiles,
   setupSecretsRuntimeSnapshotTestHooks,
@@ -7,7 +7,7 @@ import {
 
 const { prepareSecretsRuntimeSnapshot } = setupSecretsRuntimeSnapshotTestHooks();
 
-function withAuthProfileMode(mode: "api_key" | "oauth" | "token"): OpenClawConfig {
+function withAuthProfileMode(mode: "api_key" | "oauth" | "token"): WineryClawConfig {
   return {
     auth: {
       profiles: {
@@ -22,7 +22,7 @@ function withAuthProfileMode(mode: "api_key" | "oauth" | "token"): OpenClawConfi
         default: { source: "env" },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 describe("secrets runtime oauth auth-profile SecretRef policy", () => {

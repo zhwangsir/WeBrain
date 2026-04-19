@@ -2,7 +2,7 @@
 title: "Arcee AI"
 summary: "Arcee AI setup (auth + model selection)"
 read_when:
-  - You want to use Arcee AI with OpenClaw
+  - You want to use Arcee AI with WineryClaw
   - You need the API key env var or CLI auth choice
 ---
 
@@ -98,7 +98,7 @@ Arcee AI models can be accessed directly via the Arcee platform or through [Open
 
 ## Built-in catalog
 
-OpenClaw currently ships this bundled Arcee catalog:
+WineryClaw currently ships this bundled Arcee catalog:
 
 | Model ref                      | Name                   | Input | Context | Cost (in/out per 1M) | Notes                                     |
 | ------------------------------ | ---------------------- | ----- | ------- | -------------------- | ----------------------------------------- |
@@ -123,12 +123,12 @@ The onboarding preset sets `arcee/trinity-large-thinking` as the default model.
   <Accordion title="Environment note">
     If the Gateway runs as a daemon (launchd/systemd), make sure `ARCEEAI_API_KEY`
     (or `OPENROUTER_API_KEY`) is available to that process (for example, in
-    `~/.openclaw/.env` or via `env.shellEnv`).
+    `~/.wineryclaw/.env` or via `env.shellEnv`).
   </Accordion>
 
   <Accordion title="OpenRouter routing">
     When using Arcee models via OpenRouter, the same `arcee/*` model refs apply.
-    OpenClaw handles routing transparently based on your auth choice. See the
+    WineryClaw handles routing transparently based on your auth choice. See the
     [OpenRouter provider docs](/providers/openrouter) for OpenRouter-specific
     configuration details.
   </Accordion>

@@ -1,8 +1,8 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-onboard";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/provider-onboard";
 
 export const VYDRA_DEFAULT_IMAGE_MODEL_REF = "vydra/grok-imagine";
 
-export function applyVydraConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyVydraConfig(cfg: WineryClawConfig): WineryClawConfig {
   if (cfg.agents?.defaults?.imageGenerationModel) {
     return cfg;
   }

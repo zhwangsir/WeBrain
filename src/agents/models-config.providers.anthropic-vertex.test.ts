@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { resolveImplicitProvidersForTest } from "./models-config.e2e-harness.js";
 
 const ANTHROPIC_VERTEX_DISCOVERY_ENV = {
-  OPENCLAW_TEST_ONLY_PROVIDER_PLUGIN_IDS: "anthropic",
+  WINERYCLAW_TEST_ONLY_PROVIDER_PLUGIN_IDS: "anthropic",
 } satisfies NodeJS.ProcessEnv;
 
 async function withAdcCredentialsFile(

@@ -2,8 +2,8 @@ import fs from "node:fs/promises";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import type {
   AcpRuntime,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  WineryClawPluginService,
+  WineryClawPluginServiceContext,
   PluginLogger,
 } from "../runtime-api.js";
 import { registerAcpRuntimeBackend, unregisterAcpRuntimeBackend } from "../runtime-api.js";
@@ -84,15 +84,15 @@ function formatDoctorFailureMessage(report: { message: string; details?: string[
 
 export function createAcpxRuntimeService(
   params: CreateAcpxRuntimeServiceParams = {},
-): OpenClawPluginService {
+): WineryClawPluginService {
   let runtime: AcpxRuntimeLike | null = null;
   let lifecycleRevision = 0;
 
   return {
     id: "acpx-runtime",
-    async start(ctx: OpenClawPluginServiceContext): Promise<void> {
-      if (process.env.OPENCLAW_SKIP_ACPX_RUNTIME === "1") {
-        ctx.logger.info("skipping embedded acpx runtime backend (OPENCLAW_SKIP_ACPX_RUNTIME=1)");
+    async start(ctx: WineryClawPluginServiceContext): Promise<void> {
+      if (process.env.WINERYCLAW_SKIP_ACPX_RUNTIME === "1") {
+        ctx.logger.info("skipping embedded acpx runtime backend (WINERYCLAW_SKIP_ACPX_RUNTIME=1)");
         return;
       }
 
@@ -119,7 +119,7 @@ export function createAcpxRuntimeService(
       });
       ctx.logger.info(`embedded acpx runtime backend registered (cwd: ${pluginConfig.cwd})`);
 
-      if (process.env.OPENCLAW_SKIP_ACPX_RUNTIME_PROBE === "1") {
+      if (process.env.WINERYCLAW_SKIP_ACPX_RUNTIME_PROBE === "1") {
         return;
       }
 
@@ -150,7 +150,7 @@ export function createAcpxRuntimeService(
         }
       })();
     },
-    async stop(_ctx: OpenClawPluginServiceContext): Promise<void> {
+    async stop(_ctx: WineryClawPluginServiceContext): Promise<void> {
       lifecycleRevision += 1;
       unregisterAcpRuntimeBackend(ACPX_BACKEND_ID);
       runtime = null;

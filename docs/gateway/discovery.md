@@ -9,7 +9,7 @@ title: "Discovery and Transports"
 
 # Discovery & transports
 
-OpenClaw has two distinct problems that look similar on the surface:
+WineryClaw has two distinct problems that look similar on the surface:
 
 1. **Operator remote control**: the macOS menu bar app controlling a gateway running elsewhere.
 2. **Node pairing**: iOS/Android (and future nodes) finding a gateway and pairing securely.
@@ -46,7 +46,7 @@ Protocol details:
 
 ### 1) Bonjour / DNS-SD discovery
 
-Multicast Bonjour is best-effort and does not cross networks. OpenClaw can also browse the
+Multicast Bonjour is best-effort and does not cross networks. WineryClaw can also browse the
 same gateway beacon via a configured wide-area DNS-SD domain, so discovery can cover:
 
 - `local.` on the same LAN
@@ -85,11 +85,11 @@ Security notes:
 
 Disable/override:
 
-- `OPENCLAW_DISABLE_BONJOUR=1` disables advertising.
-- `gateway.bind` in `~/.openclaw/openclaw.json` controls the Gateway bind mode.
-- `OPENCLAW_SSH_PORT` overrides the SSH port advertised when `sshPort` is emitted.
-- `OPENCLAW_TAILNET_DNS` publishes a `tailnetDns` hint (MagicDNS).
-- `OPENCLAW_CLI_PATH` overrides the advertised CLI path.
+- `WINERYCLAW_DISABLE_BONJOUR=1` disables advertising.
+- `gateway.bind` in `~/.wineryclaw/wineryclaw.json` controls the Gateway bind mode.
+- `WINERYCLAW_SSH_PORT` overrides the SSH port advertised when `sshPort` is emitted.
+- `WINERYCLAW_TAILNET_DNS` publishes a `tailnetDns` hint (MagicDNS).
+- `WINERYCLAW_CLI_PATH` overrides the advertised CLI path.
 
 ### 2) Tailnet (cross-network)
 

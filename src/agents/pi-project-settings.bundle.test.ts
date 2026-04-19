@@ -16,7 +16,7 @@ async function createWorkspaceBundle(params: {
   pluginId?: string;
 }): Promise<string> {
   const pluginId = params.pluginId ?? "claude-bundle";
-  const pluginRoot = path.join(params.workspaceDir, ".openclaw", "extensions", pluginId);
+  const pluginRoot = path.join(params.workspaceDir, ".wineryclaw", "extensions", pluginId);
   await fs.mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
   await fs.writeFile(
     path.join(pluginRoot, ".claude-plugin", "plugin.json"),

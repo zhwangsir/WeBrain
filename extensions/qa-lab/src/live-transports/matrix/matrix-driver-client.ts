@@ -673,19 +673,19 @@ export async function provisionMatrixQaRoom(params: {
     fetchImpl: params.fetchImpl,
   });
   const driver = await anonClient.registerWithToken({
-    deviceName: "OpenClaw Matrix QA Driver",
+    deviceName: "WineryClaw Matrix QA Driver",
     localpart: params.driverLocalpart,
     password: `driver-${randomUUID()}`,
     registrationToken: params.registrationToken,
   });
   const sut = await anonClient.registerWithToken({
-    deviceName: "OpenClaw Matrix QA SUT",
+    deviceName: "WineryClaw Matrix QA SUT",
     localpart: params.sutLocalpart,
     password: `sut-${randomUUID()}`,
     registrationToken: params.registrationToken,
   });
   const observer = await anonClient.registerWithToken({
-    deviceName: "OpenClaw Matrix QA Observer",
+    deviceName: "WineryClaw Matrix QA Observer",
     localpart: params.observerLocalpart,
     password: `observer-${randomUUID()}`,
     registrationToken: params.registrationToken,

@@ -5,7 +5,7 @@ import {
   signalOutbound,
   whatsappOutbound,
 } from "../../../test/helpers/infra/deliver-test-outbounds.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import {
   releasePinnedPluginChannelRegistry,
   setActivePluginRegistry,
@@ -146,7 +146,7 @@ vi.mock("../../logging/subsystem.js", () => ({
   },
 }));
 
-export const whatsappChunkConfig: OpenClawConfig = {
+export const whatsappChunkConfig: WineryClawConfig = {
   channels: { whatsapp: { textChunkLimit: 4000 } },
 };
 
@@ -224,7 +224,7 @@ export async function runChunkedWhatsAppDelivery(params: {
     >()
     .mockResolvedValueOnce({ messageId: "w1", toJid: "jid" })
     .mockResolvedValueOnce({ messageId: "w2", toJid: "jid" });
-  const cfg: OpenClawConfig = {
+  const cfg: WineryClawConfig = {
     channels: { whatsapp: { textChunkLimit: 2 } },
   };
   const results = await params.deliverOutboundPayloads({

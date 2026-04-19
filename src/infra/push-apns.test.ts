@@ -184,7 +184,7 @@ describe("push APNs send semantics", () => {
       aps: {
         alert: {
           title: "Exec approval required",
-          body: "Open OpenClaw to review this request.",
+          body: "Open WineryClaw to review this request.",
         },
         sound: "default",
         category: "openclaw.exec-approval",
@@ -452,7 +452,7 @@ describe("push APNs send semantics", () => {
       aps: {
         alert: {
           title: "Exec approval required",
-          body: "Open OpenClaw to review this request.",
+          body: "Open WineryClaw to review this request.",
         },
         category: "openclaw.exec-approval",
         "content-available": 1,

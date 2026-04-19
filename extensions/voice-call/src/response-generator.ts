@@ -13,7 +13,7 @@ import { resolveVoiceResponseModel } from "./response-model.js";
 export type VoiceResponseParams = {
   /** Voice call config */
   voiceConfig: VoiceCallConfig;
-  /** Core OpenClaw config */
+  /** Core WineryClaw config */
   coreConfig: CoreConfig;
   /** Injected host agent runtime */
   agentRuntime: CoreAgentDeps;

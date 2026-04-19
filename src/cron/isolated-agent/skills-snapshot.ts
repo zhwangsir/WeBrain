@@ -1,7 +1,7 @@
 import { canExecRequestNode } from "../../agents/exec-defaults.js";
 import type { SkillSnapshot } from "../../agents/skills.js";
 import { matchesSkillFilter } from "../../agents/skills/filter.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import {
   buildWorkspaceSkillSnapshot,
   getRemoteSkillEligibility,
@@ -11,7 +11,7 @@ import {
 
 export function resolveCronSkillsSnapshot(params: {
   workspaceDir: string;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentId: string;
   existingSnapshot?: SkillSnapshot;
   isFastTestEnv: boolean;

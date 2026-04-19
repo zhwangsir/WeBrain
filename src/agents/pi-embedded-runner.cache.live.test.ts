@@ -4,7 +4,7 @@ import path from "node:path";
 import type { AssistantMessage, Message, Tool } from "@mariozechner/pi-ai";
 import { Type } from "@sinclair/typebox";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   buildAssistantHistoryTurn as buildTypedAssistantHistoryTurn,
   buildStableCachePrefix,
@@ -230,7 +230,7 @@ function buildEmbeddedRunnerConfig(
     cacheRetention: "none" | "short" | "long";
     transport?: "sse" | "websocket";
   },
-): OpenClawConfig {
+): WineryClawConfig {
   const provider = params.model.provider;
   const modelKey = `${provider}/${params.model.id}`;
   const providerBaseUrl =
@@ -753,28 +753,28 @@ describeCacheLive("pi embedded runner prompt caching (live)", () => {
     liveCacheTraceFile = path.join(liveRunnerRootDir, "cache-trace.jsonl");
     liveTestPngBase64 = (await fs.readFile(LIVE_TEST_PNG_URL)).toString("base64");
     previousCacheTraceEnv = {
-      enabled: process.env.OPENCLAW_CACHE_TRACE,
-      file: process.env.OPENCLAW_CACHE_TRACE_FILE,
-      messages: process.env.OPENCLAW_CACHE_TRACE_MESSAGES,
-      prompt: process.env.OPENCLAW_CACHE_TRACE_PROMPT,
-      system: process.env.OPENCLAW_CACHE_TRACE_SYSTEM,
+      enabled: process.env.WINERYCLAW_CACHE_TRACE,
+      file: process.env.WINERYCLAW_CACHE_TRACE_FILE,
+      messages: process.env.WINERYCLAW_CACHE_TRACE_MESSAGES,
+      prompt: process.env.WINERYCLAW_CACHE_TRACE_PROMPT,
+      system: process.env.WINERYCLAW_CACHE_TRACE_SYSTEM,
     };
-    process.env.OPENCLAW_CACHE_TRACE = "1";
-    process.env.OPENCLAW_CACHE_TRACE_FILE = liveCacheTraceFile;
-    process.env.OPENCLAW_CACHE_TRACE_MESSAGES = "0";
-    process.env.OPENCLAW_CACHE_TRACE_PROMPT = "0";
-    process.env.OPENCLAW_CACHE_TRACE_SYSTEM = "0";
+    process.env.WINERYCLAW_CACHE_TRACE = "1";
+    process.env.WINERYCLAW_CACHE_TRACE_FILE = liveCacheTraceFile;
+    process.env.WINERYCLAW_CACHE_TRACE_MESSAGES = "0";
+    process.env.WINERYCLAW_CACHE_TRACE_PROMPT = "0";
+    process.env.WINERYCLAW_CACHE_TRACE_SYSTEM = "0";
   }, 120_000);
 
   afterAll(async () => {
     if (previousCacheTraceEnv) {
       const restore = (
         key:
-          | "OPENCLAW_CACHE_TRACE"
-          | "OPENCLAW_CACHE_TRACE_FILE"
-          | "OPENCLAW_CACHE_TRACE_MESSAGES"
-          | "OPENCLAW_CACHE_TRACE_PROMPT"
-          | "OPENCLAW_CACHE_TRACE_SYSTEM",
+          | "WINERYCLAW_CACHE_TRACE"
+          | "WINERYCLAW_CACHE_TRACE_FILE"
+          | "WINERYCLAW_CACHE_TRACE_MESSAGES"
+          | "WINERYCLAW_CACHE_TRACE_PROMPT"
+          | "WINERYCLAW_CACHE_TRACE_SYSTEM",
         value: string | undefined,
       ) => {
         if (value === undefined) {
@@ -783,11 +783,11 @@ describeCacheLive("pi embedded runner prompt caching (live)", () => {
           process.env[key] = value;
         }
       };
-      restore("OPENCLAW_CACHE_TRACE", previousCacheTraceEnv.enabled);
-      restore("OPENCLAW_CACHE_TRACE_FILE", previousCacheTraceEnv.file);
-      restore("OPENCLAW_CACHE_TRACE_MESSAGES", previousCacheTraceEnv.messages);
-      restore("OPENCLAW_CACHE_TRACE_PROMPT", previousCacheTraceEnv.prompt);
-      restore("OPENCLAW_CACHE_TRACE_SYSTEM", previousCacheTraceEnv.system);
+      restore("WINERYCLAW_CACHE_TRACE", previousCacheTraceEnv.enabled);
+      restore("WINERYCLAW_CACHE_TRACE_FILE", previousCacheTraceEnv.file);
+      restore("WINERYCLAW_CACHE_TRACE_MESSAGES", previousCacheTraceEnv.messages);
+      restore("WINERYCLAW_CACHE_TRACE_PROMPT", previousCacheTraceEnv.prompt);
+      restore("WINERYCLAW_CACHE_TRACE_SYSTEM", previousCacheTraceEnv.system);
     }
     previousCacheTraceEnv = null;
     liveCacheTraceFile = undefined;
@@ -804,7 +804,7 @@ describeCacheLive("pi embedded runner prompt caching (live)", () => {
       fixture = await resolveLiveDirectModel({
         provider: "openai",
         api: "openai-responses",
-        envVar: "OPENCLAW_LIVE_OPENAI_CACHE_MODEL",
+        envVar: "WINERYCLAW_LIVE_OPENAI_CACHE_MODEL",
         preferredModelIds: ["gpt-5.4-mini", "gpt-5.4", "gpt-5.4"],
       });
       logLiveCache(`openai model=${fixture.model.provider}/${fixture.model.id}`);
@@ -1060,7 +1060,7 @@ describeCacheLive("pi embedded runner prompt caching (live)", () => {
       fixture = await resolveLiveDirectModel({
         provider: "anthropic",
         api: "anthropic-messages",
-        envVar: "OPENCLAW_LIVE_ANTHROPIC_CACHE_MODEL",
+        envVar: "WINERYCLAW_LIVE_ANTHROPIC_CACHE_MODEL",
         preferredModelIds: ["claude-sonnet-4-6", "claude-sonnet-4-6", "claude-haiku-3-5"],
       });
       logLiveCache(`anthropic model=${fixture.model.provider}/${fixture.model.id}`);

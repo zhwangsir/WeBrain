@@ -1,11 +1,11 @@
 import { vi } from "vitest";
-import type { OpenClawConfig, PluginRuntime, RuntimeEnv } from "../../runtime-api.js";
+import type { WineryClawConfig, PluginRuntime, RuntimeEnv } from "../../runtime-api.js";
 import type { MSTeamsMessageHandlerDeps } from "../monitor-handler.js";
 import { setMSTeamsRuntime } from "../runtime.js";
 
 export const channelConversationId = "19:general@thread.tacv2";
 
-export function createMessageHandlerDeps(cfg: OpenClawConfig) {
+export function createMessageHandlerDeps(cfg: WineryClawConfig) {
   const enqueueSystemEvent = vi.fn();
   const recordInboundSession = vi.fn(async (_params: { sessionKey: string }) => undefined);
   const resolveAgentRoute = vi.fn(({ peer }: { peer: { kind: string; id: string } }) => ({

@@ -1,14 +1,14 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { callGateway } from "../gateway/call.js";
 import { getActiveRuntimeWebToolsMetadata } from "../secrets/runtime.js";
 import { normalizeDeliveryContext } from "../utils/delivery-context.js";
 import type { GatewayMessageChannel } from "../utils/message-channel.js";
 import { resolveAgentWorkspaceDir, resolveSessionAgentIds } from "./agent-scope.js";
-import { resolveOpenClawPluginToolsForOptions } from "./openclaw-plugin-tools.js";
+import { resolveWineryClawPluginToolsForOptions } from "./openclaw-plugin-tools.js";
 import { applyNodesToolWorkspaceGuard } from "./openclaw-tools.nodes-workspace-guard.js";
 import {
-  collectPresentOpenClawTools,
-  isUpdatePlanToolEnabledForOpenClawTools,
+  collectPresentWineryClawTools,
+  isUpdatePlanToolEnabledForWineryClawTools,
 } from "./openclaw-tools.registration.js";
 import type { SandboxFsBridge } from "./sandbox/fs-bridge.js";
 import type { SpawnedToolContext } from "./spawned-context.js";
@@ -37,18 +37,18 @@ import { createVideoGenerateTool } from "./tools/video-generate-tool.js";
 import { createWebFetchTool, createWebSearchTool } from "./tools/web-tools.js";
 import { resolveWorkspaceRoot } from "./workspace-dir.js";
 
-type OpenClawToolsDeps = {
+type WineryClawToolsDeps = {
   callGateway: typeof callGateway;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 };
 
-const defaultOpenClawToolsDeps: OpenClawToolsDeps = {
+const defaultWineryClawToolsDeps: WineryClawToolsDeps = {
   callGateway,
 };
 
-let openClawToolsDeps: OpenClawToolsDeps = defaultOpenClawToolsDeps;
+let openClawToolsDeps: WineryClawToolsDeps = defaultWineryClawToolsDeps;
 
-export function createOpenClawTools(
+export function createWineryClawTools(
   options?: {
     sandboxBrowserBridgeUrl?: string;
     allowHostBrowserControl?: boolean;
@@ -65,7 +65,7 @@ export function createOpenClawTools(
     sandboxFsBridge?: SandboxFsBridge;
     fsPolicy?: ToolFsPolicy;
     sandboxed?: boolean;
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     pluginToolAllowlist?: string[];
     /** Current channel ID for auto-threading (Slack). */
     currentChannelId?: string;
@@ -238,7 +238,7 @@ export function createOpenClawTools(
       agentChannel: options?.agentChannel,
       config: options?.config,
     }),
-    ...collectPresentOpenClawTools([imageGenerateTool, musicGenerateTool, videoGenerateTool]),
+    ...collectPresentWineryClawTools([imageGenerateTool, musicGenerateTool, videoGenerateTool]),
     createGatewayTool({
       agentSessionKey: options?.agentSessionKey,
       config: options?.config,
@@ -247,7 +247,7 @@ export function createOpenClawTools(
       agentSessionKey: options?.agentSessionKey,
       requesterAgentIdOverride: options?.requesterAgentIdOverride,
     }),
-    ...(isUpdatePlanToolEnabledForOpenClawTools({
+    ...(isUpdatePlanToolEnabledForWineryClawTools({
       config: resolvedConfig,
       agentSessionKey: options?.agentSessionKey,
       agentId: options?.requesterAgentIdOverride,
@@ -300,14 +300,14 @@ export function createOpenClawTools(
       config: resolvedConfig,
       sandboxed: options?.sandboxed,
     }),
-    ...collectPresentOpenClawTools([webSearchTool, webFetchTool, imageTool, pdfTool]),
+    ...collectPresentWineryClawTools([webSearchTool, webFetchTool, imageTool, pdfTool]),
   ];
 
   if (options?.disablePluginTools) {
     return tools;
   }
 
-  const wrappedPluginTools = resolveOpenClawPluginToolsForOptions({
+  const wrappedPluginTools = resolveWineryClawPluginToolsForOptions({
     options,
     resolvedConfig,
     existingToolNames: new Set(tools.map((tool) => tool.name)),
@@ -317,12 +317,12 @@ export function createOpenClawTools(
 }
 
 export const __testing = {
-  setDepsForTest(overrides?: Partial<OpenClawToolsDeps>) {
+  setDepsForTest(overrides?: Partial<WineryClawToolsDeps>) {
     openClawToolsDeps = overrides
       ? {
-          ...defaultOpenClawToolsDeps,
+          ...defaultWineryClawToolsDeps,
           ...overrides,
         }
-      : defaultOpenClawToolsDeps;
+      : defaultWineryClawToolsDeps;
   },
 };

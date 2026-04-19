@@ -1,7 +1,7 @@
 ---
 summary: "Configuration overview: common tasks, quick setup, and links to the full reference"
 read_when:
-  - Setting up OpenClaw for the first time
+  - Setting up WineryClaw for the first time
   - Looking for common configuration patterns
   - Navigating to specific config sections
 title: "Configuration"
@@ -9,9 +9,9 @@ title: "Configuration"
 
 # Configuration
 
-OpenClaw reads an optional <Tooltip tip="JSON5 supports comments and trailing commas">**JSON5**</Tooltip> config from `~/.openclaw/openclaw.json`.
+WineryClaw reads an optional <Tooltip tip="JSON5 supports comments and trailing commas">**JSON5**</Tooltip> config from `~/.wineryclaw/wineryclaw.json`.
 
-If the file is missing, OpenClaw uses safe defaults. Common reasons to add a config:
+If the file is missing, WineryClaw uses safe defaults. Common reasons to add a config:
 
 - Connect channels and control who can message the bot
 - Set models, tools, sandboxing, or automation (cron, hooks)
@@ -26,9 +26,9 @@ See the [full reference](/gateway/configuration-reference) for every available f
 ## Minimal config
 
 ```json5
-// ~/.openclaw/openclaw.json
+// ~/.wineryclaw/wineryclaw.json
 {
-  agents: { defaults: { workspace: "~/.openclaw/workspace" } },
+  agents: { defaults: { workspace: "~/.wineryclaw/workspace" } },
   channels: { whatsapp: { allowFrom: ["+15555550123"] } },
 }
 ```
@@ -58,14 +58,14 @@ See the [full reference](/gateway/configuration-reference) for every available f
     fetch one path-scoped schema node plus immediate child summaries.
   </Tab>
   <Tab title="Direct edit">
-    Edit `~/.openclaw/openclaw.json` directly. The Gateway watches the file and applies changes automatically (see [hot reload](#config-hot-reload)).
+    Edit `~/.wineryclaw/wineryclaw.json` directly. The Gateway watches the file and applies changes automatically (see [hot reload](#config-hot-reload)).
   </Tab>
 </Tabs>
 
 ## Strict validation
 
 <Warning>
-OpenClaw only accepts configurations that fully match the schema. Unknown keys, malformed types, or invalid values cause the Gateway to **refuse to start**. The only root-level exception is `$schema` (string), so editors can attach JSON Schema metadata.
+WineryClaw only accepts configurations that fully match the schema. Unknown keys, malformed types, or invalid values cause the Gateway to **refuse to start**. The only root-level exception is `$schema` (string), so editors can attach JSON Schema metadata.
 </Warning>
 
 Schema tooling notes:
@@ -73,7 +73,7 @@ Schema tooling notes:
 - `openclaw config schema` prints the same JSON Schema family used by Control UI
   and config validation.
 - Treat that schema output as the canonical machine-readable contract for
-  `openclaw.json`; this overview and the configuration reference summarize it.
+  `wineryclaw.json`; this overview and the configuration reference summarize it.
 - Field `title` and `description` values are carried into the schema output for
   editor and form tooling.
 - Nested object, wildcard (`*`), and array-item (`[]`) entries inherit the same
@@ -309,7 +309,7 @@ When validation fails:
   </Accordion>
 
   <Accordion title="Enable relay-backed push for official iOS builds">
-    Relay-backed push is configured in `openclaw.json`.
+    Relay-backed push is configured in `wineryclaw.json`.
 
     Set this in gateway config:
 
@@ -358,8 +358,8 @@ When validation fails:
 
     Compatibility note:
 
-    - `OPENCLAW_APNS_RELAY_BASE_URL` and `OPENCLAW_APNS_RELAY_TIMEOUT_MS` still work as temporary env overrides.
-    - `OPENCLAW_APNS_RELAY_ALLOW_HTTP=true` remains a loopback-only development escape hatch; do not persist HTTP relay URLs in config.
+    - `WINERYCLAW_APNS_RELAY_BASE_URL` and `WINERYCLAW_APNS_RELAY_TIMEOUT_MS` still work as temporary env overrides.
+    - `WINERYCLAW_APNS_RELAY_ALLOW_HTTP=true` remains a loopback-only development escape hatch; do not persist HTTP relay URLs in config.
 
     See [iOS App](/platforms/ios#relay-backed-push-for-official-builds) for the end-to-end flow and [Authentication and trust flow](/platforms/ios#authentication-and-trust-flow) for the relay security model.
 
@@ -451,8 +451,8 @@ When validation fails:
     {
       agents: {
         list: [
-          { id: "home", default: true, workspace: "~/.openclaw/workspace-home" },
-          { id: "work", workspace: "~/.openclaw/workspace-work" },
+          { id: "home", default: true, workspace: "~/.wineryclaw/workspace-home" },
+          { id: "work", workspace: "~/.wineryclaw/workspace-work" },
         ],
       },
       bindings: [
@@ -470,7 +470,7 @@ When validation fails:
     Use `$include` to organize large configs:
 
     ```json5
-    // ~/.openclaw/openclaw.json
+    // ~/.wineryclaw/wineryclaw.json
     {
       gateway: { port: 18789 },
       agents: { $include: "./agents.json5" },
@@ -492,7 +492,7 @@ When validation fails:
 
 ## Config hot reload
 
-The Gateway watches `~/.openclaw/openclaw.json` and applies changes automatically — no manual restart needed for most settings.
+The Gateway watches `~/.wineryclaw/wineryclaw.json` and applies changes automatically — no manual restart needed for most settings.
 
 ### Reload modes
 
@@ -569,7 +569,7 @@ then `config.patch`.
     ```bash
     openclaw gateway call config.get --params '{}'  # capture payload.hash
     openclaw gateway call config.apply --params '{
-      "raw": "{ agents: { defaults: { workspace: \"~/.openclaw/workspace\" } } }",
+      "raw": "{ agents: { defaults: { workspace: \"~/.wineryclaw/workspace\" } } }",
       "baseHash": "<hash>",
       "sessionKey": "agent:main:whatsapp:direct:+15555550123"
     }'
@@ -604,10 +604,10 @@ then `config.patch`.
 
 ## Environment variables
 
-OpenClaw reads env vars from the parent process plus:
+WineryClaw reads env vars from the parent process plus:
 
 - `.env` from the current working directory (if present)
-- `~/.openclaw/.env` (global fallback)
+- `~/.wineryclaw/.env` (global fallback)
 
 Neither file overrides existing env vars. You can also set inline env vars in config:
 
@@ -621,7 +621,7 @@ Neither file overrides existing env vars. You can also set inline env vars in co
 ```
 
 <Accordion title="Shell env import (optional)">
-  If enabled and expected keys aren't set, OpenClaw runs your login shell and imports only the missing keys:
+  If enabled and expected keys aren't set, WineryClaw runs your login shell and imports only the missing keys:
 
 ```json5
 {
@@ -631,7 +631,7 @@ Neither file overrides existing env vars. You can also set inline env vars in co
 }
 ```
 
-Env var equivalent: `OPENCLAW_LOAD_SHELL_ENV=1`
+Env var equivalent: `WINERYCLAW_LOAD_SHELL_ENV=1`
 </Accordion>
 
 <Accordion title="Env var substitution in config values">
@@ -639,7 +639,7 @@ Env var equivalent: `OPENCLAW_LOAD_SHELL_ENV=1`
 
 ```json5
 {
-  gateway: { auth: { token: "${OPENCLAW_GATEWAY_TOKEN}" } },
+  gateway: { auth: { token: "${WINERYCLAW_GATEWAY_TOKEN}" } },
   models: { providers: { custom: { apiKey: "${CUSTOM_API_KEY}" } } },
 }
 ```

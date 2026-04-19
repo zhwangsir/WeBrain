@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../../config/types.js";
+import type { WineryClawConfig } from "../../../config/types.js";
 import { applyPluginDoctorCompatibilityMigrations } from "../../../plugins/doctor-contract-registry.js";
 import { isRecord } from "./legacy-config-record-shared.js";
 
@@ -16,11 +16,11 @@ export function applyChannelDoctorCompatibilityMigrations(cfg: Record<string, un
   next: Record<string, unknown>;
   changes: string[];
 } {
-  const compat = applyPluginDoctorCompatibilityMigrations(cfg as OpenClawConfig, {
+  const compat = applyPluginDoctorCompatibilityMigrations(cfg as WineryClawConfig, {
     pluginIds: collectRelevantDoctorChannelIds(cfg),
   });
   return {
-    next: compat.config as OpenClawConfig & Record<string, unknown>,
+    next: compat.config as WineryClawConfig & Record<string, unknown>,
     changes: compat.changes,
   };
 }

@@ -12,7 +12,7 @@ import {
   type SessionEntry,
   type SessionMaintenanceApplyReport,
 } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { type RuntimeEnv, writeRuntimeJson } from "../runtime.js";
 import { isRich, theme } from "../terminal/theme.js";
 import {
@@ -242,7 +242,7 @@ async function previewStoreCleanup(params: {
 }
 
 function renderStoreDryRunPlan(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   summary: SessionCleanupSummary;
   actionRows: SessionCleanupActionRow[];
   displayDefaults: ReturnType<typeof resolveSessionDisplayDefaults>;

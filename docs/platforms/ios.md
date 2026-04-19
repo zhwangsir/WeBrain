@@ -99,14 +99,14 @@ Expected operator flow:
 
 Compatibility note:
 
-- `OPENCLAW_APNS_RELAY_BASE_URL` still works as a temporary env override for the gateway.
+- `WINERYCLAW_APNS_RELAY_BASE_URL` still works as a temporary env override for the gateway.
 
 ## Authentication and trust flow
 
 The relay exists to enforce two constraints that direct APNs-on-gateway cannot provide for
 official iOS builds:
 
-- Only genuine OpenClaw iOS builds distributed through Apple can use the hosted relay.
+- Only genuine WineryClaw iOS builds distributed through Apple can use the hosted relay.
 - A gateway can send relay-backed pushes only for iOS devices that paired with that specific
   gateway.
 
@@ -149,16 +149,16 @@ Why this design was created:
 
 - To keep production APNs credentials out of user gateways.
 - To avoid storing raw official-build APNs tokens on the gateway.
-- To allow hosted relay usage only for official/TestFlight OpenClaw builds.
+- To allow hosted relay usage only for official/TestFlight WineryClaw builds.
 - To prevent one gateway from sending wake pushes to iOS devices owned by a different gateway.
 
 Local/manual builds remain on direct APNs. If you are testing those builds without the relay, the
 gateway still needs direct APNs credentials:
 
 ```bash
-export OPENCLAW_APNS_TEAM_ID="TEAMID"
-export OPENCLAW_APNS_KEY_ID="KEYID"
-export OPENCLAW_APNS_PRIVATE_KEY_P8="$(cat /path/to/AuthKey_KEYID.p8)"
+export WINERYCLAW_APNS_TEAM_ID="TEAMID"
+export WINERYCLAW_APNS_KEY_ID="KEYID"
+export WINERYCLAW_APNS_PRIVATE_KEY_P8="$(cat /path/to/AuthKey_KEYID.p8)"
 ```
 
 These are gateway-host runtime env vars, not Fastlane settings. `apps/ios/fastlane/.env` only stores
@@ -168,11 +168,11 @@ direct APNs delivery for local iOS builds.
 Recommended gateway-host storage:
 
 ```bash
-mkdir -p ~/.openclaw/credentials/apns
-chmod 700 ~/.openclaw/credentials/apns
-mv /path/to/AuthKey_KEYID.p8 ~/.openclaw/credentials/apns/AuthKey_KEYID.p8
-chmod 600 ~/.openclaw/credentials/apns/AuthKey_KEYID.p8
-export OPENCLAW_APNS_PRIVATE_KEY_PATH="$HOME/.openclaw/credentials/apns/AuthKey_KEYID.p8"
+mkdir -p ~/.wineryclaw/credentials/apns
+chmod 700 ~/.wineryclaw/credentials/apns
+mv /path/to/AuthKey_KEYID.p8 ~/.wineryclaw/credentials/apns/AuthKey_KEYID.p8
+chmod 600 ~/.wineryclaw/credentials/apns/AuthKey_KEYID.p8
+export WINERYCLAW_APNS_PRIVATE_KEY_PATH="$HOME/.wineryclaw/credentials/apns/AuthKey_KEYID.p8"
 ```
 
 Do not commit the `.p8` file or place it under the repo checkout.

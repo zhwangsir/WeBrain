@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct GatewayLaunchAgentManagerTests {
     @Test func `launch agent plist snapshot parses args and env`() throws {
@@ -9,8 +9,8 @@ struct GatewayLaunchAgentManagerTests {
         let plist: [String: Any] = [
             "ProgramArguments": ["openclaw", "gateway", "--port", "18789", "--bind", "loopback"],
             "EnvironmentVariables": [
-                "OPENCLAW_GATEWAY_TOKEN": " secret ",
-                "OPENCLAW_GATEWAY_PASSWORD": "pw",
+                "WINERYCLAW_GATEWAY_TOKEN": " secret ",
+                "WINERYCLAW_GATEWAY_PASSWORD": "pw",
             ],
         ]
         let data = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)

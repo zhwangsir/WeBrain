@@ -1,6 +1,6 @@
-import OpenClawKit
+import WineryClawKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite struct GatewayStatusBuilderTests {
     @Test func pausedProblemKeepsErrorStatus() {

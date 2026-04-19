@@ -2,7 +2,7 @@
   "name": "@openclaw/duckduckgo-plugin",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw DuckDuckGo plugin",
+  "description": "WineryClaw DuckDuckGo plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

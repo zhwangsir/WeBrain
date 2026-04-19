@@ -1,7 +1,7 @@
 import { ensureModelAllowlistEntry } from "openclaw/plugin-sdk/provider-onboard";
 import {
   applyAgentDefaultModelPrimary,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 
 export const OPENAI_DEFAULT_MODEL = "openai/gpt-5.4";
@@ -12,7 +12,7 @@ export const OPENAI_DEFAULT_TTS_VOICE = "alloy";
 export const OPENAI_DEFAULT_AUDIO_TRANSCRIPTION_MODEL = "gpt-4o-transcribe";
 export const OPENAI_DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small";
 
-export function applyOpenAIProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyOpenAIProviderConfig(cfg: WineryClawConfig): WineryClawConfig {
   const next = ensureModelAllowlistEntry({
     cfg,
     modelRef: OPENAI_DEFAULT_MODEL,
@@ -35,6 +35,6 @@ export function applyOpenAIProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
   };
 }
 
-export function applyOpenAIConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyOpenAIConfig(cfg: WineryClawConfig): WineryClawConfig {
   return applyAgentDefaultModelPrimary(applyOpenAIProviderConfig(cfg), OPENAI_DEFAULT_MODEL);
 }

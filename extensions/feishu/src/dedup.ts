@@ -21,14 +21,14 @@ const processingClaims = createDedupeCache({
 });
 
 function resolveStateDirFromEnv(env: NodeJS.ProcessEnv = process.env): string {
-  const stateOverride = env.OPENCLAW_STATE_DIR?.trim();
+  const stateOverride = env.WINERYCLAW_STATE_DIR?.trim();
   if (stateOverride) {
     return stateOverride;
   }
   if (env.VITEST || env.NODE_ENV === "test") {
     return path.join(os.tmpdir(), ["openclaw-vitest", String(process.pid)].join("-"));
   }
-  return path.join(os.homedir(), ".openclaw");
+  return path.join(os.homedir(), ".wineryclaw");
 }
 
 function resolveNamespaceFilePath(namespace: string): string {

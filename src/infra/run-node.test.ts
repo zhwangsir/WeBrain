@@ -177,7 +177,7 @@ async function runStatusCommand(params: {
     args: ["status"],
     env: {
       ...process.env,
-      OPENCLAW_RUNNER_LOG: "0",
+      WINERYCLAW_RUNNER_LOG: "0",
       ...params.env,
     },
     spawn: params.spawn,
@@ -225,8 +225,8 @@ describe("run-node script", () => {
           args: ["--version"],
           env: {
             ...process.env,
-            OPENCLAW_FORCE_BUILD: "1",
-            OPENCLAW_RUNNER_LOG: "0",
+            WINERYCLAW_FORCE_BUILD: "1",
+            WINERYCLAW_RUNNER_LOG: "0",
           },
           spawn,
           execPath: process.execPath,
@@ -273,7 +273,7 @@ describe("run-node script", () => {
       const exitCode = await runStatusCommand({
         tmp,
         spawn,
-        env: { OPENCLAW_FORCE_BUILD: "1" },
+        env: { WINERYCLAW_FORCE_BUILD: "1" },
       });
 
       expect(exitCode).toBe(0);
@@ -335,7 +335,7 @@ describe("run-node script", () => {
         tmp,
         spawn,
         spawnSync,
-        env: { OPENCLAW_WATCH_MODE: "1" },
+        env: { WINERYCLAW_WATCH_MODE: "1" },
         runRuntimePostBuild,
       });
 
@@ -359,8 +359,8 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_FORCE_BUILD: "1",
-          OPENCLAW_RUNNER_LOG: "0",
+          WINERYCLAW_FORCE_BUILD: "1",
+          WINERYCLAW_RUNNER_LOG: "0",
         },
         spawn,
         execPath: process.execPath,
@@ -412,7 +412,7 @@ describe("run-node script", () => {
         args: ["status"],
         env: {
           ...process.env,
-          OPENCLAW_RUNNER_LOG: "0",
+          WINERYCLAW_RUNNER_LOG: "0",
         },
         process: fakeProcess,
         spawn,

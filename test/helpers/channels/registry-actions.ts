@@ -1,6 +1,6 @@
 import { requireBundledChannelPlugin } from "../../../src/channels/plugins/bundled.js";
 import type { ChannelPlugin } from "../../../src/channels/plugins/types.js";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 
 type ActionsContractEntry = {
   id: string;
@@ -8,7 +8,7 @@ type ActionsContractEntry = {
   unsupportedAction?: string;
   cases: Array<{
     name: string;
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     expectedActions: string[];
     expectedCapabilities?: string[];
     beforeTest?: () => void;
@@ -33,7 +33,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 appToken: "xapp-test",
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: [
             "send",
             "react",
@@ -63,7 +63,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: [
             "send",
             "react",
@@ -89,7 +89,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 enabled: true,
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: [],
           expectedCapabilities: [],
         },
@@ -110,7 +110,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 baseUrl: "https://chat.example.com",
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: ["send", "react"],
           expectedCapabilities: ["buttons"],
         },
@@ -125,7 +125,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 actions: { reactions: false },
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: ["send"],
           expectedCapabilities: ["buttons"],
         },
@@ -137,7 +137,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 enabled: true,
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: [],
           expectedCapabilities: [],
         },
@@ -155,7 +155,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 botToken: "123:telegram-test-token",
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: [
             "send",
             "poll",
@@ -202,7 +202,7 @@ export function getActionContractRegistry(): ActionsContractEntry[] {
                 },
               },
             },
-          } as OpenClawConfig,
+          } as WineryClawConfig,
           expectedActions: ["send", "poll", "react", "reactions", "emoji-list"],
           expectedCapabilities: ["interactive", "components"],
         },

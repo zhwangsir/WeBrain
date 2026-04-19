@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { QaBusState } from "./bus-state.js";
 import { QaStateBackedTransportAdapter, waitForQaTransportCondition } from "./qa-transport.js";
 import type {
@@ -56,7 +56,7 @@ export function createQaChannelGatewayConfig(params: {
         enabled: true,
         baseUrl: params.baseUrl,
         botUserId: "openclaw",
-        botDisplayName: "OpenClaw QA",
+        botDisplayName: "WineryClaw QA",
         allowFrom: ["*"],
         pollTimeoutMs: 250,
       },
@@ -84,7 +84,7 @@ function createQaChannelReportNotes(params: QaTransportReportParams) {
 async function handleQaChannelAction(params: {
   action: QaTransportActionName;
   args: Record<string, unknown>;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }) {
   return await qaChannelPlugin.actions?.handleAction?.({

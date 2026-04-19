@@ -1,6 +1,6 @@
 # @openclaw/diffs
 
-Read-only diff viewer plugin for **OpenClaw** agents.
+Read-only diff viewer plugin for **WineryClaw** agents.
 
 It gives agents one tool, `diffs`, that can:
 
@@ -82,7 +82,7 @@ Input safety limits:
 
 ## Plugin Defaults
 
-Set plugin-wide defaults in `~/.openclaw/openclaw.json`:
+Set plugin-wide defaults in `~/.wineryclaw/wineryclaw.json`:
 
 ```json5
 {
@@ -166,10 +166,10 @@ Use the `diffs` tool in `file` mode for this before and after input. After it re
 Path: README.md
 
 Before:
-OpenClaw supports plugins.
+WineryClaw supports plugins.
 
 After:
-OpenClaw supports plugins and hosted diff views.
+WineryClaw supports plugins and hosted diff views.
 ```
 
 Do both:

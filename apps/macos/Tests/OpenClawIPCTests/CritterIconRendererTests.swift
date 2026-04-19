@@ -1,6 +1,6 @@
 import AppKit
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @MainActor
 struct CritterIconRendererTests {

@@ -366,7 +366,7 @@ export function inferBasePath() {
   if (typeof window === "undefined") {
     return "";
   }
-  const configured = window.__OPENCLAW_CONTROL_UI_BASE_PATH__;
+  const configured = window.__WINERYCLAW_CONTROL_UI_BASE_PATH__;
   const normalizedConfigured = normalizeOptionalString(configured);
   if (normalizedConfigured) {
     return normalizeBasePath(normalizedConfigured);
@@ -635,7 +635,7 @@ function buildAttentionItems(host: SettingsAppHost) {
       title: "Missing operator.read scope",
       description:
         "This connection does not have the operator.read scope. Some features may be unavailable.",
-      href: "https://docs.openclaw.ai/web/dashboard",
+      href: "../docs/web/dashboard",
       external: true,
     });
   }

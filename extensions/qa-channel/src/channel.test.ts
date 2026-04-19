@@ -77,7 +77,7 @@ describe("qa-channel plugin", () => {
         "qa-channel": {
           baseUrl: bus.baseUrl,
           botUserId: "openclaw",
-          botDisplayName: "OpenClaw QA",
+          botDisplayName: "WineryClaw QA",
           allowFrom: ["*"],
         },
       },
@@ -126,7 +126,7 @@ describe("qa-channel plugin", () => {
           "qa-channel": {
             baseUrl: bus.baseUrl,
             botUserId: "openclaw",
-            botDisplayName: "OpenClaw QA",
+            botDisplayName: "WineryClaw QA",
           },
         },
       };
@@ -232,7 +232,7 @@ describe("qa-channel plugin", () => {
           "qa-channel": {
             baseUrl: bus.baseUrl,
             botUserId: "openclaw",
-            botDisplayName: "OpenClaw QA",
+            botDisplayName: "WineryClaw QA",
           },
         },
       };

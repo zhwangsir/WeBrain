@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { loadSessionStore, type SessionEntry } from "../../config/sessions.js";
 import type { EmbeddedPiRunResult } from "../pi-embedded.js";
 import { updateSessionStoreAfterAgentRun } from "./session-store.js";
@@ -31,7 +31,7 @@ describe("updateSessionStoreAfterAgentRun", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const sessionKey = "agent:main:explicit:test-claude-cli";
     const sessionId = "test-openclaw-session";
     const sessionStore: Record<string, SessionEntry> = {

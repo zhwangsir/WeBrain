@@ -529,16 +529,16 @@ describe("createTelegramBot", () => {
         chat: { id: 1234, type: "private", first_name: "Harold" },
         message_id: 1884,
         date: 1736380800,
-        from: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+        from: { id: 7, is_bot: true, first_name: "WineryClaw", username: "openclaw_bot" },
         pinned_message: {
           message_id: 1883,
           date: 1736380799,
           chat: { id: 1234, type: "private", first_name: "Harold" },
-          from: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+          from: { id: 7, is_bot: true, first_name: "WineryClaw", username: "openclaw_bot" },
           text: "Binding: Review pull request 54118 (openclaw)",
         },
       },
-      me: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+      me: { id: 7, is_bot: true, first_name: "WineryClaw", username: "openclaw_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 
@@ -611,13 +611,13 @@ describe("createTelegramBot", () => {
 
     await handler({
       message: {
-        chat: { id: -1001234, type: "supergroup", title: "OpenClaw Ops" },
+        chat: { id: -1001234, type: "supergroup", title: "WineryClaw Ops" },
         message_id: 1884,
         date: 1736380800,
-        from: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+        from: { id: 7, is_bot: true, first_name: "WineryClaw", username: "openclaw_bot" },
         text: "approval card update",
       },
-      me: { id: 7, is_bot: true, first_name: "OpenClaw", username: "openclaw_bot" },
+      me: { id: 7, is_bot: true, first_name: "WineryClaw", username: "openclaw_bot" },
       getFile: async () => ({ download: async () => new Uint8Array() }),
     });
 

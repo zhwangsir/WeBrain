@@ -5,7 +5,7 @@ export type JsonObject = Record<string, unknown>;
 
 export type ExternalPluginCompatibility = {
   pluginApiRange?: string;
-  builtWithOpenClawVersion?: string;
+  builtWithWineryClawVersion?: string;
   pluginSdkVersion?: string;
   minGatewayVersion?: string;
 };
@@ -25,7 +25,7 @@ export const EXTERNAL_CODE_PLUGIN_REQUIRED_FIELD_PATHS = [
   "openclaw.build.openclawVersion",
 ] as const;
 
-function readOpenClawBlock(packageJson: unknown) {
+function readWineryClawBlock(packageJson: unknown) {
   const root = isRecord(packageJson) ? packageJson : undefined;
   const openclaw = isRecord(root?.openclaw) ? root.openclaw : undefined;
   const compat = isRecord(openclaw?.compat) ? openclaw.compat : undefined;
@@ -37,7 +37,7 @@ function readOpenClawBlock(packageJson: unknown) {
 export function normalizeExternalPluginCompatibility(
   packageJson: unknown,
 ): ExternalPluginCompatibility | undefined {
-  const { root, compat, build, install } = readOpenClawBlock(packageJson);
+  const { root, compat, build, install } = readWineryClawBlock(packageJson);
   const version = normalizeOptionalString(root?.version);
   const minHostVersion = normalizeOptionalString(install?.minHostVersion);
   const compatibility: ExternalPluginCompatibility = {};
@@ -52,9 +52,9 @@ export function normalizeExternalPluginCompatibility(
     compatibility.minGatewayVersion = minGatewayVersion;
   }
 
-  const builtWithOpenClawVersion = normalizeOptionalString(build?.openclawVersion) ?? version;
-  if (builtWithOpenClawVersion) {
-    compatibility.builtWithOpenClawVersion = builtWithOpenClawVersion;
+  const builtWithWineryClawVersion = normalizeOptionalString(build?.openclawVersion) ?? version;
+  if (builtWithWineryClawVersion) {
+    compatibility.builtWithWineryClawVersion = builtWithWineryClawVersion;
   }
 
   const pluginSdkVersion = normalizeOptionalString(build?.pluginSdkVersion);
@@ -66,7 +66,7 @@ export function normalizeExternalPluginCompatibility(
 }
 
 export function listMissingExternalCodePluginFieldPaths(packageJson: unknown): string[] {
-  const { compat, build } = readOpenClawBlock(packageJson);
+  const { compat, build } = readWineryClawBlock(packageJson);
   const missing: string[] = [];
   if (!normalizeOptionalString(compat?.pluginApi)) {
     missing.push("openclaw.compat.pluginApi");

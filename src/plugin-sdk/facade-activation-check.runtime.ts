@@ -5,7 +5,7 @@ import { resolveConfigPath } from "../config/paths.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import { configMayNeedPluginAutoEnable } from "../config/plugin-auto-enable.shared.js";
 import { getRuntimeConfigSnapshot } from "../config/runtime-snapshot.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { resolveBundledPluginsDir } from "../plugins/bundled-dir.js";
 import {
   createPluginActivationSource,
@@ -23,22 +23,22 @@ const ALWAYS_ALLOWED_RUNTIME_DIR_NAMES = new Set([
   "media-understanding-core",
   "speech-core",
 ]);
-const EMPTY_FACADE_BOUNDARY_CONFIG: OpenClawConfig = {};
+const EMPTY_FACADE_BOUNDARY_CONFIG: WineryClawConfig = {};
 
-let cachedBoundaryRawConfig: OpenClawConfig | undefined;
+let cachedBoundaryRawConfig: WineryClawConfig | undefined;
 let cachedBoundaryResolvedConfigKey: string | undefined;
 let cachedBoundaryConfigFileState:
   | {
       configPath: string;
       mtimeMs: number;
       size: number;
-      rawConfig: OpenClawConfig;
+      rawConfig: WineryClawConfig;
     }
   | undefined;
 let cachedBoundaryResolvedConfig:
   | {
-      rawConfig: OpenClawConfig;
-      config: OpenClawConfig;
+      rawConfig: WineryClawConfig;
+      config: WineryClawConfig;
       normalizedPluginsConfig: ReturnType<typeof normalizePluginsConfig>;
       activationSource: ReturnType<typeof createPluginActivationSource>;
       autoEnabledReasons: Record<string, string[]>;
@@ -63,7 +63,7 @@ type FacadeModuleLocation = {
 const PUBLIC_SURFACE_SOURCE_EXTENSIONS = [".ts", ".mts", ".js", ".mjs", ".cts", ".cjs"] as const;
 
 function readFacadeBoundaryConfigSafely(): {
-  rawConfig: OpenClawConfig;
+  rawConfig: WineryClawConfig;
   cacheKey?: string;
 } {
   try {
@@ -91,7 +91,7 @@ function readFacadeBoundaryConfigSafely(): {
     const parsed = JSON5.parse(raw);
     const rawConfig =
       parsed && typeof parsed === "object"
-        ? (parsed as OpenClawConfig)
+        ? (parsed as WineryClawConfig)
         : EMPTY_FACADE_BOUNDARY_CONFIG;
     cachedBoundaryConfigFileState = {
       configPath,
@@ -364,7 +364,7 @@ export function resolveBundledPluginPublicSurfaceAccess(params: {
 export function evaluateBundledPluginPublicSurfaceAccess(params: {
   params: { dirName: string; artifactBasename: string };
   manifestRecord: FacadePluginManifestLike;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   normalizedPluginsConfig: ReturnType<typeof normalizePluginsConfig>;
   activationSource: ReturnType<typeof createPluginActivationSource>;
   autoEnabledReasons: Record<string, string[]>;

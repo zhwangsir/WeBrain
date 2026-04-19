@@ -10,7 +10,7 @@ export const secretTargetRegistryEntries = [
   {
     id: "channels.msteams.appPassword",
     targetType: "channels.msteams.appPassword",
-    configFile: "openclaw.json",
+    configFile: "wineryclaw.json",
     pathPattern: "channels.msteams.appPassword",
     secretShape: "secret_input",
     expectedResolvedValue: "string",

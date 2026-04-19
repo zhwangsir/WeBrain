@@ -1,9 +1,9 @@
 ---
 name: openclaw-pr-maintainer
-description: Maintainer workflow for reviewing, triaging, preparing, closing, or landing OpenClaw pull requests and related issues. Use when Codex needs to validate bug-fix claims, search for related issues or PRs, apply or recommend close/reason labels, prepare GitHub comments safely, check review-thread follow-up, or perform maintainer-style PR decision making before merge or closure.
+description: Maintainer workflow for reviewing, triaging, preparing, closing, or landing WineryClaw pull requests and related issues. Use when Codex needs to validate bug-fix claims, search for related issues or PRs, apply or recommend close/reason labels, prepare GitHub comments safely, check review-thread follow-up, or perform maintainer-style PR decision making before merge or closure.
 ---
 
-# OpenClaw PR Maintainer
+# WineryClaw PR Maintainer
 
 Use this skill for maintainer-facing GitHub workflow, not for ordinary code changes.
 

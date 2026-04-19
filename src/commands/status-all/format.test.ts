@@ -150,7 +150,7 @@ describe("status-all format", () => {
       formatStatusServiceValue({
         label: "LaunchAgent",
         installed: true,
-        managedByOpenClaw: true,
+        managedByWineryClaw: true,
         loadedText: "loaded",
         runtimeShort: "running",
       }),
@@ -210,7 +210,7 @@ describe("status-all format", () => {
         gatewayService: {
           label: "LaunchAgent",
           installed: true,
-          managedByOpenClaw: true,
+          managedByWineryClaw: true,
           loadedText: "loaded",
           runtimeShort: "running",
         },
@@ -343,7 +343,7 @@ describe("status-all format", () => {
         gatewayService: {
           label: "LaunchAgent",
           installed: true,
-          managedByOpenClaw: true,
+          managedByWineryClaw: true,
           loadedText: "loaded",
           runtimeShort: "running",
         },

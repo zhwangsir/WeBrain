@@ -36,7 +36,7 @@ export {
 export { resolveAckReaction, logTypingFailure } from "openclaw/plugin-sdk/channel-feedback";
 export type { ChannelSetupInput } from "openclaw/plugin-sdk/setup";
 export type {
-  OpenClawConfig,
+  WineryClawConfig,
   ContextVisibilityMode,
   DmPolicy,
   GroupPolicy,

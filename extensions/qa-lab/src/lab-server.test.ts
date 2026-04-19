@@ -313,14 +313,14 @@ describe("qa-lab server", () => {
       throw new Error("expected startup probe addresses");
     }
 
-    process.env.OPENCLAW_DEBUG_PROXY_URL = `http://127.0.0.1:${proxyAddress.port}`;
+    process.env.WINERYCLAW_DEBUG_PROXY_URL = `http://127.0.0.1:${proxyAddress.port}`;
     const lab = await startQaLabServer({
       host: "127.0.0.1",
       port: 0,
       controlUiUrl: `http://127.0.0.1:${gatewayAddress.port}/`,
     });
     cleanups.push(async () => {
-      delete process.env.OPENCLAW_DEBUG_PROXY_URL;
+      delete process.env.WINERYCLAW_DEBUG_PROXY_URL;
       await lab.stop();
     });
 
@@ -536,7 +536,7 @@ describe("qa-lab server", () => {
       path.join(repoRoot, "dist/index.js"),
       [
         'const fs = require("node:fs");',
-        `fs.writeFileSync(${JSON.stringify(markerPath)}, process.env.OPENCLAW_CODEX_DISCOVERY_LIVE || "", "utf8");`,
+        `fs.writeFileSync(${JSON.stringify(markerPath)}, process.env.WINERYCLAW_CODEX_DISCOVERY_LIVE || "", "utf8");`,
         "process.on('SIGTERM', () => {",
         `  fs.writeFileSync(${JSON.stringify(stoppedPath)}, "terminated", "utf8");`,
         "  process.exit(0);",
@@ -676,13 +676,13 @@ describe("qa-lab server", () => {
     cleanups.push(async () => {
       await rm(tempDir, { recursive: true, force: true });
     });
-    process.env.OPENCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
-    process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
+    process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
+    process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
     const { getDebugProxyCaptureStore } =
       await import("../../../src/proxy-capture/store.sqlite.js");
     const store = getDebugProxyCaptureStore(
-      process.env.OPENCLAW_DEBUG_PROXY_DB_PATH,
-      process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR,
+      process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH,
+      process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR,
     );
     store.upsertSession({
       id: "qa-capture-session",
@@ -690,8 +690,8 @@ describe("qa-lab server", () => {
       mode: "proxy-run",
       sourceScope: "openclaw",
       sourceProcess: "openclaw",
-      dbPath: process.env.OPENCLAW_DEBUG_PROXY_DB_PATH,
-      blobDir: process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR,
+      dbPath: process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH,
+      blobDir: process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR,
     });
     store.recordEvent({
       sessionId: "qa-capture-session",
@@ -759,8 +759,8 @@ describe("qa-lab server", () => {
       port: 0,
     });
     cleanups.push(async () => {
-      delete process.env.OPENCLAW_DEBUG_PROXY_DB_PATH;
-      delete process.env.OPENCLAW_DEBUG_PROXY_BLOB_DIR;
+      delete process.env.WINERYCLAW_DEBUG_PROXY_DB_PATH;
+      delete process.env.WINERYCLAW_DEBUG_PROXY_BLOB_DIR;
       await lab.stop();
     });
 

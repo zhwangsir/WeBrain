@@ -71,7 +71,7 @@ vi.mock("../../plugins/bundled-sources.js", () => ({
 }));
 
 vi.mock("../../plugins/loader.js", () => ({
-  loadOpenClawPlugins: vi.fn(),
+  loadWineryClawPlugins: vi.fn(),
 }));
 
 const clearPluginDiscoveryCache = vi.fn();
@@ -81,8 +81,8 @@ vi.mock("../../plugins/discovery.js", () => ({
 
 import fs from "node:fs";
 import type { ChannelPluginCatalogEntry } from "../../channels/plugins/catalog.js";
-import type { OpenClawConfig } from "../../config/config.js";
-import { loadOpenClawPlugins } from "../../plugins/loader.js";
+import type { WineryClawConfig } from "../../config/config.js";
+import { loadWineryClawPlugins } from "../../plugins/loader.js";
 import { createEmptyPluginRegistry } from "../../plugins/registry.js";
 import {
   pinActivePluginChannelRegistry,
@@ -140,7 +140,7 @@ async function runInitialValueForChannel(channel: "dev" | "beta") {
   const runtime = makeRuntime();
   const select = vi.fn((async <T extends string>() => "skip" as T) as WizardPrompter["select"]);
   const prompter = makePrompter({ select: select as unknown as WizardPrompter["select"] });
-  const cfg: OpenClawConfig = { update: { channel } };
+  const cfg: WineryClawConfig = { update: { channel } };
   mockRepoLocalPathExists();
 
   await ensureChannelSetupPluginInstalled({
@@ -168,7 +168,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     const prompter = makePrompter({
       select: vi.fn(async () => "npm") as WizardPrompter["select"],
     });
-    const cfg: OpenClawConfig = { plugins: { allow: ["other"] } };
+    const cfg: WineryClawConfig = { plugins: { allow: ["other"] } };
     vi.mocked(fs.existsSync).mockReturnValue(false);
     installPluginFromNpmSpec.mockResolvedValue({
       ok: true,
@@ -200,7 +200,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     const prompter = makePrompter({
       select: vi.fn(async () => "local") as WizardPrompter["select"],
     });
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     mockRepoLocalPathExists();
 
     const result = await ensureChannelSetupPluginInstalled({
@@ -219,7 +219,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     const prompter = makePrompter({
       select: vi.fn(async () => "local") as WizardPrompter["select"],
     });
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     mockRepoLocalPathExists();
 
     const result = await ensureChannelSetupPluginInstalled({
@@ -250,7 +250,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     const runtime = makeRuntime();
     const select = vi.fn((async <T extends string>() => "skip" as T) as WizardPrompter["select"]);
     const prompter = makePrompter({ select: select as unknown as WizardPrompter["select"] });
-    const cfg: OpenClawConfig = { update: { channel: "beta" } };
+    const cfg: WineryClawConfig = { update: { channel: "beta" } };
     vi.mocked(fs.existsSync).mockReturnValue(false);
     resolveBundledPluginSources.mockReturnValue(
       new Map([
@@ -289,7 +289,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     const runtime = makeRuntime();
     const select = vi.fn((async <T extends string>() => "skip" as T) as WizardPrompter["select"]);
     const prompter = makePrompter({ select: select as unknown as WizardPrompter["select"] });
-    const cfg: OpenClawConfig = { update: { channel: "beta" } };
+    const cfg: WineryClawConfig = { update: { channel: "beta" } };
     vi.mocked(fs.existsSync).mockReturnValue(false);
     resolveBundledPluginSources.mockReturnValue(
       new Map([
@@ -348,7 +348,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       note,
       confirm,
     });
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     mockRepoLocalPathExists();
     installPluginFromNpmSpec.mockResolvedValue({
       ok: false,
@@ -369,7 +369,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("clears discovery cache before reloading the setup plugin registry", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
 
     reloadChannelSetupPluginRegistry({
       cfg,
@@ -378,7 +378,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
     });
 
     expect(clearPluginDiscoveryCache).toHaveBeenCalledTimes(1);
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config: cfg,
         activationSourceConfig: cfg,
@@ -389,13 +389,13 @@ describe("ensureChannelSetupPluginInstalled", () => {
       }),
     );
     expect(clearPluginDiscoveryCache.mock.invocationCallOrder[0]).toBeLessThan(
-      vi.mocked(loadOpenClawPlugins).mock.invocationCallOrder[0] ?? Number.POSITIVE_INFINITY,
+      vi.mocked(loadWineryClawPlugins).mock.invocationCallOrder[0] ?? Number.POSITIVE_INFINITY,
     );
   });
 
   it("loads the setup plugin registry from the auto-enabled config snapshot", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       plugins: {},
       channels: { telegram: { enabled: true } } as never,
     };
@@ -406,7 +406,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
           telegram: { enabled: true },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     applyPluginAutoEnable.mockReturnValue({
       config: autoEnabledConfig,
       changes: [],
@@ -423,7 +423,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       config: cfg,
       env: process.env,
     });
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config: autoEnabledConfig,
         activationSourceConfig: cfg,
@@ -434,7 +434,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("scopes channel reloads when setup starts from an empty registry", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     getChannelPluginCatalogEntry.mockReturnValue({ pluginId: "@openclaw/telegram-plugin" });
 
     reloadChannelSetupPluginRegistryForChannel({
@@ -444,7 +444,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config: cfg,
         activationSourceConfig: cfg,
@@ -462,7 +462,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("keeps full reloads when the active plugin registry is already populated", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     const registry = createEmptyPluginRegistry();
     registry.plugins.push(
       createPluginRecord({
@@ -482,7 +482,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: expect.anything(),
       }),
@@ -491,7 +491,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("scopes channel reloads when the global registry is populated but the pinned channel registry is empty", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     getChannelPluginCatalogEntry.mockReturnValue({ pluginId: "@openclaw/telegram-plugin" });
     const activeRegistry = createEmptyPluginRegistry();
     activeRegistry.plugins.push(
@@ -517,7 +517,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       releasePinnedPluginChannelRegistry(pinnedChannelRegistry);
     }
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         activationSourceConfig: cfg,
         autoEnabledReasons: {},
@@ -528,7 +528,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("can load a channel-scoped snapshot without activating the global registry", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     getChannelPluginCatalogEntry.mockReturnValue({ pluginId: "@openclaw/telegram-plugin" });
 
     loadChannelSetupPluginRegistrySnapshotForChannel({
@@ -538,7 +538,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config: cfg,
         activationSourceConfig: cfg,
@@ -557,7 +557,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("falls back to the bundled plugin for untrusted workspace shadows", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     getChannelPluginCatalogEntry
       .mockReturnValueOnce({ pluginId: "evil-telegram-shadow", origin: "workspace" })
       .mockReturnValueOnce({ pluginId: "@openclaw/telegram-plugin", origin: "bundled" });
@@ -569,7 +569,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: ["@openclaw/telegram-plugin"],
       }),
@@ -585,7 +585,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("keeps trusted workspace overrides scoped during setup reloads", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       plugins: {
         enabled: true,
         allow: ["trusted-telegram-shadow"],
@@ -603,7 +603,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: ["trusted-telegram-shadow"],
       }),
@@ -613,7 +613,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("does not scope by raw channel id when no trusted plugin mapping exists", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
 
     loadChannelSetupPluginRegistrySnapshotForChannel({
       cfg,
@@ -622,7 +622,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: expect.anything(),
       }),
@@ -631,7 +631,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("scopes snapshots by a unique discovered manifest match when catalog mapping is missing", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     loadPluginManifestRegistry.mockReturnValue({
       plugins: [{ id: "custom-telegram-plugin", channels: ["telegram"] }],
       diagnostics: [],
@@ -644,7 +644,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config: cfg,
         activationSourceConfig: cfg,
@@ -660,7 +660,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("scopes snapshots by activation-declared channel ownership when direct channel lists are empty", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     loadPluginManifestRegistry.mockReturnValue({
       plugins: [
         {
@@ -681,7 +681,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: ["custom-telegram-plugin"],
       }),
@@ -695,7 +695,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("uses uncached manifest discovery for activation-declared setup scoping", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     loadPluginManifestRegistry.mockReturnValue({
       plugins: [
         {
@@ -726,7 +726,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
 
   it("does not trust unconfigured workspace activation-only channel ownership during setup", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     loadPluginManifestRegistry.mockReturnValue({
       plugins: [
         {
@@ -748,20 +748,20 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: ["evil-telegram-shadow"],
       }),
     );
     expect(
-      (vi.mocked(loadOpenClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
+      (vi.mocked(loadWineryClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
         .onlyPluginIds,
     ).toBeUndefined();
   });
 
   it("does not trust allowlist-excluded bundled activation-only channel ownership during setup", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       plugins: {
         allow: ["other-plugin"],
       },
@@ -787,20 +787,20 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: ["custom-telegram-plugin"],
       }),
     );
     expect(
-      (vi.mocked(loadOpenClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
+      (vi.mocked(loadWineryClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
         .onlyPluginIds,
     ).toBeUndefined();
   });
 
   it("does not trust explicitly denied bundled activation-only channel ownership during setup", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       plugins: {
         deny: ["custom-telegram-plugin"],
       },
@@ -826,20 +826,20 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: ["custom-telegram-plugin"],
       }),
     );
     expect(
-      (vi.mocked(loadOpenClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
+      (vi.mocked(loadWineryClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
         .onlyPluginIds,
     ).toBeUndefined();
   });
 
   it("does not trust explicitly disabled workspace activation-only channel ownership during setup", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       plugins: {
         enabled: true,
         allow: ["evil-telegram-shadow"],
@@ -869,20 +869,20 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: ["evil-telegram-shadow"],
       }),
     );
     expect(
-      (vi.mocked(loadOpenClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
+      (vi.mocked(loadWineryClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
         .onlyPluginIds,
     ).toBeUndefined();
   });
 
   it("does not trust explicitly disabled bundled activation-only channel ownership during setup", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       plugins: {
         entries: {
           "custom-telegram-plugin": { enabled: false },
@@ -910,20 +910,20 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: ["custom-telegram-plugin"],
       }),
     );
     expect(
-      (vi.mocked(loadOpenClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
+      (vi.mocked(loadWineryClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
         .onlyPluginIds,
     ).toBeUndefined();
   });
 
   it("does not trust unenabled global activation-only channel ownership during setup", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     loadPluginManifestRegistry.mockReturnValue({
       plugins: [
         {
@@ -945,20 +945,20 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.not.objectContaining({
         onlyPluginIds: ["custom-telegram-global"],
       }),
     );
     expect(
-      (vi.mocked(loadOpenClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
+      (vi.mocked(loadWineryClawPlugins).mock.calls[0]?.[0] as { onlyPluginIds?: string[] })
         .onlyPluginIds,
     ).toBeUndefined();
   });
 
   it("scopes snapshots by plugin id when channel and plugin ids differ", () => {
     const runtime = makeRuntime();
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
 
     loadChannelSetupPluginRegistrySnapshotForChannel({
       cfg,
@@ -968,7 +968,7 @@ describe("ensureChannelSetupPluginInstalled", () => {
       workspaceDir: "/tmp/openclaw-workspace",
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadWineryClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config: cfg,
         activationSourceConfig: cfg,

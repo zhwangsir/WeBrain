@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { NON_ENV_SECRETREF_MARKER } from "./model-auth-markers.js";
 import {
   installModelsConfigTestHooks,
@@ -15,7 +15,7 @@ vi.mock("../plugins/provider-runtime.js", async () => {
   );
   return {
     ...actual,
-    applyProviderConfigDefaultsWithPlugin: (config: OpenClawConfig) => config,
+    applyProviderConfigDefaultsWithPlugin: (config: WineryClawConfig) => config,
     applyProviderNativeStreamingUsageCompatWithPlugin: () => undefined,
     normalizeProviderConfigWithPlugin: () => undefined,
     resetProviderRuntimeHookCacheForTest: () => undefined,
@@ -40,14 +40,14 @@ let clearConfigCache: typeof import("../config/config.js").clearConfigCache;
 let clearRuntimeConfigSnapshot: typeof import("../config/config.js").clearRuntimeConfigSnapshot;
 let loadConfig: typeof import("../config/config.js").loadConfig;
 let setRuntimeConfigSnapshot: typeof import("../config/config.js").setRuntimeConfigSnapshot;
-let ensureOpenClawModelsJson: typeof import("./models-config.js").ensureOpenClawModelsJson;
+let ensureWineryClawModelsJson: typeof import("./models-config.js").ensureWineryClawModelsJson;
 let resetModelsJsonReadyCacheForTest: typeof import("./models-config.js").resetModelsJsonReadyCacheForTest;
 let readGeneratedModelsJson: typeof import("./models-config.test-utils.js").readGeneratedModelsJson;
 
 beforeAll(async () => {
   ({ clearConfigCache, clearRuntimeConfigSnapshot, loadConfig, setRuntimeConfigSnapshot } =
     await import("../config/config.js"));
-  ({ ensureOpenClawModelsJson, resetModelsJsonReadyCacheForTest } =
+  ({ ensureWineryClawModelsJson, resetModelsJsonReadyCacheForTest } =
     await import("./models-config.js"));
   ({ readGeneratedModelsJson } = await import("./models-config.test-utils.js"));
 });
@@ -58,7 +58,7 @@ afterEach(() => {
   resetModelsJsonReadyCacheForTest();
 });
 
-function createOpenAiApiKeySourceConfig(): OpenClawConfig {
+function createOpenAiApiKeySourceConfig(): WineryClawConfig {
   return {
     models: {
       providers: {
@@ -73,7 +73,7 @@ function createOpenAiApiKeySourceConfig(): OpenClawConfig {
   };
 }
 
-function createOpenAiApiKeyRuntimeConfig(): OpenClawConfig {
+function createOpenAiApiKeyRuntimeConfig(): WineryClawConfig {
   return {
     models: {
       providers: {
@@ -88,7 +88,7 @@ function createOpenAiApiKeyRuntimeConfig(): OpenClawConfig {
   };
 }
 
-function createOpenAiHeaderSourceConfig(): OpenClawConfig {
+function createOpenAiHeaderSourceConfig(): WineryClawConfig {
   return {
     models: {
       providers: {
@@ -114,7 +114,7 @@ function createOpenAiHeaderSourceConfig(): OpenClawConfig {
   };
 }
 
-function createOpenAiHeaderRuntimeConfig(): OpenClawConfig {
+function createOpenAiHeaderRuntimeConfig(): WineryClawConfig {
   return {
     models: {
       providers: {
@@ -132,7 +132,7 @@ function createOpenAiHeaderRuntimeConfig(): OpenClawConfig {
   };
 }
 
-function withGatewayTokenMode(config: OpenClawConfig): OpenClawConfig {
+function withGatewayTokenMode(config: WineryClawConfig): WineryClawConfig {
   return {
     ...config,
     gateway: {
@@ -145,9 +145,9 @@ function withGatewayTokenMode(config: OpenClawConfig): OpenClawConfig {
 
 async function withGeneratedModelsFromRuntimeSource(
   params: {
-    sourceConfig: OpenClawConfig;
-    runtimeConfig: OpenClawConfig;
-    candidateConfig?: OpenClawConfig;
+    sourceConfig: WineryClawConfig;
+    runtimeConfig: WineryClawConfig;
+    candidateConfig?: WineryClawConfig;
   },
   runAssertions: () => Promise<void>,
 ) {
@@ -156,7 +156,7 @@ async function withGeneratedModelsFromRuntimeSource(
       unsetEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS);
       try {
         setRuntimeConfigSnapshot(params.runtimeConfig, params.sourceConfig);
-        await ensureOpenClawModelsJson(params.candidateConfig ?? loadConfig());
+        await ensureWineryClawModelsJson(params.candidateConfig ?? loadConfig());
         await runAssertions();
       } finally {
         clearRuntimeConfigSnapshot();
@@ -198,7 +198,7 @@ describe("models-config runtime source snapshot", () => {
     await withTempHome(async () => {
       await withTempEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS, async () => {
         unsetEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS);
-        const sourceConfig: OpenClawConfig = {
+        const sourceConfig: WineryClawConfig = {
           models: {
             providers: {
               moonshot: {
@@ -210,7 +210,7 @@ describe("models-config runtime source snapshot", () => {
             },
           },
         };
-        const runtimeConfig: OpenClawConfig = {
+        const runtimeConfig: WineryClawConfig = {
           models: {
             providers: {
               moonshot: {
@@ -225,7 +225,7 @@ describe("models-config runtime source snapshot", () => {
 
         try {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-          await ensureOpenClawModelsJson(loadConfig());
+          await ensureWineryClawModelsJson(loadConfig());
 
           const parsed = await readGeneratedModelsJson<{
             providers: Record<string, { apiKey?: string }>;
@@ -245,7 +245,7 @@ describe("models-config runtime source snapshot", () => {
         unsetEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS);
         const sourceConfig = createOpenAiApiKeySourceConfig();
         const runtimeConfig = createOpenAiApiKeyRuntimeConfig();
-        const clonedRuntimeConfig: OpenClawConfig = {
+        const clonedRuntimeConfig: WineryClawConfig = {
           ...runtimeConfig,
           agents: {
             defaults: {
@@ -256,7 +256,7 @@ describe("models-config runtime source snapshot", () => {
 
         try {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-          await ensureOpenClawModelsJson(clonedRuntimeConfig);
+          await ensureWineryClawModelsJson(clonedRuntimeConfig);
           await expectGeneratedProviderApiKey("openai", "OPENAI_API_KEY"); // pragma: allowlist secret
         } finally {
           clearRuntimeConfigSnapshot();
@@ -272,7 +272,7 @@ describe("models-config runtime source snapshot", () => {
         unsetEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS);
         const sourceConfig = createOpenAiApiKeySourceConfig();
         const runtimeConfig = createOpenAiApiKeyRuntimeConfig();
-        const firstCandidate: OpenClawConfig = {
+        const firstCandidate: WineryClawConfig = {
           ...runtimeConfig,
           models: {
             providers: {
@@ -283,7 +283,7 @@ describe("models-config runtime source snapshot", () => {
             },
           },
         };
-        const secondCandidate: OpenClawConfig = {
+        const secondCandidate: WineryClawConfig = {
           ...runtimeConfig,
           models: {
             providers: {
@@ -297,14 +297,14 @@ describe("models-config runtime source snapshot", () => {
 
         try {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-          await ensureOpenClawModelsJson(firstCandidate);
+          await ensureWineryClawModelsJson(firstCandidate);
           let parsed = await readGeneratedModelsJson<{
             providers: Record<string, { baseUrl?: string; apiKey?: string }>;
           }>();
           expect(parsed.providers.openai?.baseUrl).toBe("https://api.openai.com/v1");
           expect(parsed.providers.openai?.apiKey).toBe("OPENAI_API_KEY"); // pragma: allowlist secret
 
-          await ensureOpenClawModelsJson(secondCandidate);
+          await ensureWineryClawModelsJson(secondCandidate);
           parsed = await readGeneratedModelsJson<{
             providers: Record<string, { baseUrl?: string; apiKey?: string }>;
           }>();
@@ -334,13 +334,13 @@ describe("models-config runtime source snapshot", () => {
         unsetEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS);
         const sourceConfig = withGatewayTokenMode(createOpenAiApiKeySourceConfig());
         const runtimeConfig = withGatewayTokenMode(createOpenAiApiKeyRuntimeConfig());
-        const incompatibleCandidate: OpenClawConfig = {
+        const incompatibleCandidate: WineryClawConfig = {
           ...createOpenAiApiKeyRuntimeConfig(),
         };
 
         try {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-          await ensureOpenClawModelsJson(incompatibleCandidate);
+          await ensureWineryClawModelsJson(incompatibleCandidate);
           await expectGeneratedProviderApiKey("openai", "OPENAI_API_KEY"); // pragma: allowlist secret
         } finally {
           clearRuntimeConfigSnapshot();
@@ -356,13 +356,13 @@ describe("models-config runtime source snapshot", () => {
         unsetEnv(MODELS_CONFIG_IMPLICIT_ENV_VARS);
         const sourceConfig = withGatewayTokenMode(createOpenAiHeaderSourceConfig());
         const runtimeConfig = withGatewayTokenMode(createOpenAiHeaderRuntimeConfig());
-        const incompatibleCandidate: OpenClawConfig = {
+        const incompatibleCandidate: WineryClawConfig = {
           ...createOpenAiHeaderRuntimeConfig(),
         };
 
         try {
           setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-          await ensureOpenClawModelsJson(incompatibleCandidate);
+          await ensureWineryClawModelsJson(incompatibleCandidate);
           await expectGeneratedOpenAiHeaderMarkers();
         } finally {
           clearRuntimeConfigSnapshot();

@@ -10,7 +10,7 @@ import {
   resolvePollMaxSelections,
   resolveReactionMessageId,
 } from "openclaw/plugin-sdk/channel-actions";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
@@ -202,7 +202,7 @@ function readTelegramSendContent(params: {
 
 export async function handleTelegramAction(
   params: Record<string, unknown>,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   options?: {
     mediaLocalRoots?: readonly string[];
     mediaReadFile?: (filePath: string) => Promise<Buffer>;

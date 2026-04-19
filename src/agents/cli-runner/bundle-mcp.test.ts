@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import {
   createBundleMcpTempHarness,
   createBundleProbePlugin,
@@ -53,7 +53,7 @@ describe("prepareCliBundleMcpConfig", () => {
 
       const { serverPath } = await createBundleProbePlugin(homeDir);
 
-      const config: OpenClawConfig = {
+      const config: WineryClawConfig = {
         plugins: {
           entries: {
             "bundle-probe": { enabled: true },
@@ -91,7 +91,7 @@ describe("prepareCliBundleMcpConfig", () => {
 
   it("loads workspace bundle MCP plugins from the configured workspace root", async () => {
     const workspaceDir = await tempHarness.createTempDir("openclaw-cli-bundle-mcp-workspace-root-");
-    const pluginRoot = path.join(workspaceDir, ".openclaw", "extensions", "workspace-probe");
+    const pluginRoot = path.join(workspaceDir, ".wineryclaw", "extensions", "workspace-probe");
     const serverPath = path.join(pluginRoot, "servers", "probe.mjs");
     await fs.mkdir(path.dirname(serverPath), { recursive: true });
     await fs.writeFile(serverPath, "export {};\n", "utf-8");
@@ -153,7 +153,7 @@ describe("prepareCliBundleMcpConfig", () => {
 
       await createBundleProbePlugin(homeDir);
 
-      const config: OpenClawConfig = {
+      const config: WineryClawConfig = {
         plugins: {
           entries: {
             "bundle-probe": { enabled: true },
@@ -176,7 +176,7 @@ describe("prepareCliBundleMcpConfig", () => {
               type: "http",
               url: "http://127.0.0.1:23119/mcp",
               headers: {
-                Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
+                Authorization: "Bearer ${WINERYCLAW_MCP_TOKEN}",
               },
             },
           },
@@ -190,7 +190,7 @@ describe("prepareCliBundleMcpConfig", () => {
       };
       expect(Object.keys(raw.mcpServers ?? {}).toSorted()).toEqual(["bundleProbe", "openclaw"]);
       expect(raw.mcpServers?.openclaw?.url).toBe("http://127.0.0.1:23119/mcp");
-      expect(raw.mcpServers?.openclaw?.headers?.Authorization).toBe("Bearer ${OPENCLAW_MCP_TOKEN}");
+      expect(raw.mcpServers?.openclaw?.headers?.Authorization).toBe("Bearer ${WINERYCLAW_MCP_TOKEN}");
 
       await prepared.cleanup?.();
     } finally {
@@ -211,16 +211,16 @@ describe("prepareCliBundleMcpConfig", () => {
       workspaceDir,
       config: {},
       env: {
-        OPENCLAW_MCP_TOKEN: "loopback-token-123",
-        OPENCLAW_MCP_SESSION_KEY: "agent:main:telegram:group:chat123",
-        OPENCLAW_MCP_SENDER_IS_OWNER: "false",
+        WINERYCLAW_MCP_TOKEN: "loopback-token-123",
+        WINERYCLAW_MCP_SESSION_KEY: "agent:main:telegram:group:chat123",
+        WINERYCLAW_MCP_SENDER_IS_OWNER: "false",
       },
     });
 
     expect(prepared.env).toEqual({
-      OPENCLAW_MCP_TOKEN: "loopback-token-123",
-      OPENCLAW_MCP_SESSION_KEY: "agent:main:telegram:group:chat123",
-      OPENCLAW_MCP_SENDER_IS_OWNER: "false",
+      WINERYCLAW_MCP_TOKEN: "loopback-token-123",
+      WINERYCLAW_MCP_SESSION_KEY: "agent:main:telegram:group:chat123",
+      WINERYCLAW_MCP_SENDER_IS_OWNER: "false",
     });
 
     await prepared.cleanup?.();
@@ -256,9 +256,9 @@ describe("prepareCliBundleMcpConfig", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
-              Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
-              "x-session-key": "${OPENCLAW_MCP_SESSION_KEY}",
-              "x-openclaw-sender-is-owner": "${OPENCLAW_MCP_SENDER_IS_OWNER}",
+              Authorization: "Bearer ${WINERYCLAW_MCP_TOKEN}",
+              "x-session-key": "${WINERYCLAW_MCP_SESSION_KEY}",
+              "x-openclaw-sender-is-owner": "${WINERYCLAW_MCP_SENDER_IS_OWNER}",
             },
           },
         },
@@ -269,14 +269,14 @@ describe("prepareCliBundleMcpConfig", () => {
       "exec",
       "--json",
       "-c",
-      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", bearer_token_env_var = "OPENCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "OPENCLAW_MCP_SESSION_KEY", x-openclaw-sender-is-owner = "OPENCLAW_MCP_SENDER_IS_OWNER" } } }',
+      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", bearer_token_env_var = "WINERYCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "WINERYCLAW_MCP_SESSION_KEY", x-openclaw-sender-is-owner = "WINERYCLAW_MCP_SENDER_IS_OWNER" } } }',
     ]);
     expect(prepared.backend.resumeArgs).toEqual([
       "exec",
       "resume",
       "{sessionId}",
       "-c",
-      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", bearer_token_env_var = "OPENCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "OPENCLAW_MCP_SESSION_KEY", x-openclaw-sender-is-owner = "OPENCLAW_MCP_SENDER_IS_OWNER" } } }',
+      'mcp_servers={ openclaw = { url = "http://127.0.0.1:23119/mcp", bearer_token_env_var = "WINERYCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "WINERYCLAW_MCP_SESSION_KEY", x-openclaw-sender-is-owner = "WINERYCLAW_MCP_SENDER_IS_OWNER" } } }',
     ]);
     expect(prepared.cleanup).toBeUndefined();
   });
@@ -296,18 +296,18 @@ describe("prepareCliBundleMcpConfig", () => {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
-              Authorization: "Bearer ${OPENCLAW_MCP_TOKEN}",
+              Authorization: "Bearer ${WINERYCLAW_MCP_TOKEN}",
             },
           },
         },
       },
       env: {
-        OPENCLAW_MCP_TOKEN: "loopback-token-123",
+        WINERYCLAW_MCP_TOKEN: "loopback-token-123",
       },
     });
 
     expect(prepared.backend.args).toEqual(["--prompt", "{prompt}"]);
-    expect(prepared.env?.OPENCLAW_MCP_TOKEN).toBe("loopback-token-123");
+    expect(prepared.env?.WINERYCLAW_MCP_TOKEN).toBe("loopback-token-123");
     expect(typeof prepared.env?.GEMINI_CLI_SYSTEM_SETTINGS_PATH).toBe("string");
     const raw = JSON.parse(
       await fs.readFile(prepared.env?.GEMINI_CLI_SYSTEM_SETTINGS_PATH as string, "utf-8"),

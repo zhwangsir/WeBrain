@@ -282,7 +282,7 @@ export function buildQaAgenticParityComparison(params: {
 
 export function renderQaAgenticParityMarkdownReport(comparison: QaAgenticParityComparison): string {
   const lines = [
-    "# OpenClaw GPT-5.4 / Opus 4.6 Agentic Parity Report",
+    "# WineryClaw GPT-5.4 / Opus 4.6 Agentic Parity Report",
     "",
     `- Compared at: ${comparison.comparedAt}`,
     `- Candidate: ${comparison.candidateLabel}`,

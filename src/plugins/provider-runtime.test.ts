@@ -335,7 +335,7 @@ describe("provider-runtime", () => {
   it("normalizes plugin scopes in provider hook cache keys", () => {
     const base = {
       workspaceDir: "/tmp/workspace",
-      env: { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv,
+      env: { WINERYCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv,
       providerRefs: ["demo"],
     };
 

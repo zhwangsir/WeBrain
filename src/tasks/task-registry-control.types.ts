@@ -1,7 +1,7 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 
 export type CancelAcpSessionAdmin = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey: string;
   reason: string;
 }) => Promise<void>;
@@ -16,7 +16,7 @@ export type KillSubagentRunAdminResult = {
 };
 
 export type KillSubagentRunAdmin = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey: string;
 }) => Promise<KillSubagentRunAdminResult>;
 

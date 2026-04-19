@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 
 export type MediaUnderstandingKind =
   | "audio.transcription"
@@ -135,7 +135,7 @@ export type ImageDescriptionRequest = {
   profile?: string;
   preferredProfile?: string;
   agentDir: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   model: string;
   provider: string;
 };
@@ -156,7 +156,7 @@ export type ImagesDescriptionRequest = {
   profile?: string;
   preferredProfile?: string;
   agentDir: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 };
 
 export type ImageDescriptionResult = {

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 import { createDiscordRestClient } from "./client.js";
 
 const makeProxyFetchMock = vi.hoisted(() => vi.fn());
@@ -33,7 +33,7 @@ describe("createDiscordRestClient proxy support", () => {
           proxy: "http://127.0.0.1:8080",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const { rest } = createDiscordRestClient({}, cfg);
     const requestClient = rest as unknown as {
@@ -52,7 +52,7 @@ describe("createDiscordRestClient proxy support", () => {
           token: "Bot test-token",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const { rest } = createDiscordRestClient({}, cfg);
     const requestClient = rest as unknown as {
@@ -70,7 +70,7 @@ describe("createDiscordRestClient proxy support", () => {
           proxy: "bad-proxy",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const { rest } = createDiscordRestClient({}, cfg);
     const requestClient = rest as unknown as {
@@ -89,7 +89,7 @@ describe("createDiscordRestClient proxy support", () => {
           proxy: "http://proxy.test:8080",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const { rest } = createDiscordRestClient({}, cfg);
     const requestClient = rest as unknown as {
@@ -108,7 +108,7 @@ describe("createDiscordRestClient proxy support", () => {
           proxy: "http://[::1]:8080",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const { rest } = createDiscordRestClient({}, cfg);
     const requestClient = rest as unknown as {

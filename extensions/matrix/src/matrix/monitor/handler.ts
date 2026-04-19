@@ -38,7 +38,7 @@ import {
   sendReadReceiptMatrix,
   sendTypingMatrix,
 } from "../send.js";
-import { MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY } from "../send/types.js";
+import { MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY } from "../send/types.js";
 import { resolveMatrixStoredSessionMeta } from "../session-store-metadata.js";
 import { resolveMatrixMonitorAccessState } from "./access-state.js";
 import { resolveMatrixAckReactionConfig } from "./ack-config.js";
@@ -93,7 +93,7 @@ async function redactMatrixDraftEvent(
 }
 
 function buildMatrixFinalizedPreviewContent(): Record<string, unknown> {
-  return { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true };
+  return { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true };
 }
 
 export type MatrixMonitorHandlerParams = {

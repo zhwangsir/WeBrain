@@ -2,7 +2,7 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { SILENT_REPLY_TOKEN, type PluginRuntime } from "openclaw/plugin-sdk/msteams";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../../../src/infra/tmp-openclaw-dir.js";
+import { resolvePreferredWineryClawTmpDir } from "../../../src/infra/tmp-openclaw-dir.js";
 import type { StoredConversationReference } from "./conversation-store.js";
 const graphUploadMockState = vi.hoisted(() => ({
   uploadAndShareOneDrive: vi.fn(),
@@ -298,7 +298,7 @@ describe("msteams messenger", () => {
     });
 
     it("preserves parsed mentions when appending OneDrive fallback file links", async () => {
-      const tmpDir = await mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), "msteams-mention-"));
+      const tmpDir = await mkdtemp(path.join(resolvePreferredWineryClawTmpDir(), "msteams-mention-"));
       const localFile = path.join(tmpDir, "note.txt");
       await writeFile(localFile, "hello");
 
@@ -389,7 +389,7 @@ describe("msteams messenger", () => {
     });
 
     it("retries full activity preparation when media upload fails transiently", async () => {
-      const tmpDir = await mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), "msteams-retry-"));
+      const tmpDir = await mkdtemp(path.join(resolvePreferredWineryClawTmpDir(), "msteams-retry-"));
       const localFile = path.join(tmpDir, "retry.txt");
       await writeFile(localFile, "hello");
 

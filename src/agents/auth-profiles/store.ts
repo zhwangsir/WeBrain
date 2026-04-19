@@ -180,7 +180,7 @@ export async function updateAuthProfileStoreWithLock(params: {
 }
 
 function shouldLogAuthStoreTiming(): boolean {
-  return process.env.OPENCLAW_DEBUG_INGRESS_TIMING === "1";
+  return process.env.WINERYCLAW_DEBUG_INGRESS_TIMING === "1";
 }
 
 function syncExternalCliCredentialsTimed(
@@ -294,7 +294,7 @@ function loadAuthProfileStoreForAgent(
   if (shouldSyncExternalCliCredentials(options)) {
     syncExternalCliCredentialsTimed(store, { log: !readOnly });
   }
-  const forceReadOnly = process.env.OPENCLAW_AUTH_STORE_READONLY === "1";
+  const forceReadOnly = process.env.WINERYCLAW_AUTH_STORE_READONLY === "1";
   const shouldWrite = !readOnly && !forceReadOnly && (legacy !== null || mergedOAuth);
   if (shouldWrite) {
     saveAuthProfileStore(store, agentDir);

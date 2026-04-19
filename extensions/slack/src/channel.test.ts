@@ -4,7 +4,7 @@ import { createRuntimeEnv } from "../../../test/helpers/plugins/runtime-env.js";
 import { slackPlugin } from "./channel.js";
 import { slackOutbound } from "./outbound-adapter.js";
 import * as probeModule from "./probe.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 import { clearSlackRuntime, setSlackRuntime } from "./runtime.js";
 
 const { handleSlackActionMock } = vi.hoisted(() => ({
@@ -39,7 +39,7 @@ beforeEach(async () => {
   } as never);
 });
 
-async function getSlackConfiguredState(cfg: OpenClawConfig) {
+async function getSlackConfiguredState(cfg: WineryClawConfig) {
   const account = slackPlugin.config.resolveAccount(cfg, "default");
   return {
     configured: slackPlugin.config.isConfigured?.(account, cfg),
@@ -119,7 +119,7 @@ describe("slackPlugin actions", () => {
   });
 
   it("honors the selected Slack account during message tool discovery", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         slack: {
           botToken: "xoxb-root",
@@ -201,7 +201,7 @@ describe("slackPlugin actions", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     setSlackRuntime({
       config: {
         loadConfig: () => cfg,
@@ -233,7 +233,7 @@ describe("slackPlugin actions", () => {
             appToken: "xapp-test",
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
     const schema = discovery?.schema;
     if (!schema || Array.isArray(schema)) {
@@ -294,7 +294,7 @@ describe("slackPlugin status", () => {
       ok: true,
       status: 200,
       bot: { id: "B1", name: "openclaw-bot" },
-      team: { id: "T1", name: "OpenClaw" },
+      team: { id: "T1", name: "WineryClaw" },
     });
     clearSlackRuntime();
     const cfg = {
@@ -304,7 +304,7 @@ describe("slackPlugin status", () => {
           appToken: "xapp-test",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const account = slackPlugin.config.resolveAccount(cfg, "default");
 
     const result = await slackPlugin.status!.probeAccount!({
@@ -318,7 +318,7 @@ describe("slackPlugin status", () => {
       ok: true,
       status: 200,
       bot: { id: "B1", name: "openclaw-bot" },
-      team: { id: "T1", name: "OpenClaw" },
+      team: { id: "T1", name: "WineryClaw" },
     });
   });
 });
@@ -337,7 +337,7 @@ describe("slackPlugin security", () => {
             dm: { policy: "allowlist", allowFrom: ["  slack:U123  "] },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       account: slackPlugin.config.resolveAccount(
         {
           channels: {
@@ -347,7 +347,7 @@ describe("slackPlugin security", () => {
               dm: { policy: "allowlist", allowFrom: ["  slack:U123  "] },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         "default",
       ),
     });
@@ -752,7 +752,7 @@ describe("slackPlugin outbound new targets", () => {
 
 describe("slackPlugin config", () => {
   it("treats HTTP mode accounts with bot token + signing secret as configured", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         slack: {
           mode: "http",
@@ -769,7 +769,7 @@ describe("slackPlugin config", () => {
   });
 
   it("keeps socket mode requiring app token", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         slack: {
           mode: "socket",
@@ -797,7 +797,7 @@ describe("slackPlugin config", () => {
         appTokenSource: "none",
         config: {},
       } as never,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       runtime: undefined,
     });
 
@@ -824,7 +824,7 @@ describe("slackPlugin config", () => {
           signingSecret: { source: "env", provider: "default", id: "SLACK_SIGNING_SECRET" },
         },
       } as never,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       runtime: undefined,
     });
 

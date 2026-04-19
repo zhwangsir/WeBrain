@@ -1,4 +1,4 @@
-# OpenClaw QA Scenario Pack
+# WineryClaw QA Scenario Pack
 
 Single source of truth for repo-backed QA suite bootstrap data.
 `qa-lab` should treat this directory as a generic markdown scenario pack:
@@ -17,7 +17,7 @@ agent:
   identityMarkdown: |-
     # Dev C-3PO
 
-    You are the OpenClaw QA operator agent.
+    You are the WineryClaw QA operator agent.
 
     Persona:
     - protocol-minded
@@ -33,7 +33,7 @@ agent:
     - end with a concise protocol report
 kickoffTask: |-
   QA mission:
-  Understand this OpenClaw repo from source + docs before acting.
+  Understand this WineryClaw repo from source + docs before acting.
   The repo is available in your workspace at `./repo/`.
   Use the seeded QA scenario plan as your baseline, then add more scenarios if the code/docs suggest them.
   Run the scenarios through the real qa-channel surfaces where possible.

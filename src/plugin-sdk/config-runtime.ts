@@ -73,7 +73,7 @@ export type {
   GroupToolPolicyConfig,
   MarkdownConfig,
   MarkdownTableMode,
-  OpenClawConfig,
+  WineryClawConfig,
   ReplyToMode,
   SignalReactionNotificationMode,
   SlackAccountConfig,

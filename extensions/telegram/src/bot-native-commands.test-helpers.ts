@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ChannelGroupPolicy } from "openclaw/plugin-sdk/config-runtime";
 import type { TelegramAccountConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
@@ -119,7 +119,7 @@ vi.mock("./bot/delivery.replies.js", () => ({ deliverReplies: deliveryMocks.deli
 export { createNativeCommandTestParams };
 
 export function createNativeCommandsHarness(params?: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   runtime?: RuntimeEnv;
   telegramCfg?: TelegramAccountConfig;
   allowFrom?: string[];
@@ -134,7 +134,7 @@ export function createNativeCommandsHarness(params?: {
   const setMyCommands: AnyAsyncMock = vi.fn(async () => undefined);
   const log: AnyMock = vi.fn();
   const telegramDeps = {
-    loadConfig: vi.fn(() => params?.cfg ?? ({} as OpenClawConfig)),
+    loadConfig: vi.fn(() => params?.cfg ?? ({} as WineryClawConfig)),
     readChannelAllowFromStore: vi.fn(async () => []),
     dispatchReplyWithBufferedBlockDispatcher:
       replyPipelineMocks.dispatchReplyWithBufferedBlockDispatcher,
@@ -154,7 +154,7 @@ export function createNativeCommandsHarness(params?: {
 
   registerTelegramNativeCommands({
     bot,
-    cfg: params?.cfg ?? ({} as OpenClawConfig),
+    cfg: params?.cfg ?? ({} as WineryClawConfig),
     runtime: params?.runtime ?? ({ log } as unknown as RuntimeEnv),
     accountId: "default",
     telegramCfg: params?.telegramCfg ?? ({} as TelegramAccountConfig),

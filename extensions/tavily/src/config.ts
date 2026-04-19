@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   normalizeResolvedSecretInputString,
   normalizeSecretInput,
@@ -23,7 +23,7 @@ type PluginEntryConfig = {
   };
 };
 
-export function resolveTavilySearchConfig(cfg?: OpenClawConfig): TavilySearchConfig {
+export function resolveTavilySearchConfig(cfg?: WineryClawConfig): TavilySearchConfig {
   const pluginConfig = cfg?.plugins?.entries?.tavily?.config as PluginEntryConfig;
   const pluginWebSearch = pluginConfig?.webSearch;
   if (pluginWebSearch && typeof pluginWebSearch === "object" && !Array.isArray(pluginWebSearch)) {
@@ -41,7 +41,7 @@ function normalizeConfiguredSecret(value: unknown, path: string): string | undef
   );
 }
 
-export function resolveTavilyApiKey(cfg?: OpenClawConfig): string | undefined {
+export function resolveTavilyApiKey(cfg?: WineryClawConfig): string | undefined {
   const search = resolveTavilySearchConfig(cfg);
   return (
     normalizeConfiguredSecret(search?.apiKey, "plugins.entries.tavily.config.webSearch.apiKey") ||
@@ -50,7 +50,7 @@ export function resolveTavilyApiKey(cfg?: OpenClawConfig): string | undefined {
   );
 }
 
-export function resolveTavilyBaseUrl(cfg?: OpenClawConfig): string {
+export function resolveTavilyBaseUrl(cfg?: WineryClawConfig): string {
   const search = resolveTavilySearchConfig(cfg);
   const configured =
     (normalizeOptionalString(search?.baseUrl) ?? "") ||

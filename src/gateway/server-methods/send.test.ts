@@ -25,7 +25,7 @@ const mocks = vi.hoisted(() => ({
     }>
   >(async () => ({ messageId: "poll-1" })),
   getChannelPlugin: vi.fn(),
-  loadOpenClawPlugins: vi.fn(),
+  loadWineryClawPlugins: vi.fn(),
   applyPluginAutoEnable: vi.fn(),
 }));
 
@@ -74,7 +74,7 @@ vi.mock("../../config/plugin-auto-enable.js", () => ({
 }));
 
 vi.mock("../../plugins/loader.js", () => ({
-  loadOpenClawPlugins: mocks.loadOpenClawPlugins,
+  loadWineryClawPlugins: mocks.loadWineryClawPlugins,
 }));
 
 vi.mock("../../infra/outbound/targets.js", () => ({

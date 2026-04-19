@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import {
   buildAccountScopedDmSecurityPolicy,
   formatPairingApproveHint,
   parseOptionalDelimitedEntries,
 } from "./helpers.js";
 
-function cfgWithChannel(channelKey: string, accounts?: Record<string, unknown>): OpenClawConfig {
+function cfgWithChannel(channelKey: string, accounts?: Record<string, unknown>): WineryClawConfig {
   return {
     channels: {
       [channelKey]: accounts ? { accounts } : {},
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as WineryClawConfig;
 }
 
 describe("buildAccountScopedDmSecurityPolicy", () => {

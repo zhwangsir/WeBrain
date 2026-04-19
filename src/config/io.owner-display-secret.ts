@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { WineryClawConfig } from "./types.openclaw.js";
 
 export type OwnerDisplaySecretPersistState = {
   pendingByPath: Map<string, string>;
@@ -7,16 +7,16 @@ export type OwnerDisplaySecretPersistState = {
 };
 
 export function persistGeneratedOwnerDisplaySecret(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   configPath: string;
   generatedSecret?: string;
   logger: Pick<typeof console, "warn">;
   state: OwnerDisplaySecretPersistState;
   persistConfig: (
-    config: OpenClawConfig,
+    config: WineryClawConfig,
     options: { expectedConfigPath: string },
   ) => Promise<unknown>;
-}): OpenClawConfig {
+}): WineryClawConfig {
   const { config, configPath, generatedSecret, logger, state, persistConfig } = params;
   if (!generatedSecret) {
     state.pendingByPath.delete(configPath);

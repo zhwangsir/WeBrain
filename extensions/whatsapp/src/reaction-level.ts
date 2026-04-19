@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   resolveReactionLevel,
   type ReactionLevel,
@@ -11,7 +11,7 @@ export type ResolvedWhatsAppReactionLevel = ResolvedReactionLevel;
 
 /** Resolve the effective reaction level and its implications for WhatsApp. */
 export function resolveWhatsAppReactionLevel(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string;
 }): ResolvedWhatsAppReactionLevel {
   const account = resolveMergedWhatsAppAccountConfig({

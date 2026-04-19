@@ -106,7 +106,7 @@ describe("backupVerifyCommand", () => {
       const archivePath = path.join(archiveDir, "backup.tar.gz");
       const manifestPath = path.join(archiveDir, "manifest.json");
       const payloadPath = path.join(archiveDir, "state.txt");
-      const payloadArchivePath = `${archiveRoot}/payload/posix/tmp/.openclaw/state.txt`;
+      const payloadArchivePath = `${archiveRoot}/payload/posix/tmp/.wineryclaw/state.txt`;
       await fs.writeFile(
         manifestPath,
         `${JSON.stringify(createBackupManifest(payloadArchivePath, archiveRoot), null, 2)}\n`,
@@ -240,7 +240,7 @@ describe("backupVerifyCommand", () => {
       const manifestPath = path.join(archiveDir, "manifest.json");
       const statePayloadPath = path.join(archiveDir, "state.txt");
       const workspaceManifestPayloadPath = path.join(archiveDir, "workspace-manifest.json");
-      const stateArchivePath = `${archiveRoot}/payload/posix/tmp/.openclaw/state.txt`;
+      const stateArchivePath = `${archiveRoot}/payload/posix/tmp/.wineryclaw/state.txt`;
       const workspaceArchivePath = `${archiveRoot}/payload/posix/tmp/workspace/manifest.json`;
       await fs.writeFile(
         manifestPath,
@@ -303,7 +303,7 @@ describe("backupVerifyCommand", () => {
   });
 
   it("fails when the archive contains duplicate root manifest entries", async () => {
-    const payloadArchivePath = `${TEST_ARCHIVE_ROOT}/payload/posix/tmp/.openclaw/payload.txt`;
+    const payloadArchivePath = `${TEST_ARCHIVE_ROOT}/payload/posix/tmp/.wineryclaw/payload.txt`;
     await withBrokenArchiveFixture(
       {
         tempPrefix: "openclaw-backup-duplicate-manifest-",
@@ -325,7 +325,7 @@ describe("backupVerifyCommand", () => {
   });
 
   it("fails when the archive contains duplicate payload entries", async () => {
-    const payloadArchivePath = `${TEST_ARCHIVE_ROOT}/payload/posix/tmp/.openclaw/payload.txt`;
+    const payloadArchivePath = `${TEST_ARCHIVE_ROOT}/payload/posix/tmp/.wineryclaw/payload.txt`;
     await withBrokenArchiveFixture(
       {
         tempPrefix: "openclaw-backup-duplicate-payload-",

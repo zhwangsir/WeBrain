@@ -9,7 +9,7 @@ const updateSessionStoreMock = vi.fn();
 const callGatewayMock = vi.fn();
 const loadCombinedSessionStoreForGatewayMock = vi.fn();
 const buildStatusMessageMock = vi.hoisted(() =>
-  vi.fn((_params?: unknown) => "OpenClaw\n🧠 Model: GPT-5.4"),
+  vi.fn((_params?: unknown) => "WineryClaw\n🧠 Model: GPT-5.4"),
 );
 const resolveQueueSettingsMock = vi.hoisted(() =>
   vi.fn((_params?: unknown) => ({ mode: "interrupt" })),
@@ -225,7 +225,7 @@ function createCommandsStatusRuntimeModuleMock() {
         modelAuth,
         includeTranscriptUsage: params.includeTranscriptUsage,
       });
-      return ["OpenClaw", `🧠 Model: ${primary}`, params.taskLineOverride]
+      return ["WineryClaw", `🧠 Model: ${primary}`, params.taskLineOverride]
         .filter(Boolean)
         .join("\n");
     },
@@ -402,7 +402,7 @@ describe("session_status tool", () => {
     const result = await tool.execute("call1", {});
     const details = result.details as { ok?: boolean; statusText?: string };
     expect(details.ok).toBe(true);
-    expect(details.statusText).toContain("OpenClaw");
+    expect(details.statusText).toContain("WineryClaw");
     expect(details.statusText).toContain("🧠 Model:");
     expect(details.statusText).not.toContain("OAuth/token status");
   });

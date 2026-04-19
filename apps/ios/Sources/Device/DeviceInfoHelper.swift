@@ -52,7 +52,7 @@ enum DeviceInfoHelper {
 
     /// Canonical app version when present, otherwise the Apple marketing version.
     static func appVersion() -> String {
-        (Bundle.main.infoDictionary?["OpenClawCanonicalVersion"] as? String)
+        (Bundle.main.infoDictionary?["WineryClawCanonicalVersion"] as? String)
             ?? (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
             ?? "dev"
     }

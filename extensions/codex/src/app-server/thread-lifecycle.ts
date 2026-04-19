@@ -83,7 +83,7 @@ export async function startOrResumeThread(params: {
     approvalsReviewer: params.appServer.approvalsReviewer,
     sandbox: params.appServer.sandbox,
     ...(params.appServer.serviceTier ? { serviceTier: params.appServer.serviceTier } : {}),
-    serviceName: "OpenClaw",
+    serviceName: "WineryClaw",
     developerInstructions: buildDeveloperInstructions(params.params),
     dynamicTools: params.dynamicTools,
     experimentalRawEvents: true,
@@ -172,8 +172,8 @@ function stabilizeJsonValue(value: JsonValue): JsonValue {
 
 function buildDeveloperInstructions(params: EmbeddedRunAttemptParams): string {
   const sections = [
-    "You are running inside OpenClaw. Use OpenClaw dynamic tools for messaging, cron, sessions, and host actions when available.",
-    "Preserve the user's existing channel/session context. If sending a channel reply, use the OpenClaw messaging tool instead of describing that you would reply.",
+    "You are running inside WineryClaw. Use WineryClaw dynamic tools for messaging, cron, sessions, and host actions when available.",
+    "Preserve the user's existing channel/session context. If sending a channel reply, use the WineryClaw messaging tool instead of describing that you would reply.",
     params.extraSystemPrompt,
     params.skillsSnapshot?.prompt,
   ];

@@ -2,7 +2,7 @@ import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
 } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   asObjectRecord,
   hasLegacyAccountStreamingAliases,
@@ -56,7 +56,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
 }): ChannelDoctorConfigMutation {
   const rawEntry = asObjectRecord((cfg.channels as Record<string, unknown> | undefined)?.telegram);
   if (!rawEntry) {
@@ -138,8 +138,8 @@ export function normalizeCompatibilityConfig({
       ...cfg,
       channels: {
         ...cfg.channels,
-        telegram: updated as unknown as NonNullable<OpenClawConfig["channels"]>["telegram"],
-      } as OpenClawConfig["channels"],
+        telegram: updated as unknown as NonNullable<WineryClawConfig["channels"]>["telegram"],
+      } as WineryClawConfig["channels"],
     },
     changes,
   };

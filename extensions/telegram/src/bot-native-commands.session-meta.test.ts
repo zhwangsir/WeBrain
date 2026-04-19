@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ResolvedAgentRoute } from "openclaw/plugin-sdk/routing";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TelegramNativeCommandDeps } from "./bot-native-command-deps.runtime.js";
@@ -74,7 +74,7 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", async () => {
     ensureConfiguredBindingRouteReady: persistentBindingMocks.ensureConfiguredBindingRouteReady,
     recordInboundSessionMetaSafe: vi.fn(
       async (params: {
-        cfg: OpenClawConfig;
+        cfg: WineryClawConfig;
         agentId: string;
         sessionKey: string;
         ctx: unknown;
@@ -136,7 +136,7 @@ let registerTelegramNativeCommands: typeof import("./bot-native-commands.js").re
 type TelegramCommandHandler = (ctx: unknown) => Promise<void>;
 
 function registerAndResolveStatusHandler(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   allowFrom?: string[];
   groupAllowFrom?: string[];
   telegramCfg?: NativeCommandTestParams["telegramCfg"];
@@ -159,7 +159,7 @@ function registerAndResolveStatusHandler(params: {
 
 function registerAndResolveCommandHandlerBase(params: {
   commandName: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   allowFrom: string[];
   groupAllowFrom: string[];
   useAccessGroups: boolean;
@@ -217,7 +217,7 @@ function registerAndResolveCommandHandlerBase(params: {
 
 function registerAndResolveCommandHandler(params: {
   commandName: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   allowFrom?: string[];
   groupAllowFrom?: string[];
   useAccessGroups?: boolean;
@@ -387,7 +387,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
   });
 
   it("calls recordSessionMetaFromInbound after a native slash command", async () => {
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     const { handler } = registerAndResolveStatusHandler({ cfg });
     await handler(createTelegramPrivateCommandContext());
 
@@ -406,7 +406,7 @@ describe("registerTelegramNativeCommands — session metadata", () => {
     const deferred = createDeferred<void>();
     sessionMocks.recordSessionMetaFromInbound.mockReturnValue(deferred.promise);
 
-    const cfg: OpenClawConfig = {};
+    const cfg: WineryClawConfig = {};
     const { handler } = registerAndResolveStatusHandler({ cfg });
     const runPromise = handler(createTelegramPrivateCommandContext());
 

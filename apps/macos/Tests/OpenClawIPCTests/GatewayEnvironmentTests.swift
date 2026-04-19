@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct GatewayEnvironmentTests {
     @Test func `semver parses common forms`() {
@@ -21,22 +21,22 @@ struct GatewayEnvironmentTests {
         #expect(Semver.parse("1.2.x") == nil)
         // Product-prefixed output from `openclaw --version` should NOT parse as semver
         // (the prefix must be stripped by the caller, not the parser).
-        #expect(Semver.parse("OpenClaw 2026.3.23-1") == nil)
+        #expect(Semver.parse("WineryClaw 2026.3.23-1") == nil)
     }
 
     @Test func `gateway version output strips product prefix before parsing`() {
-        let normalized = GatewayEnvironment.normalizeGatewayVersionOutput("  OpenClaw 2026.3.23-1 \n")
+        let normalized = GatewayEnvironment.normalizeGatewayVersionOutput("  WineryClaw 2026.3.23-1 \n")
         #expect(normalized == "2026.3.23-1")
         #expect(Semver.parse(normalized) == Semver(major: 2026, minor: 3, patch: 23))
     }
 
     @Test func `gateway version output strips trailing commit hash`() {
-        let normalized = GatewayEnvironment.normalizeGatewayVersionOutput("OpenClaw 2026.4.2 (d74a122)")
+        let normalized = GatewayEnvironment.normalizeGatewayVersionOutput("WineryClaw 2026.4.2 (d74a122)")
         #expect(normalized == "2026.4.2")
         #expect(Semver.parse(normalized) == Semver(major: 2026, minor: 4, patch: 2))
 
         // Pre-release suffix + commit hash combined
-        let normalized2 = GatewayEnvironment.normalizeGatewayVersionOutput("OpenClaw 2026.4.2-1 (d74a122)")
+        let normalized2 = GatewayEnvironment.normalizeGatewayVersionOutput("WineryClaw 2026.4.2-1 (d74a122)")
         #expect(normalized2 == "2026.4.2-1")
         #expect(Semver.parse(normalized2) == Semver(major: 2026, minor: 4, patch: 2))
     }
@@ -54,7 +54,7 @@ struct GatewayEnvironmentTests {
     @Test func `gateway port defaults and respects override`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["OPENCLAW_CONFIG_PATH": configPath],
+            env: ["WINERYCLAW_CONFIG_PATH": configPath],
             defaults: ["gatewayPort": nil])
         {
             let defaultPort = GatewayEnvironment.gatewayPort()

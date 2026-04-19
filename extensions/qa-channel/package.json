@@ -2,7 +2,7 @@
   "name": "@openclaw/qa-channel",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw QA synthetic channel plugin",
+  "description": "WineryClaw QA synthetic channel plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*",
@@ -28,7 +28,7 @@
       "detailLabel": "QA Channel",
       "docsPath": "/channels/qa-channel",
       "docsLabel": "qa-channel",
-      "blurb": "Synthetic Slack-class transport for automated OpenClaw QA scenarios.",
+      "blurb": "Synthetic Slack-class transport for automated WineryClaw QA scenarios.",
       "systemImage": "checklist",
       "order": 999,
       "exposure": {

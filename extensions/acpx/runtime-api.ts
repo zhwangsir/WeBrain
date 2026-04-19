@@ -19,10 +19,10 @@ export type {
   AcpSessionUpdateTag,
 } from "openclaw/plugin-sdk/acp-runtime";
 export type {
-  OpenClawPluginApi,
-  OpenClawPluginConfigSchema,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  WineryClawPluginApi,
+  WineryClawPluginConfigSchema,
+  WineryClawPluginService,
+  WineryClawPluginServiceContext,
   PluginLogger,
 } from "openclaw/plugin-sdk/core";
 export type {

@@ -1,5 +1,5 @@
 import type { App } from "@slack/bolt";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { describe, expect, it } from "vitest";
 import type { SlackMessageEvent } from "../../types.js";
 
@@ -16,7 +16,7 @@ function buildCtx(overrides?: { replyToMode?: "all" | "first" | "off" }) {
       channels: {
         slack: { enabled: true, replyToMode },
       },
-    } as OpenClawConfig,
+    } as WineryClawConfig,
     appClient: {} as App["client"],
     defaultRequireMention: false,
     replyToMode,

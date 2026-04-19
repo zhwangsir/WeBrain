@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import type { checkQmdBinaryAvailability as checkQmdBinaryAvailabilityFn } from "openclaw/plugin-sdk/memory-core-host-engine-qmd";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -126,14 +126,14 @@ const createQmdManagerMock = vi.mocked(QmdMemoryManager.create);
 type SearchManagerResult = Awaited<ReturnType<typeof getMemorySearchManager>>;
 type SearchManager = NonNullable<SearchManagerResult["manager"]>;
 
-function createQmdCfg(agentId: string): OpenClawConfig {
+function createQmdCfg(agentId: string): WineryClawConfig {
   return {
     memory: { backend: "qmd", qmd: {} },
     agents: { list: [{ id: agentId, default: true, workspace: "/tmp/workspace" }] },
   };
 }
 
-function createBuiltinCfg(agentId: string): OpenClawConfig {
+function createBuiltinCfg(agentId: string): WineryClawConfig {
   return {
     agents: {
       defaults: {
@@ -153,7 +153,7 @@ function createBuiltinCfg(agentId: string): OpenClawConfig {
       },
       list: [{ id: agentId, default: true, workspace: "/tmp/workspace" }],
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function requireManager(result: SearchManagerResult): SearchManager {

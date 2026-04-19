@@ -18,7 +18,7 @@ const runNodeSourceRoots = ["src", BUNDLED_PLUGIN_ROOT_DIR];
 const runNodeConfigFiles = ["tsconfig.json", "package.json", "tsdown.config.ts"];
 export const runNodeWatchedPaths = [...runNodeSourceRoots, ...runNodeConfigFiles];
 const extensionSourceFilePattern = /\.(?:[cm]?[jt]sx?)$/;
-const extensionRestartMetadataFiles = new Set(["openclaw.plugin.json", "package.json"]);
+const extensionRestartMetadataFiles = new Set(["wineryclaw.plugin.json", "openclaw.plugin.json", "package.json"]);
 
 const normalizePath = (filePath) => String(filePath ?? "").replaceAll("\\", "/");
 
@@ -195,7 +195,7 @@ const hasSourceMtimeChanged = (stampMtime, deps) => {
 };
 
 export const resolveBuildRequirement = (deps) => {
-  if (deps.env.OPENCLAW_FORCE_BUILD === "1") {
+  if (deps.env.WINERYCLAW_FORCE_BUILD === "1") {
     return { shouldBuild: true, reason: "force_build" };
   }
   const stamp = readBuildStamp(deps);
@@ -237,7 +237,7 @@ export const resolveBuildRequirement = (deps) => {
 };
 
 const BUILD_REASON_LABELS = {
-  force_build: "forced by OPENCLAW_FORCE_BUILD",
+  force_build: "forced by WINERYCLAW_FORCE_BUILD",
   missing_build_stamp: "build stamp missing",
   missing_dist_entry: "dist entry missing",
   config_newer: "config newer than build stamp",
@@ -260,10 +260,10 @@ const isSignalKey = (signal) => Object.hasOwn(SIGNAL_EXIT_CODES, signal);
 const getSignalExitCode = (signal) => (isSignalKey(signal) ? SIGNAL_EXIT_CODES[signal] : 1);
 
 const logRunner = (message, deps) => {
-  if (deps.env.OPENCLAW_RUNNER_LOG === "0") {
+  if (deps.env.WINERYCLAW_RUNNER_LOG === "0") {
     return;
   }
-  deps.stderr.write(`[openclaw] ${message}\n`);
+  deps.stderr.write(`[wineryclaw] ${message}\n`);
 };
 
 const waitForSpawnedProcess = async (childProcess, deps) => {
@@ -313,10 +313,18 @@ const waitForSpawnedProcess = async (childProcess, deps) => {
   }
 };
 
-const runOpenClaw = async (deps) => {
-  const nodeProcess = deps.spawn(deps.execPath, ["openclaw.mjs", ...deps.args], {
+const runWineryClaw = async (deps) => {
+  const projectStateDir = path.join(deps.cwd, ".wineryclaw");
+  const hasDevFlag = deps.args.includes("--dev");
+  const enhancedEnv = {
+    ...deps.env,
+    WINERYCLAW_STATE_DIR: process.env.WINERYCLAW_STATE_DIR ?? projectStateDir,
+    WINERYCLAW_CONFIG_PATH: process.env.WINERYCLAW_CONFIG_PATH ?? path.join(projectStateDir, "wineryclaw.json"),
+    WINERYCLAW_PROFILE: hasDevFlag ? (process.env.WINERYCLAW_PROFILE ?? "dev") : (process.env.WINERYCLAW_PROFILE ?? "dev"),
+  };
+  const nodeProcess = deps.spawn(deps.execPath, ["wineryclaw.mjs", ...deps.args], {
     cwd: deps.cwd,
-    env: deps.env,
+    env: enhancedEnv,
     stdio: "inherit",
   });
   const res = await waitForSpawnedProcess(nodeProcess, deps);
@@ -355,7 +363,7 @@ const writeBuildStamp = (deps) => {
   }
 };
 
-const shouldSkipCleanWatchRuntimeSync = (deps) => deps.env.OPENCLAW_WATCH_MODE === "1";
+const shouldSkipCleanWatchRuntimeSync = (deps) => deps.env.WINERYCLAW_WATCH_MODE === "1";
 
 export async function runNodeMain(params = {}) {
   const deps = {
@@ -385,7 +393,7 @@ export async function runNodeMain(params = {}) {
     if (!shouldSkipCleanWatchRuntimeSync(deps) && !syncRuntimeArtifacts(deps)) {
       return 1;
     }
-    return await runOpenClaw(deps);
+    return await runWineryClaw(deps);
   }
 
   logRunner(
@@ -414,7 +422,7 @@ export async function runNodeMain(params = {}) {
     return 1;
   }
   writeBuildStamp(deps);
-  return await runOpenClaw(deps);
+  return await runWineryClaw(deps);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

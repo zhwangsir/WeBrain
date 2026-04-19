@@ -1,6 +1,6 @@
 import fsp from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/browser-security-runtime";
+import { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/browser-security-runtime";
 
 export async function writeQrDataUrlToTempFile(
   qrDataUrl: string,
@@ -14,7 +14,7 @@ export async function writeQrDataUrlToTempFile(
   }
   const safeProfile = profile.replace(/[^a-zA-Z0-9_-]+/g, "-") || "default";
   const filePath = path.join(
-    resolvePreferredOpenClawTmpDir(),
+    resolvePreferredWineryClawTmpDir(),
     `openclaw-zalouser-qr-${safeProfile}.png`,
   );
   await fsp.writeFile(filePath, Buffer.from(base64, "base64"));

@@ -16,15 +16,15 @@ docker run --rm -t "$IMAGE_NAME" bash -lc '
 	  ONBOARD_FLAGS="--flow quickstart --auth-choice skip --skip-channels --skip-skills --skip-daemon --skip-ui"
 	  # tsdown may emit dist/index.js or dist/index.mjs depending on runtime/bundler.
 	  if [ -f dist/index.mjs ]; then
-	    OPENCLAW_ENTRY="dist/index.mjs"
+	    WINERYCLAW_ENTRY="dist/index.mjs"
 	  elif [ -f dist/index.js ]; then
-	    OPENCLAW_ENTRY="dist/index.js"
+	    WINERYCLAW_ENTRY="dist/index.js"
 	  else
 	    echo "Missing dist/index.(m)js (build output):"
 	    ls -la dist || true
 	    exit 1
 	  fi
-	  export OPENCLAW_ENTRY
+	  export WINERYCLAW_ENTRY
 
   # Provide a minimal trash shim to avoid noisy "missing trash" logs in containers.
   export PATH="/tmp/openclaw-bin:$PATH"
@@ -113,7 +113,7 @@ TRASH
   }
 
 	  start_gateway() {
-	    node "$OPENCLAW_ENTRY" gateway --port 18789 --bind loopback --allow-unconfigured > /tmp/gateway-e2e.log 2>&1 &
+	    node "$WINERYCLAW_ENTRY" gateway --port 18789 --bind loopback --allow-unconfigured > /tmp/gateway-e2e.log 2>&1 &
 	    GATEWAY_PID="$!"
 	  }
 
@@ -214,7 +214,7 @@ TRASH
     local validate_fn="${4:-}"
 
 	    # Default onboarding command wrapper.
-	    run_wizard_cmd "$case_name" "$home_dir" "node \"$OPENCLAW_ENTRY\" onboard $ONBOARD_FLAGS" "$send_fn" true "$validate_fn"
+	    run_wizard_cmd "$case_name" "$home_dir" "node \"$WINERYCLAW_ENTRY\" onboard $ONBOARD_FLAGS" "$send_fn" true "$validate_fn"
 	  }
 
   make_home() {
@@ -224,10 +224,10 @@ TRASH
   set_isolated_openclaw_env() {
     local home_dir="$1"
     export HOME="$home_dir"
-    export OPENCLAW_HOME="$home_dir"
-    export OPENCLAW_STATE_DIR="$home_dir/.openclaw"
-    export OPENCLAW_CONFIG_PATH="$OPENCLAW_STATE_DIR/openclaw.json"
-    mkdir -p "$OPENCLAW_STATE_DIR"
+    export WINERYCLAW_HOME="$home_dir"
+    export WINERYCLAW_STATE_DIR="$home_dir/.openclaw"
+    export WINERYCLAW_CONFIG_PATH="$WINERYCLAW_STATE_DIR/openclaw.json"
+    mkdir -p "$WINERYCLAW_STATE_DIR"
   }
 
   assert_file() {
@@ -309,7 +309,7 @@ TRASH
     local home_dir
     home_dir="$(make_home local-basic)"
     set_isolated_openclaw_env "$home_dir"
-    run_case_logged local-basic node "$OPENCLAW_ENTRY" onboard \
+    run_case_logged local-basic node "$WINERYCLAW_ENTRY" onboard \
 	      --non-interactive \
 	      --accept-risk \
       --flow quickstart \
@@ -321,9 +321,9 @@ TRASH
       --skip-health
 
     # Assert config + workspace scaffolding.
-    workspace_dir="$OPENCLAW_STATE_DIR/workspace"
-    config_path="$OPENCLAW_CONFIG_PATH"
-    sessions_dir="$OPENCLAW_STATE_DIR/agents/main/sessions"
+    workspace_dir="$WINERYCLAW_STATE_DIR/workspace"
+    config_path="$WINERYCLAW_CONFIG_PATH"
+    sessions_dir="$WINERYCLAW_STATE_DIR/agents/main/sessions"
 
     assert_file "$config_path"
     assert_dir "$sessions_dir"
@@ -385,14 +385,14 @@ NODE
     home_dir="$(make_home remote-non-interactive)"
     set_isolated_openclaw_env "$home_dir"
 	    # Smoke test non-interactive remote config write.
-	    run_case_logged remote-non-interactive node "$OPENCLAW_ENTRY" onboard --non-interactive --accept-risk \
+	    run_case_logged remote-non-interactive node "$WINERYCLAW_ENTRY" onboard --non-interactive --accept-risk \
 	      --mode remote \
 	      --remote-url ws://gateway.local:18789 \
       --remote-token remote-token \
       --skip-skills \
       --skip-health
 
-    config_path="$OPENCLAW_CONFIG_PATH"
+    config_path="$WINERYCLAW_CONFIG_PATH"
     assert_file "$config_path"
 
     CONFIG_PATH="$config_path" node --input-type=module - <<'"'"'NODE'"'"'
@@ -427,7 +427,7 @@ NODE
     home_dir="$(make_home reset-config)"
     set_isolated_openclaw_env "$home_dir"
     # Seed a remote config to exercise reset path.
-	    cat > "$OPENCLAW_CONFIG_PATH" <<'"'"'JSON'"'"'
+	    cat > "$WINERYCLAW_CONFIG_PATH" <<'"'"'JSON'"'"'
 {
   "meta": {},
   "agents": { "defaults": { "workspace": "/root/old" } },
@@ -438,7 +438,7 @@ NODE
 }
 JSON
 
-	    run_case_logged reset-config node "$OPENCLAW_ENTRY" onboard \
+	    run_case_logged reset-config node "$WINERYCLAW_ENTRY" onboard \
 	      --non-interactive \
 	      --accept-risk \
       --flow quickstart \
@@ -450,7 +450,7 @@ JSON
       --skip-ui \
       --skip-health
 
-    config_path="$OPENCLAW_CONFIG_PATH"
+    config_path="$WINERYCLAW_CONFIG_PATH"
     assert_file "$config_path"
 
     CONFIG_PATH="$config_path" node --input-type=module - <<'"'"'NODE'"'"'
@@ -481,9 +481,9 @@ NODE
 	    local home_dir
 	    home_dir="$(make_home channels)"
 	    # Channels-only configure flow.
-	    run_wizard_cmd channels "$home_dir" "node \"$OPENCLAW_ENTRY\" configure --section channels" send_channels_flow
+	    run_wizard_cmd channels "$home_dir" "node \"$WINERYCLAW_ENTRY\" configure --section channels" send_channels_flow
 
-    config_path="$OPENCLAW_CONFIG_PATH"
+    config_path="$WINERYCLAW_CONFIG_PATH"
     assert_file "$config_path"
 
     CONFIG_PATH="$config_path" node --input-type=module - <<'"'"'NODE'"'"'
@@ -522,7 +522,7 @@ NODE
     home_dir="$(make_home skills)"
     set_isolated_openclaw_env "$home_dir"
     # Seed skills config to ensure it survives the wizard.
-	    cat > "$OPENCLAW_CONFIG_PATH" <<'"'"'JSON'"'"'
+	    cat > "$WINERYCLAW_CONFIG_PATH" <<'"'"'JSON'"'"'
 {
   "meta": {},
   "skills": {
@@ -532,9 +532,9 @@ NODE
 }
 JSON
 
-	    run_wizard_cmd skills "$home_dir" "node \"$OPENCLAW_ENTRY\" configure --section skills" send_skills_flow
+	    run_wizard_cmd skills "$home_dir" "node \"$WINERYCLAW_ENTRY\" configure --section skills" send_skills_flow
 
-    config_path="$OPENCLAW_CONFIG_PATH"
+    config_path="$WINERYCLAW_CONFIG_PATH"
     assert_file "$config_path"
 
     CONFIG_PATH="$config_path" node --input-type=module - <<'"'"'NODE'"'"'

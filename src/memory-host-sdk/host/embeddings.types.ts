@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { SecretInput } from "../../config/types.secrets.js";
 import type { EmbeddingInput } from "./embedding-inputs.js";
 
@@ -33,7 +33,7 @@ export type GeminiTaskType =
   | "FACT_VERIFICATION";
 
 export type EmbeddingProviderOptions = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentDir?: string;
   provider: EmbeddingProviderRequest;
   remote?: {

@@ -6,14 +6,14 @@ import { normalizeOptionalString } from "../shared/string-coerce.js";
 import { normalizeStringEntries } from "../shared/string-normalization.js";
 import { isRecord, resolveConfigDir, resolveUserPath } from "../utils.js";
 import type { PluginAutoEnableCandidate } from "./plugin-auto-enable.types.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { WineryClawConfig } from "./types.openclaw.js";
 
 type ExternalCatalogChannelEntry = {
   id: string;
   preferOver: string[];
 };
 
-const ENV_CATALOG_PATHS = ["OPENCLAW_PLUGIN_CATALOG_PATHS", "OPENCLAW_MPM_CATALOG_PATHS"];
+const ENV_CATALOG_PATHS = ["WINERYCLAW_PLUGIN_CATALOG_PATHS", "WINERYCLAW_MPM_CATALOG_PATHS"];
 
 function splitEnvPaths(value: string): string[] {
   const trimmed = normalizeOptionalString(value) ?? "";
@@ -123,13 +123,13 @@ function resolvePreferredOverIds(
 }
 
 export function shouldSkipPreferredPluginAutoEnable(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   entry: PluginAutoEnableCandidate;
   configured: readonly PluginAutoEnableCandidate[];
   env: NodeJS.ProcessEnv;
   registry: PluginManifestRegistry;
-  isPluginDenied: (config: OpenClawConfig, pluginId: string) => boolean;
-  isPluginExplicitlyDisabled: (config: OpenClawConfig, pluginId: string) => boolean;
+  isPluginDenied: (config: WineryClawConfig, pluginId: string) => boolean;
+  isPluginExplicitlyDisabled: (config: WineryClawConfig, pluginId: string) => boolean;
 }): boolean {
   for (const other of params.configured) {
     if (other.pluginId === params.entry.pluginId) {

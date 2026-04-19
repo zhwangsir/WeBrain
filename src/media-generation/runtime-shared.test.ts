@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import {
   deriveAspectRatioFromSize,
   normalizeDurationToClosestMax,
@@ -34,7 +34,7 @@ describe("media-generation runtime shared candidates", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const candidates = resolveCapabilityModelCandidates({
       cfg,
@@ -72,7 +72,7 @@ describe("media-generation runtime shared candidates", () => {
 
   it("auto-detects auth-backed provider defaults when no explicit media model is configured", () => {
     const candidates = resolveCapabilityModelCandidates({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       modelConfig: undefined,
       parseModelRef,
       listProviders: () => [
@@ -103,7 +103,7 @@ describe("media-generation runtime shared candidates", () => {
             mediaGenerationAutoProviderFallback: false,
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       modelConfig: {
         primary: "google/gemini-3.1-flash-image-preview",
       },

@@ -9,7 +9,7 @@ metadata:
         "emoji": "💾",
         "events": ["command:new", "command:reset"],
         "requires": { "config": ["workspace.dir"] },
-        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with OpenClaw" }],
+        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with WineryClaw" }],
       },
   }
 ---
@@ -81,7 +81,7 @@ Example configuration:
 
 The hook automatically:
 
-- Uses your workspace directory (`~/.openclaw/workspace` by default)
+- Uses your workspace directory (`~/.wineryclaw/workspace` by default)
 - Uses your configured LLM for slug generation
 - Falls back to timestamp slugs if LLM is unavailable
 

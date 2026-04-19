@@ -2,7 +2,7 @@
   "name": "@openclaw/kimi-provider",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Kimi provider plugin",
+  "description": "WineryClaw Kimi provider plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

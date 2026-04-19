@@ -27,13 +27,13 @@ Use `scripts/gh-read` when you want `gh` to use a GitHub App installation token 
 
 Required env:
 
-- `OPENCLAW_GH_READ_APP_ID`
-- `OPENCLAW_GH_READ_PRIVATE_KEY_FILE`
+- `WINERYCLAW_GH_READ_APP_ID`
+- `WINERYCLAW_GH_READ_PRIVATE_KEY_FILE`
 
 Optional env:
 
-- `OPENCLAW_GH_READ_INSTALLATION_ID` when you want to skip repo-based installation lookup
-- `OPENCLAW_GH_READ_PERMISSIONS` as a comma-separated override for the read permission subset to request
+- `WINERYCLAW_GH_READ_INSTALLATION_ID` when you want to skip repo-based installation lookup
+- `WINERYCLAW_GH_READ_PERMISSIONS` as a comma-separated override for the read permission subset to request
 
 Repo resolution order:
 

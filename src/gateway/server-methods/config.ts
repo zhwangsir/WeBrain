@@ -19,7 +19,7 @@ import {
 import { loadGatewayRuntimeConfigSchema } from "../../config/runtime-schema.js";
 import { lookupConfigSchema, type ConfigSchemaResponse } from "../../config/schema.js";
 import { extractDeliveryInfo } from "../../config/sessions.js";
-import type { ConfigValidationIssue, OpenClawConfig } from "../../config/types.openclaw.js";
+import type { ConfigValidationIssue, WineryClawConfig } from "../../config/types.openclaw.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import {
   formatDoctorNonInteractiveHint,
@@ -192,7 +192,7 @@ function parseValidateConfigFromRawOrRespond(
   requestName: string,
   snapshot: Awaited<ReturnType<typeof readConfigFileSnapshot>>,
   respond: RespondFn,
-): { config: OpenClawConfig; schema: ConfigSchemaResponse } | null {
+): { config: WineryClawConfig; schema: ConfigSchemaResponse } | null {
   const rawValue = parseRawConfigOrRespond(params, requestName, respond);
   if (!rawValue) {
     return null;
@@ -226,7 +226,7 @@ function parseValidateConfigFromRawOrRespond(
   return { config: validated.config, schema };
 }
 
-function didSharedGatewayAuthChange(prev: OpenClawConfig, next: OpenClawConfig): boolean {
+function didSharedGatewayAuthChange(prev: WineryClawConfig, next: WineryClawConfig): boolean {
   const prevAuth = resolveEffectiveSharedGatewayAuth({
     authConfig: prev.gateway?.auth,
     env: process.env,
@@ -257,7 +257,7 @@ function queueSharedGatewayAuthDisconnect(
 
 function queueSharedGatewayAuthGenerationRefresh(
   shouldRefresh: boolean,
-  nextConfig: OpenClawConfig,
+  nextConfig: WineryClawConfig,
   context?: GatewayRequestContext,
 ): void {
   if (!shouldRefresh) {
@@ -284,7 +284,7 @@ function summarizeConfigValidationIssues(issues: ReadonlyArray<ConfigValidationI
 
 function shouldScheduleDirectConfigRestart(params: {
   changedPaths: string[];
-  nextConfig: OpenClawConfig;
+  nextConfig: WineryClawConfig;
 }): boolean {
   const reloadSettings = resolveGatewayReloadSettings(params.nextConfig);
   if (reloadSettings.mode === "off") {
@@ -298,7 +298,7 @@ function shouldScheduleDirectConfigRestart(params: {
 }
 
 async function ensureResolvableSecretRefsOrRespond(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   respond: RespondFn;
 }): Promise<boolean> {
   try {
@@ -387,7 +387,7 @@ async function tryWriteRestartSentinelPayload(
 
 function loadSchemaWithPlugins(): ConfigSchemaResponse {
   // Note: We can't easily cache this, as there are no callback that can invalidate
-  // our cache. However, loadConfig() and loadOpenClawPlugins() (called inside
+  // our cache. However, loadConfig() and loadWineryClawPlugins() (called inside
   // loadGatewayRuntimeConfigSchema) already cache their results, and buildConfigSchema()
   // is just a cheap transformation.
   return loadGatewayRuntimeConfigSchema();

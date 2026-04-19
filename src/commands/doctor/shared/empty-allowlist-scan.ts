@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import type { DoctorAccountRecord, DoctorAllowFromList } from "../types.js";
 import { collectEmptyAllowlistPolicyWarningsForAccount } from "./empty-allowlist-policy.js";
 import { asObjectRecord } from "./object.js";
@@ -18,7 +18,7 @@ type ScanEmptyAllowlistPolicyWarningsParams = {
 };
 
 export function scanEmptyAllowlistPolicyWarnings(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   params: ScanEmptyAllowlistPolicyWarningsParams,
 ): string[] {
   const channels = cfg.channels;

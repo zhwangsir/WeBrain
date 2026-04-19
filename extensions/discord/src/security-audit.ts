@@ -7,7 +7,7 @@ import {
 import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import type { ResolvedDiscordAccount } from "./accounts.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 import { isDiscordMutableAllowEntry } from "./security-doctor.js";
 
 function addDiscordNameBasedEntries(params: {
@@ -31,7 +31,7 @@ function addDiscordNameBasedEntries(params: {
 }
 
 export async function collectDiscordSecurityAuditFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   account: ResolvedDiscordAccount;
   orderedAccountIds: string[];

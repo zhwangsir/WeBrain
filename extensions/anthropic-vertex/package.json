@@ -2,7 +2,7 @@
   "name": "@openclaw/anthropic-vertex-provider",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Anthropic Vertex provider plugin",
+  "description": "WineryClaw Anthropic Vertex provider plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

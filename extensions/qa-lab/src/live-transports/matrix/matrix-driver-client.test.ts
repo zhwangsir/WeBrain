@@ -398,7 +398,7 @@ describe("matrix driver client", () => {
       driverLocalpart: "qa-driver",
       observerLocalpart: "qa-observer",
       registrationToken: "reg-token",
-      roomName: "OpenClaw Matrix QA",
+      roomName: "WineryClaw Matrix QA",
       sutLocalpart: "qa-sut",
       fetchImpl,
     });

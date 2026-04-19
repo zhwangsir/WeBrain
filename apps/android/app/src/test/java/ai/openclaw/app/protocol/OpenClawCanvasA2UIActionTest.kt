@@ -5,24 +5,24 @@ import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class OpenClawCanvasA2UIActionTest {
+class WineryClawCanvasA2UIActionTest {
   @Test
   fun extractActionNameAcceptsNameOrAction() {
     val nameObj = Json.parseToJsonElement("{\"name\":\"Hello\"}").jsonObject
-    assertEquals("Hello", OpenClawCanvasA2UIAction.extractActionName(nameObj))
+    assertEquals("Hello", WineryClawCanvasA2UIAction.extractActionName(nameObj))
 
     val actionObj = Json.parseToJsonElement("{\"action\":\"Wave\"}").jsonObject
-    assertEquals("Wave", OpenClawCanvasA2UIAction.extractActionName(actionObj))
+    assertEquals("Wave", WineryClawCanvasA2UIAction.extractActionName(actionObj))
 
     val fallbackObj =
       Json.parseToJsonElement("{\"name\":\"  \",\"action\":\"Fallback\"}").jsonObject
-    assertEquals("Fallback", OpenClawCanvasA2UIAction.extractActionName(fallbackObj))
+    assertEquals("Fallback", WineryClawCanvasA2UIAction.extractActionName(fallbackObj))
   }
 
   @Test
   fun formatAgentMessageMatchesSharedSpec() {
     val msg =
-      OpenClawCanvasA2UIAction.formatAgentMessage(
+      WineryClawCanvasA2UIAction.formatAgentMessage(
         actionName = "Get Weather",
         sessionKey = "main",
         surfaceId = "main",
@@ -40,7 +40,7 @@ class OpenClawCanvasA2UIActionTest {
 
   @Test
   fun jsDispatchA2uiStatusIsStable() {
-    val js = OpenClawCanvasA2UIAction.jsDispatchA2UIActionStatus(actionId = "a1", ok = true, error = null)
+    val js = WineryClawCanvasA2UIAction.jsDispatchA2UIActionStatus(actionId = "a1", ok = true, error = null)
     assertEquals(
       "window.dispatchEvent(new CustomEvent('openclaw:a2ui-action-status', { detail: { id: \"a1\", ok: true, error: \"\" } }));",
       js,
@@ -50,7 +50,7 @@ class OpenClawCanvasA2UIActionTest {
   @Test
   fun jsDispatchA2uiStatusQuotesControlCharacters() {
     val js =
-      OpenClawCanvasA2UIAction.jsDispatchA2UIActionStatus(
+      WineryClawCanvasA2UIAction.jsDispatchA2UIActionStatus(
         actionId = "a1\n\u2028\"",
         ok = false,
         error = "parse failed\n\t\u2029\\",

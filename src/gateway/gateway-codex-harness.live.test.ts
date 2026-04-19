@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { DeviceIdentity } from "../infra/device-identity.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import type { GatewayClient } from "./client.js";
@@ -15,18 +15,18 @@ import {
   assertLiveImageProbeReply,
   buildLiveCronProbeMessage,
   createLiveCronProbeSpec,
-  runOpenClawCliJson,
+  runWineryClawCliJson,
   type CronListJob,
 } from "./live-agent-probes.js";
 import { renderCatFacePngBase64 } from "./live-image-probe.js";
 
 const LIVE = isLiveTestEnabled();
-const CODEX_HARNESS_LIVE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS);
-const CODEX_HARNESS_DEBUG = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS_DEBUG);
+const CODEX_HARNESS_LIVE = isTruthyEnvValue(process.env.WINERYCLAW_LIVE_CODEX_HARNESS);
+const CODEX_HARNESS_DEBUG = isTruthyEnvValue(process.env.WINERYCLAW_LIVE_CODEX_HARNESS_DEBUG);
 const CODEX_HARNESS_IMAGE_PROBE = isTruthyEnvValue(
-  process.env.OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE,
+  process.env.WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE,
 );
-const CODEX_HARNESS_MCP_PROBE = isTruthyEnvValue(process.env.OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE);
+const CODEX_HARNESS_MCP_PROBE = isTruthyEnvValue(process.env.WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE);
 const describeLive = LIVE && CODEX_HARNESS_LIVE ? describe : describe.skip;
 const describeDisabled = LIVE && !CODEX_HARNESS_LIVE ? describe : describe.skip;
 const CODEX_HARNESS_TIMEOUT_MS = 420_000;
@@ -56,30 +56,30 @@ function logCodexLiveStep(step: string, details?: Record<string, unknown>): void
 
 function snapshotEnv(): EnvSnapshot {
   return {
-    agentRuntime: process.env.OPENCLAW_AGENT_RUNTIME,
-    configPath: process.env.OPENCLAW_CONFIG_PATH,
-    gatewayToken: process.env.OPENCLAW_GATEWAY_TOKEN,
+    agentRuntime: process.env.WINERYCLAW_AGENT_RUNTIME,
+    configPath: process.env.WINERYCLAW_CONFIG_PATH,
+    gatewayToken: process.env.WINERYCLAW_GATEWAY_TOKEN,
     openaiApiKey: process.env.OPENAI_API_KEY,
-    skipBrowserControl: process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER,
-    skipCanvas: process.env.OPENCLAW_SKIP_CANVAS_HOST,
-    skipChannels: process.env.OPENCLAW_SKIP_CHANNELS,
-    skipCron: process.env.OPENCLAW_SKIP_CRON,
-    skipGmail: process.env.OPENCLAW_SKIP_GMAIL_WATCHER,
-    stateDir: process.env.OPENCLAW_STATE_DIR,
+    skipBrowserControl: process.env.WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER,
+    skipCanvas: process.env.WINERYCLAW_SKIP_CANVAS_HOST,
+    skipChannels: process.env.WINERYCLAW_SKIP_CHANNELS,
+    skipCron: process.env.WINERYCLAW_SKIP_CRON,
+    skipGmail: process.env.WINERYCLAW_SKIP_GMAIL_WATCHER,
+    stateDir: process.env.WINERYCLAW_STATE_DIR,
   };
 }
 
 function restoreEnv(snapshot: EnvSnapshot): void {
-  restoreEnvVar("OPENCLAW_AGENT_RUNTIME", snapshot.agentRuntime);
-  restoreEnvVar("OPENCLAW_CONFIG_PATH", snapshot.configPath);
-  restoreEnvVar("OPENCLAW_GATEWAY_TOKEN", snapshot.gatewayToken);
+  restoreEnvVar("WINERYCLAW_AGENT_RUNTIME", snapshot.agentRuntime);
+  restoreEnvVar("WINERYCLAW_CONFIG_PATH", snapshot.configPath);
+  restoreEnvVar("WINERYCLAW_GATEWAY_TOKEN", snapshot.gatewayToken);
   restoreEnvVar("OPENAI_API_KEY", snapshot.openaiApiKey);
-  restoreEnvVar("OPENCLAW_SKIP_BROWSER_CONTROL_SERVER", snapshot.skipBrowserControl);
-  restoreEnvVar("OPENCLAW_SKIP_CANVAS_HOST", snapshot.skipCanvas);
-  restoreEnvVar("OPENCLAW_SKIP_CHANNELS", snapshot.skipChannels);
-  restoreEnvVar("OPENCLAW_SKIP_CRON", snapshot.skipCron);
-  restoreEnvVar("OPENCLAW_SKIP_GMAIL_WATCHER", snapshot.skipGmail);
-  restoreEnvVar("OPENCLAW_STATE_DIR", snapshot.stateDir);
+  restoreEnvVar("WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER", snapshot.skipBrowserControl);
+  restoreEnvVar("WINERYCLAW_SKIP_CANVAS_HOST", snapshot.skipCanvas);
+  restoreEnvVar("WINERYCLAW_SKIP_CHANNELS", snapshot.skipChannels);
+  restoreEnvVar("WINERYCLAW_SKIP_CRON", snapshot.skipCron);
+  restoreEnvVar("WINERYCLAW_SKIP_GMAIL_WATCHER", snapshot.skipGmail);
+  restoreEnvVar("WINERYCLAW_STATE_DIR", snapshot.stateDir);
 }
 
 function restoreEnvVar(name: string, value: string | undefined): void {
@@ -222,7 +222,7 @@ async function writeLiveGatewayConfig(params: {
   token: string;
   workspace: string;
 }): Promise<void> {
-  const cfg: OpenClawConfig = {
+  const cfg: WineryClawConfig = {
     gateway: {
       mode: "local",
       port: params.port,
@@ -384,7 +384,7 @@ async function verifyCodexCronMcpProbe(params: {
     expectedSessionKey: params.sessionKey,
   });
   if (createdJob.id) {
-    await runOpenClawCliJson(
+    await runWineryClawCliJson(
       [
         "cron",
         "rm",
@@ -404,7 +404,7 @@ describeLive("gateway live (Codex harness)", () => {
   it(
     "runs gateway agent turns through the plugin-owned Codex app-server harness",
     async () => {
-      const modelKey = process.env.OPENCLAW_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL;
+      const modelKey = process.env.WINERYCLAW_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL;
       const openaiKey = process.env.OPENAI_API_KEY?.trim();
       if (!openaiKey) {
         throw new Error("OPENAI_API_KEY is required for the Codex harness live test.");
@@ -416,21 +416,21 @@ describeLive("gateway live (Codex harness)", () => {
       const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-live-codex-harness-"));
       const stateDir = path.join(tempDir, "state");
       const workspace = await createLiveWorkspace(tempDir);
-      const configPath = path.join(tempDir, "openclaw.json");
+      const configPath = path.join(tempDir, "wineryclaw.json");
       const token = `test-${randomUUID()}`;
       const port = await getFreeGatewayPort();
 
       clearRuntimeConfigSnapshot();
-      process.env.OPENCLAW_AGENT_RUNTIME = "codex";
-      process.env.OPENCLAW_AGENT_HARNESS_FALLBACK = "none";
-      process.env.OPENCLAW_CONFIG_PATH = configPath;
-      process.env.OPENCLAW_GATEWAY_TOKEN = token;
-      process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
-      process.env.OPENCLAW_SKIP_CANVAS_HOST = "1";
-      process.env.OPENCLAW_SKIP_CHANNELS = "1";
-      process.env.OPENCLAW_SKIP_CRON = "1";
-      process.env.OPENCLAW_SKIP_GMAIL_WATCHER = "1";
-      process.env.OPENCLAW_STATE_DIR = stateDir;
+      process.env.WINERYCLAW_AGENT_RUNTIME = "codex";
+      process.env.WINERYCLAW_AGENT_HARNESS_FALLBACK = "none";
+      process.env.WINERYCLAW_CONFIG_PATH = configPath;
+      process.env.WINERYCLAW_GATEWAY_TOKEN = token;
+      process.env.WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
+      process.env.WINERYCLAW_SKIP_CANVAS_HOST = "1";
+      process.env.WINERYCLAW_SKIP_CHANNELS = "1";
+      process.env.WINERYCLAW_SKIP_CRON = "1";
+      process.env.WINERYCLAW_SKIP_GMAIL_WATCHER = "1";
+      process.env.WINERYCLAW_STATE_DIR = stateDir;
 
       await fs.mkdir(stateDir, { recursive: true });
       await writeLiveGatewayConfig({ configPath, modelKey, port, token, workspace });

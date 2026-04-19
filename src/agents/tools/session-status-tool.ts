@@ -12,7 +12,7 @@ import {
   type SessionEntry,
   updateSessionStore,
 } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { resolveSessionModelIdentityRef } from "../../gateway/session-utils.js";
 import {
   buildAgentMainSessionKey,
@@ -57,7 +57,7 @@ const SessionStatusToolSchema = Type.Object({
 
 type CommandsStatusRuntimeModule = {
   buildStatusText: (params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     sessionEntry?: SessionEntry;
     sessionKey: string;
     parentSessionKey?: string;
@@ -190,7 +190,7 @@ function formatSessionTaskLine(params: {
 }
 
 async function resolveModelOverride(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   raw: string;
   sessionEntry?: SessionEntry;
   agentId: string;
@@ -255,7 +255,7 @@ async function resolveModelOverride(params: {
 
 export function createSessionStatusTool(opts?: {
   agentSessionKey?: string;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   sandboxed?: boolean;
 }): AnyAgentTool {
   return {

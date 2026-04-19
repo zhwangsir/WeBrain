@@ -10,7 +10,7 @@ import {
 } from "./defaults.js";
 import { normalizeExecSafeBinProfilesInConfig } from "./normalize-exec-safe-bin.js";
 import { normalizeConfigPaths } from "./normalize-paths.js";
-import type { OpenClawConfig, ResolvedSourceConfig, RuntimeConfig } from "./types.js";
+import type { WineryClawConfig, ResolvedSourceConfig, RuntimeConfig } from "./types.js";
 
 export type ConfigMaterializationMode = "load" | "missing" | "snapshot";
 
@@ -42,16 +42,16 @@ const MATERIALIZATION_PROFILES: Record<ConfigMaterializationMode, Materializatio
   },
 };
 
-export function asResolvedSourceConfig(config: OpenClawConfig): ResolvedSourceConfig {
+export function asResolvedSourceConfig(config: WineryClawConfig): ResolvedSourceConfig {
   return config as ResolvedSourceConfig;
 }
 
-export function asRuntimeConfig(config: OpenClawConfig): RuntimeConfig {
+export function asRuntimeConfig(config: WineryClawConfig): RuntimeConfig {
   return config as RuntimeConfig;
 }
 
 export function materializeRuntimeConfig(
-  config: OpenClawConfig,
+  config: WineryClawConfig,
   mode: ConfigMaterializationMode,
 ): RuntimeConfig {
   const profile = MATERIALIZATION_PROFILES[mode];

@@ -1,5 +1,5 @@
 ---
-summary: "Frequently asked questions about OpenClaw setup, configuration, and usage"
+summary: "Frequently asked questions about WineryClaw setup, configuration, and usage"
 read_when:
   - Answering common setup, install, onboarding, or runtime support questions
   - Triaging user-reported issues before deeper debugging
@@ -92,10 +92,10 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     the hackable (git) install:
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git
+    curl -fsSL bash ./install.sh | bash -s -- --install-method git
     ```
 
-    This installs OpenClaw **from a git checkout**, so the agent can read the code + docs and
+    This installs WineryClaw **from a git checkout**, so the agent can read the code + docs and
     reason about the exact version you are running. You can always switch back to stable later
     by re-running the installer without `--install-method git`.
 
@@ -143,11 +143,11 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
 
   </Accordion>
 
-  <Accordion title="Recommended way to install and set up OpenClaw">
+  <Accordion title="Recommended way to install and set up WineryClaw">
     The repo recommends running from source and using onboarding:
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash
+    curl -fsSL bash ./install.sh | bash
     openclaw onboard --install-daemon
     ```
 
@@ -177,8 +177,8 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
 
     - Open `http://127.0.0.1:18789/`.
     - If it asks for shared-secret auth, paste the configured token or password into Control UI settings.
-    - Token source: `gateway.auth.token` (or `OPENCLAW_GATEWAY_TOKEN`).
-    - Password source: `gateway.auth.password` (or `OPENCLAW_GATEWAY_PASSWORD`).
+    - Token source: `gateway.auth.token` (or `WINERYCLAW_GATEWAY_TOKEN`).
+    - Password source: `gateway.auth.password` (or `WINERYCLAW_GATEWAY_PASSWORD`).
     - If no shared secret is configured yet, generate a token with `openclaw doctor --generate-gateway-token`.
 
     **Not on localhost:**
@@ -205,7 +205,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     In most setups you do **not** need both:
 
     - If the chat already supports commands and replies, same-chat `/approve` works through the shared path.
-    - If a supported native channel can infer approvers safely, OpenClaw now auto-enables DM-first native approvals when `channels.<channel>.execApprovals.enabled` is unset or `"auto"`.
+    - If a supported native channel can infer approvers safely, WineryClaw now auto-enables DM-first native approvals when `channels.<channel>.execApprovals.enabled` is unset or `"auto"`.
     - When native approval cards/buttons are available, that native UI is the primary path; the agent should only include a manual `/approve` command if the tool result says chat approvals are unavailable or manual approval is the only path.
     - Use `approvals.exec` only when prompts must also be forwarded to other chats or explicit ops rooms.
     - Use `channels.<channel>.execApprovals.target: "channel"` or `"both"` only when you explicitly want approval prompts posted back into the originating room/topic.
@@ -279,9 +279,9 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     keeps your bot "exactly the same" (memory, session history, auth, and channel
     state) as long as you copy **both** locations:
 
-    1. Install OpenClaw on the new machine.
-    2. Copy `$OPENCLAW_STATE_DIR` (default: `~/.openclaw`) from the old machine.
-    3. Copy your workspace (default: `~/.openclaw/workspace`).
+    1. Install WineryClaw on the new machine.
+    2. Copy `$WINERYCLAW_STATE_DIR` (default: `~/.openclaw`) from the old machine.
+    3. Copy your workspace (default: `~/.wineryclaw/workspace`).
     4. Run `openclaw doctor` and restart the Gateway service.
 
     That preserves config, auth profiles, WhatsApp creds, sessions, and memory. If you're in
@@ -289,7 +289,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
 
     **Important:** if you only commit/push your workspace to GitHub, you're backing
     up **memory + bootstrap files**, but **not** session history or auth. Those live
-    under `~/.openclaw/` (for example `~/.openclaw/agents/<agentId>/sessions/`).
+    under `~/.wineryclaw/` (for example `~/.wineryclaw/agents/<agentId>/sessions/`).
 
     Related: [Migrating](/install/migrating), [Where things live on disk](#where-things-live-on-disk),
     [Agent workspace](/concepts/agent-workspace), [Doctor](/gateway/doctor),
@@ -342,15 +342,15 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     One-liners (macOS/Linux):
 
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --beta
+    curl -fsSL --proto '=https' --tlsv1.2 bash ./install.sh | bash -s -- --beta
     ```
 
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --install-method git
+    curl -fsSL --proto '=https' --tlsv1.2 bash ./install.sh | bash -s -- --install-method git
     ```
 
     Windows installer (PowerShell):
-    [https://openclaw.ai/install.ps1](https://openclaw.ai/install.ps1)
+    [powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install.ps1' -OutFile install.ps1; ./install.ps1"](powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install.ps1' -OutFile install.ps1; ./install.ps1")
 
     More detail: [Development channels](/install/development-channels) and [Installer flags](/install/installer).
 
@@ -370,7 +370,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     2. **Hackable install (from the installer site):**
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git
+    curl -fsSL bash ./install.sh | bash -s -- --install-method git
     ```
 
     That gives you a local repo you can edit, then update via git.
@@ -404,19 +404,19 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     Re-run the installer with **verbose output**:
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --verbose
+    curl -fsSL bash ./install.sh | bash -s -- --verbose
     ```
 
     Beta install with verbose:
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --beta --verbose
+    curl -fsSL bash ./install.sh | bash -s -- --beta --verbose
     ```
 
     For a hackable (git) install:
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git --verbose
+    curl -fsSL bash ./install.sh | bash -s -- --install-method git --verbose
     ```
 
     Windows (PowerShell) equivalent:
@@ -424,7 +424,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     ```powershell
     # install.ps1 has no dedicated -Verbose flag yet.
     Set-PSDebug -Trace 1
-    & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
+    & ([scriptblock]::Create((iwr -useb powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/openclaw/openclaw/main/scripts/install.ps1' -OutFile install.ps1; ./install.ps1"))) -NoOnboard
     Set-PSDebug -Trace 0
     ```
 
@@ -480,7 +480,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     openclaw gateway restart
     ```
 
-    If you still reproduce this on latest OpenClaw, track/report it in:
+    If you still reproduce this on latest WineryClaw, track/report it in:
 
     - [Issue #30640](https://github.com/openclaw/openclaw/issues/30640)
 
@@ -491,14 +491,14 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
     your bot (or Claude/Codex) _from that folder_ so it can read the repo and answer precisely.
 
     ```bash
-    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git
+    curl -fsSL bash ./install.sh | bash -s -- --install-method git
     ```
 
     More detail: [Install](/install) and [Installer flags](/install/installer).
 
   </Accordion>
 
-  <Accordion title="How do I install OpenClaw on Linux?">
+  <Accordion title="How do I install WineryClaw on Linux?">
     Short answer: follow the Linux guide, then run onboarding.
 
     - Linux quick path + service install: [Linux](/platforms/linux).
@@ -507,7 +507,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
 
   </Accordion>
 
-  <Accordion title="How do I install OpenClaw on a VPS?">
+  <Accordion title="How do I install WineryClaw on a VPS?">
     Any Linux VPS works. Install on the server, then use SSH/Tailscale to reach the Gateway.
 
     Guides: [exe.dev](/install/exe-dev), [Hetzner](/install/hetzner), [Fly.io](/install/fly).
@@ -536,7 +536,7 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
 
   </Accordion>
 
-  <Accordion title="Can I ask OpenClaw to update itself?">
+  <Accordion title="Can I ask WineryClaw to update itself?">
     Short answer: **possible, not recommended**. The update flow can restart the
     Gateway (which drops the active session), may need a clean git checkout, and
     can prompt for confirmation. Safer: run updates from a shell as the operator.
@@ -577,23 +577,23 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
   </Accordion>
 
   <Accordion title="Do I need a Claude or OpenAI subscription to run this?">
-    No. You can run OpenClaw with **API keys** (Anthropic/OpenAI/others) or with
+    No. You can run WineryClaw with **API keys** (Anthropic/OpenAI/others) or with
     **local-only models** so your data stays on your device. Subscriptions (Claude
     Pro/Max or OpenAI Codex) are optional ways to authenticate those providers.
 
-    For Anthropic in OpenClaw, the practical split is:
+    For Anthropic in WineryClaw, the practical split is:
 
     - **Anthropic API key**: normal Anthropic API billing
-    - **Claude CLI / Claude subscription auth in OpenClaw**: Anthropic staff
-      told us this usage is allowed again, and OpenClaw is treating `claude -p`
+    - **Claude CLI / Claude subscription auth in WineryClaw**: Anthropic staff
+      told us this usage is allowed again, and WineryClaw is treating `claude -p`
       usage as sanctioned for this integration unless Anthropic publishes a new
       policy
 
     For long-lived gateway hosts, Anthropic API keys are still the more
     predictable setup. OpenAI Codex OAuth is explicitly supported for external
-    tools like OpenClaw.
+    tools like WineryClaw.
 
-    OpenClaw also supports other hosted subscription-style options including
+    WineryClaw also supports other hosted subscription-style options including
     **Qwen Cloud Coding Plan**, **MiniMax Coding Plan**, and
     **Z.AI / GLM Coding Plan**.
 
@@ -607,8 +607,8 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
   <Accordion title="Can I use Claude Max subscription without an API key?">
     Yes.
 
-    Anthropic staff told us OpenClaw-style Claude CLI usage is allowed again, so
-    OpenClaw treats Claude subscription auth and `claude -p` usage as sanctioned
+    Anthropic staff told us WineryClaw-style Claude CLI usage is allowed again, so
+    WineryClaw treats Claude subscription auth and `claude -p` usage as sanctioned
     for this integration unless Anthropic publishes a new policy. If you want
     the most predictable server-side setup, use an Anthropic API key instead.
 
@@ -617,14 +617,14 @@ Quick answers plus deeper troubleshooting for real-world setups (local dev, VPS,
   <Accordion title="Do you support Claude subscription auth (Claude Pro or Max)?">
     Yes.
 
-    Anthropic staff told us this usage is allowed again, so OpenClaw treats
+    Anthropic staff told us this usage is allowed again, so WineryClaw treats
     Claude CLI reuse and `claude -p` usage as sanctioned for this integration
     unless Anthropic publishes a new policy.
 
-    Anthropic setup-token is still available as a supported OpenClaw token path, but OpenClaw now prefers Claude CLI reuse and `claude -p` when available.
+    Anthropic setup-token is still available as a supported WineryClaw token path, but WineryClaw now prefers Claude CLI reuse and `claude -p` when available.
     For production or multi-user workloads, Anthropic API key auth is still the
     safer, more predictable choice. If you want other subscription-style hosted
-    options in OpenClaw, see [OpenAI](/providers/openai), [Qwen / Model
+    options in WineryClaw, see [OpenAI](/providers/openai), [Qwen / Model
     Cloud](/providers/qwen), [MiniMax](/providers/minimax), and [GLM
     Models](/providers/glm).
 
@@ -641,32 +641,32 @@ for usage/billing and raise limits as needed.
     `Extra usage is required for long context requests`, the request is trying to use
     Anthropic's 1M context beta (`context1m: true`). That only works when your
     credential is eligible for long-context billing (API key billing or the
-    OpenClaw Claude-login path with Extra Usage enabled).
+    WineryClaw Claude-login path with Extra Usage enabled).
 
-    Tip: set a **fallback model** so OpenClaw can keep replying while a provider is rate-limited.
+    Tip: set a **fallback model** so WineryClaw can keep replying while a provider is rate-limited.
     See [Models](/cli/models), [OAuth](/concepts/oauth), and
     [/gateway/troubleshooting#anthropic-429-extra-usage-required-for-long-context](/gateway/troubleshooting#anthropic-429-extra-usage-required-for-long-context).
 
   </Accordion>
 
   <Accordion title="Is AWS Bedrock supported?">
-    Yes. OpenClaw has a bundled **Amazon Bedrock (Converse)** provider. With AWS env markers present, OpenClaw can auto-discover the streaming/text Bedrock catalog and merge it as an implicit `amazon-bedrock` provider; otherwise you can explicitly enable `plugins.entries.amazon-bedrock.config.discovery.enabled` or add a manual provider entry. See [Amazon Bedrock](/providers/bedrock) and [Model providers](/providers/models). If you prefer a managed key flow, an OpenAI-compatible proxy in front of Bedrock is still a valid option.
+    Yes. WineryClaw has a bundled **Amazon Bedrock (Converse)** provider. With AWS env markers present, WineryClaw can auto-discover the streaming/text Bedrock catalog and merge it as an implicit `amazon-bedrock` provider; otherwise you can explicitly enable `plugins.entries.amazon-bedrock.config.discovery.enabled` or add a manual provider entry. See [Amazon Bedrock](/providers/bedrock) and [Model providers](/providers/models). If you prefer a managed key flow, an OpenAI-compatible proxy in front of Bedrock is still a valid option.
   </Accordion>
 
   <Accordion title="How does Codex auth work?">
-    OpenClaw supports **OpenAI Code (Codex)** via OAuth (ChatGPT sign-in). Onboarding can run the OAuth flow and will set the default model to `openai-codex/gpt-5.4` when appropriate. See [Model providers](/concepts/model-providers) and [Onboarding (CLI)](/start/wizard).
+    WineryClaw supports **OpenAI Code (Codex)** via OAuth (ChatGPT sign-in). Onboarding can run the OAuth flow and will set the default model to `openai-codex/gpt-5.4` when appropriate. See [Model providers](/concepts/model-providers) and [Onboarding (CLI)](/start/wizard).
   </Accordion>
 
-  <Accordion title="Why does ChatGPT GPT-5.4 not unlock openai/gpt-5.4 in OpenClaw?">
-    OpenClaw treats the two routes separately:
+  <Accordion title="Why does ChatGPT GPT-5.4 not unlock openai/gpt-5.4 in WineryClaw?">
+    WineryClaw treats the two routes separately:
 
     - `openai-codex/gpt-5.4` = ChatGPT/Codex OAuth
     - `openai/gpt-5.4` = direct OpenAI Platform API
 
-    In OpenClaw, ChatGPT/Codex sign-in is wired to the `openai-codex/*` route,
+    In WineryClaw, ChatGPT/Codex sign-in is wired to the `openai-codex/*` route,
     not the direct `openai/*` route. If you want the direct API path in
-    OpenClaw, set `OPENAI_API_KEY` (or the equivalent OpenAI provider config).
-    If you want ChatGPT/Codex sign-in in OpenClaw, use `openai-codex/*`.
+    WineryClaw, set `OPENAI_API_KEY` (or the equivalent OpenAI provider config).
+    If you want ChatGPT/Codex sign-in in WineryClaw, use `openai-codex/*`.
 
   </Accordion>
 
@@ -675,7 +675,7 @@ for usage/billing and raise limits as needed.
     OpenAI-managed and plan-dependent. In practice, those limits can differ from
     the ChatGPT website/app experience, even when both are tied to the same account.
 
-    OpenClaw can show the currently visible provider usage/quota windows in
+    WineryClaw can show the currently visible provider usage/quota windows in
     `openclaw models status`, but it does not invent or normalize ChatGPT-web
     entitlements into direct API access. If you want the direct OpenAI Platform
     billing/limit path, use `openai/*` with an API key.
@@ -683,16 +683,16 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="Do you support OpenAI subscription auth (Codex OAuth)?">
-    Yes. OpenClaw fully supports **OpenAI Code (Codex) subscription OAuth**.
+    Yes. WineryClaw fully supports **OpenAI Code (Codex) subscription OAuth**.
     OpenAI explicitly allows subscription OAuth usage in external tools/workflows
-    like OpenClaw. Onboarding can run the OAuth flow for you.
+    like WineryClaw. Onboarding can run the OAuth flow for you.
 
     See [OAuth](/concepts/oauth), [Model providers](/concepts/model-providers), and [Onboarding (CLI)](/start/wizard).
 
   </Accordion>
 
   <Accordion title="How do I set up Gemini CLI OAuth?">
-    Gemini CLI uses a **plugin auth flow**, not a client id or secret in `openclaw.json`.
+    Gemini CLI uses a **plugin auth flow**, not a client id or secret in `wineryclaw.json`.
 
     Steps:
 
@@ -709,7 +709,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="Is a local model OK for casual chats?">
-    Usually no. OpenClaw needs large context + strong safety; small cards truncate and leak. If you must, run the **largest** model build you can locally (LM Studio) and see [/gateway/local-models](/gateway/local-models). Smaller/quantized models increase prompt-injection risk - see [Security](/gateway/security).
+    Usually no. WineryClaw needs large context + strong safety; small cards truncate and leak. If you must, run the **largest** model build you can locally (LM Studio) and see [/gateway/local-models](/gateway/local-models). Smaller/quantized models increase prompt-injection risk - see [Security](/gateway/security).
   </Accordion>
 
   <Accordion title="How do I keep hosted model traffic in a specific region?">
@@ -717,7 +717,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="Do I have to buy a Mac Mini to install this?">
-    No. OpenClaw runs on macOS or Linux (Windows via WSL2). A Mac mini is optional - some people
+    No. WineryClaw runs on macOS or Linux (Windows via WSL2). A Mac mini is optional - some people
     buy one as an always-on host, but a small VPS, home server, or Raspberry Pi-class box works too.
 
     You only need a Mac **for macOS-only tools**. For iMessage, use [BlueBubbles](/channels/bluebubbles) (recommended) - the BlueBubbles server runs on any Mac, and the Gateway can run on Linux or elsewhere. If you want other macOS-only tools, run the Gateway on a Mac or pair a macOS node.
@@ -740,7 +740,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="If I buy a Mac mini to run OpenClaw, can I connect it to my MacBook Pro?">
+  <Accordion title="If I buy a Mac mini to run WineryClaw, can I connect it to my MacBook Pro?">
     Yes. The **Mac mini can run the Gateway**, and your MacBook Pro can connect as a
     **node** (companion device). Nodes don't run the Gateway - they provide extra
     capabilities like screen/camera/canvas and `system.run` on that device.
@@ -767,7 +767,7 @@ for usage/billing and raise limits as needed.
   <Accordion title="Telegram: what goes in allowFrom?">
     `channels.telegram.allowFrom` is **the human sender's Telegram user ID** (numeric). It is not the bot username.
 
-    Onboarding accepts `@username` input and resolves it to a numeric ID, but OpenClaw authorization uses numeric IDs only.
+    Onboarding accepts `@username` input and resolves it to a numeric ID, but WineryClaw authorization uses numeric IDs only.
 
     Safer (no third-party bot):
 
@@ -785,7 +785,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Can multiple people use one WhatsApp number with different OpenClaw instances?">
+  <Accordion title="Can multiple people use one WhatsApp number with different WineryClaw instances?">
     Yes, via **multi-agent routing**. Bind each sender's WhatsApp **DM** (peer `kind: "direct"`, sender E.164 like `+15551234567`) to a different `agentId`, so each person gets their own workspace and session store. Replies still come from the **same WhatsApp account**, and DM access control (`channels.whatsapp.dmPolicy` / `channels.whatsapp.allowFrom`) is global per WhatsApp account. See [Multi-Agent Routing](/concepts/multi-agent) and [WhatsApp](/channels/whatsapp).
   </Accordion>
 
@@ -803,7 +803,7 @@ for usage/billing and raise limits as needed.
     brew install <formula>
     ```
 
-    If you run OpenClaw via systemd, ensure the service PATH includes `/home/linuxbrew/.linuxbrew/bin` (or your brew prefix) so `brew`-installed tools resolve in non-login shells.
+    If you run WineryClaw via systemd, ensure the service PATH includes `/home/linuxbrew/.linuxbrew/bin` (or your brew prefix) so `brew`-installed tools resolve in non-login shells.
     Recent builds also prepend common user bin dirs on Linux systemd services (for example `~/.local/bin`, `~/.npm-global/bin`, `~/.local/share/pnpm`, `~/.bun/bin`) and honor `PNPM_HOME`, `NPM_CONFIG_PREFIX`, `BUN_INSTALL`, `VOLTA_HOME`, `ASDF_DATA_DIR`, `NVM_DIR`, and `FNM_DIR` when set.
 
   </Accordion>
@@ -820,8 +820,8 @@ for usage/billing and raise limits as needed.
 
   <Accordion title="Can I switch between npm and git installs later?">
     Yes. Install the other flavor, then run Doctor so the gateway service points at the new entrypoint.
-    This **does not delete your data** - it only changes the OpenClaw code install. Your state
-    (`~/.openclaw`) and workspace (`~/.openclaw/workspace`) stay untouched.
+    This **does not delete your data** - it only changes the WineryClaw code install. Your state
+    (`~/.openclaw`) and workspace (`~/.wineryclaw/workspace`) stay untouched.
 
     From npm to git:
 
@@ -862,13 +862,13 @@ for usage/billing and raise limits as needed.
     - **Pros:** always-on, stable network, no laptop sleep issues, easier to keep running.
     - **Cons:** often run headless (use screenshots), remote file access only, you must SSH for updates.
 
-    **OpenClaw-specific note:** WhatsApp/Telegram/Slack/Mattermost/Discord all work fine from a VPS. The only real trade-off is **headless browser** vs a visible window. See [Browser](/tools/browser).
+    **WineryClaw-specific note:** WhatsApp/Telegram/Slack/Mattermost/Discord all work fine from a VPS. The only real trade-off is **headless browser** vs a visible window. See [Browser](/tools/browser).
 
     **Recommended default:** VPS if you had gateway disconnects before. Local is great when you're actively using the Mac and want local file access or UI automation with a visible browser.
 
   </Accordion>
 
-  <Accordion title="How important is it to run OpenClaw on a dedicated machine?">
+  <Accordion title="How important is it to run WineryClaw on a dedicated machine?">
     Not required, but **recommended for reliability and isolation**.
 
     - **Dedicated host (VPS/Mac mini/Pi):** always-on, fewer sleep/reboot interruptions, cleaner permissions, easier to keep running.
@@ -880,7 +880,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="What are the minimum VPS requirements and recommended OS?">
-    OpenClaw is lightweight. For a basic Gateway + one chat channel:
+    WineryClaw is lightweight. For a basic Gateway + one chat channel:
 
     - **Absolute minimum:** 1 vCPU, 1GB RAM, ~500MB disk.
     - **Recommended:** 1-2 vCPU, 2GB RAM or more for headroom (logs, media, multiple channels). Node tools and browser automation can be resource hungry.
@@ -891,7 +891,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Can I run OpenClaw in a VM and what are the requirements?">
+  <Accordion title="Can I run WineryClaw in a VM and what are the requirements?">
     Yes. Treat a VM the same as a VPS: it needs to be always on, reachable, and have enough
     RAM for the Gateway and any channels you enable.
 
@@ -908,15 +908,15 @@ for usage/billing and raise limits as needed.
   </Accordion>
 </AccordionGroup>
 
-## What is OpenClaw?
+## What is WineryClaw?
 
 <AccordionGroup>
-  <Accordion title="What is OpenClaw, in one paragraph?">
-    OpenClaw is a personal AI assistant you run on your own devices. It replies on the messaging surfaces you already use (WhatsApp, Telegram, Slack, Mattermost, Discord, Google Chat, Signal, iMessage, WebChat, and bundled channel plugins such as QQ Bot) and can also do voice + a live Canvas on supported platforms. The **Gateway** is the always-on control plane; the assistant is the product.
+  <Accordion title="What is WineryClaw, in one paragraph?">
+    WineryClaw is a personal AI assistant you run on your own devices. It replies on the messaging surfaces you already use (WhatsApp, Telegram, Slack, Mattermost, Discord, Google Chat, Signal, iMessage, WebChat, and bundled channel plugins such as QQ Bot) and can also do voice + a live Canvas on supported platforms. The **Gateway** is the always-on control plane; the assistant is the product.
   </Accordion>
 
   <Accordion title="Value proposition">
-    OpenClaw is not "just a Claude wrapper." It's a **local-first control plane** that lets you run a
+    WineryClaw is not "just a Claude wrapper." It's a **local-first control plane** that lets you run a
     capable assistant on **your own hardware**, reachable from the chat apps you already use, with
     stateful sessions, memory, and tools - without handing control of your workflows to a hosted
     SaaS.
@@ -952,7 +952,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="What are the top five everyday use cases for OpenClaw?">
+  <Accordion title="What are the top five everyday use cases for WineryClaw?">
     Everyday wins usually look like:
 
     - **Personal briefings:** summaries of inbox, calendar, and news you care about.
@@ -963,21 +963,21 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Can OpenClaw help with lead gen, outreach, ads, and blogs for a SaaS?">
+  <Accordion title="Can WineryClaw help with lead gen, outreach, ads, and blogs for a SaaS?">
     Yes for **research, qualification, and drafting**. It can scan sites, build shortlists,
     summarize prospects, and write outreach or ad copy drafts.
 
     For **outreach or ad runs**, keep a human in the loop. Avoid spam, follow local laws and
     platform policies, and review anything before it is sent. The safest pattern is to let
-    OpenClaw draft and you approve.
+    WineryClaw draft and you approve.
 
     Docs: [Security](/gateway/security).
 
   </Accordion>
 
   <Accordion title="What are the advantages vs Claude Code for web development?">
-    OpenClaw is a **personal assistant** and coordination layer, not an IDE replacement. Use
-    Claude Code or Codex for the fastest direct coding loop inside a repo. Use OpenClaw when you
+    WineryClaw is a **personal assistant** and coordination layer, not an IDE replacement. Use
+    Claude Code or Codex for the fastest direct coding loop inside a repo. Use WineryClaw when you
     want durable memory, cross-device access, and tool orchestration.
 
     Advantages:
@@ -988,7 +988,7 @@ for usage/billing and raise limits as needed.
     - **Always-on Gateway** (run on a VPS, interact from anywhere)
     - **Nodes** for local browser/screen/camera/exec
 
-    Showcase: [https://openclaw.ai/showcase](https://openclaw.ai/showcase)
+    Showcase: [https://github.com/openclaw/openclaw](https://github.com/openclaw/openclaw)
 
   </Accordion>
 </AccordionGroup>
@@ -997,11 +997,11 @@ for usage/billing and raise limits as needed.
 
 <AccordionGroup>
   <Accordion title="How do I customize skills without keeping the repo dirty?">
-    Use managed overrides instead of editing the repo copy. Put your changes in `~/.openclaw/skills/<name>/SKILL.md` (or add a folder via `skills.load.extraDirs` in `~/.openclaw/openclaw.json`). Precedence is `<workspace>/skills` → `<workspace>/.agents/skills` → `~/.agents/skills` → `~/.openclaw/skills` → bundled → `skills.load.extraDirs`, so managed overrides still win over bundled skills without touching git. If you need the skill installed globally but only visible to some agents, keep the shared copy in `~/.openclaw/skills` and control visibility with `agents.defaults.skills` and `agents.list[].skills`. Only upstream-worthy edits should live in the repo and go out as PRs.
+    Use managed overrides instead of editing the repo copy. Put your changes in `~/.wineryclaw/skills/<name>/SKILL.md` (or add a folder via `skills.load.extraDirs` in `~/.wineryclaw/wineryclaw.json`). Precedence is `<workspace>/skills` → `<workspace>/.agents/skills` → `~/.agents/skills` → `~/.wineryclaw/skills` → bundled → `skills.load.extraDirs`, so managed overrides still win over bundled skills without touching git. If you need the skill installed globally but only visible to some agents, keep the shared copy in `~/.wineryclaw/skills` and control visibility with `agents.defaults.skills` and `agents.list[].skills`. Only upstream-worthy edits should live in the repo and go out as PRs.
   </Accordion>
 
   <Accordion title="Can I load skills from a custom folder?">
-    Yes. Add extra directories via `skills.load.extraDirs` in `~/.openclaw/openclaw.json` (lowest precedence). Default precedence is `<workspace>/skills` → `<workspace>/.agents/skills` → `~/.agents/skills` → `~/.openclaw/skills` → bundled → `skills.load.extraDirs`. `clawhub` installs into `./skills` by default, which OpenClaw treats as `<workspace>/skills` on the next session. If the skill should only be visible to certain agents, pair that with `agents.defaults.skills` or `agents.list[].skills`.
+    Yes. Add extra directories via `skills.load.extraDirs` in `~/.wineryclaw/wineryclaw.json` (lowest precedence). Default precedence is `<workspace>/skills` → `<workspace>/.agents/skills` → `~/.agents/skills` → `~/.wineryclaw/skills` → bundled → `skills.load.extraDirs`. `clawhub` installs into `./skills` by default, which WineryClaw treats as `<workspace>/skills` on the next session. If the skill should only be visible to certain agents, pair that with `agents.defaults.skills` or `agents.list[].skills`.
   </Accordion>
 
   <Accordion title="How can I use different models for different tasks?">
@@ -1054,10 +1054,10 @@ for usage/billing and raise limits as needed.
     Check the resolved requester route first:
 
     - Completion-mode subagent delivery prefers any bound thread or conversation route when one exists.
-    - If the completion origin only carries a channel, OpenClaw falls back to the requester session's stored route (`lastChannel` / `lastTo` / `lastAccountId`) so direct delivery can still succeed.
+    - If the completion origin only carries a channel, WineryClaw falls back to the requester session's stored route (`lastChannel` / `lastTo` / `lastAccountId`) so direct delivery can still succeed.
     - If neither a bound route nor a usable stored route exists, direct delivery can fail and the result falls back to queued session delivery instead of posting immediately to chat.
     - Invalid or stale targets can still force queue fallback or final delivery failure.
-    - If the child's last visible assistant reply is the exact silent token `NO_REPLY` / `no_reply`, or exactly `ANNOUNCE_SKIP`, OpenClaw intentionally suppresses the announce instead of posting stale earlier progress.
+    - If the child's last visible assistant reply is the exact silent token `NO_REPLY` / `no_reply`, or exactly `ANNOUNCE_SKIP`, WineryClaw intentionally suppresses the announce instead of posting stale earlier progress.
     - If the child timed out after only tool calls, the announce can collapse that into a short partial-progress summary instead of replaying raw tool output.
 
     Debug:
@@ -1076,7 +1076,7 @@ for usage/billing and raise limits as needed.
 
     Checklist:
 
-    - Confirm cron is enabled (`cron.enabled`) and `OPENCLAW_SKIP_CRON` is not set.
+    - Confirm cron is enabled (`cron.enabled`) and `WINERYCLAW_SKIP_CRON` is not set.
     - Check the Gateway is running 24/7 (no sleep/restarts).
     - Verify timezone settings for the job (`--tz` vs host timezone).
 
@@ -1162,12 +1162,12 @@ for usage/billing and raise limits as needed.
     Native `openclaw skills install` writes into the active workspace `skills/`
     directory. Install the separate `clawhub` CLI only if you want to publish or
     sync your own skills. For shared installs across agents, put the skill under
-    `~/.openclaw/skills` and use `agents.defaults.skills` or
+    `~/.wineryclaw/skills` and use `agents.defaults.skills` or
     `agents.list[].skills` if you want to narrow which agents can see it.
 
   </Accordion>
 
-  <Accordion title="Can OpenClaw run tasks on a schedule or continuously in the background?">
+  <Accordion title="Can WineryClaw run tasks on a schedule or continuously in the background?">
     Yes. Use the Gateway scheduler:
 
     - **Cron jobs** for scheduled or recurring tasks (persist across restarts).
@@ -1188,7 +1188,7 @@ for usage/billing and raise limits as needed.
     Run the Gateway where the macOS binaries exist, then connect from Linux in [remote mode](#gateway-ports-already-running-and-remote-mode) or over Tailscale. The skills load normally because the Gateway host is macOS.
 
     **Option B - use a macOS node (no SSH).**
-    Run the Gateway on Linux, pair a macOS node (menubar app), and set **Node Run Commands** to "Always Ask" or "Always Allow" on the Mac. OpenClaw can treat macOS-only skills as eligible when the required binaries exist on the node. The agent runs those skills via the `nodes` tool. If you choose "Always Ask", approving "Always Allow" in the prompt adds that command to the allowlist.
+    Run the Gateway on Linux, pair a macOS node (menubar app), and set **Node Run Commands** to "Always Ask" or "Always Allow" on the Mac. WineryClaw can treat macOS-only skills as eligible when the required binaries exist on the node. The agent runs those skills via the `nodes` tool. If you choose "Always Ask", approving "Always Allow" in the prompt adds that command to the allowlist.
 
     **Option C - proxy macOS binaries over SSH (advanced).**
     Keep the Gateway on Linux, but make the required CLI binaries resolve to SSH wrappers that run on a Mac. Then override the skill to allow Linux so it stays eligible.
@@ -1202,7 +1202,7 @@ for usage/billing and raise limits as needed.
        ```
 
     2. Put the wrapper on `PATH` on the Linux host (for example `~/bin/memo`).
-    3. Override the skill metadata (workspace or `~/.openclaw/skills`) to allow Linux:
+    3. Override the skill metadata (workspace or `~/.wineryclaw/skills`) to allow Linux:
 
        ```markdown
        ---
@@ -1239,11 +1239,11 @@ for usage/billing and raise limits as needed.
     openclaw skills update --all
     ```
 
-    Native installs land in the active workspace `skills/` directory. For shared skills across agents, place them in `~/.openclaw/skills/<name>/SKILL.md`. If only some agents should see a shared install, configure `agents.defaults.skills` or `agents.list[].skills`. Some skills expect binaries installed via Homebrew; on Linux that means Linuxbrew (see the Homebrew Linux FAQ entry above). See [Skills](/tools/skills), [Skills config](/tools/skills-config), and [ClawHub](/tools/clawhub).
+    Native installs land in the active workspace `skills/` directory. For shared skills across agents, place them in `~/.wineryclaw/skills/<name>/SKILL.md`. If only some agents should see a shared install, configure `agents.defaults.skills` or `agents.list[].skills`. Some skills expect binaries installed via Homebrew; on Linux that means Linuxbrew (see the Homebrew Linux FAQ entry above). See [Skills](/tools/skills), [Skills config](/tools/skills-config), and [ClawHub](/tools/clawhub).
 
   </Accordion>
 
-  <Accordion title="How do I use my existing signed-in Chrome with OpenClaw?">
+  <Accordion title="How do I use my existing signed-in Chrome with WineryClaw?">
     Use the built-in `user` browser profile, which attaches through Chrome DevTools MCP:
 
     ```bash
@@ -1280,8 +1280,8 @@ for usage/billing and raise limits as needed.
     The default image is security-first and runs as the `node` user, so it does not
     include system packages, Homebrew, or bundled browsers. For a fuller setup:
 
-    - Persist `/home/node` with `OPENCLAW_HOME_VOLUME` so caches survive.
-    - Bake system deps into the image with `OPENCLAW_DOCKER_APT_PACKAGES`.
+    - Persist `/home/node` with `WINERYCLAW_HOME_VOLUME` so caches survive.
+    - Bake system deps into the image with `WINERYCLAW_DOCKER_APT_PACKAGES`.
     - Install Playwright browsers via the bundled CLI:
       `node /app/node_modules/playwright-core/cli.js install chromium`
     - Set `PLAYWRIGHT_BROWSERS_PATH` and ensure the path is persisted.
@@ -1304,19 +1304,19 @@ for usage/billing and raise limits as needed.
   <Accordion title="How do I bind a host folder into the sandbox?">
     Set `agents.defaults.sandbox.docker.binds` to `["host:path:mode"]` (e.g., `"/home/user/src:/src:ro"`). Global + per-agent binds merge; per-agent binds are ignored when `scope: "shared"`. Use `:ro` for anything sensitive and remember binds bypass the sandbox filesystem walls.
 
-    OpenClaw validates bind sources against both the normalized path and the canonical path resolved through the deepest existing ancestor. That means symlink-parent escapes still fail closed even when the last path segment does not exist yet, and allowed-root checks still apply after symlink resolution.
+    WineryClaw validates bind sources against both the normalized path and the canonical path resolved through the deepest existing ancestor. That means symlink-parent escapes still fail closed even when the last path segment does not exist yet, and allowed-root checks still apply after symlink resolution.
 
     See [Sandboxing](/gateway/sandboxing#custom-bind-mounts) and [Sandbox vs Tool Policy vs Elevated](/gateway/sandbox-vs-tool-policy-vs-elevated#bind-mounts-security-quick-check) for examples and safety notes.
 
   </Accordion>
 
   <Accordion title="How does memory work?">
-    OpenClaw memory is just Markdown files in the agent workspace:
+    WineryClaw memory is just Markdown files in the agent workspace:
 
     - Daily notes in `memory/YYYY-MM-DD.md`
     - Curated long-term notes in `MEMORY.md` (main/private sessions only)
 
-    OpenClaw also runs a **silent pre-compaction memory flush** to remind the model
+    WineryClaw also runs a **silent pre-compaction memory flush** to remind the model
     to write durable notes before auto-compaction. This only runs when the workspace
     is writable (read-only sandboxes skip it). See [Memory](/concepts/memory).
 
@@ -1350,12 +1350,12 @@ for usage/billing and raise limits as needed.
     Codex CLI login)** does not help for semantic memory search. OpenAI embeddings
     still need a real API key (`OPENAI_API_KEY` or `models.providers.openai.apiKey`).
 
-    If you don't set a provider explicitly, OpenClaw auto-selects a provider when it
+    If you don't set a provider explicitly, WineryClaw auto-selects a provider when it
     can resolve an API key (auth profiles, `models.providers.*.apiKey`, or env vars).
     It prefers OpenAI if an OpenAI key resolves, otherwise Gemini if a Gemini key
     resolves, then Voyage, then Mistral. If no remote key is available, memory
     search stays disabled until you configure it. If you have a local model path
-    configured and present, OpenClaw
+    configured and present, WineryClaw
     prefers `local`. Ollama is supported when you explicitly set
     `memorySearch.provider = "ollama"`.
 
@@ -1371,8 +1371,8 @@ for usage/billing and raise limits as needed.
 ## Where things live on disk
 
 <AccordionGroup>
-  <Accordion title="Is all data used with OpenClaw saved locally?">
-    No - **OpenClaw's state is local**, but **external services still see what you send them**.
+  <Accordion title="Is all data used with WineryClaw saved locally?">
+    No - **WineryClaw's state is local**, but **external services still see what you send them**.
 
     - **Local by default:** sessions, memory files, config, and workspace live on the Gateway host
       (`~/.openclaw` + your workspace directory).
@@ -1386,24 +1386,24 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Where does OpenClaw store its data?">
-    Everything lives under `$OPENCLAW_STATE_DIR` (default: `~/.openclaw`):
+  <Accordion title="Where does WineryClaw store its data?">
+    Everything lives under `$WINERYCLAW_STATE_DIR` (default: `~/.openclaw`):
 
     | Path                                                            | Purpose                                                            |
     | --------------------------------------------------------------- | ------------------------------------------------------------------ |
-    | `$OPENCLAW_STATE_DIR/openclaw.json`                             | Main config (JSON5)                                                |
-    | `$OPENCLAW_STATE_DIR/credentials/oauth.json`                    | Legacy OAuth import (copied into auth profiles on first use)       |
-    | `$OPENCLAW_STATE_DIR/agents/<agentId>/agent/auth-profiles.json` | Auth profiles (OAuth, API keys, and optional `keyRef`/`tokenRef`)  |
-    | `$OPENCLAW_STATE_DIR/secrets.json`                              | Optional file-backed secret payload for `file` SecretRef providers |
-    | `$OPENCLAW_STATE_DIR/agents/<agentId>/agent/auth.json`          | Legacy compatibility file (static `api_key` entries scrubbed)      |
-    | `$OPENCLAW_STATE_DIR/credentials/`                              | Provider state (e.g. `whatsapp/<accountId>/creds.json`)            |
-    | `$OPENCLAW_STATE_DIR/agents/`                                   | Per-agent state (agentDir + sessions)                              |
-    | `$OPENCLAW_STATE_DIR/agents/<agentId>/sessions/`                | Conversation history & state (per agent)                           |
-    | `$OPENCLAW_STATE_DIR/agents/<agentId>/sessions/sessions.json`   | Session metadata (per agent)                                       |
+    | `$WINERYCLAW_STATE_DIR/wineryclaw.json`                             | Main config (JSON5)                                                |
+    | `$WINERYCLAW_STATE_DIR/credentials/oauth.json`                    | Legacy OAuth import (copied into auth profiles on first use)       |
+    | `$WINERYCLAW_STATE_DIR/agents/<agentId>/agent/auth-profiles.json` | Auth profiles (OAuth, API keys, and optional `keyRef`/`tokenRef`)  |
+    | `$WINERYCLAW_STATE_DIR/secrets.json`                              | Optional file-backed secret payload for `file` SecretRef providers |
+    | `$WINERYCLAW_STATE_DIR/agents/<agentId>/agent/auth.json`          | Legacy compatibility file (static `api_key` entries scrubbed)      |
+    | `$WINERYCLAW_STATE_DIR/credentials/`                              | Provider state (e.g. `whatsapp/<accountId>/creds.json`)            |
+    | `$WINERYCLAW_STATE_DIR/agents/`                                   | Per-agent state (agentDir + sessions)                              |
+    | `$WINERYCLAW_STATE_DIR/agents/<agentId>/sessions/`                | Conversation history & state (per agent)                           |
+    | `$WINERYCLAW_STATE_DIR/agents/<agentId>/sessions/sessions.json`   | Session metadata (per agent)                                       |
 
-    Legacy single-agent path: `~/.openclaw/agent/*` (migrated by `openclaw doctor`).
+    Legacy single-agent path: `~/.wineryclaw/agent/*` (migrated by `openclaw doctor`).
 
-    Your **workspace** (AGENTS.md, memory files, skills, etc.) is separate and configured via `agents.defaults.workspace` (default: `~/.openclaw/workspace`).
+    Your **workspace** (AGENTS.md, memory files, skills, etc.) is separate and configured via `agents.defaults.workspace` (default: `~/.wineryclaw/workspace`).
 
   </Accordion>
 
@@ -1414,13 +1414,13 @@ for usage/billing and raise limits as needed.
       `MEMORY.md` (or legacy fallback `memory.md` when `MEMORY.md` is absent),
       `memory/YYYY-MM-DD.md`, optional `HEARTBEAT.md`.
     - **State dir (`~/.openclaw`)**: config, channel/provider state, auth profiles, sessions, logs,
-      and shared skills (`~/.openclaw/skills`).
+      and shared skills (`~/.wineryclaw/skills`).
 
-    Default workspace is `~/.openclaw/workspace`, configurable via:
+    Default workspace is `~/.wineryclaw/workspace`, configurable via:
 
     ```json5
     {
-      agents: { defaults: { workspace: "~/.openclaw/workspace" } },
+      agents: { defaults: { workspace: "~/.wineryclaw/workspace" } },
     }
     ```
 
@@ -1448,7 +1448,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="How do I completely uninstall OpenClaw?">
+  <Accordion title="How do I completely uninstall WineryClaw?">
     See the dedicated guide: [Uninstall](/install/uninstall).
   </Accordion>
 
@@ -1458,7 +1458,7 @@ for usage/billing and raise limits as needed.
     host locations unless sandboxing is enabled. If you need isolation, use
     [`agents.defaults.sandbox`](/gateway/sandboxing) or per-agent sandbox settings. If you
     want a repo to be the default working directory, point that agent's
-    `workspace` to the repo root. The OpenClaw repo is just source code; keep the
+    `workspace` to the repo root. The WineryClaw repo is just source code; keep the
     workspace separate unless you intentionally want the agent to work inside it.
 
     Example (repo as default cwd):
@@ -1484,13 +1484,13 @@ for usage/billing and raise limits as needed.
 
 <AccordionGroup>
   <Accordion title="What format is the config? Where is it?">
-    OpenClaw reads an optional **JSON5** config from `$OPENCLAW_CONFIG_PATH` (default: `~/.openclaw/openclaw.json`):
+    WineryClaw reads an optional **JSON5** config from `$WINERYCLAW_CONFIG_PATH` (default: `~/.wineryclaw/wineryclaw.json`):
 
     ```
-    $OPENCLAW_CONFIG_PATH
+    $WINERYCLAW_CONFIG_PATH
     ```
 
-    If the file is missing, it uses safe-ish defaults (including a default workspace of `~/.openclaw/workspace`).
+    If the file is missing, it uses safe-ish defaults (including a default workspace of `~/.wineryclaw/workspace`).
 
   </Accordion>
 
@@ -1516,7 +1516,7 @@ for usage/billing and raise limits as needed.
 
     - `gateway.remote.token` / `.password` do **not** enable local gateway auth by themselves.
     - Local call paths can use `gateway.remote.*` as fallback only when `gateway.auth.*` is unset.
-    - For password auth, set `gateway.auth.mode: "password"` plus `gateway.auth.password` (or `OPENCLAW_GATEWAY_PASSWORD`) instead.
+    - For password auth, set `gateway.auth.mode: "password"` plus `gateway.auth.password` (or `WINERYCLAW_GATEWAY_PASSWORD`) instead.
     - If `gateway.auth.token` / `gateway.auth.password` is explicitly configured via SecretRef and unresolved, resolution fails closed (no remote fallback masking).
     - Shared-secret Control UI setups authenticate via `connect.params.auth.token` or `connect.params.auth.password` (stored in app/UI settings). Identity-bearing modes such as Tailscale Serve or `trusted-proxy` use request headers instead. Avoid putting shared secrets in URLs.
     - With `gateway.auth.mode: "trusted-proxy"`, same-host loopback reverse proxies still do **not** satisfy trusted-proxy auth. The trusted proxy must be a configured non-loopback source.
@@ -1524,7 +1524,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="Why do I need a token on localhost now?">
-    OpenClaw enforces gateway auth by default, including loopback. In the normal default path that means token auth: if no explicit auth path is configured, gateway startup resolves to token mode and auto-generates one, saving it to `gateway.auth.token`, so **local WS clients must authenticate**. This blocks other local processes from calling the Gateway.
+    WineryClaw enforces gateway auth by default, including loopback. In the normal default path that means token auth: if no explicit auth path is configured, gateway startup resolves to token mode and auto-generates one, saving it to `gateway.auth.token`, so **local WS clients must authenticate**. This blocks other local processes from calling the Gateway.
 
     If you prefer a different auth path, you can explicitly choose password mode (or, for non-loopback identity-aware reverse proxies, `trusted-proxy`). If you **really** want open loopback, set `gateway.auth.mode: "none"` explicitly in your config. Doctor can generate a token for you any time: `openclaw doctor --generate-gateway-token`.
 
@@ -1552,9 +1552,9 @@ for usage/billing and raise limits as needed.
     ```
 
     - `off`: hides tagline text but keeps the banner title/version line.
-    - `default`: uses `All your chats, one OpenClaw.` every time.
+    - `default`: uses `All your chats, one WineryClaw.` every time.
     - `random`: rotating funny/seasonal taglines (default behavior).
-    - If you want no banner at all, set env `OPENCLAW_HIDE_BANNER=1`.
+    - If you want no banner at all, set env `WINERYCLAW_HIDE_BANNER=1`.
 
   </Accordion>
 
@@ -1618,8 +1618,8 @@ for usage/billing and raise limits as needed.
 
     - If you use allowlists, add `web_search`/`web_fetch`/`x_search` or `group:web`.
     - `web_fetch` is enabled by default (unless explicitly disabled).
-    - If `tools.web.fetch.provider` is omitted, OpenClaw auto-detects the first ready fetch fallback provider from available credentials. Today the bundled provider is Firecrawl.
-    - Daemons read env vars from `~/.openclaw/.env` (or the service environment).
+    - If `tools.web.fetch.provider` is omitted, WineryClaw auto-detects the first ready fetch fallback provider from available credentials. Today the bundled provider is Firecrawl.
+    - Daemons read env vars from `~/.wineryclaw/.env` (or the service environment).
 
     Docs: [Web tools](/tools/web).
 
@@ -1631,7 +1631,7 @@ for usage/billing and raise limits as needed.
 
     Recover:
 
-    - Restore from backup (git or a copied `~/.openclaw/openclaw.json`).
+    - Restore from backup (git or a copied `~/.wineryclaw/wineryclaw.json`).
     - If you have no backup, re-run `openclaw doctor` and reconfigure channels/models.
     - If this was unexpected, file a bug and include your last known config or any backup.
     - A local coding agent can often reconstruct a working config from logs or history.
@@ -1661,7 +1661,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Can the OpenClaw browser run headless?">
+  <Accordion title="Can the WineryClaw browser run headless?">
     Yes. It's a config option:
 
     ```json5
@@ -1748,7 +1748,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Can two OpenClaw instances talk to each other (local + VPS)?">
+  <Accordion title="Can two WineryClaw instances talk to each other (local + VPS)?">
     Yes. There is no built-in "bot-to-bot" bridge, but you can wire it up in a few
     reliable ways:
 
@@ -1825,7 +1825,7 @@ for usage/billing and raise limits as needed.
   <Accordion title="Minimal sane config for a first install">
     ```json5
     {
-      agents: { defaults: { workspace: "~/.openclaw/workspace" } },
+      agents: { defaults: { workspace: "~/.wineryclaw/workspace" } },
       channels: { whatsapp: { allowFrom: ["+15555550123"] } },
     }
     ```
@@ -1896,11 +1896,11 @@ for usage/billing and raise limits as needed.
 ## Env vars and .env loading
 
 <AccordionGroup>
-  <Accordion title="How does OpenClaw load environment variables?">
-    OpenClaw reads env vars from the parent process (shell, launchd/systemd, CI, etc.) and additionally loads:
+  <Accordion title="How does WineryClaw load environment variables?">
+    WineryClaw reads env vars from the parent process (shell, launchd/systemd, CI, etc.) and additionally loads:
 
     - `.env` from the current working directory
-    - a global fallback `.env` from `~/.openclaw/.env` (aka `$OPENCLAW_STATE_DIR/.env`)
+    - a global fallback `.env` from `~/.wineryclaw/.env` (aka `$WINERYCLAW_STATE_DIR/.env`)
 
     Neither `.env` file overrides existing env vars.
 
@@ -1922,7 +1922,7 @@ for usage/billing and raise limits as needed.
   <Accordion title="I started the Gateway via the service and my env vars disappeared. What now?">
     Two common fixes:
 
-    1. Put the missing keys in `~/.openclaw/.env` so they're picked up even when the service doesn't inherit your shell env.
+    1. Put the missing keys in `~/.wineryclaw/.env` so they're picked up even when the service doesn't inherit your shell env.
     2. Enable shell import (opt-in convenience):
 
     ```json5
@@ -1937,19 +1937,19 @@ for usage/billing and raise limits as needed.
     ```
 
     This runs your login shell and imports only missing expected keys (never overrides). Env var equivalents:
-    `OPENCLAW_LOAD_SHELL_ENV=1`, `OPENCLAW_SHELL_ENV_TIMEOUT_MS=15000`.
+    `WINERYCLAW_LOAD_SHELL_ENV=1`, `WINERYCLAW_SHELL_ENV_TIMEOUT_MS=15000`.
 
   </Accordion>
 
   <Accordion title='I set COPILOT_GITHUB_TOKEN, but models status shows "Shell env: off." Why?'>
     `openclaw models status` reports whether **shell env import** is enabled. "Shell env: off"
-    does **not** mean your env vars are missing - it just means OpenClaw won't load
+    does **not** mean your env vars are missing - it just means WineryClaw won't load
     your login shell automatically.
 
     If the Gateway runs as a service (launchd/systemd), it won't inherit your shell
     environment. Fix by doing one of these:
 
-    1. Put the token in `~/.openclaw/.env`:
+    1. Put the token in `~/.wineryclaw/.env`:
 
        ```
        COPILOT_GITHUB_TOKEN=...
@@ -1993,7 +1993,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Is there a way to make a team of OpenClaw instances (one CEO and many agents)?">
+  <Accordion title="Is there a way to make a team of WineryClaw instances (one CEO and many agents)?">
     Yes, via **multi-agent routing** and **sub-agents**. You can create one coordinator
     agent and several worker agents with their own workspaces and models.
 
@@ -2020,7 +2020,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="How do I completely reset OpenClaw but keep it installed?">
+  <Accordion title="How do I completely reset WineryClaw but keep it installed?">
     Use the reset command:
 
     ```bash
@@ -2042,7 +2042,7 @@ for usage/billing and raise limits as needed.
     Notes:
 
     - Onboarding also offers **Reset** if it sees an existing config. See [Onboarding (CLI)](/start/wizard).
-    - If you used profiles (`--profile` / `OPENCLAW_PROFILE`), reset each state dir (defaults are `~/.openclaw-<profile>`).
+    - If you used profiles (`--profile` / `WINERYCLAW_PROFILE`), reset each state dir (defaults are `~/.openclaw-<profile>`).
     - Dev reset: `openclaw gateway --dev --reset` (dev-only; wipes dev config + credentials + sessions + workspace).
 
   </Accordion>
@@ -2099,7 +2099,7 @@ for usage/billing and raise limits as needed.
     ```
 
     If `HEARTBEAT.md` exists but is effectively empty (only blank lines and markdown
-    headers like `# Heading`), OpenClaw skips the heartbeat run to save API calls.
+    headers like `# Heading`), WineryClaw skips the heartbeat run to save API calls.
     If the file is missing, the heartbeat still runs and the model decides what to do.
 
     Per-agent overrides use `agents.list[].heartbeat`. Docs: [Heartbeat](/gateway/heartbeat).
@@ -2107,7 +2107,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title='Do I need to add a "bot account" to a WhatsApp group?'>
-    No. OpenClaw runs on **your own account**, so if you're in the group, OpenClaw can see it.
+    No. WineryClaw runs on **your own account**, so if you're in the group, WineryClaw can see it.
     By default, group replies are blocked until you allow senders (`groupPolicy: "allowlist"`).
 
     If you want only **you** to be able to trigger group replies:
@@ -2145,7 +2145,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="Why does OpenClaw not reply in a group?">
+  <Accordion title="Why does WineryClaw not reply in a group?">
     Two common causes:
 
     - Mention gating is on (default). You must @mention the bot (or match `mentionPatterns`).
@@ -2162,7 +2162,7 @@ for usage/billing and raise limits as needed.
   <Accordion title="How many workspaces and agents can I create?">
     No hard limits. Dozens (even hundreds) are fine, but watch for:
 
-    - **Disk growth:** sessions + transcripts live under `~/.openclaw/agents/<agentId>/sessions/`.
+    - **Disk growth:** sessions + transcripts live under `~/.wineryclaw/agents/<agentId>/sessions/`.
     - **Token cost:** more agents means more concurrent model usage.
     - **Ops overhead:** per-agent auth profiles, workspaces, and channel routing.
 
@@ -2199,13 +2199,13 @@ for usage/billing and raise limits as needed.
 
 <AccordionGroup>
   <Accordion title='What is the "default model"?'>
-    OpenClaw's default model is whatever you set as:
+    WineryClaw's default model is whatever you set as:
 
     ```
     agents.defaults.model.primary
     ```
 
-    Models are referenced as `provider/model` (example: `openai/gpt-5.4`). If you omit the provider, OpenClaw first tries an alias, then a unique configured-provider match for that exact model id, and only then falls back to the configured default provider as a deprecated compatibility path. If that provider no longer exposes the configured default model, OpenClaw falls back to the first configured provider/model instead of surfacing a stale removed-provider default. You should still **explicitly** set `provider/model`.
+    Models are referenced as `provider/model` (example: `openai/gpt-5.4`). If you omit the provider, WineryClaw first tries an alias, then a unique configured-provider match for that exact model id, and only then falls back to the configured default provider as a deprecated compatibility path. If that provider no longer exposes the configured default model, WineryClaw falls back to the first configured provider/model instead of surfacing a stale removed-provider default. You should still **explicitly** set `provider/model`.
 
   </Accordion>
 
@@ -2237,7 +2237,7 @@ for usage/billing and raise limits as needed.
     - `/model` in chat (quick, per-session)
     - `openclaw models set ...` (updates just model config)
     - `openclaw configure --section model` (interactive)
-    - edit `agents.defaults.model` in `~/.openclaw/openclaw.json`
+    - edit `agents.defaults.model` in `~/.wineryclaw/wineryclaw.json`
 
     Avoid `config.apply` with a partial object unless you intend to replace the whole config.
     For RPC edits, inspect with `config.schema.lookup` first and prefer `config.patch`. The lookup payload gives you the normalized path, shallow schema docs/constraints, and immediate child summaries.
@@ -2275,7 +2275,7 @@ for usage/billing and raise limits as needed.
 
   </Accordion>
 
-  <Accordion title="What do OpenClaw, Flawd, and Krill use for models?">
+  <Accordion title="What do WineryClaw, Flawd, and Krill use for models?">
     - These deployments can differ and may change over time; there is no fixed provider recommendation.
     - Check the current runtime setting on each gateway with `openclaw models status`.
     - For security-sensitive/tool-enabled agents, use the strongest latest-generation model available.
@@ -2393,7 +2393,7 @@ for usage/billing and raise limits as needed.
 
     Fix checklist:
 
-    1. Upgrade to a current OpenClaw release (or run from source `main`), then restart the gateway.
+    1. Upgrade to a current WineryClaw release (or run from source `main`), then restart the gateway.
     2. Make sure MiniMax is configured (wizard or JSON), or that MiniMax auth
        exists in env/auth profiles so the matching provider can be injected
        (`MINIMAX_API_KEY` for `minimax`, `MINIMAX_OAUTH_TOKEN` or stored MiniMax
@@ -2452,7 +2452,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="Are opus / sonnet / gpt built-in shortcuts?">
-    Yes. OpenClaw ships a few default shorthands (only applied when the model exists in `agents.defaults.models`):
+    Yes. WineryClaw ships a few default shorthands (only applied when the model exists in `agents.defaults.models`):
 
     - `opus` → `anthropic/claude-opus-4-6`
     - `sonnet` → `anthropic/claude-sonnet-4-6`
@@ -2526,7 +2526,7 @@ for usage/billing and raise limits as needed.
     stored in:
 
     ```
-    ~/.openclaw/agents/<agentId>/agent/auth-profiles.json
+    ~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json
     ```
 
     Fix options:
@@ -2548,9 +2548,9 @@ for usage/billing and raise limits as needed.
     1. **Auth profile rotation** within the same provider.
     2. **Model fallback** to the next model in `agents.defaults.model.fallbacks`.
 
-    Cooldowns apply to failing profiles (exponential backoff), so OpenClaw can keep responding even when a provider is rate-limited or temporarily failing.
+    Cooldowns apply to failing profiles (exponential backoff), so WineryClaw can keep responding even when a provider is rate-limited or temporarily failing.
 
-    The rate-limit bucket includes more than plain `429` responses. OpenClaw
+    The rate-limit bucket includes more than plain `429` responses. WineryClaw
     also treats messages like `Too many concurrent requests`,
     `ThrottlingException`, `concurrency limit reached`,
     `workers_ai ... quota limit exceeded`, `resource exhausted`, and periodic
@@ -2559,12 +2559,12 @@ for usage/billing and raise limits as needed.
 
     Some billing-looking responses are not `402`, and some HTTP `402`
     responses also stay in that transient bucket. If a provider returns
-    explicit billing text on `401` or `403`, OpenClaw can still keep that in
+    explicit billing text on `401` or `403`, WineryClaw can still keep that in
     the billing lane, but provider-specific text matchers stay scoped to the
     provider that owns them (for example OpenRouter `Key limit exceeded`). If a `402`
     message instead looks like a retryable usage-window or
     organization/workspace spend limit (`daily limit reached, resets tomorrow`,
-    `organization spending limit exceeded`), OpenClaw treats it as
+    `organization spending limit exceeded`), WineryClaw treats it as
     `rate_limit`, not a long billing disable.
 
     Context-overflow errors are different: signatures such as
@@ -2575,7 +2575,7 @@ for usage/billing and raise limits as needed.
     fallback.
 
     Generic server-error text is intentionally narrower than "anything with
-    unknown/error in it". OpenClaw does treat provider-scoped transient shapes
+    unknown/error in it". WineryClaw does treat provider-scoped transient shapes
     such as Anthropic bare `An unknown error occurred`, OpenRouter bare
     `Provider returned error`, stop-reason errors like `Unhandled stop reason:
     error`, JSON `api_error` payloads with transient server text
@@ -2594,10 +2594,10 @@ for usage/billing and raise limits as needed.
     **Fix checklist:**
 
     - **Confirm where auth profiles live** (new vs legacy paths)
-      - Current: `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
-      - Legacy: `~/.openclaw/agent/*` (migrated by `openclaw doctor`)
+      - Current: `~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json`
+      - Legacy: `~/.wineryclaw/agent/*` (migrated by `openclaw doctor`)
     - **Confirm your env var is loaded by the Gateway**
-      - If you set `ANTHROPIC_API_KEY` in your shell but run the Gateway via systemd/launchd, it may not inherit it. Put it in `~/.openclaw/.env` or enable `env.shellEnv`.
+      - If you set `ANTHROPIC_API_KEY` in your shell but run the Gateway via systemd/launchd, it may not inherit it. Put it in `~/.wineryclaw/.env` or enable `env.shellEnv`.
     - **Make sure you're editing the correct agent**
       - Multi-agent setups mean there can be multiple `auth-profiles.json` files.
     - **Sanity-check model/auth status**
@@ -2611,7 +2611,7 @@ for usage/billing and raise limits as needed.
     - **Use Claude CLI**
       - Run `openclaw models auth login --provider anthropic --method cli --set-default` on the gateway host.
     - **If you want to use an API key instead**
-      - Put `ANTHROPIC_API_KEY` in `~/.openclaw/.env` on the **gateway host**.
+      - Put `ANTHROPIC_API_KEY` in `~/.wineryclaw/.env` on the **gateway host**.
       - Clear any pinned order that forces a missing profile:
 
         ```bash
@@ -2624,7 +2624,7 @@ for usage/billing and raise limits as needed.
   </Accordion>
 
   <Accordion title="Why did it also try Google Gemini and fail?">
-    If your model config includes Google Gemini as a fallback (or you switched to a Gemini shorthand), OpenClaw will try it during model fallback. If you haven't configured Google credentials, you'll see `No API key found for provider "google"`.
+    If your model config includes Google Gemini as a fallback (or you switched to a Gemini shorthand), WineryClaw will try it during model fallback. If you haven't configured Google credentials, you'll see `No API key found for provider "google"`.
 
     Fix: either provide Google auth, or remove/avoid Google models in `agents.defaults.model.fallbacks` / aliases so fallback doesn't route there.
 
@@ -2633,7 +2633,7 @@ for usage/billing and raise limits as needed.
     Cause: the session history contains **thinking blocks without signatures** (often from
     an aborted/partial stream). Google Antigravity requires signatures for thinking blocks.
 
-    Fix: OpenClaw now strips unsigned thinking blocks for Google Antigravity Claude. If it still appears, start a **new session** or set `/thinking off` for that agent.
+    Fix: WineryClaw now strips unsigned thinking blocks for Google Antigravity Claude. If it still appears, start a **new session** or set `/thinking off` for that agent.
 
   </Accordion>
 </AccordionGroup>
@@ -2647,13 +2647,13 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
     An auth profile is a named credential record (OAuth or API key) tied to a provider. Profiles live in:
 
     ```
-    ~/.openclaw/agents/<agentId>/agent/auth-profiles.json
+    ~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json
     ```
 
   </Accordion>
 
   <Accordion title="What are typical profile IDs?">
-    OpenClaw uses provider-prefixed IDs like:
+    WineryClaw uses provider-prefixed IDs like:
 
     - `anthropic:default` (common when no email identity exists)
     - `anthropic:<email>` for OAuth identities
@@ -2664,7 +2664,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
   <Accordion title="Can I control which auth profile is tried first?">
     Yes. Config supports optional metadata for profiles and an ordering per provider (`auth.order.<provider>`). This does **not** store secrets; it maps IDs to provider/mode and sets rotation order.
 
-    OpenClaw may temporarily skip a profile if it's in a short **cooldown** (rate limits/timeouts/auth failures) or a longer **disabled** state (billing/insufficient credits). To inspect this, run `openclaw models status --json` and check `auth.unusableProfiles`. Tuning: `auth.cooldowns.billingBackoffHours*`.
+    WineryClaw may temporarily skip a profile if it's in a short **cooldown** (rate limits/timeouts/auth failures) or a longer **disabled** state (billing/insufficient credits). To inspect this, run `openclaw models status --json` and check `auth.unusableProfiles`. Tuning: `auth.cooldowns.billingBackoffHours*`.
 
     Rate-limit cooldowns can be model-scoped. A profile that is cooling down
     for one model can still be usable for a sibling model on the same provider,
@@ -2704,7 +2704,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
   </Accordion>
 
   <Accordion title="OAuth vs API key - what is the difference?">
-    OpenClaw supports both:
+    WineryClaw supports both:
 
     - **OAuth** often leverages subscription access (where applicable).
     - **API keys** use pay-per-token billing.
@@ -2723,7 +2723,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
     Precedence:
 
     ```
-    --port > OPENCLAW_GATEWAY_PORT > gateway.port > default 18789
+    --port > WINERYCLAW_GATEWAY_PORT > gateway.port > default 18789
     ```
 
   </Accordion>
@@ -2740,7 +2740,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
   </Accordion>
 
   <Accordion title='Why does openclaw gateway status show "Config (cli)" and "Config (service)" different?'>
-    You're editing one config file while the service is running another (often a `--profile` / `OPENCLAW_STATE_DIR` mismatch).
+    You're editing one config file while the service is running another (often a `--profile` / `WINERYCLAW_STATE_DIR` mismatch).
 
     Fix:
 
@@ -2753,13 +2753,13 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
   </Accordion>
 
   <Accordion title='What does "another gateway instance is already listening" mean?'>
-    OpenClaw enforces a runtime lock by binding the WebSocket listener immediately on startup (default `ws://127.0.0.1:18789`). If the bind fails with `EADDRINUSE`, it throws `GatewayLockError` indicating another instance is already listening.
+    WineryClaw enforces a runtime lock by binding the WebSocket listener immediately on startup (default `ws://127.0.0.1:18789`). If the bind fails with `EADDRINUSE`, it throws `GatewayLockError` indicating another instance is already listening.
 
     Fix: stop the other instance, free the port, or run with `openclaw gateway --port <port>`.
 
   </Accordion>
 
-  <Accordion title="How do I run OpenClaw in remote mode (client connects to a Gateway elsewhere)?">
+  <Accordion title="How do I run WineryClaw in remote mode (client connects to a Gateway elsewhere)?">
     Set `gateway.mode: "remote"` and point to a remote WebSocket URL, optionally with shared-secret remote credentials:
 
     ```json5
@@ -2799,7 +2799,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
     - Fastest: `openclaw dashboard` (prints + copies the dashboard URL, tries to open; shows SSH hint if headless).
     - If you don't have a token yet: `openclaw doctor --generate-gateway-token`.
     - If remote, tunnel first: `ssh -N -L 18789:127.0.0.1:18789 user@host` then open `http://127.0.0.1:18789/`.
-    - Shared-secret mode: set `gateway.auth.token` / `OPENCLAW_GATEWAY_TOKEN` or `gateway.auth.password` / `OPENCLAW_GATEWAY_PASSWORD`, then paste the matching secret in Control UI settings.
+    - Shared-secret mode: set `gateway.auth.token` / `WINERYCLAW_GATEWAY_TOKEN` or `gateway.auth.password` / `WINERYCLAW_GATEWAY_PASSWORD`, then paste the matching secret in Control UI settings.
     - Tailscale Serve mode: make sure `gateway.auth.allowTailscale` is enabled and you are opening the Serve URL, not a raw loopback/tailnet URL that bypasses Tailscale identity headers.
     - Trusted-proxy mode: make sure you are coming through the configured non-loopback identity-aware proxy, not a same-host loopback proxy or raw gateway URL.
     - If mismatch persists after the one retry, rotate/re-approve the paired device token:
@@ -2829,8 +2829,8 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 
     Yes, but you must isolate:
 
-    - `OPENCLAW_CONFIG_PATH` (per-instance config)
-    - `OPENCLAW_STATE_DIR` (per-instance state)
+    - `WINERYCLAW_CONFIG_PATH` (per-instance config)
+    - `WINERYCLAW_STATE_DIR` (per-instance state)
     - `agents.defaults.workspace` (workspace isolation)
     - `gateway.port` (unique ports)
 
@@ -2840,7 +2840,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
     - Set a unique `gateway.port` in each profile config (or pass `--port` for manual runs).
     - Install a per-profile service: `openclaw --profile <name> gateway install`.
 
-    Profiles also suffix service names (`ai.openclaw.<profile>`; legacy `com.openclaw.*`, `openclaw-gateway-<profile>.service`, `OpenClaw Gateway (<profile>)`).
+    Profiles also suffix service names (`ai.openclaw.<profile>`; legacy `com.openclaw.*`, `openclaw-gateway-<profile>.service`, `WineryClaw Gateway (<profile>)`).
     Full guide: [Multiple gateways](/gateway/multiple-gateways).
 
   </Accordion>
@@ -2893,9 +2893,9 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 
     Service/supervisor logs (when the gateway runs via launchd/systemd):
 
-    - macOS: `$OPENCLAW_STATE_DIR/logs/gateway.log` and `gateway.err.log` (default: `~/.openclaw/logs/...`; profiles use `~/.openclaw-<profile>/logs/...`)
+    - macOS: `$WINERYCLAW_STATE_DIR/logs/gateway.log` and `gateway.err.log` (default: `~/.wineryclaw/logs/...`; profiles use `~/.openclaw-<profile>/logs/...`)
     - Linux: `journalctl --user -u openclaw-gateway[-<profile>].service -n 200 --no-pager`
-    - Windows: `schtasks /Query /TN "OpenClaw Gateway (<profile>)" /V /FO LIST`
+    - Windows: `schtasks /Query /TN "WineryClaw Gateway (<profile>)" /V /FO LIST`
 
     See [Troubleshooting](/gateway/troubleshooting) for more.
 
@@ -2913,7 +2913,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 
   </Accordion>
 
-  <Accordion title="I closed my terminal on Windows - how do I restart OpenClaw?">
+  <Accordion title="I closed my terminal on Windows - how do I restart WineryClaw?">
     There are **two Windows install modes**:
 
     **1) WSL2 (recommended):** the Gateway runs inside Linux.
@@ -3002,7 +3002,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 
     Then match the error:
 
-    - `BOT_COMMANDS_TOO_MUCH`: the Telegram menu has too many entries. OpenClaw already trims to the Telegram limit and retries with fewer commands, but some menu entries still need to be dropped. Reduce plugin/skill/custom commands, or disable `channels.telegram.commands.native` if you do not need the menu.
+    - `BOT_COMMANDS_TOO_MUCH`: the Telegram menu has too many entries. WineryClaw already trims to the Telegram limit and retries with fewer commands, but some menu entries still need to be dropped. Reduce plugin/skill/custom commands, or disable `channels.telegram.commands.native` if you do not need the menu.
     - `TypeError: fetch failed`, `Network request for 'setMyCommands' failed!`, or similar network errors: if you are on a VPS or behind a proxy, confirm outbound HTTPS is allowed and DNS works for `api.telegram.org`.
 
     If the Gateway is remote, make sure you are looking at logs on the Gateway host.
@@ -3066,7 +3066,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 
 <AccordionGroup>
   <Accordion title="My skill generated an image/PDF, but nothing was sent">
-    Outbound attachments from the agent must include a `MEDIA:<path-or-url>` line (on its own line). See [OpenClaw assistant setup](/start/openclaw) and [Agent send](/tools/agent-send).
+    Outbound attachments from the agent must include a `MEDIA:<path-or-url>` line (on its own line). See [WineryClaw assistant setup](/start/openclaw) and [Agent send](/tools/agent-send).
 
     CLI sending:
 
@@ -3089,7 +3089,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 ## Security and access control
 
 <AccordionGroup>
-  <Accordion title="Is it safe to expose OpenClaw to inbound DMs?">
+  <Accordion title="Is it safe to expose WineryClaw to inbound DMs?">
     Treat inbound DMs as untrusted input. Defaults are designed to reduce risk:
 
     - Default behavior on DM-capable channels is **pairing**:
@@ -3169,7 +3169,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
   </Accordion>
 
   <Accordion title="WhatsApp: will it message my contacts? How does pairing work?">
-    No. Default WhatsApp DM policy is **pairing**. Unknown senders only get a pairing code and their message is **not processed**. OpenClaw only replies to chats it receives or to explicit sends you trigger.
+    No. Default WhatsApp DM policy is **pairing**. Unknown senders only get a pairing code and their message is **not processed**. WineryClaw only replies to chats it receives or to explicit sends you trigger.
 
     Approve pairing with:
 
@@ -3251,7 +3251,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
   </Accordion>
 
   <Accordion title='How do I send a Discord message from Telegram? ("Cross-context messaging denied")'>
-    OpenClaw blocks **cross-provider** messaging by default. If a tool call is bound
+    WineryClaw blocks **cross-provider** messaging by default. If a tool call is bound
     to Telegram, it won't send to Discord unless you explicitly allow it.
 
     Enable cross-provider messaging for the agent:
@@ -3291,7 +3291,7 @@ Related: [/concepts/oauth](/concepts/oauth) (OAuth flows, token storage, multi-a
 
 <AccordionGroup>
   <Accordion title='What is the default model for Anthropic with an API key?'>
-    In OpenClaw, credentials and model selection are separate. Setting `ANTHROPIC_API_KEY` (or storing an Anthropic API key in auth profiles) enables authentication, but the actual default model is whatever you configure in `agents.defaults.model.primary` (for example, `anthropic/claude-sonnet-4-6` or `anthropic/claude-opus-4-6`). If you see `No credentials found for profile "anthropic:default"`, it means the Gateway couldn't find Anthropic credentials in the expected `auth-profiles.json` for the agent that's running.
+    In WineryClaw, credentials and model selection are separate. Setting `ANTHROPIC_API_KEY` (or storing an Anthropic API key in auth profiles) enables authentication, but the actual default model is whatever you configure in `agents.defaults.model.primary` (for example, `anthropic/claude-sonnet-4-6` or `anthropic/claude-opus-4-6`). If you see `No credentials found for profile "anthropic:default"`, it means the Gateway couldn't find Anthropic credentials in the expected `auth-profiles.json` for the agent that's running.
   </Accordion>
 </AccordionGroup>
 

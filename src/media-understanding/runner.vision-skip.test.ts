@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import {
   withBundledPluginAllowlistCompat,
   withBundledPluginEnablementCompat,
@@ -69,7 +69,7 @@ let runCapability: typeof import("./runner.js").runCapability;
 
 function setCompatibleActiveMediaUnderstandingRegistry(
   pluginRegistry: ReturnType<typeof createEmptyPluginRegistry>,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ) {
   const pluginIds = loadPluginManifestRegistry({
     config: cfg,
@@ -125,7 +125,7 @@ describe("runCapability image skip", () => {
     const ctx: MsgContext = { MediaPath: "/tmp/image.png", MediaType: "image/png" };
     const media = normalizeMediaAttachments(ctx);
     const cache = createMediaAttachmentCache(media);
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as WineryClawConfig;
 
     try {
       const result = await runCapability({
@@ -153,7 +153,7 @@ describe("runCapability image skip", () => {
 
   it("uses active OpenRouter image models for auto image resolution", async () => {
     vi.stubEnv("OPENROUTER_API_KEY", "test-openrouter-key");
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as WineryClawConfig;
     const pluginRegistry = createEmptyPluginRegistry();
     pluginRegistry.mediaUnderstandingProviders.push({
       pluginId: "openrouter",
@@ -201,7 +201,7 @@ describe("runCapability image skip", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as WineryClawConfig;
 
         const result = await runCapability({
           capability: "image",
@@ -252,7 +252,7 @@ describe("runCapability image skip", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as WineryClawConfig;
 
         const result = await runCapability({
           capability: "image",

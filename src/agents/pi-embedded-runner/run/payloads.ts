@@ -4,7 +4,7 @@ import { parseReplyDirectives } from "../../../auto-reply/reply/reply-directives
 import type { ReasoningLevel, VerboseLevel } from "../../../auto-reply/thinking.js";
 import { isSilentReplyPayloadText, SILENT_REPLY_TOKEN } from "../../../auto-reply/tokens.js";
 import { formatToolAggregate } from "../../../auto-reply/tool-meta.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import { isCronSessionKey } from "../../../routing/session-key.js";
 import {
   normalizeOptionalLowercaseString,
@@ -110,7 +110,7 @@ export function buildEmbeddedRunPayloads(params: {
   toolMetas: ToolMetaEntry[];
   lastAssistant: AssistantMessage | undefined;
   lastToolError?: ToolErrorSummary;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   isCronTrigger?: boolean;
   sessionKey: string;
   provider?: string;

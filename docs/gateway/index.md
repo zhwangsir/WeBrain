@@ -65,7 +65,7 @@ of live probe output.
 </Steps>
 
 <Note>
-Gateway config reload watches the active config file path (resolved from profile/state defaults, or `OPENCLAW_CONFIG_PATH` when set).
+Gateway config reload watches the active config file path (resolved from profile/state defaults, or `WINERYCLAW_CONFIG_PATH` when set).
 Default mode is `gateway.reload.mode="hybrid"`.
 After the first successful load, the running process serves the active in-memory config snapshot; successful reload swaps that snapshot atomically.
 </Note>
@@ -80,12 +80,12 @@ After the first successful load, the running process serves the active in-memory
 - Default bind mode: `loopback`.
 - Auth is required by default. Shared-secret setups use
   `gateway.auth.token` / `gateway.auth.password` (or
-  `OPENCLAW_GATEWAY_TOKEN` / `OPENCLAW_GATEWAY_PASSWORD`), and non-loopback
+  `WINERYCLAW_GATEWAY_TOKEN` / `WINERYCLAW_GATEWAY_PASSWORD`), and non-loopback
   reverse-proxy setups can use `gateway.auth.mode: "trusted-proxy"`.
 
 ## OpenAI-compatible endpoints
 
-OpenClaw’s highest-leverage compatibility surface is now:
+WineryClaw’s highest-leverage compatibility surface is now:
 
 - `GET /v1/models`
 - `GET /v1/models/{id}`
@@ -111,7 +111,7 @@ All of these run on the main Gateway port and use the same trusted operator auth
 
 | Setting      | Resolution order                                              |
 | ------------ | ------------------------------------------------------------- |
-| Gateway port | `--port` → `OPENCLAW_GATEWAY_PORT` → `gateway.port` → `18789` |
+| Gateway port | `--port` → `WINERYCLAW_GATEWAY_PORT` → `gateway.port` → `18789` |
 | Bind mode    | CLI/override → `gateway.bind` → `loopback`                    |
 
 ### Hot reload modes
@@ -219,7 +219,7 @@ Manual user-unit example when you need a custom install path:
 
 ```ini
 [Unit]
-Description=OpenClaw Gateway
+Description=WineryClaw Gateway
 After=network-online.target
 Wants=network-online.target
 
@@ -247,9 +247,9 @@ openclaw gateway restart
 openclaw gateway stop
 ```
 
-Native Windows managed startup uses a Scheduled Task named `OpenClaw Gateway`
-(or `OpenClaw Gateway (<profile>)` for named profiles). If Scheduled Task
-creation is denied, OpenClaw falls back to a per-user Startup-folder launcher
+Native Windows managed startup uses a Scheduled Task named `WineryClaw Gateway`
+(or `WineryClaw Gateway (<profile>)` for named profiles). If Scheduled Task
+creation is denied, WineryClaw falls back to a per-user Startup-folder launcher
 that points at `gateway.cmd` inside the state directory.
 
   </Tab>
@@ -278,15 +278,15 @@ Use multiple only for strict isolation/redundancy (for example a rescue profile)
 Checklist per instance:
 
 - Unique `gateway.port`
-- Unique `OPENCLAW_CONFIG_PATH`
-- Unique `OPENCLAW_STATE_DIR`
+- Unique `WINERYCLAW_CONFIG_PATH`
+- Unique `WINERYCLAW_STATE_DIR`
 - Unique `agents.defaults.workspace`
 
 Example:
 
 ```bash
-OPENCLAW_CONFIG_PATH=~/.openclaw/a.json OPENCLAW_STATE_DIR=~/.openclaw-a openclaw gateway --port 19001
-OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b openclaw gateway --port 19002
+WINERYCLAW_CONFIG_PATH=~/.wineryclaw/a.json WINERYCLAW_STATE_DIR=~/.openclaw-a openclaw gateway --port 19001
+WINERYCLAW_CONFIG_PATH=~/.wineryclaw/b.json WINERYCLAW_STATE_DIR=~/.openclaw-b openclaw gateway --port 19002
 ```
 
 See: [Multiple gateways](/gateway/multiple-gateways).

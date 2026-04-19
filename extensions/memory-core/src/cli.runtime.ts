@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { resolveMemoryRemDreamingConfig } from "openclaw/plugin-sdk/memory-core-host-status";
 import { buildAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/temp-path";
 import {
   colorize,
   defaultRuntime,
@@ -22,7 +22,7 @@ import {
   shortenHomeInString,
   shortenHomePath,
   theme,
-  type OpenClawConfig,
+  type WineryClawConfig,
   withManager,
   withProgress,
   withProgressTotals,
@@ -79,7 +79,7 @@ type MemorySourceScan = {
 };
 
 type LoadedMemoryCommandConfig = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   diagnostics: string[];
 };
 
@@ -120,7 +120,7 @@ function emitMemorySecretResolveDiagnostics(
   }
 }
 
-function resolveMemoryPluginConfig(cfg: OpenClawConfig): Record<string, unknown> {
+function resolveMemoryPluginConfig(cfg: WineryClawConfig): Record<string, unknown> {
   const entry = asRecord(cfg.plugins?.entries?.["memory-core"]);
   return asRecord(entry?.config) ?? {};
 }
@@ -166,7 +166,7 @@ async function createHistoricalRemHarnessWorkspace(params: {
 }> {
   const sourceFiles = await listHistoricalDailyFiles(params.inputPath);
   const workspaceDir = await fs.mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "openclaw-rem-harness-"),
+    path.join(resolvePreferredWineryClawTmpDir(), "openclaw-rem-harness-"),
   );
   const memoryDir = path.join(workspaceDir, "memory");
   await fs.mkdir(memoryDir, { recursive: true });
@@ -209,7 +209,7 @@ async function listWorkspaceDailyFiles(workspaceDir: string, limit: number): Pro
   }
 }
 
-function formatDreamingSummary(cfg: OpenClawConfig): string {
+function formatDreamingSummary(cfg: WineryClawConfig): string {
   const pluginConfig = resolveMemoryPluginConfig(cfg);
   const dreaming = resolveShortTermPromotionDreamingConfig({ pluginConfig, cfg });
   if (!dreaming.enabled) {
@@ -299,7 +299,7 @@ function formatSourceLabel(source: string, workspaceDir: string, agentId: string
   return source;
 }
 
-function resolveAgent(cfg: OpenClawConfig, agent?: string) {
+function resolveAgent(cfg: WineryClawConfig, agent?: string) {
   const trimmed = agent?.trim();
   if (trimmed) {
     return trimmed;
@@ -316,7 +316,7 @@ function buildCliMemorySearchSessionKey(agentId: string): string {
   });
 }
 
-function resolveAgentIds(cfg: OpenClawConfig, agent?: string): string[] {
+function resolveAgentIds(cfg: WineryClawConfig, agent?: string): string[] {
   const trimmed = agent?.trim();
   if (trimmed) {
     return [trimmed];
@@ -459,7 +459,7 @@ function matchesPromotionSelector(
 }
 
 async function withMemoryManagerForAgent(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   purpose?: MemoryManagerPurpose;
   run: (manager: MemoryManager) => Promise<void>;
@@ -1819,7 +1819,7 @@ export async function runMemoryRemBackfill(opts: MemoryRemBackfillOptions) {
       }
 
       const scratchDir = await fs.mkdtemp(
-        path.join(resolvePreferredOpenClawTmpDir(), "openclaw-rem-backfill-"),
+        path.join(resolvePreferredWineryClawTmpDir(), "openclaw-rem-backfill-"),
       );
       try {
         const sourceFiles = await listHistoricalDailyFiles(opts.path);

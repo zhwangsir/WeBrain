@@ -2,7 +2,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { describe, expect, test, vi } from "vitest";
 import { z } from "zod";
-import { createOpenClawChannelMcpServer, OpenClawChannelBridge } from "./channel-server.js";
+import { createWineryClawChannelMcpServer, WineryClawChannelBridge } from "./channel-server.js";
 
 const ClaudeChannelNotificationSchema = z.object({
   method: z.literal("notifications/claude/channel"),
@@ -21,7 +21,7 @@ const ClaudePermissionNotificationSchema = z.object({
 });
 
 async function connectMcpWithoutGateway(params?: { claudeChannelMode?: "auto" | "on" | "off" }) {
-  const serverHarness = await createOpenClawChannelMcpServer({
+  const serverHarness = await createWineryClawChannelMcpServer({
     claudeChannelMode: params?.claudeChannelMode ?? "auto",
     verbose: false,
   });
@@ -287,7 +287,7 @@ describe("openclaw channel mcp server", () => {
     });
 
     test("sendMessage normalizes route metadata for gateway send", async () => {
-      const bridge = new OpenClawChannelBridge({} as never, {
+      const bridge = new WineryClawChannelBridge({} as never, {
         claudeChannelMode: "off",
         verbose: false,
       });
@@ -342,7 +342,7 @@ describe("openclaw channel mcp server", () => {
     });
 
     test("lists routed sessions that only expose modern channel fields", async () => {
-      const bridge = new OpenClawChannelBridge({} as never, {
+      const bridge = new WineryClawChannelBridge({} as never, {
         claudeChannelMode: "off",
         verbose: false,
       });
@@ -408,7 +408,7 @@ describe("openclaw channel mcp server", () => {
     });
 
     test("swallows notification send errors after channel replies are matched", async () => {
-      const bridge = new OpenClawChannelBridge({} as never, {
+      const bridge = new WineryClawChannelBridge({} as never, {
         claudeChannelMode: "on",
         verbose: false,
       });

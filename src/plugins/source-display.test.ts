@@ -5,8 +5,8 @@ import { formatPluginSourceForTable, resolvePluginSourceRoots } from "./source-d
 
 const PLUGIN_SOURCE_ROOTS = {
   stock: path.resolve(path.sep, "opt", "homebrew", "lib", "node_modules", "openclaw", "extensions"),
-  global: path.resolve(path.sep, "Users", "x", ".openclaw", "extensions"),
-  workspace: path.resolve(path.sep, "Users", "x", "ws", ".openclaw", "extensions"),
+  global: path.resolve(path.sep, "Users", "x", ".wineryclaw", "extensions"),
+  workspace: path.resolve(path.sep, "Users", "x", "ws", ".wineryclaw", "extensions"),
 };
 
 function expectFormattedSource(params: {
@@ -76,14 +76,14 @@ describe("formatPluginSourceForTable", () => {
     expectResolvedSourceRoots({
       homeDir,
       env: {
-        OPENCLAW_BUNDLED_PLUGINS_DIR: "~/bundled",
-        OPENCLAW_STATE_DIR: "~/state",
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: "~/bundled",
+        WINERYCLAW_STATE_DIR: "~/state",
       } as NodeJS.ProcessEnv,
       workspaceDir: "~/ws",
       expected: {
         stock: path.join(homeDir, "bundled"),
         global: path.join(homeDir, "state", "extensions"),
-        workspace: path.join(homeDir, "ws", ".openclaw", "extensions"),
+        workspace: path.join(homeDir, "ws", ".wineryclaw", "extensions"),
       },
     });
   });

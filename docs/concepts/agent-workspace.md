@@ -11,7 +11,7 @@ title: "Agent Workspace"
 The workspace is the agent's home. It is the only working directory used for
 file tools and for workspace context. Keep it private and treat it as memory.
 
-This is separate from `~/.openclaw/`, which stores config, credentials, and
+This is separate from `~/.wineryclaw/`, which stores config, credentials, and
 sessions.
 
 **Important:** the workspace is the **default cwd**, not a hard sandbox. Tools
@@ -19,19 +19,19 @@ resolve relative paths against the workspace, but absolute paths can still reach
 elsewhere on the host unless sandboxing is enabled. If you need isolation, use
 [`agents.defaults.sandbox`](/gateway/sandboxing) (and/or per‑agent sandbox config).
 When sandboxing is enabled and `workspaceAccess` is not `"rw"`, tools operate
-inside a sandbox workspace under `~/.openclaw/sandboxes`, not your host workspace.
+inside a sandbox workspace under `~/.wineryclaw/sandboxes`, not your host workspace.
 
 ## Default location
 
-- Default: `~/.openclaw/workspace`
-- If `OPENCLAW_PROFILE` is set and not `"default"`, the default becomes
-  `~/.openclaw/workspace-<profile>`.
-- Override in `~/.openclaw/openclaw.json`:
+- Default: `~/.wineryclaw/workspace`
+- If `WINERYCLAW_PROFILE` is set and not `"default"`, the default becomes
+  `~/.wineryclaw/workspace-<profile>`.
+- Override in `~/.wineryclaw/wineryclaw.json`:
 
 ```json5
 {
   agent: {
-    workspace: "~/.openclaw/workspace",
+    workspace: "~/.wineryclaw/workspace",
   },
 }
 ```
@@ -63,7 +63,7 @@ If you intentionally keep multiple workspaces, make sure
 
 ## Workspace file map (what each file means)
 
-These are the standard files OpenClaw expects inside the workspace:
+These are the standard files WineryClaw expects inside the workspace:
 
 - `AGENTS.md`
   - Operating instructions for the agent and how it should use memory.
@@ -118,7 +118,7 @@ See [Memory](/concepts/memory) for the workflow and automatic memory flush.
 - `canvas/` (optional)
   - Canvas UI files for node displays (for example `canvas/index.html`).
 
-If any bootstrap file is missing, OpenClaw injects a "missing file" marker into
+If any bootstrap file is missing, WineryClaw injects a "missing file" marker into
 the session and continues. Large bootstrap files are truncated when injected;
 adjust limits with `agents.defaults.bootstrapMaxChars` (default: 20000) and
 `agents.defaults.bootstrapTotalMaxChars` (default: 150000).
@@ -127,13 +127,13 @@ files.
 
 ## What is NOT in the workspace
 
-These live under `~/.openclaw/` and should NOT be committed to the workspace repo:
+These live under `~/.wineryclaw/` and should NOT be committed to the workspace repo:
 
-- `~/.openclaw/openclaw.json` (config)
-- `~/.openclaw/agents/<agentId>/agent/auth-profiles.json` (model auth profiles: OAuth + API keys)
-- `~/.openclaw/credentials/` (channel/provider state plus legacy OAuth import data)
-- `~/.openclaw/agents/<agentId>/sessions/` (session transcripts + metadata)
-- `~/.openclaw/skills/` (managed skills)
+- `~/.wineryclaw/wineryclaw.json` (config)
+- `~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json` (model auth profiles: OAuth + API keys)
+- `~/.wineryclaw/credentials/` (channel/provider state plus legacy OAuth import data)
+- `~/.wineryclaw/agents/<agentId>/sessions/` (session transcripts + metadata)
+- `~/.wineryclaw/skills/` (managed skills)
 
 If you need to migrate sessions or config, copy them separately and keep them
 out of version control.
@@ -152,7 +152,7 @@ If git is installed, brand-new workspaces are initialized automatically. If this
 workspace is not already a repo, run:
 
 ```bash
-cd ~/.openclaw/workspace
+cd ~/.wineryclaw/workspace
 git init
 git add AGENTS.md SOUL.md TOOLS.md IDENTITY.md USER.md HEARTBEAT.md memory/
 git commit -m "Add agent workspace"
@@ -207,11 +207,11 @@ git push
 Even in a private repo, avoid storing secrets in the workspace:
 
 - API keys, OAuth tokens, passwords, or private credentials.
-- Anything under `~/.openclaw/`.
+- Anything under `~/.wineryclaw/`.
 - Raw dumps of chats or sensitive attachments.
 
 If you must store sensitive references, use placeholders and keep the real
-secret elsewhere (password manager, environment variables, or `~/.openclaw/`).
+secret elsewhere (password manager, environment variables, or `~/.wineryclaw/`).
 
 Suggested `.gitignore` starter:
 
@@ -225,10 +225,10 @@ Suggested `.gitignore` starter:
 
 ## Moving the workspace to a new machine
 
-1. Clone the repo to the desired path (default `~/.openclaw/workspace`).
-2. Set `agents.defaults.workspace` to that path in `~/.openclaw/openclaw.json`.
+1. Clone the repo to the desired path (default `~/.wineryclaw/workspace`).
+2. Set `agents.defaults.workspace` to that path in `~/.wineryclaw/wineryclaw.json`.
 3. Run `openclaw setup --workspace <path>` to seed any missing files.
-4. If you need sessions, copy `~/.openclaw/agents/<agentId>/sessions/` from the
+4. If you need sessions, copy `~/.wineryclaw/agents/<agentId>/sessions/` from the
    old machine separately.
 
 ## Advanced notes

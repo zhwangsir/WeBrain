@@ -1,8 +1,8 @@
 export type {
   ChannelConfigUiHint,
   ChannelPlugin,
-  OpenClawConfig,
-  OpenClawPluginApi,
+  WineryClawConfig,
+  WineryClawPluginApi,
   PluginCommandContext,
   PluginRuntime,
   ChannelOutboundSessionRouteParams,

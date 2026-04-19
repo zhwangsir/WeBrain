@@ -21,8 +21,8 @@ describe("Codex app-server config", () => {
         },
       },
       env: {
-        OPENCLAW_CODEX_APP_SERVER_APPROVAL_POLICY: "never",
-        OPENCLAW_CODEX_APP_SERVER_SANDBOX: "read-only",
+        WINERYCLAW_CODEX_APP_SERVER_APPROVAL_POLICY: "never",
+        WINERYCLAW_CODEX_APP_SERVER_SANDBOX: "read-only",
       },
     });
 

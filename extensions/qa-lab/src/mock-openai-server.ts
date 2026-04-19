@@ -454,7 +454,7 @@ function buildAssistantText(input: ResponsesInputItem[], body: Record<string, un
     return "Protocol note: I do not have enough context to say what you usually want for QA movie night.";
   }
   if (/tool continuity check/i.test(prompt) && toolOutput) {
-    return `Protocol note: model switch handoff confirmed on ${model || "the requested model"}. QA mission from QA_KICKOFF_TASK.md still applies: understand this OpenClaw repo from source + docs before acting.`;
+    return `Protocol note: model switch handoff confirmed on ${model || "the requested model"}. QA mission from QA_KICKOFF_TASK.md still applies: understand this WineryClaw repo from source + docs before acting.`;
   }
   if (/session memory ranking check/i.test(prompt) && orbitCode) {
     return `Protocol note: I checked memory and the current Project Nebula codename is ${orbitCode}.`;

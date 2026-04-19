@@ -13,7 +13,7 @@ export type {
   ChannelStatusIssue,
 } from "openclaw/plugin-sdk/channel-contract";
 export type {
-  OpenClawConfig,
+  WineryClawConfig,
   GroupToolPolicyConfig,
   MarkdownTableMode,
 } from "openclaw/plugin-sdk/config-runtime";
@@ -21,7 +21,7 @@ export type {
   PluginRuntime,
   AnyAgentTool,
   ChannelPlugin,
-  OpenClawPluginToolContext,
+  WineryClawPluginToolContext,
 } from "openclaw/plugin-sdk/core";
 export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
 export {
@@ -58,4 +58,4 @@ export {
   sendPayloadWithChunkedTextAndMedia,
   type OutboundReplyPayload,
 } from "openclaw/plugin-sdk/reply-payload";
-export { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/browser-security-runtime";
+export { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/browser-security-runtime";

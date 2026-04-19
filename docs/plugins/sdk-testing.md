@@ -1,7 +1,7 @@
 ---
 title: "Plugin Testing"
 sidebarTitle: "Testing"
-summary: "Testing utilities and patterns for OpenClaw plugins"
+summary: "Testing utilities and patterns for WineryClaw plugins"
 read_when:
   - You are writing tests for a plugin
   - You need test utilities from the plugin SDK
@@ -10,7 +10,7 @@ read_when:
 
 # Plugin Testing
 
-Reference for test utilities, patterns, and lint enforcement for OpenClaw
+Reference for test utilities, patterns, and lint enforcement for WineryClaw
 plugins.
 
 <Tip>
@@ -49,7 +49,7 @@ The testing subpath also re-exports types useful in test files:
 import type {
   ChannelAccountSnapshot,
   ChannelGatewayContext,
-  OpenClawConfig,
+  WineryClawConfig,
   PluginRuntime,
   RuntimeEnv,
   MockFn,
@@ -233,7 +233,7 @@ patterns is recommended.
 
 ## Test configuration
 
-OpenClaw uses Vitest with V8 coverage thresholds. For plugin tests:
+WineryClaw uses Vitest with V8 coverage thresholds. For plugin tests:
 
 ```bash
 # Run all tests
@@ -252,7 +252,7 @@ pnpm test:coverage
 If local runs cause memory pressure:
 
 ```bash
-OPENCLAW_VITEST_MAX_WORKERS=1 pnpm test
+WINERYCLAW_VITEST_MAX_WORKERS=1 pnpm test
 ```
 
 ## Related

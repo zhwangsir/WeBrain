@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   isProviderApiKeyConfigured,
   type AuthProfileStore,
@@ -131,7 +131,7 @@ function mergeSsrFPolicies(...policies: Array<SsrFPolicy | undefined>): SsrFPoli
   return Object.keys(merged).length > 0 ? merged : undefined;
 }
 
-export function getComfyConfig(cfg?: OpenClawConfig): ComfyProviderConfig {
+export function getComfyConfig(cfg?: WineryClawConfig): ComfyProviderConfig {
   const raw = cfg?.models?.providers?.comfy;
   return isRecord(raw) ? raw : {};
 }
@@ -547,7 +547,7 @@ async function downloadOutputFile(params: {
 }
 
 export function isComfyCapabilityConfigured(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   agentDir?: string;
   capability: ComfyCapability;
 }): boolean {
@@ -571,7 +571,7 @@ export function isComfyCapabilityConfigured(params: {
 }
 
 export async function runComfyWorkflow(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   prompt: string;

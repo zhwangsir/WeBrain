@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   LIVE_TRANSPORT_BASELINE_STANDARD_SCENARIO_IDS,
@@ -36,9 +36,9 @@ describe("telegram live qa runtime", () => {
   it("resolves required Telegram QA env vars", () => {
     expect(
       __testing.resolveTelegramQaRuntimeEnv({
-        OPENCLAW_QA_TELEGRAM_GROUP_ID: "-100123",
-        OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver",
-        OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut",
+        WINERYCLAW_QA_TELEGRAM_GROUP_ID: "-100123",
+        WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver",
+        WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut",
       }),
     ).toEqual({
       groupId: "-100123",
@@ -50,24 +50,24 @@ describe("telegram live qa runtime", () => {
   it("fails when a required Telegram QA env var is missing", () => {
     expect(() =>
       __testing.resolveTelegramQaRuntimeEnv({
-        OPENCLAW_QA_TELEGRAM_GROUP_ID: "-100123",
-        OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver",
+        WINERYCLAW_QA_TELEGRAM_GROUP_ID: "-100123",
+        WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver",
       }),
-    ).toThrow("OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN");
+    ).toThrow("WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN");
   });
 
   it("fails when the Telegram group id is not numeric", () => {
     expect(() =>
       __testing.resolveTelegramQaRuntimeEnv({
-        OPENCLAW_QA_TELEGRAM_GROUP_ID: "qa-group",
-        OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver",
-        OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut",
+        WINERYCLAW_QA_TELEGRAM_GROUP_ID: "qa-group",
+        WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN: "driver",
+        WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN: "sut",
       }),
-    ).toThrow("OPENCLAW_QA_TELEGRAM_GROUP_ID must be a numeric Telegram chat id.");
+    ).toThrow("WINERYCLAW_QA_TELEGRAM_GROUP_ID must be a numeric Telegram chat id.");
   });
 
   it("injects a temporary Telegram account into the QA gateway config", () => {
-    const baseCfg: OpenClawConfig = {
+    const baseCfg: WineryClawConfig = {
       plugins: {
         allow: ["memory-core", "qa-channel"],
         entries: {
@@ -80,7 +80,7 @@ describe("telegram live qa runtime", () => {
           enabled: true,
           baseUrl: "http://127.0.0.1:43123",
           botUserId: "openclaw",
-          botDisplayName: "OpenClaw QA",
+          botDisplayName: "WineryClaw QA",
           allowFrom: ["*"],
         },
       },

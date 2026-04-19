@@ -1,14 +1,14 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredWineryClawTmpDir } from "../infra/tmp-openclaw-dir.js";
 import { getImageMetadata } from "./image-ops.js";
 
 describe("image-ops temp dir", () => {
   let createdTempDir = "";
 
   beforeEach(() => {
-    process.env.OPENCLAW_IMAGE_BACKEND = "sips";
+    process.env.WINERYCLAW_IMAGE_BACKEND = "sips";
     const originalMkdtemp = fs.mkdtemp.bind(fs);
     vi.spyOn(fs, "mkdtemp").mockImplementation(async (prefix) => {
       createdTempDir = await originalMkdtemp(prefix);
@@ -17,12 +17,12 @@ describe("image-ops temp dir", () => {
   });
 
   afterEach(() => {
-    delete process.env.OPENCLAW_IMAGE_BACKEND;
+    delete process.env.WINERYCLAW_IMAGE_BACKEND;
     vi.restoreAllMocks();
   });
 
-  it("creates sips temp dirs under the secured OpenClaw tmp root", async () => {
-    const secureRoot = resolvePreferredOpenClawTmpDir();
+  it("creates sips temp dirs under the secured WineryClaw tmp root", async () => {
+    const secureRoot = resolvePreferredWineryClawTmpDir();
 
     await getImageMetadata(Buffer.from("image"));
 

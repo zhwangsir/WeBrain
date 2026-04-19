@@ -18,7 +18,7 @@ import {
   loadConfig,
   readConfigFileSnapshotForWrite,
   setRuntimeConfigSnapshot,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "../config/config.js";
 import { resolveAgentIdFromSessionKey, type SessionEntry } from "../config/sessions.js";
 import { resolveSessionTranscriptFile } from "../config/sessions/transcript.js";
@@ -134,9 +134,9 @@ async function resolveAgentRuntimeConfig(
   runtime: RuntimeEnv,
   params?: { runtimeTargetsChannelSecrets?: boolean },
 ): Promise<{
-  loadedRaw: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
-  cfg: OpenClawConfig;
+  loadedRaw: WineryClawConfig;
+  sourceConfig: WineryClawConfig;
+  cfg: WineryClawConfig;
 }> {
   const loadedRaw = loadConfig();
   const sourceConfig = await (async () => {

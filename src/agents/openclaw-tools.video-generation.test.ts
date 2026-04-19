@@ -1,6 +1,6 @@
-import { describeOpenClawGenerationToolRegistration } from "./openclaw-tools.generation.test-support.js";
+import { describeWineryClawGenerationToolRegistration } from "./openclaw-tools.generation.test-support.js";
 
-describeOpenClawGenerationToolRegistration({
+describeWineryClawGenerationToolRegistration({
   suiteName: "openclaw tools video generation registration",
   toolName: "video_generate",
   toolLabel: "a video-generation tool",

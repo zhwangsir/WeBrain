@@ -1,10 +1,10 @@
 import path from "node:path";
 import { withTempHome as withTempHomeBase } from "../../test/helpers/temp-home.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 
-type AgentDefaultConfig = NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]>;
+type AgentDefaultConfig = NonNullable<NonNullable<WineryClawConfig["agents"]>["defaults"]>;
 type LoadConfigMock = {
-  mockReturnValue(value: OpenClawConfig): unknown;
+  mockReturnValue(value: WineryClawConfig): unknown;
 };
 
 export async function withAgentCommandTempHome<T>(
@@ -19,7 +19,7 @@ export function mockAgentCommandConfig(
   home: string,
   storePath: string,
   agentOverrides?: Partial<AgentDefaultConfig>,
-): OpenClawConfig {
+): WineryClawConfig {
   const cfg = {
     agents: {
       defaults: {
@@ -30,7 +30,7 @@ export function mockAgentCommandConfig(
       },
     },
     session: { store: storePath, mainKey: "main" },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
   configSpy.mockReturnValue(cfg);
   return cfg;
 }

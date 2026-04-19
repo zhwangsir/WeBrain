@@ -1,6 +1,6 @@
 import type { RequestClient } from "@buape/carbon";
 import { resolveAgentAvatar } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { MarkdownTableMode, ReplyToMode } from "openclaw/plugin-sdk/config-runtime";
 import type { ChunkMode } from "openclaw/plugin-sdk/reply-chunking";
 import type { ReplyPayload } from "openclaw/plugin-sdk/reply-dispatch-runtime";
@@ -89,7 +89,7 @@ async function sendWithRetry(
 
 async function sendDiscordMediaOnly(params: {
   target: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   token: string;
   rest?: RequestClient;
   mediaUrl: string;
@@ -115,7 +115,7 @@ async function sendDiscordMediaOnly(params: {
 
 async function sendDiscordMediaBatch(params: {
   target: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   token: string;
   rest?: RequestClient;
   mediaUrls: string[];
@@ -144,7 +144,7 @@ async function sendDiscordMediaBatch(params: {
 }
 
 async function sendDiscordPayloadText(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   target: string;
   text: string;
   token: string;
@@ -251,7 +251,7 @@ function createPayloadReplyToResolver(params: {
 }
 
 function resolveBindingPersona(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   binding: DiscordThreadBindingLookupRecord | undefined,
 ): {
   username?: string;
@@ -276,7 +276,7 @@ function resolveBindingPersona(
 }
 
 async function sendDiscordChunkWithFallback(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   target: string;
   text: string;
   token: string;
@@ -353,7 +353,7 @@ async function sendDiscordChunkWithFallback(params: {
 }
 
 export async function deliverDiscordReply(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   replies: ReplyPayload[];
   target: string;
   token: string;

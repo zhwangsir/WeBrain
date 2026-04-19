@@ -4,7 +4,7 @@ import {
 } from "openclaw/plugin-sdk/provider-onboard";
 import type { ModelApi } from "openclaw/plugin-sdk/provider-onboard";
 import { expect } from "vitest";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 import {
   createConfigWithFallbacks,
   createLegacyProviderConfig,
@@ -12,7 +12,7 @@ import {
 } from "./onboard-config.js";
 
 export function expectProviderOnboardAllowlistAlias(params: {
-  applyProviderConfig: (config: OpenClawConfig) => OpenClawConfig;
+  applyProviderConfig: (config: WineryClawConfig) => WineryClawConfig;
   modelRef: string;
   alias: string;
 }) {
@@ -32,7 +32,7 @@ export function expectProviderOnboardAllowlistAlias(params: {
 }
 
 export function expectProviderOnboardPrimaryAndFallbacks(params: {
-  applyConfig: (config: OpenClawConfig) => OpenClawConfig;
+  applyConfig: (config: WineryClawConfig) => WineryClawConfig;
   modelRef: string;
 }) {
   expectProviderOnboardPrimaryModel(params);
@@ -44,7 +44,7 @@ export function expectProviderOnboardPrimaryAndFallbacks(params: {
 }
 
 export function expectProviderOnboardPrimaryModel(params: {
-  applyConfig: (config: OpenClawConfig) => OpenClawConfig;
+  applyConfig: (config: WineryClawConfig) => WineryClawConfig;
   modelRef: string;
 }) {
   const cfg = params.applyConfig({});
@@ -52,7 +52,7 @@ export function expectProviderOnboardPrimaryModel(params: {
 }
 
 export function expectProviderOnboardPreservesPrimary(params: {
-  applyProviderConfig: (config: OpenClawConfig) => OpenClawConfig;
+  applyProviderConfig: (config: WineryClawConfig) => WineryClawConfig;
   primaryModelRef: string;
 }) {
   const cfg = params.applyProviderConfig({
@@ -62,7 +62,7 @@ export function expectProviderOnboardPreservesPrimary(params: {
 }
 
 export function expectProviderOnboardMergedLegacyConfig(params: {
-  applyProviderConfig: (config: OpenClawConfig) => OpenClawConfig;
+  applyProviderConfig: (config: WineryClawConfig) => WineryClawConfig;
   providerId: string;
   providerApi: ModelApi;
   baseUrl: string;

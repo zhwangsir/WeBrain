@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { handlePluginsCommand } from "./commands-plugins.js";
 import type { HandleCommandsParams } from "./commands-types.js";
 
@@ -63,7 +63,7 @@ vi.mock("../../plugins/status.js", () => ({
 }));
 
 vi.mock("../../plugins/toggle-config.js", () => ({
-  setPluginEnabledInConfig: vi.fn((config: OpenClawConfig, id: string, enabled: boolean) => ({
+  setPluginEnabledInConfig: vi.fn((config: WineryClawConfig, id: string, enabled: boolean) => ({
     ...config,
     plugins: {
       ...config.plugins,
@@ -83,7 +83,7 @@ vi.mock("../../utils.js", async () => {
   };
 });
 
-function buildCfg(): OpenClawConfig {
+function buildCfg(): WineryClawConfig {
   return {
     plugins: { enabled: true },
     commands: { text: true, plugins: true },
@@ -92,7 +92,7 @@ function buildCfg(): OpenClawConfig {
 
 function buildPluginsParams(
   commandBodyNormalized: string,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ): HandleCommandsParams {
   return {
     cfg,

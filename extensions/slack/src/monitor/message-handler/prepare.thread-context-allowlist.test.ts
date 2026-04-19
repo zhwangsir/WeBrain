@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { App } from "@slack/bolt";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { afterAll, describe, expect, it, vi } from "vitest";
 import type { SlackMessageEvent } from "../../types.js";
 
@@ -69,7 +69,7 @@ async function prepareThreadContextCase(params: ThreadContextCaseParams) {
           contextVisibility: "allowlist",
         },
       },
-    } as OpenClawConfig,
+    } as WineryClawConfig,
     appClient: { conversations: { replies } } as unknown as App["client"],
     defaultRequireMention: false,
     replyToMode: "all",

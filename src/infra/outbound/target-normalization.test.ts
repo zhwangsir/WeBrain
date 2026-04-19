@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 
 const normalizeChannelIdMock = vi.hoisted(() => vi.fn());
 const getChannelPluginMock = vi.hoisted(() => vi.fn());
@@ -175,7 +175,7 @@ describe("looksLikeTargetId", () => {
 });
 
 describe("maybeResolvePluginMessagingTarget", () => {
-  const cfg = {} as OpenClawConfig;
+  const cfg = {} as WineryClawConfig;
 
   it("returns undefined when requireIdLike is set and the target is not id-like", async () => {
     getChannelPluginMock.mockReturnValueOnce({

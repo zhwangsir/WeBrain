@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { MemoryIndexManager } from "./manager.js";
 import "./test-runtime-mocks.js";
@@ -75,7 +75,7 @@ describe("memory manager FTS-only reindex", () => {
         },
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const result = await getMemorySearchManager({ cfg, agentId: "main" });
     if (!result.manager) {
       throw new Error(result.error ?? "manager missing");

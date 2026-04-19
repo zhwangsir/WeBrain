@@ -29,9 +29,9 @@ const TEST_MAIN_AUTH_STORE_KEY = "__main__";
 const ensureWorkspaceAndSessionsMock = vi.hoisted(() => vi.fn(async (..._args: unknown[]) => {}));
 const readConfigFileSnapshotMock = vi.hoisted(() =>
   vi.fn(async () => {
-    const configPath = process.env.OPENCLAW_CONFIG_PATH;
+    const configPath = process.env.WINERYCLAW_CONFIG_PATH;
     if (!configPath) {
-      throw new Error("OPENCLAW_CONFIG_PATH must be set for provider auth onboarding tests");
+      throw new Error("WINERYCLAW_CONFIG_PATH must be set for provider auth onboarding tests");
     }
     let raw: string | null = null;
     try {
@@ -57,9 +57,9 @@ const readConfigFileSnapshotMock = vi.hoisted(() =>
 );
 const replaceConfigFileMock = vi.hoisted(() =>
   vi.fn(async (params: { nextConfig: unknown }) => {
-    const configPath = process.env.OPENCLAW_CONFIG_PATH;
+    const configPath = process.env.WINERYCLAW_CONFIG_PATH;
     if (!configPath) {
-      throw new Error("OPENCLAW_CONFIG_PATH must be set for provider auth onboarding tests");
+      throw new Error("WINERYCLAW_CONFIG_PATH must be set for provider auth onboarding tests");
     }
     await fs.mkdir(path.dirname(configPath), { recursive: true });
     await fs.writeFile(configPath, `${JSON.stringify(params.nextConfig, null, 2)}\n`, "utf-8");
@@ -955,25 +955,25 @@ async function withOnboardEnv(
   run: (ctx: OnboardEnv) => Promise<void>,
 ): Promise<void> {
   const tempHome = await makeTempWorkspace(prefix);
-  const configPath = path.join(tempHome, "openclaw.json");
+  const configPath = path.join(tempHome, "wineryclaw.json");
   const runtime = createThrowingRuntime();
 
   try {
     await withEnvAsync(
       {
         HOME: tempHome,
-        OPENCLAW_STATE_DIR: tempHome,
-        OPENCLAW_CONFIG_PATH: configPath,
-        OPENCLAW_SKIP_CHANNELS: "1",
-        OPENCLAW_SKIP_GMAIL_WATCHER: "1",
-        OPENCLAW_SKIP_CRON: "1",
-        OPENCLAW_SKIP_CANVAS_HOST: "1",
-        OPENCLAW_GATEWAY_TOKEN: undefined,
-        OPENCLAW_GATEWAY_PASSWORD: undefined,
+        WINERYCLAW_STATE_DIR: tempHome,
+        WINERYCLAW_CONFIG_PATH: configPath,
+        WINERYCLAW_SKIP_CHANNELS: "1",
+        WINERYCLAW_SKIP_GMAIL_WATCHER: "1",
+        WINERYCLAW_SKIP_CRON: "1",
+        WINERYCLAW_SKIP_CANVAS_HOST: "1",
+        WINERYCLAW_GATEWAY_TOKEN: undefined,
+        WINERYCLAW_GATEWAY_PASSWORD: undefined,
         CUSTOM_API_KEY: undefined,
-        OPENCLAW_DISABLE_CONFIG_CACHE: "1",
-        OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-        OPENCLAW_DISABLE_PLUGIN_MANIFEST_CACHE: "1",
+        WINERYCLAW_DISABLE_CONFIG_CACHE: "1",
+        WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+        WINERYCLAW_DISABLE_PLUGIN_MANIFEST_CACHE: "1",
       },
       async () => {
         await run({ configPath, runtime });

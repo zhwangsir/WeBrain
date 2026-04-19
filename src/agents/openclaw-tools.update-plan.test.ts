@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
-import { isUpdatePlanToolEnabledForOpenClawTools } from "./openclaw-tools.registration.js";
+import type { WineryClawConfig } from "../config/config.js";
+import { isUpdatePlanToolEnabledForWineryClawTools } from "./openclaw-tools.registration.js";
 import { createUpdatePlanTool } from "./tools/update-plan-tool.js";
 
 describe("openclaw-tools update_plan gating", () => {
   it("keeps update_plan disabled by default", () => {
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
-        config: {} as OpenClawConfig,
+      isUpdatePlanToolEnabledForWineryClawTools({
+        config: {} as WineryClawConfig,
       }),
     ).toBe(false);
   });
@@ -19,10 +19,10 @@ describe("openclaw-tools update_plan gating", () => {
           planTool: true,
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config,
       }),
     ).toBe(true);
@@ -34,10 +34,10 @@ describe("openclaw-tools update_plan gating", () => {
       agents: {
         list: [{ id: "main" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentSessionKey: "agent:main:main",
         modelProvider: "openai",
@@ -56,10 +56,10 @@ describe("openclaw-tools update_plan gating", () => {
         },
         list: [{ id: "main" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentSessionKey: "agent:main:main",
         modelProvider: "openai",
@@ -78,10 +78,10 @@ describe("openclaw-tools update_plan gating", () => {
         },
         list: [{ id: "main" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentSessionKey: "agent:main:main",
         modelProvider: "anthropic",
@@ -89,7 +89,7 @@ describe("openclaw-tools update_plan gating", () => {
       }),
     ).toBe(false);
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentSessionKey: "agent:main:main",
         modelProvider: "openai",
@@ -113,10 +113,10 @@ describe("openclaw-tools update_plan gating", () => {
         },
         list: [{ id: "main" }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentSessionKey: "agent:main:main",
         modelProvider: "openai",
@@ -143,10 +143,10 @@ describe("openclaw-tools update_plan gating", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentId: "research",
         modelProvider: "openai",
@@ -175,10 +175,10 @@ describe("openclaw-tools update_plan gating", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentId: "main",
         modelProvider: "openai",
@@ -186,7 +186,7 @@ describe("openclaw-tools update_plan gating", () => {
       }),
     ).toBe(false);
     expect(
-      isUpdatePlanToolEnabledForOpenClawTools({
+      isUpdatePlanToolEnabledForWineryClawTools({
         config: cfg,
         agentId: "research",
         modelProvider: "openai",

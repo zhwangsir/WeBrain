@@ -37,7 +37,7 @@ function writeJitiFixture(fixtureRoot: string) {
   );
 }
 
-function writeOpenClawPackageFixture(fixtureRoot: string) {
+function writeWineryClawPackageFixture(fixtureRoot: string) {
   writeFixtureFile(
     fixtureRoot,
     "package.json",
@@ -69,7 +69,7 @@ it("loads the source-checkout runtime wrapper through native ESM import", async 
     "utf8",
   );
 
-  writeOpenClawPackageFixture(fixtureRoot);
+  writeWineryClawPackageFixture(fixtureRoot);
   writeJitiFixture(fixtureRoot);
   writeFixtureFile(fixtureRoot, "extensions/matrix/src/plugin-entry.runtime.js", wrapperSource);
   writeFixtureFile(
@@ -98,7 +98,7 @@ it("loads the packaged runtime wrapper without recursing through the stable root
     "utf8",
   );
 
-  writeOpenClawPackageFixture(fixtureRoot);
+  writeWineryClawPackageFixture(fixtureRoot);
   writeJitiFixture(fixtureRoot);
   writeFixtureFile(fixtureRoot, "dist/plugin-entry.runtime-C88YIa_v.js", wrapperSource);
   writeFixtureFile(

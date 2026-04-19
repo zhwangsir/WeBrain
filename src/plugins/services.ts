@@ -1,8 +1,8 @@
 import { STATE_DIR } from "../config/paths.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { PluginRegistry } from "./registry.js";
-import type { OpenClawPluginServiceContext, PluginLogger } from "./types.js";
+import type { WineryClawPluginServiceContext, PluginLogger } from "./types.js";
 
 const log = createSubsystemLogger("plugins");
 function createPluginLogger(): PluginLogger {
@@ -15,9 +15,9 @@ function createPluginLogger(): PluginLogger {
 }
 
 function createServiceContext(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   workspaceDir?: string;
-}): OpenClawPluginServiceContext {
+}): WineryClawPluginServiceContext {
   return {
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -32,7 +32,7 @@ export type PluginServicesHandle = {
 
 export async function startPluginServices(params: {
   registry: PluginRegistry;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   workspaceDir?: string;
 }): Promise<PluginServicesHandle> {
   const running: Array<{

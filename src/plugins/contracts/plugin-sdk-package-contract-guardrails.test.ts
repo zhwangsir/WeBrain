@@ -167,7 +167,7 @@ function resolveNpmCommandInvocation(npmArgs: string[]): NpmCommandInvocation {
   };
 }
 
-function packOpenClawToTempDir(packDir: string): string {
+function packWineryClawToTempDir(packDir: string): string {
   const invocation = resolveNpmCommandInvocation([
     "pack",
     "--ignore-scripts",
@@ -342,7 +342,7 @@ describe("plugin-sdk package contract guardrails", () => {
     const packDir = join(tempRoot, "pack");
     mkdirSync(packDir, { recursive: true });
 
-    const archivePath = packOpenClawToTempDir(packDir);
+    const archivePath = packWineryClawToTempDir(packDir);
     const packedPackageJson = await readPackedRootPackageJson(archivePath);
     const matrixPackageJson = readMatrixPackageJson();
     const bedrockPackageJson = readAmazonBedrockPackageJson();

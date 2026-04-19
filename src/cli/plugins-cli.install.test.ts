@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { installedPluginRoot } from "../../test/helpers/bundled-plugin-paths.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   applyExclusiveSlotSelection,
   buildPluginDiagnosticsReport,
@@ -33,7 +33,7 @@ function cliInstallPath(pluginId: string): string {
   return installedPluginRoot(CLI_STATE_ROOT, pluginId);
 }
 
-function createEnabledPluginConfig(pluginId: string): OpenClawConfig {
+function createEnabledPluginConfig(pluginId: string): WineryClawConfig {
   return {
     plugins: {
       entries: {
@@ -42,21 +42,21 @@ function createEnabledPluginConfig(pluginId: string): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
-function createEmptyPluginConfig(): OpenClawConfig {
+function createEmptyPluginConfig(): WineryClawConfig {
   return {
     plugins: {
       entries: {},
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createClawHubInstalledConfig(params: {
   pluginId: string;
   install: Record<string, unknown>;
-}): OpenClawConfig {
+}): WineryClawConfig {
   const enabledCfg = createEnabledPluginConfig(params.pluginId);
   return {
     ...enabledCfg,
@@ -66,7 +66,7 @@ function createClawHubInstalledConfig(params: {
         [params.pluginId]: params.install,
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createClawHubInstallResult(params: {
@@ -135,7 +135,7 @@ function primeNpmPluginFallback(pluginId = "demo") {
   return { cfg, enabledCfg };
 }
 
-function createPathHookPackInstalledConfig(tmpRoot: string): OpenClawConfig {
+function createPathHookPackInstalledConfig(tmpRoot: string): WineryClawConfig {
   return {
     hooks: {
       internal: {
@@ -148,10 +148,10 @@ function createPathHookPackInstalledConfig(tmpRoot: string): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
-function createNpmHookPackInstalledConfig(): OpenClawConfig {
+function createNpmHookPackInstalledConfig(): WineryClawConfig {
   return {
     hooks: {
       internal: {
@@ -163,7 +163,7 @@ function createNpmHookPackInstalledConfig(): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createHookPackInstallResult(targetDir: string): {
@@ -183,7 +183,7 @@ function createHookPackInstallResult(targetDir: string): {
 }
 
 function primeHookPackNpmFallback() {
-  const cfg = {} as OpenClawConfig;
+  const cfg = {} as WineryClawConfig;
   const installedCfg = createNpmHookPackInstalledConfig();
 
   loadConfig.mockReturnValue(cfg);
@@ -208,10 +208,10 @@ function primeHookPackNpmFallback() {
 function primeHookPackPathFallback(params: {
   tmpRoot: string;
   pluginInstallError: string;
-}): OpenClawConfig {
+}): WineryClawConfig {
   const installedCfg = createPathHookPackInstalledConfig(params.tmpRoot);
 
-  loadConfig.mockReturnValue({} as OpenClawConfig);
+  loadConfig.mockReturnValue({} as WineryClawConfig);
   installPluginFromPath.mockResolvedValueOnce({
     ok: false,
     error: params.pluginInstallError,
@@ -310,7 +310,7 @@ describe("plugins cli install", () => {
       plugins: {
         entries: {},
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const enabledCfg = {
       plugins: {
         entries: {
@@ -319,7 +319,7 @@ describe("plugins cli install", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const installedCfg = {
       ...enabledCfg,
       plugins: {
@@ -331,7 +331,7 @@ describe("plugins cli install", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     loadConfig.mockReturnValue(cfg);
     installPluginFromMarketplace.mockResolvedValue({
@@ -382,7 +382,7 @@ describe("plugins cli install", () => {
       plugins: {
         entries: {},
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const enabledCfg = createEnabledPluginConfig("demo");
     const installedCfg = createClawHubInstalledConfig({
       pluginId: "demo",
@@ -441,7 +441,7 @@ describe("plugins cli install", () => {
       plugins: {
         entries: {},
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const enabledCfg = createEnabledPluginConfig("demo");
 
     loadConfig.mockReturnValue(cfg);
@@ -476,7 +476,7 @@ describe("plugins cli install", () => {
       plugins: {
         entries: {},
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const enabledCfg = createEnabledPluginConfig("demo");
     const installedCfg = createClawHubInstalledConfig({
       pluginId: "demo",
@@ -571,7 +571,7 @@ describe("plugins cli install", () => {
       plugins: {
         entries: {},
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const enabledCfg = createEnabledPluginConfig("demo");
     const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-plugin-link-"));
 

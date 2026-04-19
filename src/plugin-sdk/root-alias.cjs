@@ -17,7 +17,7 @@ const shouldPreferSourceGraph =
   !isDistRootAlias &&
   (process.env.NODE_ENV !== "production" ||
     Boolean(process.env.VITEST) ||
-    process.env.OPENCLAW_PLUGIN_SDK_SOURCE_IN_TESTS === "1");
+    process.env.WINERYCLAW_PLUGIN_SDK_SOURCE_IN_TESTS === "1");
 
 function emptyPluginConfigSchema() {
   function error(message) {
@@ -153,7 +153,7 @@ function getJiti(tryNative) {
     alias: buildPluginSdkAliasMap(effectiveTryNative),
     interopDefault: true,
     // Prefer Node's native sync ESM loader for built dist/plugin-sdk/*.js files
-    // so local plugins do not create a second transpiled OpenClaw core graph.
+    // so local plugins do not create a second transpiled WineryClaw core graph.
     tryNative: effectiveTryNative,
     extensions: [".ts", ".tsx", ".mts", ".cts", ".mtsx", ".ctsx", ".js", ".mjs", ".cjs", ".json"],
   });

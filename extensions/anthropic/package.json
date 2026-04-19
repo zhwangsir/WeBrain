@@ -2,7 +2,7 @@
   "name": "@openclaw/anthropic-provider",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Anthropic provider plugin",
+  "description": "WineryClaw Anthropic provider plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

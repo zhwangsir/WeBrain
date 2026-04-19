@@ -40,7 +40,7 @@ describe("security audit config symlink findings", () => {
     await fs.writeFile(targetConfigPath, "{}\n", "utf-8");
     await fs.chmod(targetConfigPath, 0o444);
 
-    const configPath = path.join(stateDir, "openclaw.json");
+    const configPath = path.join(stateDir, "wineryclaw.json");
     await fs.symlink(targetConfigPath, configPath);
 
     const findings = await collectFilesystemFindings({

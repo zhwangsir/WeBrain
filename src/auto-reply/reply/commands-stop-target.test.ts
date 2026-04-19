@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { handleStopCommand } from "./commands-session-abort.js";
 import type { HandleCommandsParams } from "./commands-types.js";
 
@@ -56,7 +56,7 @@ function buildStopParams(): HandleCommandsParams {
     cfg: {
       commands: { text: true },
       channels: { telegram: { allowFrom: ["*"] } },
-    } as OpenClawConfig,
+    } as WineryClawConfig,
     ctx: {
       Provider: "telegram",
       Surface: "telegram",

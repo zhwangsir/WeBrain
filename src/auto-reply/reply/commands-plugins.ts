@@ -12,7 +12,7 @@ import {
   validateConfigObjectWithPlugins,
   writeConfigFile,
 } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { PluginInstallRecord } from "../../config/types.plugins.js";
 import { resolveArchiveKind } from "../../infra/archive.js";
 import { parseClawHubPluginSpec } from "../../infra/clawhub.js";
@@ -47,7 +47,7 @@ function renderJsonBlock(label: string, value: unknown): string {
 
 function buildPluginInspectJson(params: {
   id: string;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   report: PluginStatusReport;
 }): {
   inspect: NonNullable<ReturnType<typeof buildPluginInspectReport>>;
@@ -78,7 +78,7 @@ function buildPluginInspectJson(params: {
 }
 
 function buildAllPluginInspectJson(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   report: PluginStatusReport;
 }): Array<{
   inspect: ReturnType<typeof buildAllPluginInspectReports>[number];
@@ -158,7 +158,7 @@ function looksLikeLocalPluginInstallSpec(raw: string): boolean {
 
 async function installPluginFromPluginsCommand(params: {
   raw: string;
-  config: OpenClawConfig;
+  config: WineryClawConfig;
 }): Promise<{ ok: true; pluginId: string } | { ok: false; error: string }> {
   const fileSpec = resolveFileNpmSpecToLocalPath(params.raw);
   if (fileSpec && !fileSpec.ok) {
@@ -283,7 +283,7 @@ async function loadPluginCommandState(
   | {
       ok: true;
       path: string;
-      config: OpenClawConfig;
+      config: WineryClawConfig;
       report: PluginStatusReport;
     }
   | { ok: false; path: string; error: string }
@@ -309,7 +309,7 @@ async function loadPluginCommandState(
 }
 
 async function loadPluginCommandConfig(): Promise<
-  { ok: true; path: string; config: OpenClawConfig } | { ok: false; path: string; error: string }
+  { ok: true; path: string; config: WineryClawConfig } | { ok: false; path: string; error: string }
 > {
   const snapshot = await readConfigFileSnapshot();
   if (!snapshot.valid) {

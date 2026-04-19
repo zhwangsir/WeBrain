@@ -195,7 +195,7 @@ describe("spawnSubagentDirect filename validation", () => {
       status: "error",
       error: "lineage patch failed",
     });
-    const attachmentsRoot = path.join(workspaceDirOverride, ".openclaw", "attachments");
+    const attachmentsRoot = path.join(workspaceDirOverride, ".wineryclaw", "attachments");
     const retainedDirs = fs.existsSync(attachmentsRoot)
       ? fs.readdirSync(attachmentsRoot).filter((entry) => !entry.startsWith("."))
       : [];

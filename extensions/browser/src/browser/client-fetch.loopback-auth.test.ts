@@ -133,7 +133,7 @@ describe("fetchBrowserJson loopback auth", () => {
     ]) {
       vi.stubEnv(key, "");
     }
-    vi.stubEnv("OPENCLAW_GATEWAY_TOKEN", "loopback-token");
+    vi.stubEnv("WINERYCLAW_GATEWAY_TOKEN", "loopback-token");
     mocks.loadConfig.mockClear();
     mocks.loadConfig.mockReturnValue({
       gateway: {
@@ -216,7 +216,7 @@ describe("fetchBrowserJson loopback auth", () => {
 
     await expectThrownBrowserFetchError(() => fetchBrowserJson<{ ok: boolean }>("/tabs"), {
       contains: ["Chrome CDP handshake timeout", "Do NOT retry the browser tool"],
-      omits: ["Can't reach the OpenClaw browser control service"],
+      omits: ["Can't reach the WineryClaw browser control service"],
     });
   });
 
@@ -308,7 +308,7 @@ describe("fetchBrowserJson loopback auth", () => {
       () => fetchBrowserJson<{ ok: boolean }>("http://example.com/"),
       {
         contains: [
-          "Can't reach the OpenClaw browser control service",
+          "Can't reach the WineryClaw browser control service",
           "Do NOT retry the browser tool",
         ],
       },

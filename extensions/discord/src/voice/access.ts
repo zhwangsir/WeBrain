@@ -1,6 +1,6 @@
 import type { Guild } from "@buape/carbon";
 import { resolveCommandAuthorizedFromAuthorizers } from "openclaw/plugin-sdk/command-auth-native";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { DiscordAccountConfig } from "openclaw/plugin-sdk/config-runtime";
 import { resolveOpenProviderRuntimeGroupPolicy } from "openclaw/plugin-sdk/runtime-group-policy";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../monitor/allow-list.js";
 
 export async function authorizeDiscordVoiceIngress(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   discordConfig: DiscordAccountConfig;
   groupPolicy?: "open" | "disabled" | "allowlist";
   useAccessGroups?: boolean;

@@ -1,6 +1,6 @@
 import { formatCliCommand, parseDurationMs } from "openclaw/plugin-sdk/cli-runtime";
 import type {
-  OpenClawPluginApi,
+  WineryClawPluginApi,
   ProviderAuthContext,
   ProviderAuthMethodNonInteractiveContext,
   ProviderResolveDynamicModelContext,
@@ -12,7 +12,7 @@ import {
   buildTokenProfileId,
   createProviderApiKeyAuthMethod,
   listProfilesForProvider,
-  type OpenClawConfig as ProviderAuthConfig,
+  type WineryClawConfig as ProviderAuthConfig,
   type ProviderAuthResult,
   suggestOAuthProfileIdForLegacyDefault,
   upsertAuthProfile,
@@ -60,9 +60,9 @@ const _ANTHROPIC_OAUTH_ALLOWLIST = [
   "anthropic/claude-haiku-4-5",
 ] as const;
 const ANTHROPIC_SETUP_TOKEN_NOTE_LINES = [
-  "Anthropic setup-token auth is supported in OpenClaw.",
-  "OpenClaw prefers Claude CLI reuse when it is available on the host.",
-  "Anthropic staff told us this OpenClaw path is allowed again.",
+  "Anthropic setup-token auth is supported in WineryClaw.",
+  "WineryClaw prefers Claude CLI reuse when it is available on the host.",
+  "Anthropic staff told us this WineryClaw path is allowed again.",
   `If you want a direct API billing path instead, use ${formatCliCommand("openclaw models auth login --provider anthropic --method api-key --set-default")} or ${formatCliCommand("openclaw models auth login --provider anthropic --method cli --set-default")}.`,
 ] as const;
 
@@ -377,7 +377,7 @@ async function runAnthropicCliMigrationNonInteractive(ctx: {
   };
 }
 
-export function registerAnthropicPlugin(api: OpenClawPluginApi): void {
+export function registerAnthropicPlugin(api: WineryClawPluginApi): void {
   const providerId = "anthropic";
   const defaultAnthropicModel = "anthropic/claude-sonnet-4-6";
   const _anthropicOauthAllowlist = [

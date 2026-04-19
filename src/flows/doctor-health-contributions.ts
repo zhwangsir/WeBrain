@@ -52,7 +52,7 @@ import { applyWizardMetadata, randomToken } from "../commands/onboard-helpers.js
 import { ensureSystemdUserLingerInteractive } from "../commands/systemd-linger.js";
 import { CONFIG_PATH, readConfigFileSnapshot, writeConfigFile } from "../config/config.js";
 import { logConfigUpdated } from "../config/logging.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { resolveGatewayService } from "../daemon/service.js";
 import { hasAmbiguousGatewayAuthModeConfig } from "../gateway/auth-mode-policy.js";
@@ -66,7 +66,7 @@ import type { FlowContribution } from "./types.js";
 export type DoctorFlowMode = "local" | "remote";
 
 export type DoctorConfigResult = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   path?: string;
   shouldWriteConfig?: boolean;
   sourceConfigValid?: boolean;
@@ -77,8 +77,8 @@ export type DoctorHealthFlowContext = {
   options: DoctorOptions;
   prompter: DoctorPrompter;
   configResult: DoctorConfigResult;
-  cfg: OpenClawConfig;
-  cfgForPersistence: OpenClawConfig;
+  cfg: WineryClawConfig;
+  cfgForPersistence: WineryClawConfig;
   sourceConfigValid: boolean;
   configPath: string;
   gatewayDetails?: ReturnType<typeof buildGatewayConnectionDetails>;
@@ -92,7 +92,7 @@ export type DoctorHealthContribution = FlowContribution & {
   run: (ctx: DoctorHealthFlowContext) => Promise<void>;
 };
 
-export function resolveDoctorMode(cfg: OpenClawConfig): DoctorFlowMode {
+export function resolveDoctorMode(cfg: WineryClawConfig): DoctorFlowMode {
   return cfg.gateway?.mode === "remote" ? "remote" : "local";
 }
 

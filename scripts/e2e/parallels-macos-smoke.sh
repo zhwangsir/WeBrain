@@ -29,8 +29,8 @@ DISCORD_CHANNEL_ID=""
 SNAPSHOT_ID=""
 SNAPSHOT_STATE=""
 SNAPSHOT_NAME=""
-GUEST_OPENCLAW_BIN="/opt/homebrew/bin/openclaw"
-GUEST_OPENCLAW_ENTRY="/opt/homebrew/lib/node_modules/openclaw/openclaw.mjs"
+GUEST_WINERYCLAW_BIN="/opt/homebrew/bin/openclaw"
+GUEST_WINERYCLAW_ENTRY="/opt/homebrew/lib/node_modules/openclaw/openclaw.mjs"
 GUEST_NODE_BIN="/opt/homebrew/bin/node"
 GUEST_NPM_BIN="/opt/homebrew/bin/npm"
 GUEST_CURRENT_USER=""
@@ -698,25 +698,25 @@ if {$mode eq "current-user"} {
 }
 
 spawn {*}$cmd
-send -- "printf '__OPENCLAW_READY__\\n'\r"
-expect "__OPENCLAW_READY__"
+send -- "printf '__WINERYCLAW_READY__\\n'\r"
+expect "__WINERYCLAW_READY__"
 log_user 0
 send -- "export PS1='' PROMPT='' PROMPT2='' RPROMPT=''\r"
 send -- "stty -echo\r"
 
-send -- "cat >/tmp/openclaw-prl.sh <<'__OPENCLAW_SCRIPT__'\r"
+send -- "cat >/tmp/openclaw-prl.sh <<'__WINERYCLAW_SCRIPT__'\r"
 send -- $script
 if {![string match "*\n" $script]} {
   send -- "\r"
 }
-send -- "__OPENCLAW_SCRIPT__\r"
-send -- "/bin/bash /tmp/openclaw-prl.sh; rc=\$?; rm -f /tmp/openclaw-prl.sh; printf '__OPENCLAW_RC__:%s\\n' \"\$rc\"; exit \"\$rc\"\r"
+send -- "__WINERYCLAW_SCRIPT__\r"
+send -- "/bin/bash /tmp/openclaw-prl.sh; rc=\$?; rm -f /tmp/openclaw-prl.sh; printf '__WINERYCLAW_RC__:%s\\n' \"\$rc\"; exit \"\$rc\"\r"
 log_user 1
 
 set rc 1
 set saw_rc 0
 expect {
-  -re {__OPENCLAW_RC__:(-?[0-9]+)} {
+  -re {__WINERYCLAW_RC__:(-?[0-9]+)} {
     set rc $expect_out(1,string)
     set saw_rc 1
   }
@@ -802,7 +802,7 @@ if not path.exists():
 markers = [
     line.strip()
     for line in path.read_text(encoding="utf-8", errors="replace").splitlines()
-    if line.startswith("__OPENCLAW_RC__:")
+    if line.startswith("__WINERYCLAW_RC__:")
 ]
 if not markers:
     raise SystemExit(1)
@@ -867,15 +867,15 @@ status=0
   cd "\$HOME"
   $script
 ) || status=\$?
-printf '__OPENCLAW_RC__:%s\n' "\$status"
+printf '__WINERYCLAW_RC__:%s\n' "\$status"
 printf '%s\n' "\$status" > "$done_path"
 exit "\$status"
 EOF
 )"
   write_runner_cmd="/bin/rm -f $(shell_quote "$runner_path")"$'\n'
-  write_runner_cmd+="cat > $(shell_quote "$runner_path") <<'__OPENCLAW_RUNNER__'"$'\n'
+  write_runner_cmd+="cat > $(shell_quote "$runner_path") <<'__WINERYCLAW_RUNNER__'"$'\n'
   write_runner_cmd+="$runner_body"$'\n'
-  write_runner_cmd+="__OPENCLAW_RUNNER__"$'\n'
+  write_runner_cmd+="__WINERYCLAW_RUNNER__"$'\n'
   write_runner_cmd+="/bin/chmod +x $(shell_quote "$runner_path")"$'\n'
   write_runner_cmd+="(/bin/bash $(shell_quote "$runner_path") > $(shell_quote "$log_path") 2>&1 < /dev/null &) >/dev/null 2>&1"
   guest_current_user_sh "$write_runner_cmd"
@@ -948,10 +948,10 @@ install_latest_release() {
   version_to_install="${INSTALL_VERSION:-$LATEST_VERSION}"
   version_arg_q=" --version $(shell_quote "$version_to_install")"
   guest_current_user_sh "$(cat <<EOF
-export OPENCLAW_NO_ONBOARD=1
+export WINERYCLAW_NO_ONBOARD=1
 curl -fsSL $install_url_q -o /tmp/openclaw-install.sh
 bash /tmp/openclaw-install.sh${version_arg_q}
-$GUEST_OPENCLAW_BIN --version
+$GUEST_WINERYCLAW_BIN --version
 EOF
 )"
 }
@@ -1019,7 +1019,7 @@ run_dev_channel_update() {
 rm -rf $(shell_quote "$update_root")
 export PATH=$(shell_quote "$bootstrap_bin:$GUEST_EXEC_PATH")
 /usr/bin/env NODE_OPTIONS=--max-old-space-size=4096 \
-  $GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY update --channel dev --yes --json
+  $GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY update --channel dev --yes --json
 EOF
 )" "$update_log" "$update_done" "$TIMEOUT_UPDATE_DEV_S" "$update_runner"
   update_rc=$?
@@ -1030,14 +1030,14 @@ EOF
   fi
   repair_legacy_dev_source_checkout_if_needed
   printf 'update-dev: git-version\n'
-  guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_OPENCLAW_ENTRY" --version
+  guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_WINERYCLAW_ENTRY" --version
   printf 'update-dev: git-status\n'
-  guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_OPENCLAW_ENTRY" update status --json
+  guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_WINERYCLAW_ENTRY" update status --json
 }
 
 verify_dev_channel_update() {
   local status_json
-  status_json="$(guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_OPENCLAW_ENTRY" update status --json)"
+  status_json="$(guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_WINERYCLAW_ENTRY" update status --json)"
   printf '%s\n' "$status_json"
   printf '%s\n' "$status_json" | grep -F '"installKind": "git"'
   printf '%s\n' "$status_json" | grep -F '"value": "dev"'
@@ -1048,7 +1048,7 @@ verify_version_contains() {
   local needle="$1"
   local version
   version="$(
-    guest_current_user_exec "$GUEST_OPENCLAW_BIN" --version 2>&1
+    guest_current_user_exec "$GUEST_WINERYCLAW_BIN" --version 2>&1
   )"
   printf '%s\n' "$version"
   case "$version" in
@@ -1207,7 +1207,7 @@ install_main_tgz() {
     run_logged_guest_current_user_sh "$(cat <<EOF
 printf 'install-source: registry-spec %s\n' $(shell_quote "$TARGET_PACKAGE_SPEC")
 $GUEST_NPM_BIN install -g $(shell_quote "$TARGET_PACKAGE_SPEC")
-$GUEST_OPENCLAW_BIN --version
+$GUEST_WINERYCLAW_BIN --version
 EOF
 )" "$install_log" "$install_done" "$(install_main_timeout)" "$install_runner"
     return
@@ -1217,7 +1217,7 @@ EOF
 printf 'install-source: host-tgz %s\n' $(shell_quote "$tgz_url_q")
 curl -fsSL $tgz_url_q -o /tmp/$temp_name
 $GUEST_NPM_BIN install -g /tmp/$temp_name
-$GUEST_OPENCLAW_BIN --version
+$GUEST_WINERYCLAW_BIN --version
 EOF
 )" "$install_log" "$install_done" "$(install_main_timeout)" "$install_runner"
 }
@@ -1259,7 +1259,7 @@ run_ref_onboard() {
   fi
   guest_current_user_cli \
     /usr/bin/env "$API_KEY_ENV=$API_KEY_VALUE" \
-    "$GUEST_OPENCLAW_BIN" onboard \
+    "$GUEST_WINERYCLAW_BIN" onboard \
     --non-interactive \
     --mode local \
     --auth-choice "$AUTH_CHOICE" \
@@ -1280,7 +1280,7 @@ start_manual_gateway_if_needed() {
 pkill -f 'openclaw.*gateway run' >/dev/null 2>&1 || true
 pkill -f 'openclaw-gateway' >/dev/null 2>&1 || true
 /usr/bin/env $(shell_quote "$API_KEY_ENV=$API_KEY_VALUE") \
-  $GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY gateway run --bind loopback --port 18789 --force \
+  $GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY gateway run --bind loopback --port 18789 --force \
   >/tmp/openclaw-parallels-macos-gateway.log 2>&1 </dev/null &
 EOF
 )"
@@ -1289,7 +1289,7 @@ EOF
 verify_gateway() {
   local attempt
   for attempt in 1 2 3 4; do
-    if guest_current_user_exec "$GUEST_OPENCLAW_BIN" gateway status --deep --require-rpc --timeout 5000; then
+    if guest_current_user_exec "$GUEST_WINERYCLAW_BIN" gateway status --deep --require-rpc --timeout 5000; then
       return 0
     fi
     if (( attempt < 4 )); then
@@ -1301,19 +1301,19 @@ verify_gateway() {
 }
 
 show_gateway_status_compat() {
-  if guest_current_user_exec "$GUEST_OPENCLAW_BIN" gateway status --help | grep -Fq -- "--require-rpc"; then
-    guest_current_user_exec "$GUEST_OPENCLAW_BIN" gateway status --deep --require-rpc
+  if guest_current_user_exec "$GUEST_WINERYCLAW_BIN" gateway status --help | grep -Fq -- "--require-rpc"; then
+    guest_current_user_exec "$GUEST_WINERYCLAW_BIN" gateway status --deep --require-rpc
     return
   fi
-  guest_current_user_exec "$GUEST_OPENCLAW_BIN" gateway status --deep
+  guest_current_user_exec "$GUEST_WINERYCLAW_BIN" gateway status --deep
 }
 
 verify_turn() {
-  guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_OPENCLAW_ENTRY" models set "$MODEL_ID"
+  guest_current_user_exec "$GUEST_NODE_BIN" "$GUEST_WINERYCLAW_ENTRY" models set "$MODEL_ID"
   guest_current_user_sh "$(cat <<EOF
 export PATH=$(shell_quote "$GUEST_EXEC_PATH")
 exec /usr/bin/env $(shell_quote "$API_KEY_ENV=$API_KEY_VALUE") \
-  $(shell_quote "$GUEST_NODE_BIN") $(shell_quote "$GUEST_OPENCLAW_ENTRY") agent \
+  $(shell_quote "$GUEST_NODE_BIN") $(shell_quote "$GUEST_WINERYCLAW_ENTRY") agent \
   --agent main \
   --message $(shell_quote "Reply with exact ASCII text OK only.") \
   --json
@@ -1324,7 +1324,7 @@ EOF
 resolve_dashboard_url() {
   local dashboard_url
   dashboard_url="$(
-    guest_current_user_cli "$GUEST_OPENCLAW_BIN" dashboard --no-open \
+    guest_current_user_cli "$GUEST_WINERYCLAW_BIN" dashboard --no-open \
       | awk '/^Dashboard URL: / { sub(/^Dashboard URL: /, ""); print; exit }'
   )"
   dashboard_url="${dashboard_url//$'\r'/}"
@@ -1366,7 +1366,7 @@ deadline=\$((SECONDS + 30))
 dashboard_ready=0
 while [ \$SECONDS -lt \$deadline ]; do
   if curl -fsSL --connect-timeout 2 --max-time 5 "\$dashboard_http_url" >/tmp/openclaw-dashboard-smoke.html 2>/dev/null; then
-    if grep -F '<title>OpenClaw Control</title>' /tmp/openclaw-dashboard-smoke.html >/dev/null; then
+    if grep -F '<title>WineryClaw Control</title>' /tmp/openclaw-dashboard-smoke.html >/dev/null; then
       if grep -F '<openclaw-app></openclaw-app>' /tmp/openclaw-dashboard-smoke.html >/dev/null; then
         dashboard_ready=1
         break
@@ -1379,7 +1379,7 @@ done
   echo "dashboard HTML did not become ready at \$dashboard_http_url" >&2
   exit 1
 }
-grep -F '<title>OpenClaw Control</title>' /tmp/openclaw-dashboard-smoke.html >/dev/null
+grep -F '<title>WineryClaw Control</title>' /tmp/openclaw-dashboard-smoke.html >/dev/null
 grep -F '<openclaw-app></openclaw-app>' /tmp/openclaw-dashboard-smoke.html >/dev/null
 if [ "\$headless_flag" = "1" ]; then
   exit 0
@@ -1428,26 +1428,26 @@ print(
 PY
   )"
   script="$(cat <<EOF
-cat >/tmp/openclaw-discord-token <<'__OPENCLAW_TOKEN__'
+cat >/tmp/openclaw-discord-token <<'__WINERYCLAW_TOKEN__'
 $DISCORD_TOKEN_VALUE
-__OPENCLAW_TOKEN__
-cat >/tmp/openclaw-discord-guilds.json <<'__OPENCLAW_GUILDS__'
+__WINERYCLAW_TOKEN__
+cat >/tmp/openclaw-discord-guilds.json <<'__WINERYCLAW_GUILDS__'
 $guilds_json
-__OPENCLAW_GUILDS__
+__WINERYCLAW_GUILDS__
 token="\$(tr -d '\n' </tmp/openclaw-discord-token)"
 guilds_json="\$(cat /tmp/openclaw-discord-guilds.json)"
-$GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY config set channels.discord.token "\$token"
-$GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY config set channels.discord.enabled true
-$GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY config set channels.discord.groupPolicy allowlist
-$GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY config set channels.discord.guilds "\$guilds_json" --strict-json
-$GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY gateway restart
+$GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY config set channels.discord.token "\$token"
+$GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY config set channels.discord.enabled true
+$GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY config set channels.discord.groupPolicy allowlist
+$GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY config set channels.discord.guilds "\$guilds_json" --strict-json
+$GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY gateway restart
 for _ in 1 2 3 4 5 6 7 8; do
-  if $GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY gateway status --deep --require-rpc >/dev/null 2>&1; then
+  if $GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY gateway status --deep --require-rpc >/dev/null 2>&1; then
     break
   fi
   sleep 2
 done
-$GUEST_NODE_BIN $GUEST_OPENCLAW_ENTRY channels status --probe --json
+$GUEST_NODE_BIN $GUEST_WINERYCLAW_ENTRY channels status --probe --json
 rm -f /tmp/openclaw-discord-token /tmp/openclaw-discord-guilds.json
 EOF
 )"
@@ -1530,7 +1530,7 @@ wait_for_guest_discord_readback() {
     set +e
     response="$(
       guest_current_user_exec \
-      "$GUEST_OPENCLAW_BIN" \
+      "$GUEST_WINERYCLAW_BIN" \
       message read \
       --channel discord \
       --target "channel:$DISCORD_CHANNEL_ID" \
@@ -1562,7 +1562,7 @@ run_discord_roundtrip_smoke() {
   host_id_file="$RUN_DIR/$phase.discord-host-message-id"
 
   guest_current_user_exec \
-    "$GUEST_OPENCLAW_BIN" \
+    "$GUEST_WINERYCLAW_BIN" \
     message send \
     --channel discord \
     --target "channel:$DISCORD_CHANNEL_ID" \
@@ -1588,7 +1588,7 @@ import re
 import sys
 
 text = pathlib.Path(sys.argv[1]).read_text(errors="replace")
-matches = re.findall(r"OpenClaw [^\r\n]+ \([0-9a-f]{7,}\)", text)
+matches = re.findall(r"WineryClaw [^\r\n]+ \([0-9a-f]{7,}\)", text)
 print(matches[-1] if matches else "")
 PY
 }

@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type { OpenClawPluginApi } from "../runtime-api.js";
+import type { WineryClawPluginApi } from "../runtime-api.js";
 import {
   createEmbeddedLobsterRunner,
   resolveLobsterCwd,
@@ -13,7 +13,7 @@ import {
 } from "./lobster-taskflow.js";
 
 type BoundTaskFlow = ReturnType<
-  NonNullable<OpenClawPluginApi["runtime"]>["taskFlow"]["bindSession"]
+  NonNullable<WineryClawPluginApi["runtime"]>["taskFlow"]["bindSession"]
 >;
 
 type JsonLike =
@@ -208,7 +208,7 @@ function resolveManagedFlowToolResult(result: ManagedLobsterFlowResult) {
   return formatManagedFlowResult(result);
 }
 
-export function createLobsterTool(api: OpenClawPluginApi, options?: LobsterToolOptions) {
+export function createLobsterTool(api: WineryClawPluginApi, options?: LobsterToolOptions) {
   const runner = options?.runner ?? createEmbeddedLobsterRunner();
   return {
     name: "lobster",

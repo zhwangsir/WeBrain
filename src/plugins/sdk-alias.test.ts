@@ -168,7 +168,7 @@ function writePluginEntry(root: string, relativePath: string) {
 
 function createUserInstalledPluginSdkAliasFixture() {
   const { fixture, sourceRootAlias } = createPluginSdkAliasTargetFixture();
-  const externalPluginRoot = path.join(makeTempDir(), ".openclaw", "extensions", "demo");
+  const externalPluginRoot = path.join(makeTempDir(), ".wineryclaw", "extensions", "demo");
   const externalPluginEntry = path.join(externalPluginRoot, "index.ts");
   mkdirSafeDir(externalPluginRoot);
   fs.writeFileSync(externalPluginEntry, 'export const plugin = "demo";\n', "utf-8");
@@ -485,7 +485,7 @@ describe("plugin sdk alias helpers", () => {
 
   it.each([
     {
-      name: "does not derive plugin-sdk subpaths from cwd fallback when package root is not an OpenClaw root",
+      name: "does not derive plugin-sdk subpaths from cwd fallback when package root is not an WineryClaw root",
       fixture: () =>
         createPluginSdkAliasFixture({
           trustedRootIndicators: false,
@@ -596,7 +596,7 @@ describe("plugin sdk alias helpers", () => {
     // resolve to the fixture root — only the moduleUrl hint can bridge the gap.
     // Pass "" for argv1: undefined would trigger the STARTUP_ARGV1 default (the vitest
     // runner binary, inside the openclaw repo), which resolves before moduleUrl is checked.
-    // An empty string is falsy so resolveTrustedOpenClawRootFromArgvHint returns null,
+    // An empty string is falsy so resolveTrustedWineryClawRootFromArgvHint returns null,
     // meaning only the moduleUrl hint can bridge the gap.
     const aliases = withCwd(externalPluginRoot, () =>
       withEnv({ NODE_ENV: undefined }, () =>
@@ -616,7 +616,7 @@ describe("plugin sdk alias helpers", () => {
 
   it.each([
     {
-      name: "does not resolve plugin-sdk alias files from cwd fallback when package root is not an OpenClaw root",
+      name: "does not resolve plugin-sdk alias files from cwd fallback when package root is not an WineryClaw root",
       fixture: () =>
         createPluginSdkAliasFixture({
           srcFile: "channel-runtime.ts",

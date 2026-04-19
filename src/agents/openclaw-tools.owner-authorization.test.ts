@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
 import {
-  isOpenClawOwnerOnlyCoreToolName,
-  OPENCLAW_OWNER_ONLY_CORE_TOOL_NAMES,
+  isWineryClawOwnerOnlyCoreToolName,
+  WINERYCLAW_OWNER_ONLY_CORE_TOOL_NAMES,
 } from "./tools/owner-only-tools.js";
 
-describe("createOpenClawTools owner authorization", () => {
+describe("createWineryClawTools owner authorization", () => {
   it("marks owner-only core tool names", () => {
-    expect(OPENCLAW_OWNER_ONLY_CORE_TOOL_NAMES).toEqual(["cron", "gateway", "nodes"]);
-    expect(isOpenClawOwnerOnlyCoreToolName("cron")).toBe(true);
-    expect(isOpenClawOwnerOnlyCoreToolName("gateway")).toBe(true);
-    expect(isOpenClawOwnerOnlyCoreToolName("nodes")).toBe(true);
+    expect(WINERYCLAW_OWNER_ONLY_CORE_TOOL_NAMES).toEqual(["cron", "gateway", "nodes"]);
+    expect(isWineryClawOwnerOnlyCoreToolName("cron")).toBe(true);
+    expect(isWineryClawOwnerOnlyCoreToolName("gateway")).toBe(true);
+    expect(isWineryClawOwnerOnlyCoreToolName("nodes")).toBe(true);
   });
 
   it("keeps canvas non-owner-only", () => {
-    expect(isOpenClawOwnerOnlyCoreToolName("canvas")).toBe(false);
+    expect(isWineryClawOwnerOnlyCoreToolName("canvas")).toBe(false);
   });
 });

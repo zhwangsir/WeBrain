@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   hasMeaningfulChannelConfig,
   hasPotentialConfiguredChannels,
@@ -21,7 +21,7 @@ vi.mock("../channels/plugins/persisted-auth-state.js", () => ({
   }: {
     channelId: string;
     env?: NodeJS.ProcessEnv;
-  }) => channelId === "matrix" && env?.OPENCLAW_STATE_DIR?.includes("persisted-matrix"),
+  }) => channelId === "matrix" && env?.WINERYCLAW_STATE_DIR?.includes("persisted-matrix"),
 }));
 
 const tempDirs: string[] = [];
@@ -33,7 +33,7 @@ function makeTempStateDir() {
 }
 
 function expectPotentialConfiguredChannelCase(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   expectedIds: string[];
   expectedConfigured: boolean;
@@ -99,7 +99,7 @@ describe("config presence", () => {
     );
     fs.mkdirSync(stateDir, { recursive: true });
     tempDirs.push(stateDir);
-    const env = { OPENCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv;
+    const env = { WINERYCLAW_STATE_DIR: stateDir } as NodeJS.ProcessEnv;
 
     expectPotentialConfiguredChannelCase({
       cfg: {},

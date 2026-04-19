@@ -124,7 +124,7 @@ describe("gateway pre-auth hardening", () => {
   });
 
   it("closes idle unauthenticated sockets after the handshake timeout", async () => {
-    setEnvForTest("OPENCLAW_TEST_HANDSHAKE_TIMEOUT_MS", "200");
+    setEnvForTest("WINERYCLAW_TEST_HANDSHAKE_TIMEOUT_MS", "200");
 
     const harness = await createGatewaySuiteHarness({
       serverOptions: { auth: { mode: "none" } },
@@ -182,7 +182,7 @@ describe("gateway pre-auth hardening", () => {
   });
 
   it("rejects excess simultaneous unauthenticated sockets from the same client ip", async () => {
-    setEnvForTest("OPENCLAW_TEST_MAX_PREAUTH_CONNECTIONS_PER_IP", "1");
+    setEnvForTest("WINERYCLAW_TEST_MAX_PREAUTH_CONNECTIONS_PER_IP", "1");
     setGatewayAuthNoneForTest();
 
     const harness = await createGatewaySuiteHarness();
@@ -222,7 +222,7 @@ describe("gateway pre-auth hardening", () => {
   });
 
   it("rejects excess simultaneous unauthenticated sockets when trusted proxy headers are missing", async () => {
-    setEnvForTest("OPENCLAW_TEST_MAX_PREAUTH_CONNECTIONS_PER_IP", "1");
+    setEnvForTest("WINERYCLAW_TEST_MAX_PREAUTH_CONNECTIONS_PER_IP", "1");
     setGatewayAuthNoneForTest();
 
     await withTempConfig({

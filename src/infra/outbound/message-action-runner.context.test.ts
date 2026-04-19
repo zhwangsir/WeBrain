@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { ChannelPlugin } from "../../channels/plugins/types.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import {
   createChannelTestPluginBase,
@@ -230,7 +230,7 @@ describe("runMessageAction context isolation", () => {
             token: "tg-test",
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       action: "send" as const,
       actionParams: {
         message: "hi",
@@ -302,7 +302,7 @@ describe("runMessageAction context isolation", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       actionParams: {
         channel: "slack",
         target: "channel:C99999999",
@@ -323,7 +323,7 @@ describe("runMessageAction context isolation", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       actionParams: {
         channel: "slack",
         target: "channel:C99999999",

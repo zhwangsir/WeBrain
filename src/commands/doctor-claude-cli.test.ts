@@ -35,7 +35,7 @@ describe("resolveClaudeCliProjectDirForWorkspace", () => {
   it("matches Claude's sanitized workspace project dir shape", () => {
     expect(
       resolveClaudeCliProjectDirForWorkspace({
-        workspaceDir: "/Users/vincentkoc/GIT/_Perso/openclaw/.openclaw/workspace",
+        workspaceDir: "/Users/vincentkoc/GIT/_Perso/openclaw/.wineryclaw/workspace",
         homeDir: "/Users/vincentkoc",
       }),
     ).toBe(
@@ -103,7 +103,7 @@ describe("noteClaudeCliHealth", () => {
       expect(body).toContain("Binary: /opt/homebrew/bin/claude.");
       expect(body).toContain("Headless Claude auth: OK (oauth).");
       expect(body).toContain(
-        `OpenClaw auth profile: ${CLAUDE_CLI_PROFILE_ID} (provider claude-cli).`,
+        `WineryClaw auth profile: ${CLAUDE_CLI_PROFILE_ID} (provider claude-cli).`,
       );
       expect(body).toContain("Workspace:");
       expect(body).toContain("(writable).");
@@ -138,7 +138,7 @@ describe("noteClaudeCliHealth", () => {
 
       const body = String(noteFn.mock.calls[0]?.[0]);
       expect(body).toContain("Headless Claude auth: OK (oauth).");
-      expect(body).toContain(`OpenClaw auth profile: missing (${CLAUDE_CLI_PROFILE_ID})`);
+      expect(body).toContain(`WineryClaw auth profile: missing (${CLAUDE_CLI_PROFILE_ID})`);
       expect(body).toContain(
         "openclaw models auth login --provider anthropic --method cli --set-default",
       );

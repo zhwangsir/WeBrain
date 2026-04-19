@@ -1,7 +1,7 @@
 import Darwin
 import Foundation
 import Testing
-@testable import OpenClawDiscovery
+@testable import WineryClawDiscovery
 
 private final class NameserverQueryLog: @unchecked Sendable {
     private let lock = NSLock()
@@ -23,13 +23,13 @@ private final class NameserverQueryLog: @unchecked Sendable {
 @Suite(.serialized)
 struct WideAreaGatewayDiscoveryTests {
     @Test func `discovers beacon from tailnet dns sd fallback`() {
-        let originalWideAreaDomain = getenv("OPENCLAW_WIDE_AREA_DOMAIN").map { String(cString: $0) }
-        setenv("OPENCLAW_WIDE_AREA_DOMAIN", "openclaw.internal", 1)
+        let originalWideAreaDomain = getenv("WINERYCLAW_WIDE_AREA_DOMAIN").map { String(cString: $0) }
+        setenv("WINERYCLAW_WIDE_AREA_DOMAIN", "openclaw.internal", 1)
         defer {
             if let originalWideAreaDomain {
-                setenv("OPENCLAW_WIDE_AREA_DOMAIN", originalWideAreaDomain, 1)
+                setenv("WINERYCLAW_WIDE_AREA_DOMAIN", originalWideAreaDomain, 1)
             } else {
-                unsetenv("OPENCLAW_WIDE_AREA_DOMAIN")
+                unsetenv("WINERYCLAW_WIDE_AREA_DOMAIN")
             }
         }
         let statusJson = """
@@ -56,7 +56,7 @@ struct WideAreaGatewayDiscoveryTests {
                     return "0 0 18789 steipetacstudio.openclaw.internal."
                 }
                 if recordType == "TXT" {
-                    return "\"displayName=Peter\\226\\128\\153s Mac Studio (OpenClaw)\" \"gatewayPort=18789\" \"tailnetDns=peters-mac-studio-1.sheep-coho.ts.net\" \"cliPath=/Users/steipete/openclaw/src/entry.ts\""
+                    return "\"displayName=Peter\\226\\128\\153s Mac Studio (WineryClaw)\" \"gatewayPort=18789\" \"tailnetDns=peters-mac-studio-1.sheep-coho.ts.net\" \"cliPath=/Users/steipete/openclaw/src/entry.ts\""
                 }
                 return ""
             })
@@ -67,7 +67,7 @@ struct WideAreaGatewayDiscoveryTests {
 
         #expect(beacons.count == 1)
         let beacon = beacons[0]
-        let expectedDisplay = "Peter\u{2019}s Mac Studio (OpenClaw)"
+        let expectedDisplay = "Peter\u{2019}s Mac Studio (WineryClaw)"
         #expect(beacon.displayName == expectedDisplay)
         #expect(beacon.port == 18789)
         #expect(beacon.gatewayPort == 18789)
@@ -76,13 +76,13 @@ struct WideAreaGatewayDiscoveryTests {
     }
 
     @Test func `attacker peer cannot become nameserver`() {
-        let originalWideAreaDomain = getenv("OPENCLAW_WIDE_AREA_DOMAIN").map { String(cString: $0) }
-        setenv("OPENCLAW_WIDE_AREA_DOMAIN", "openclaw.internal", 1)
+        let originalWideAreaDomain = getenv("WINERYCLAW_WIDE_AREA_DOMAIN").map { String(cString: $0) }
+        setenv("WINERYCLAW_WIDE_AREA_DOMAIN", "openclaw.internal", 1)
         defer {
             if let originalWideAreaDomain {
-                setenv("OPENCLAW_WIDE_AREA_DOMAIN", originalWideAreaDomain, 1)
+                setenv("WINERYCLAW_WIDE_AREA_DOMAIN", originalWideAreaDomain, 1)
             } else {
-                unsetenv("OPENCLAW_WIDE_AREA_DOMAIN")
+                unsetenv("WINERYCLAW_WIDE_AREA_DOMAIN")
             }
         }
         let statusJson = """

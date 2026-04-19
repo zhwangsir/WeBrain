@@ -1,17 +1,17 @@
 ---
-summary: "Run OpenClaw with Ollama (cloud and local models)"
+summary: "Run WineryClaw with Ollama (cloud and local models)"
 read_when:
-  - You want to run OpenClaw with cloud or local models via Ollama
+  - You want to run WineryClaw with cloud or local models via Ollama
   - You need Ollama setup and configuration guidance
 title: "Ollama"
 ---
 
 # Ollama
 
-Ollama is a local LLM runtime that makes it easy to run open-source models on your machine. OpenClaw integrates with Ollama's native API (`/api/chat`), supports streaming and tool calling, and can auto-discover local Ollama models when you opt in with `OLLAMA_API_KEY` (or an auth profile) and do not define an explicit `models.providers.ollama` entry.
+Ollama is a local LLM runtime that makes it easy to run open-source models on your machine. WineryClaw integrates with Ollama's native API (`/api/chat`), supports streaming and tool calling, and can auto-discover local Ollama models when you opt in with `OLLAMA_API_KEY` (or an auth profile) and do not define an explicit `models.providers.ollama` entry.
 
 <Warning>
-**Remote Ollama users**: Do not use the `/v1` OpenAI-compatible URL (`http://host:11434/v1`) with OpenClaw. This breaks tool calling and models may output raw tool JSON as plain text. Use the native Ollama API URL instead: `baseUrl: "http://host:11434"` (no `/v1`).
+**Remote Ollama users**: Do not use the `/v1` OpenAI-compatible URL (`http://host:11434/v1`) with WineryClaw. This breaks tool calling and models may output raw tool JSON as plain text. Use the native Ollama API URL instead: `baseUrl: "http://host:11434"` (no `/v1`).
 </Warning>
 
 ## Getting started
@@ -89,7 +89,7 @@ Choose your preferred setup method and mode.
         ollama signin
         ```
       </Step>
-      <Step title="Enable Ollama for OpenClaw">
+      <Step title="Enable Ollama for WineryClaw">
         Set any value for the API key (Ollama does not require a real key):
 
         ```bash
@@ -133,29 +133,29 @@ Choose your preferred setup method and mode.
 
     You can also sign in directly at [ollama.com/signin](https://ollama.com/signin).
 
-    OpenClaw currently suggests these cloud defaults: `kimi-k2.5:cloud`, `minimax-m2.7:cloud`, `glm-5.1:cloud`.
+    WineryClaw currently suggests these cloud defaults: `kimi-k2.5:cloud`, `minimax-m2.7:cloud`, `glm-5.1:cloud`.
 
   </Tab>
 
   <Tab title="Local only">
-    In local-only mode, OpenClaw discovers models from the local Ollama instance. No cloud sign-in is needed.
+    In local-only mode, WineryClaw discovers models from the local Ollama instance. No cloud sign-in is needed.
 
-    OpenClaw currently suggests `gemma4` as the local default.
+    WineryClaw currently suggests `gemma4` as the local default.
 
   </Tab>
 </Tabs>
 
 ## Model discovery (implicit provider)
 
-When you set `OLLAMA_API_KEY` (or an auth profile) and **do not** define `models.providers.ollama`, OpenClaw discovers models from the local Ollama instance at `http://127.0.0.1:11434`.
+When you set `OLLAMA_API_KEY` (or an auth profile) and **do not** define `models.providers.ollama`, WineryClaw discovers models from the local Ollama instance at `http://127.0.0.1:11434`.
 
 | Behavior             | Detail                                                                                                                                                              |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Catalog query        | Queries `/api/tags`                                                                                                                                                 |
 | Capability detection | Uses best-effort `/api/show` lookups to read `contextWindow` and detect capabilities (including vision)                                                             |
-| Vision models        | Models with a `vision` capability reported by `/api/show` are marked as image-capable (`input: ["text", "image"]`), so OpenClaw auto-injects images into the prompt |
+| Vision models        | Models with a `vision` capability reported by `/api/show` are marked as image-capable (`input: ["text", "image"]`), so WineryClaw auto-injects images into the prompt |
 | Reasoning detection  | Marks `reasoning` with a model-name heuristic (`r1`, `reasoning`, `think`)                                                                                          |
-| Token limits         | Sets `maxTokens` to the default Ollama max-token cap used by OpenClaw                                                                                               |
+| Token limits         | Sets `maxTokens` to the default Ollama max-token cap used by WineryClaw                                                                                               |
 | Costs                | Sets all costs to `0`                                                                                                                                               |
 
 This avoids manual model entries while keeping the catalog aligned with the local Ollama instance.
@@ -189,7 +189,7 @@ If you set `models.providers.ollama` explicitly, auto-discovery is skipped and y
     ```
 
     <Tip>
-    If `OLLAMA_API_KEY` is set, you can omit `apiKey` in the provider entry and OpenClaw will fill it for availability checks.
+    If `OLLAMA_API_KEY` is set, you can omit `apiKey` in the provider entry and WineryClaw will fill it for availability checks.
     </Tip>
 
   </Tab>
@@ -267,7 +267,7 @@ Once configured, all your Ollama models are available:
 
 ## Ollama Web Search
 
-OpenClaw supports **Ollama Web Search** as a bundled `web_search` provider.
+WineryClaw supports **Ollama Web Search** as a bundled `web_search` provider.
 
 | Property    | Detail                                                                                                            |
 | ----------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -321,7 +321,7 @@ For the full setup and behavior details, see [Ollama Web Search](/tools/ollama-s
 
     This mode may not support streaming and tool calling simultaneously. You may need to disable streaming with `params: { streaming: false }` in model config.
 
-    When `api: "openai-completions"` is used with Ollama, OpenClaw injects `options.num_ctx` by default so Ollama does not silently fall back to a 4096 context window. If your proxy/upstream rejects unknown `options` fields, disable this behavior:
+    When `api: "openai-completions"` is used with Ollama, WineryClaw injects `options.num_ctx` by default so Ollama does not silently fall back to a 4096 context window. If your proxy/upstream rejects unknown `options` fields, disable this behavior:
 
     ```json5
     {
@@ -342,7 +342,7 @@ For the full setup and behavior details, see [Ollama Web Search](/tools/ollama-s
   </Accordion>
 
   <Accordion title="Context windows">
-    For auto-discovered models, OpenClaw uses the context window reported by Ollama when available, otherwise it falls back to the default Ollama context window used by OpenClaw.
+    For auto-discovered models, WineryClaw uses the context window reported by Ollama when available, otherwise it falls back to the default Ollama context window used by WineryClaw.
 
     You can override `contextWindow` and `maxTokens` in explicit provider config:
 
@@ -367,13 +367,13 @@ For the full setup and behavior details, see [Ollama Web Search](/tools/ollama-s
   </Accordion>
 
   <Accordion title="Reasoning models">
-    OpenClaw treats models with names such as `deepseek-r1`, `reasoning`, or `think` as reasoning-capable by default.
+    WineryClaw treats models with names such as `deepseek-r1`, `reasoning`, or `think` as reasoning-capable by default.
 
     ```bash
     ollama pull deepseek-r1:32b
     ```
 
-    No additional configuration is needed -- OpenClaw marks them automatically.
+    No additional configuration is needed -- WineryClaw marks them automatically.
 
   </Accordion>
 
@@ -406,7 +406,7 @@ For the full setup and behavior details, see [Ollama Web Search](/tools/ollama-s
   </Accordion>
 
   <Accordion title="Streaming configuration">
-    OpenClaw's Ollama integration uses the **native Ollama API** (`/api/chat`) by default, which fully supports streaming and tool calling simultaneously. No special configuration is needed.
+    WineryClaw's Ollama integration uses the **native Ollama API** (`/api/chat`) by default, which fully supports streaming and tool calling simultaneously. No special configuration is needed.
 
     <Tip>
     If you need to use the OpenAI-compatible endpoint, see the "Legacy OpenAI-compatible mode" section above. Streaming and tool calling may not work simultaneously in that mode.

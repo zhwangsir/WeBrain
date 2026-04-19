@@ -47,7 +47,7 @@ const requiredPathGroups = [
 ];
 const forbiddenPrefixes = [
   "dist-runtime/",
-  "dist/OpenClaw.app/",
+  "dist/WineryClaw.app/",
   "dist/plugin-sdk/.tsbuildinfo",
   "docs/.generated/",
 ];
@@ -204,7 +204,7 @@ function runPackedBundledChannelEntrySmoke(): void {
         stdio: "inherit",
         env: {
           ...process.env,
-          OPENCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK: "1",
+          WINERYCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK: "1",
         },
       },
     );
@@ -221,9 +221,9 @@ function runPackedBundledChannelEntrySmoke(): void {
         env: {
           ...process.env,
           HOME: homeDir,
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_SUPPRESS_NOTES: "1",
-          OPENCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK: "1",
+          WINERYCLAW_STATE_DIR: stateDir,
+          WINERYCLAW_SUPPRESS_NOTES: "1",
+          WINERYCLAW_DISABLE_BUNDLED_ENTRY_SOURCE_FALLBACK: "1",
         },
       },
     );

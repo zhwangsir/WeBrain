@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import WineryClawKit
 
 struct TalkModeGatewayConfigState {
     let activeProvider: String

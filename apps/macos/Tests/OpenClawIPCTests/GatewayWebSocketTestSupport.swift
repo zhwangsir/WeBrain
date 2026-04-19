@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import WineryClawKit
 
 extension WebSocketTasking {
     /// Keep unit-test doubles resilient to protocol additions.

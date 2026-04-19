@@ -1,5 +1,5 @@
 ---
-summary: "How OpenClaw manages conversation sessions"
+summary: "How WineryClaw manages conversation sessions"
 read_when:
   - You want to understand session routing and isolation
   - You want to configure DM scope for multi-user setups
@@ -8,7 +8,7 @@ title: "Session Management"
 
 # Session Management
 
-OpenClaw organizes conversations into **sessions**. Each message is routed to a
+WineryClaw organizes conversations into **sessions**. Each message is routed to a
 session based on where it came from -- DMs, group chats, cron jobs, etc.
 
 ## How messages are routed
@@ -74,12 +74,12 @@ When both daily and idle resets are configured, whichever expires first wins.
 All session state is owned by the **gateway**. UI clients query the gateway for
 session data.
 
-- **Store:** `~/.openclaw/agents/<agentId>/sessions/sessions.json`
-- **Transcripts:** `~/.openclaw/agents/<agentId>/sessions/<sessionId>.jsonl`
+- **Store:** `~/.wineryclaw/agents/<agentId>/sessions/sessions.json`
+- **Transcripts:** `~/.wineryclaw/agents/<agentId>/sessions/<sessionId>.jsonl`
 
 ## Session maintenance
 
-OpenClaw automatically bounds session storage over time. By default, it runs
+WineryClaw automatically bounds session storage over time. By default, it runs
 in `warn` mode (reports what would be cleaned). Set `session.maintenance.mode`
 to `"enforce"` for automatic cleanup:
 

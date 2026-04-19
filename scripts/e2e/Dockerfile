@@ -37,13 +37,13 @@ COPY --chown=appuser:appuser skills ./skills
 COPY --chown=appuser:appuser ui ./ui
 COPY --chown=appuser:appuser extensions ./extensions
 COPY --chown=appuser:appuser vendor/a2ui/renderers/lit ./vendor/a2ui/renderers/lit
-COPY --chown=appuser:appuser apps/shared/OpenClawKit/Sources/OpenClawKit/Resources ./apps/shared/OpenClawKit/Sources/OpenClawKit/Resources
-COPY --chown=appuser:appuser apps/shared/OpenClawKit/Tools/CanvasA2UI ./apps/shared/OpenClawKit/Tools/CanvasA2UI
+COPY --chown=appuser:appuser apps/shared/WineryClawKit/Sources/WineryClawKit/Resources ./apps/shared/WineryClawKit/Sources/WineryClawKit/Resources
+COPY --chown=appuser:appuser apps/shared/WineryClawKit/Tools/CanvasA2UI ./apps/shared/WineryClawKit/Tools/CanvasA2UI
 
 RUN pnpm build
 # Onboard Docker E2E does not exercise the Control UI itself; it only needs the
 # asset-existence check to pass so configure/onboard can continue.
 RUN mkdir -p dist/control-ui \
-  && printf '%s\n' '<!doctype html><title>OpenClaw Control UI</title>' > dist/control-ui/index.html
+  && printf '%s\n' '<!doctype html><title>WineryClaw Control UI</title>' > dist/control-ui/index.html
 
 CMD ["bash"]

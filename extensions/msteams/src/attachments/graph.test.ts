@@ -200,7 +200,7 @@ describe("downloadMSTeamsGraphMedia hosted content $value fallback", () => {
     expect(result.media.length).toBeGreaterThan(0);
   });
 
-  it("adds the OpenClaw User-Agent to guarded Graph attachment fetches", async () => {
+  it("adds the WineryClaw User-Agent to guarded Graph attachment fetches", async () => {
     mockGraphMediaFetch({ messageId: "msg-ua" });
 
     await downloadMSTeamsGraphMedia({
@@ -215,12 +215,12 @@ describe("downloadMSTeamsGraphMedia hosted content $value fallback", () => {
       expect(headers).toBeInstanceOf(Headers);
       expect((headers as Headers).get("Authorization")).toBe("Bearer test-token");
       expect((headers as Headers).get("User-Agent")).toMatch(
-        /^teams\.ts\[apps\]\/.+ OpenClaw\/.+$/,
+        /^teams\.ts\[apps\]\/.+ WineryClaw\/.+$/,
       );
     }
   });
 
-  it("adds the OpenClaw User-Agent to Graph shares downloads for reference attachments", async () => {
+  it("adds the WineryClaw User-Agent to Graph shares downloads for reference attachments", async () => {
     mockGraphMediaFetch({
       messageId: "msg-share",
       messageResponse: {
@@ -261,7 +261,7 @@ describe("downloadMSTeamsGraphMedia hosted content $value fallback", () => {
     );
     const requestInit = vi.mocked(safeFetchWithPolicy).mock.calls[0]?.[0]?.requestInit;
     const headers = requestInit?.headers as Headers;
-    expect(headers.get("User-Agent")).toMatch(/^teams\.ts\[apps\]\/.+ OpenClaw\/.+$/);
+    expect(headers.get("User-Agent")).toMatch(/^teams\.ts\[apps\]\/.+ WineryClaw\/.+$/);
   });
 });
 

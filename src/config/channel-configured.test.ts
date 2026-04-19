@@ -32,7 +32,7 @@ vi.mock("../channels/plugins/persisted-auth-state.js", () => ({
   }: {
     channelId: string;
     env?: NodeJS.ProcessEnv;
-  }) => channelId === "matrix" && env?.OPENCLAW_STATE_DIR === "state-with-matrix-creds",
+  }) => channelId === "matrix" && env?.WINERYCLAW_STATE_DIR === "state-with-matrix-creds",
 }));
 
 vi.mock("../channels/plugins/bootstrap-registry.js", () => ({
@@ -80,7 +80,7 @@ describe("isChannelConfigured", () => {
 
   it("detects persisted Matrix credentials through package metadata", () => {
     expect(
-      isChannelConfigured({}, "matrix", { OPENCLAW_STATE_DIR: "state-with-matrix-creds" }),
+      isChannelConfigured({}, "matrix", { WINERYCLAW_STATE_DIR: "state-with-matrix-creds" }),
     ).toBe(true);
   });
 });

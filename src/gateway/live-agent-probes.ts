@@ -77,27 +77,27 @@ export function buildLiveCronProbeMessage(params: {
   const family = normalizeLiveAgentFamily(params.agent);
   if (params.attempt === 0) {
     return (
-      "Use the OpenClaw MCP tool named cron. " +
+      "Use the WineryClaw MCP tool named cron. " +
       `Call it with JSON arguments ${params.argsJson}. ` +
-      "Do the actual tool call; I will verify externally with the OpenClaw cron CLI. " +
+      "Do the actual tool call; I will verify externally with the WineryClaw cron CLI. " +
       `After the cron job is created, reply exactly: ${params.exactReply}`
     );
   }
   if (family === "claude") {
     return (
-      "Return only a tool call for the OpenClaw MCP tool `cron`. " +
+      "Return only a tool call for the WineryClaw MCP tool `cron`. " +
       `Use these exact JSON arguments: ${params.argsJson}. ` +
-      "No prose. I will verify externally with the OpenClaw cron CLI."
+      "No prose. I will verify externally with the WineryClaw cron CLI."
     );
   }
   return (
-    "Use the OpenClaw MCP tool named cron. " +
+    "Use the WineryClaw MCP tool named cron. " +
     `Use these exact JSON arguments: ${params.argsJson}. ` +
-    "No prose before the tool call. I will verify externally with the OpenClaw cron CLI."
+    "No prose before the tool call. I will verify externally with the WineryClaw cron CLI."
   );
 }
 
-export async function runOpenClawCliJson<T>(args: string[], env: NodeJS.ProcessEnv): Promise<T> {
+export async function runWineryClawCliJson<T>(args: string[], env: NodeJS.ProcessEnv): Promise<T> {
   const childEnv = { ...env };
   delete childEnv.VITEST;
   delete childEnv.VITEST_MODE;
@@ -144,7 +144,7 @@ export async function assertCronJobVisibleViaCli(params: {
   expectedName: string;
   expectedMessage: string;
 }): Promise<CronListJob | undefined> {
-  const cronList = await runOpenClawCliJson<CronListCliResult>(
+  const cronList = await runWineryClawCliJson<CronListCliResult>(
     [
       "cron",
       "list",

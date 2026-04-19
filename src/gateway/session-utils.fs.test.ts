@@ -835,14 +835,14 @@ describe("resolveSessionTranscriptCandidates", () => {
     vi.unstubAllEnvs();
   });
 
-  test("fallback candidate uses OPENCLAW_HOME instead of os.homedir()", () => {
-    vi.stubEnv("OPENCLAW_HOME", "/srv/openclaw-home");
+  test("fallback candidate uses WINERYCLAW_HOME instead of os.homedir()", () => {
+    vi.stubEnv("WINERYCLAW_HOME", "/srv/openclaw-home");
     vi.stubEnv("HOME", "/home/other");
 
     const candidates = resolveSessionTranscriptCandidates("sess-1", undefined);
     const fallback = candidates[candidates.length - 1];
     expect(fallback).toBe(
-      path.join(path.resolve("/srv/openclaw-home"), ".openclaw", "sessions", "sess-1.jsonl"),
+      path.join(path.resolve("/srv/openclaw-home"), ".wineryclaw", "sessions", "sess-1.jsonl"),
     );
   });
 });
@@ -971,7 +971,7 @@ describe("archiveSessionTranscripts", () => {
   });
 
   beforeAll(() => {
-    vi.stubEnv("OPENCLAW_HOME", tmpDir);
+    vi.stubEnv("WINERYCLAW_HOME", tmpDir);
   });
 
   afterAll(() => {

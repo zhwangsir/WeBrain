@@ -1,5 +1,5 @@
 import { resolveProviderAuthAliasMap } from "../agents/provider-auth-aliases.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { loadPluginManifestRegistry } from "../plugins/manifest-registry.js";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
 import { hasKind } from "../plugins/slots.js";
@@ -19,13 +19,13 @@ const CORE_PROVIDER_SETUP_ENV_VAR_OVERRIDES = {
 } as const;
 
 export type ProviderEnvVarLookupParams = {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   includeUntrustedWorkspacePlugins?: boolean;
 };
 
-type PluginEntriesConfig = NonNullable<NonNullable<OpenClawConfig["plugins"]>["entries"]>;
+type PluginEntriesConfig = NonNullable<NonNullable<WineryClawConfig["plugins"]>["entries"]>;
 
 function normalizePluginConfigId(id: unknown): string {
   return normalizeOptionalLowercaseString(id) ?? "";
@@ -55,7 +55,7 @@ function findPluginEntry(
 
 function isWorkspacePluginTrustedForProviderEnvVars(
   plugin: PluginManifestRecord,
-  config: OpenClawConfig | undefined,
+  config: WineryClawConfig | undefined,
 ): boolean {
   const pluginsConfig = config?.plugins;
   if (pluginsConfig?.enabled === false) {
@@ -200,7 +200,7 @@ export function getProviderEnvVars(
 
 const EXTRA_PROVIDER_AUTH_ENV_VARS = ["MINIMAX_CODE_PLAN_KEY", "MINIMAX_CODING_API_KEY"] as const;
 
-// OPENCLAW_API_KEY authenticates the local OpenClaw bridge itself and must
+// WINERYCLAW_API_KEY authenticates the local WineryClaw bridge itself and must
 // remain available to child bridge/runtime processes.
 export function listKnownProviderAuthEnvVarNames(params?: ProviderEnvVarLookupParams): string[] {
   return [

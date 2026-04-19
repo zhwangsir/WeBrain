@@ -2,7 +2,7 @@ import {
   DEFAULT_ACCOUNT_ID,
   resolveAccountEntry,
   resolveMergedAccountConfig,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/account-core";
 import {
   resolveChannelStreamingBlockEnabled,
@@ -11,14 +11,14 @@ import {
 import type { WhatsAppAccountConfig } from "./account-types.js";
 
 function _resolveWhatsAppAccountConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   accountId: string,
 ): WhatsAppAccountConfig | undefined {
   return resolveAccountEntry(cfg.channels?.whatsapp?.accounts, accountId);
 }
 
 export function resolveMergedWhatsAppAccountConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }): WhatsAppAccountConfig & { accountId: string } {
   const rootCfg = params.cfg.channels?.whatsapp;

@@ -78,7 +78,7 @@ describe("codex provider", () => {
     const listModels = vi.fn();
 
     const result = await buildCodexProviderCatalog({
-      env: { OPENCLAW_CODEX_DISCOVERY_LIVE: "0" },
+      env: { WINERYCLAW_CODEX_DISCOVERY_LIVE: "0" },
       listModels,
     });
 
@@ -100,7 +100,7 @@ describe("codex provider", () => {
     vi.spyOn(CodexAppServerClient, "start").mockReturnValue(client);
 
     await buildCodexProviderCatalog({
-      env: { OPENCLAW_CODEX_DISCOVERY_LIVE: "1" },
+      env: { WINERYCLAW_CODEX_DISCOVERY_LIVE: "1" },
     });
 
     expect(client.close).toHaveBeenCalledTimes(1);
@@ -125,7 +125,7 @@ describe("codex provider", () => {
 
     await getSharedCodexAppServerClient({ timeoutMs: 1000 });
     await buildCodexProviderCatalog({
-      env: { OPENCLAW_CODEX_DISCOVERY_LIVE: "1" },
+      env: { WINERYCLAW_CODEX_DISCOVERY_LIVE: "1" },
     });
 
     expect(activeClient.close).not.toHaveBeenCalled();

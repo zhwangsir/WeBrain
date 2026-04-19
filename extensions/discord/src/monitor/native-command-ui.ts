@@ -24,7 +24,7 @@ import {
   type CommandArgValues,
   type CommandArgs,
 } from "openclaw/plugin-sdk/command-auth";
-import type { OpenClawConfig, loadConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig, loadConfig } from "openclaw/plugin-sdk/config-runtime";
 import { loadSessionStore, resolveStorePath } from "openclaw/plugin-sdk/config-runtime";
 import type { ResolvedAgentRoute } from "openclaw/plugin-sdk/routing";
 import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
@@ -54,7 +54,7 @@ import { resolveDiscordNativeInteractionRouteState } from "./native-command-rout
 import type { ThreadBindingManager } from "./thread-bindings.js";
 import { resolveDiscordThreadParentInfo } from "./threading.js";
 
-type DiscordConfig = NonNullable<OpenClawConfig["channels"]>["discord"];
+type DiscordConfig = NonNullable<WineryClawConfig["channels"]>["discord"];
 
 const DISCORD_COMMAND_ARG_CUSTOM_ID_KEY = "cmdarg";
 

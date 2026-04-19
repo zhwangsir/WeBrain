@@ -1,12 +1,12 @@
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
-import { loadOpenClawPlugins } from "../loader.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
+import { loadWineryClawPlugins } from "../loader.js";
 import { hasExplicitPluginIdScope } from "../plugin-scope.js";
 import type { PluginRegistry } from "../registry.js";
 import { buildPluginRuntimeLoadOptions, resolvePluginRuntimeLoadContext } from "./load-context.js";
 
 export function loadPluginMetadataRegistrySnapshot(options?: {
-  config?: OpenClawConfig;
-  activationSourceConfig?: OpenClawConfig;
+  config?: WineryClawConfig;
+  activationSourceConfig?: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
   onlyPluginIds?: string[];
@@ -14,7 +14,7 @@ export function loadPluginMetadataRegistrySnapshot(options?: {
 }): PluginRegistry {
   const context = resolvePluginRuntimeLoadContext(options);
 
-  return loadOpenClawPlugins(
+  return loadWineryClawPlugins(
     buildPluginRuntimeLoadOptions(context, {
       throwOnLoadError: true,
       cache: false,

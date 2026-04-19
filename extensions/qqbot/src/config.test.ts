@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { describe, expect, it } from "vitest";
 import { validateJsonSchemaValue } from "../../../src/plugins/schema-validator.js";
 import { qqbotSetupAdapterShared } from "./channel-config-shared.js";
@@ -74,7 +74,7 @@ describe("qqbot config", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(resolveDefaultQQBotAccountId(cfg)).toBe("bot2");
   });
@@ -144,7 +144,7 @@ describe("qqbot config", () => {
           upgradeMode: "hot-reload",
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const resolved = resolveQQBotAccount(cfg, DEFAULT_ACCOUNT_ID);
 
@@ -173,7 +173,7 @@ describe("qqbot config", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const resolved = resolveQQBotAccount(cfg);
 
@@ -195,7 +195,7 @@ describe("qqbot config", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expect(() => resolveQQBotAccount(cfg, DEFAULT_ACCOUNT_ID)).toThrow(
       'channels.qqbot.clientSecret: unresolved SecretRef "env:default:QQBOT_CLIENT_SECRET"',
@@ -214,7 +214,7 @@ describe("qqbot config", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     const resolved = resolveQQBotAccount(cfg, DEFAULT_ACCOUNT_ID, {
       allowUnresolvedSecretRef: true,
@@ -242,7 +242,7 @@ describe("qqbot config", () => {
     expect(setup).toBeDefined();
 
     const next = setup!.applyAccountConfig?.({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       accountId: inputAccountId,
       input: {
         token: "102905186:Oi2Mg1Mh2Ni3:Pl7TpBXuHe1OmAYwKi7W",
@@ -273,28 +273,28 @@ describe("qqbot config", () => {
 
     expect(
       runtimeSetup.validateInput?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: DEFAULT_ACCOUNT_ID,
         input,
       } as never),
     ).toBe("QQBot --token must be in appId:clientSecret format");
     expect(
       lightweightSetup!.validateInput?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: DEFAULT_ACCOUNT_ID,
         input,
       } as never),
     ).toBe("QQBot --token must be in appId:clientSecret format");
     expect(
       runtimeSetup.applyAccountConfig?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: DEFAULT_ACCOUNT_ID,
         input,
       } as never),
     ).toEqual({});
     expect(
       lightweightSetup!.applyAccountConfig?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: DEFAULT_ACCOUNT_ID,
         input,
       } as never),
@@ -311,7 +311,7 @@ describe("qqbot config", () => {
 
     expect(
       runtimeSetup.applyAccountConfig?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: DEFAULT_ACCOUNT_ID,
         input,
       } as never),
@@ -326,7 +326,7 @@ describe("qqbot config", () => {
     });
     expect(
       lightweightSetup!.applyAccountConfig?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: DEFAULT_ACCOUNT_ID,
         input,
       } as never),
@@ -356,7 +356,7 @@ describe("qqbot config", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         accountId: undefined,
       } as never),
     ).toBe("bot2");
@@ -372,28 +372,28 @@ describe("qqbot config", () => {
 
     expect(
       runtimeSetup.validateInput?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: "bot2",
         input,
       } as never),
     ).toBe("QQBot --use-env only supports the default account");
     expect(
       lightweightSetup!.validateInput?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: "bot2",
         input,
       } as never),
     ).toBe("QQBot --use-env only supports the default account");
     expect(
       runtimeSetup.applyAccountConfig?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: "bot2",
         input,
       } as never),
     ).toEqual({});
     expect(
       lightweightSetup!.applyAccountConfig?.({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         accountId: "bot2",
         input,
       } as never),

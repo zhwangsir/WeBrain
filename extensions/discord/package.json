@@ -1,7 +1,7 @@
 {
   "name": "@openclaw/discord",
   "version": "2026.4.12",
-  "description": "OpenClaw Discord channel plugin",
+  "description": "WineryClaw Discord channel plugin",
   "type": "module",
   "dependencies": {
     "@buape/carbon": "0.15.0",

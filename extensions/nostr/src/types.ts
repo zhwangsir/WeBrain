@@ -7,7 +7,7 @@ import {
   listCombinedAccountIds,
   resolveListedDefaultAccountId,
 } from "openclaw/plugin-sdk/account-resolution";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { normalizeSecretInputString, type SecretInput } from "openclaw/plugin-sdk/secret-input";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import type { NostrProfile } from "./config-schema.js";
@@ -37,7 +37,7 @@ export interface ResolvedNostrAccount {
   config: NostrAccountConfig;
 }
 
-function resolveConfiguredDefaultNostrAccountId(cfg: OpenClawConfig): string | undefined {
+function resolveConfiguredDefaultNostrAccountId(cfg: WineryClawConfig): string | undefined {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -47,7 +47,7 @@ function resolveConfiguredDefaultNostrAccountId(cfg: OpenClawConfig): string | u
 /**
  * List all configured Nostr account IDs
  */
-export function listNostrAccountIds(cfg: OpenClawConfig): string[] {
+export function listNostrAccountIds(cfg: WineryClawConfig): string[] {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -63,7 +63,7 @@ export function listNostrAccountIds(cfg: OpenClawConfig): string[] {
 /**
  * Get the default account ID
  */
-export function resolveDefaultNostrAccountId(cfg: OpenClawConfig): string {
+export function resolveDefaultNostrAccountId(cfg: WineryClawConfig): string {
   return resolveListedDefaultAccountId({
     accountIds: listNostrAccountIds(cfg),
     configuredDefaultAccountId: resolveConfiguredDefaultNostrAccountId(cfg),
@@ -74,7 +74,7 @@ export function resolveDefaultNostrAccountId(cfg: OpenClawConfig): string {
  * Resolve a Nostr account from config
  */
 export function resolveNostrAccount(opts: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }): ResolvedNostrAccount {
   const accountId = normalizeAccountId(opts.accountId ?? resolveDefaultNostrAccountId(opts.cfg));

@@ -1,6 +1,6 @@
 # @openclaw/voice-call
 
-Official Voice Call plugin for **OpenClaw**.
+Official Voice Call plugin for **WineryClaw**.
 
 Providers:
 
@@ -14,7 +14,7 @@ Plugin system: `https://docs.openclaw.ai/plugin`
 
 ## Install (local dev)
 
-### Option A: install via OpenClaw (recommended)
+### Option A: install via WineryClaw (recommended)
 
 ```bash
 openclaw plugins install @openclaw/voice-call
@@ -25,7 +25,7 @@ Restart the Gateway afterwards.
 ### Option B: copy into your global extensions folder (dev)
 
 ```bash
-PLUGIN_HOME=~/.openclaw/extensions
+PLUGIN_HOME=~/.wineryclaw/extensions
 mkdir -p "$PLUGIN_HOME"
 cp -R <local-plugin-checkout> "$PLUGIN_HOME/voice-call"
 cd "$PLUGIN_HOME/voice-call" && pnpm install
@@ -116,7 +116,7 @@ streaming speech on calls. Override examples and provider caveats live here:
 ## CLI
 
 ```bash
-openclaw voicecall call --to "+15555550123" --message "Hello from OpenClaw"
+openclaw voicecall call --to "+15555550123" --message "Hello from WineryClaw"
 openclaw voicecall continue --call-id <id> --message "Any questions?"
 openclaw voicecall speak --call-id <id> --message "One moment"
 openclaw voicecall end --call-id <id>

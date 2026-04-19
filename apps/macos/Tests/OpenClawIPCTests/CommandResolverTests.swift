@@ -1,7 +1,7 @@
 import Darwin
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite(.serialized) struct CommandResolverTests {
     private func makeDefaults() -> UserDefaults {

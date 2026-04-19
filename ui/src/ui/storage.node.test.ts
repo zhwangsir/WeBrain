@@ -17,15 +17,15 @@ function setControlUiBasePath(value: string | undefined) {
       "window",
       value == null
         ? ({} as Window & typeof globalThis)
-        : ({ __OPENCLAW_CONTROL_UI_BASE_PATH__: value } as Window & typeof globalThis),
+        : ({ __WINERYCLAW_CONTROL_UI_BASE_PATH__: value } as Window & typeof globalThis),
     );
     return;
   }
   if (value == null) {
-    delete window.__OPENCLAW_CONTROL_UI_BASE_PATH__;
+    delete window.__WINERYCLAW_CONTROL_UI_BASE_PATH__;
     return;
   }
-  Object.defineProperty(window, "__OPENCLAW_CONTROL_UI_BASE_PATH__", {
+  Object.defineProperty(window, "__WINERYCLAW_CONTROL_UI_BASE_PATH__", {
     value,
     writable: true,
     configurable: true,

@@ -2,7 +2,7 @@ import os from "node:os";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CliDeps } from "../cli/deps.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { SsrFBlockedError } from "../infra/net/ssrf.js";
 import { mergeMockedModule } from "../test-utils/vitest-module-mocks.js";
 
@@ -79,7 +79,7 @@ vi.mock("../browser-lifecycle-cleanup.js", () => ({
 
 import { buildGatewayCronService } from "./server-cron.js";
 
-function createCronConfig(name: string): OpenClawConfig {
+function createCronConfig(name: string): WineryClawConfig {
   const tmpDir = path.join(os.tmpdir(), `${name}-${Date.now()}`);
   return {
     session: {
@@ -88,7 +88,7 @@ function createCronConfig(name: string): OpenClawConfig {
     cron: {
       store: path.join(tmpDir, "cron.json"),
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 describe("buildGatewayCronService", () => {
@@ -194,7 +194,7 @@ describe("buildGatewayCronService", () => {
       cron: {
         store: path.join(tmpDir, "cron.json"),
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     loadConfigMock.mockReturnValue(cfg);
 
     const state = buildGatewayCronService({
@@ -292,7 +292,7 @@ describe("buildGatewayCronService", () => {
           { id: "yinze", workspace: path.join(tmpDir, "workspace-yinze") },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const reloadedCfg = {
       session: {
         mainKey: "main",
@@ -306,7 +306,7 @@ describe("buildGatewayCronService", () => {
         },
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     loadConfigMock.mockReturnValue(reloadedCfg);
 
     const state = buildGatewayCronService({
@@ -376,7 +376,7 @@ describe("buildGatewayCronService", () => {
           },
         ],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const reloadedCfg = {
       session: {
         mainKey: "main",
@@ -394,7 +394,7 @@ describe("buildGatewayCronService", () => {
         },
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     loadConfigMock.mockReturnValue(reloadedCfg);
 
     const state = buildGatewayCronService({

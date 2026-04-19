@@ -1,4 +1,4 @@
-# OpenClaw docs i18n assets
+# WineryClaw docs i18n assets
 
 This folder stores translation config for the source docs repo.
 
@@ -67,6 +67,6 @@ Fields:
 ## Operational notes
 
 - Sync metadata is written to `.openclaw-sync/source.json` in the publish repo.
-- Source repo secret: `OPENCLAW_DOCS_SYNC_TOKEN`
-- Publish repo secret: `OPENCLAW_DOCS_I18N_OPENAI_API_KEY`
+- Source repo secret: `WINERYCLAW_DOCS_SYNC_TOKEN`
+- Publish repo secret: `WINERYCLAW_DOCS_I18N_OPENAI_API_KEY`
 - If locale output looks stale, check the matching `Translate <locale>` workflow in `openclaw/docs` first.

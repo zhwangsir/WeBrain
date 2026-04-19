@@ -4,17 +4,17 @@ import {
   getRuntimeConfig,
   readSourceConfigSnapshotForWrite,
   setRuntimeConfigSnapshot,
-  type OpenClawConfig,
+  type WineryClawConfig,
   getModelsCommandSecretTargetIds,
 } from "./load-config.runtime.js";
 
 export type LoadedModelsConfig = {
-  sourceConfig: OpenClawConfig;
-  resolvedConfig: OpenClawConfig;
+  sourceConfig: WineryClawConfig;
+  resolvedConfig: WineryClawConfig;
   diagnostics: string[];
 };
 
-async function loadSourceConfigSnapshot(fallback: OpenClawConfig): Promise<OpenClawConfig> {
+async function loadSourceConfigSnapshot(fallback: WineryClawConfig): Promise<WineryClawConfig> {
   try {
     const { snapshot } = await readSourceConfigSnapshotForWrite();
     if (snapshot.valid) {
@@ -49,6 +49,6 @@ export async function loadModelsConfigWithSource(params: {
 export async function loadModelsConfig(params: {
   commandName: string;
   runtime?: RuntimeEnv;
-}): Promise<OpenClawConfig> {
+}): Promise<WineryClawConfig> {
   return (await loadModelsConfigWithSource(params)).resolvedConfig;
 }

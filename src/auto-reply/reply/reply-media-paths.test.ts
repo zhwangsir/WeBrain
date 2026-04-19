@@ -74,7 +74,7 @@ describe("createReplyMediaPathNormalizer", () => {
     });
 
     const result = await normalize({
-      mediaUrls: ["/Users/peter/.openclaw/media/inbound/photo.png"],
+      mediaUrls: ["/Users/peter/.wineryclaw/media/inbound/photo.png"],
     });
 
     expect(result).toMatchObject({
@@ -107,7 +107,7 @@ describe("createReplyMediaPathNormalizer", () => {
   });
 
   it("keeps managed generated media under the shared media root", async () => {
-    vi.stubEnv("OPENCLAW_STATE_DIR", "/Users/peter/.openclaw");
+    vi.stubEnv("WINERYCLAW_STATE_DIR", "/Users/peter/.openclaw");
     ensureSandboxWorkspaceForSession.mockResolvedValue({
       workspaceDir: "/tmp/sandboxes/session-1",
       containerWorkdir: "/workspace",
@@ -119,12 +119,12 @@ describe("createReplyMediaPathNormalizer", () => {
     });
 
     const result = await normalize({
-      mediaUrls: ["/Users/peter/.openclaw/media/tool-image-generation/generated.png"],
+      mediaUrls: ["/Users/peter/.wineryclaw/media/tool-image-generation/generated.png"],
     });
 
     expect(result).toMatchObject({
-      mediaUrl: "/Users/peter/.openclaw/media/tool-image-generation/generated.png",
-      mediaUrls: ["/Users/peter/.openclaw/media/tool-image-generation/generated.png"],
+      mediaUrl: "/Users/peter/.wineryclaw/media/tool-image-generation/generated.png",
+      mediaUrls: ["/Users/peter/.wineryclaw/media/tool-image-generation/generated.png"],
     });
     expect(saveMediaSource).not.toHaveBeenCalled();
   });
@@ -141,7 +141,7 @@ describe("createReplyMediaPathNormalizer", () => {
     });
 
     const result = await normalize({
-      mediaUrls: ["file:///Users/peter/.openclaw/media/inbound/photo.png"],
+      mediaUrls: ["file:///Users/peter/.wineryclaw/media/inbound/photo.png"],
     });
 
     expect(result).toMatchObject({
@@ -152,28 +152,28 @@ describe("createReplyMediaPathNormalizer", () => {
 
   it("persists volatile agent-state media from the workspace into host outbound media", async () => {
     saveMediaSource.mockResolvedValue({
-      path: "/Users/peter/.openclaw/media/outbound/persisted.png",
+      path: "/Users/peter/.wineryclaw/media/outbound/persisted.png",
     });
     const normalize = createReplyMediaPathNormalizer({
       cfg: {},
       sessionKey: "session-key",
-      workspaceDir: "/Users/peter/.openclaw/workspace",
+      workspaceDir: "/Users/peter/.wineryclaw/workspace",
     });
 
     const result = await normalize({
       mediaUrls: [
-        "/Users/peter/.openclaw/workspace/.openclaw/media/tool-image-generation/generated.png",
+        "/Users/peter/.wineryclaw/workspace/.wineryclaw/media/tool-image-generation/generated.png",
       ],
     });
 
     expect(saveMediaSource).toHaveBeenCalledWith(
-      "/Users/peter/.openclaw/workspace/.openclaw/media/tool-image-generation/generated.png",
+      "/Users/peter/.wineryclaw/workspace/.wineryclaw/media/tool-image-generation/generated.png",
       undefined,
       "outbound",
     );
     expect(result).toMatchObject({
-      mediaUrl: "/Users/peter/.openclaw/media/outbound/persisted.png",
-      mediaUrls: ["/Users/peter/.openclaw/media/outbound/persisted.png"],
+      mediaUrl: "/Users/peter/.wineryclaw/media/outbound/persisted.png",
+      mediaUrls: ["/Users/peter/.wineryclaw/media/outbound/persisted.png"],
     });
   });
 });

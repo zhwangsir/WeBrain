@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import {
   defaultRuntime,
   resetLifecycleRuntimeLogs,
@@ -9,7 +9,7 @@ import {
   stubEmptyGatewayEnv,
 } from "./test-helpers/lifecycle-core-harness.js";
 
-const loadConfig = vi.fn<() => OpenClawConfig>(() => ({
+const loadConfig = vi.fn<() => WineryClawConfig>(() => ({
   gateway: {
     auth: {
       token: "config-token",
@@ -63,14 +63,14 @@ describe("runServiceRestart token drift", () => {
     resetLifecycleServiceMocks();
     service.readCommand.mockResolvedValue({
       programArguments: [],
-      environment: { OPENCLAW_GATEWAY_TOKEN: "service-token" },
+      environment: { WINERYCLAW_GATEWAY_TOKEN: "service-token" },
     });
     stubEmptyGatewayEnv();
   });
 
   it("prints the container restart hint when restart is requested for a not-loaded service", async () => {
     service.isLoaded.mockResolvedValue(false);
-    vi.stubEnv("OPENCLAW_CONTAINER_HINT", "openclaw-demo-container");
+    vi.stubEnv("WINERYCLAW_CONTAINER_HINT", "openclaw-demo-container");
 
     await runServiceRestart({
       serviceNoun: "Gateway",
@@ -108,9 +108,9 @@ describe("runServiceRestart token drift", () => {
     });
     service.readCommand.mockResolvedValue({
       programArguments: [],
-      environment: { OPENCLAW_GATEWAY_TOKEN: "env-token" },
+      environment: { WINERYCLAW_GATEWAY_TOKEN: "env-token" },
     });
-    vi.stubEnv("OPENCLAW_GATEWAY_TOKEN", "env-token");
+    vi.stubEnv("WINERYCLAW_GATEWAY_TOKEN", "env-token");
 
     await runServiceRestart(createServiceRunArgs(true));
 
@@ -141,7 +141,7 @@ describe("runServiceRestart token drift", () => {
     service.readCommand.mockResolvedValue({
       programArguments: [],
       environment: {
-        OPENCLAW_GATEWAY_TOKEN: "service-token",
+        WINERYCLAW_GATEWAY_TOKEN: "service-token",
         SERVICE_GATEWAY_TOKEN: "service-token",
       },
     });
@@ -173,7 +173,7 @@ describe("runServiceRestart token drift", () => {
     service.readCommand.mockResolvedValue({
       programArguments: [],
       environment: {
-        OPENCLAW_GATEWAY_TOKEN: "service-token",
+        WINERYCLAW_GATEWAY_TOKEN: "service-token",
         SERVICE_GATEWAY_TOKEN: "service-token",
       },
     });

@@ -65,8 +65,8 @@ vi.mock("./control-ui-assets.fs.runtime.js", async () => {
 });
 
 vi.mock("./openclaw-root.js", () => ({
-  resolveOpenClawPackageRoot: vi.fn(async () => null),
-  resolveOpenClawPackageRootSync: vi.fn(() => null),
+  resolveWineryClawPackageRoot: vi.fn(async () => null),
+  resolveWineryClawPackageRootSync: vi.fn(() => null),
 }));
 
 let resolveControlUiRepoRoot: typeof import("./control-ui-assets.js").resolveControlUiRepoRoot;
@@ -133,10 +133,10 @@ describe("control UI assets helpers (fs-mocked)", () => {
     );
   });
 
-  it("uses resolveOpenClawPackageRoot when available", async () => {
+  it("uses resolveWineryClawPackageRoot when available", async () => {
     const pkgRoot = abs("fixtures/openclaw");
     (
-      openclawRoot.resolveOpenClawPackageRoot as unknown as ReturnType<typeof vi.fn>
+      openclawRoot.resolveWineryClawPackageRoot as unknown as ReturnType<typeof vi.fn>
     ).mockResolvedValueOnce(pkgRoot);
 
     await expect(resolveControlUiDistIndexPath(abs("fixtures/bin/openclaw"))).resolves.toBe(
@@ -194,7 +194,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
   it("resolves control-ui root for dist bundle argv1 and moduleUrl candidates", async () => {
     const pkgRoot = abs("fixtures/openclaw-bundle");
     (
-      openclawRoot.resolveOpenClawPackageRootSync as unknown as ReturnType<typeof vi.fn>
+      openclawRoot.resolveWineryClawPackageRootSync as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValueOnce(pkgRoot);
 
     const uiDir = path.join(pkgRoot, "dist", "control-ui");
@@ -211,8 +211,8 @@ describe("control UI assets helpers (fs-mocked)", () => {
   });
 
   it("prefers packaged app Control UI assets in Contents/Resources", () => {
-    const execPath = abs("fixtures/OpenClaw.app/Contents/MacOS/OpenClaw");
-    const bundledUiDir = abs("fixtures/OpenClaw.app/Contents/Resources/control-ui");
+    const execPath = abs("fixtures/WineryClaw.app/Contents/MacOS/WineryClaw");
+    const bundledUiDir = abs("fixtures/WineryClaw.app/Contents/Resources/control-ui");
     setFile(path.join(bundledUiDir, "index.html"), "<html></html>\n");
 
     state.realpaths.set(execPath, execPath);
@@ -238,7 +238,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
     setDir(uiDir);
     setFile(path.join(uiDir, "index.html"), "<html></html>\n");
     (
-      openclawRoot.resolveOpenClawPackageRootSync as unknown as ReturnType<typeof vi.fn>
+      openclawRoot.resolveWineryClawPackageRootSync as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValueOnce(pkgRoot);
 
     expect(
@@ -254,7 +254,7 @@ describe("control UI assets helpers (fs-mocked)", () => {
     setDir(fallbackRoot);
     setFile(path.join(fallbackRoot, "index.html"), "<html></html>\n");
     (
-      openclawRoot.resolveOpenClawPackageRootSync as unknown as ReturnType<typeof vi.fn>
+      openclawRoot.resolveWineryClawPackageRootSync as unknown as ReturnType<typeof vi.fn>
     ).mockReturnValueOnce(pkgRoot);
 
     expect(

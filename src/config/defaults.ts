@@ -7,13 +7,19 @@ import {
 } from "./provider-policy.js";
 import { normalizeTalkConfig } from "./talk.js";
 import type { ModelDefinitionConfig } from "./types.models.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { WineryClawConfig } from "./types.openclaw.js";
 
 type WarnState = { warned: boolean };
 
 let defaultWarnState: WarnState = { warned: false };
 
 const DEFAULT_MODEL_ALIASES: Readonly<Record<string, string>> = {
+  // WineryClaw: Local LM Studio models as primary
+  glm51: "lmstudio/glm-5.1",
+  nemotron: "lmstudio/nvidia/nemotron-3-super",
+  gemma: "lmstudio/gemma-4-31b-it",
+  exo: "lmstudio-exo/mlx-community/MiniMax-M2.7",
+
   // Anthropic (pi-ai catalog uses "latest" ids without date suffix)
   opus: "anthropic/claude-opus-4-6",
   sonnet: "anthropic/claude-sonnet-4-6",
@@ -88,7 +94,7 @@ export type SessionDefaultsOptions = {
   warnState?: WarnState;
 };
 
-export function applyMessageDefaults(cfg: OpenClawConfig): OpenClawConfig {
+export function applyMessageDefaults(cfg: WineryClawConfig): WineryClawConfig {
   const messages = cfg.messages;
   const hasAckScope = messages?.ackReactionScope !== undefined;
   if (hasAckScope) {
@@ -104,9 +110,9 @@ export function applyMessageDefaults(cfg: OpenClawConfig): OpenClawConfig {
 }
 
 export function applySessionDefaults(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   options: SessionDefaultsOptions = {},
-): OpenClawConfig {
+): WineryClawConfig {
   const session = cfg.session;
   if (!session || session.mainKey === undefined) {
     return cfg;
@@ -116,7 +122,7 @@ export function applySessionDefaults(
   const warn = options.warn ?? console.warn;
   const warnState = options.warnState ?? defaultWarnState;
 
-  const next: OpenClawConfig = {
+  const next: WineryClawConfig = {
     ...cfg,
     session: { ...session, mainKey: "main" },
   };
@@ -129,11 +135,11 @@ export function applySessionDefaults(
   return next;
 }
 
-export function applyTalkConfigNormalization(config: OpenClawConfig): OpenClawConfig {
+export function applyTalkConfigNormalization(config: WineryClawConfig): WineryClawConfig {
   return normalizeTalkConfig(config);
 }
 
-export function applyModelDefaults(cfg: OpenClawConfig): OpenClawConfig {
+export function applyModelDefaults(cfg: WineryClawConfig): WineryClawConfig {
   let mutated = false;
   let nextCfg = cfg;
 
@@ -281,7 +287,7 @@ export function applyModelDefaults(cfg: OpenClawConfig): OpenClawConfig {
   };
 }
 
-export function applyAgentDefaults(cfg: OpenClawConfig): OpenClawConfig {
+export function applyAgentDefaults(cfg: WineryClawConfig): WineryClawConfig {
   const agents = cfg.agents;
   const defaults = agents?.defaults;
   const hasMax =
@@ -322,7 +328,7 @@ export function applyAgentDefaults(cfg: OpenClawConfig): OpenClawConfig {
   };
 }
 
-export function applyLoggingDefaults(cfg: OpenClawConfig): OpenClawConfig {
+export function applyLoggingDefaults(cfg: WineryClawConfig): WineryClawConfig {
   const logging = cfg.logging;
   if (!logging) {
     return cfg;
@@ -339,7 +345,7 @@ export function applyLoggingDefaults(cfg: OpenClawConfig): OpenClawConfig {
   };
 }
 
-export function applyContextPruningDefaults(cfg: OpenClawConfig): OpenClawConfig {
+export function applyContextPruningDefaults(cfg: WineryClawConfig): WineryClawConfig {
   if (!cfg.agents?.defaults) {
     return cfg;
   }
@@ -352,7 +358,7 @@ export function applyContextPruningDefaults(cfg: OpenClawConfig): OpenClawConfig
   );
 }
 
-export function applyCompactionDefaults(cfg: OpenClawConfig): OpenClawConfig {
+export function applyCompactionDefaults(cfg: WineryClawConfig): WineryClawConfig {
   const defaults = cfg.agents?.defaults;
   if (!defaults) {
     return cfg;

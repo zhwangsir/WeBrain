@@ -23,7 +23,7 @@ import {
   assertLiveImageProbeReply,
   buildLiveCronProbeMessage,
   createLiveCronProbeSpec,
-  runOpenClawCliJson,
+  runWineryClawCliJson,
   type CronListJob,
 } from "./live-agent-probes.js";
 import { renderCatFacePngBase64 } from "./live-image-probe.js";
@@ -79,11 +79,11 @@ export function parseImageMode(raw?: string): "list" | "repeat" | undefined {
   if (trimmed === "list" || trimmed === "repeat") {
     return trimmed;
   }
-  throw new Error("OPENCLAW_LIVE_CLI_BACKEND_IMAGE_MODE must be 'list' or 'repeat'.");
+  throw new Error("WINERYCLAW_LIVE_CLI_BACKEND_IMAGE_MODE must be 'list' or 'repeat'.");
 }
 
 export function shouldRunCliImageProbe(providerId: string): boolean {
-  const raw = process.env.OPENCLAW_LIVE_CLI_BACKEND_IMAGE_PROBE?.trim();
+  const raw = process.env.WINERYCLAW_LIVE_CLI_BACKEND_IMAGE_PROBE?.trim();
   if (raw) {
     return isTruthyEnvValue(raw);
   }
@@ -91,7 +91,7 @@ export function shouldRunCliImageProbe(providerId: string): boolean {
 }
 
 export function shouldRunCliMcpProbe(providerId: string): boolean {
-  const raw = process.env.OPENCLAW_LIVE_CLI_BACKEND_MCP_PROBE?.trim();
+  const raw = process.env.WINERYCLAW_LIVE_CLI_BACKEND_MCP_PROBE?.trim();
   if (raw) {
     return isTruthyEnvValue(raw);
   }
@@ -114,7 +114,7 @@ export function resolveCliModelSwitchProbeTarget(
 }
 
 export function shouldRunCliModelSwitchProbe(providerId: string, modelRef: string): boolean {
-  const raw = process.env.OPENCLAW_LIVE_CLI_BACKEND_MODEL_SWITCH_PROBE?.trim();
+  const raw = process.env.WINERYCLAW_LIVE_CLI_BACKEND_MODEL_SWITCH_PROBE?.trim();
   if (raw) {
     return isTruthyEnvValue(raw);
   }
@@ -267,30 +267,30 @@ function isRetryableGatewayConnectError(error: Error): boolean {
 
 export function snapshotCliBackendLiveEnv(): CliBackendLiveEnvSnapshot {
   return {
-    configPath: process.env.OPENCLAW_CONFIG_PATH,
-    stateDir: process.env.OPENCLAW_STATE_DIR,
-    token: process.env.OPENCLAW_GATEWAY_TOKEN,
-    skipChannels: process.env.OPENCLAW_SKIP_CHANNELS,
-    skipProviders: process.env.OPENCLAW_SKIP_PROVIDERS,
-    skipGmail: process.env.OPENCLAW_SKIP_GMAIL_WATCHER,
-    skipCron: process.env.OPENCLAW_SKIP_CRON,
-    skipCanvas: process.env.OPENCLAW_SKIP_CANVAS_HOST,
-    skipBrowserControl: process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER,
-    bundledPluginsDir: process.env.OPENCLAW_BUNDLED_PLUGINS_DIR,
-    minimalGateway: process.env.OPENCLAW_TEST_MINIMAL_GATEWAY,
+    configPath: process.env.WINERYCLAW_CONFIG_PATH,
+    stateDir: process.env.WINERYCLAW_STATE_DIR,
+    token: process.env.WINERYCLAW_GATEWAY_TOKEN,
+    skipChannels: process.env.WINERYCLAW_SKIP_CHANNELS,
+    skipProviders: process.env.WINERYCLAW_SKIP_PROVIDERS,
+    skipGmail: process.env.WINERYCLAW_SKIP_GMAIL_WATCHER,
+    skipCron: process.env.WINERYCLAW_SKIP_CRON,
+    skipCanvas: process.env.WINERYCLAW_SKIP_CANVAS_HOST,
+    skipBrowserControl: process.env.WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER,
+    bundledPluginsDir: process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR,
+    minimalGateway: process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
     anthropicApiKeyOld: process.env.ANTHROPIC_API_KEY_OLD,
   };
 }
 
 export function applyCliBackendLiveEnv(preservedEnv: ReadonlySet<string>): void {
-  process.env.OPENCLAW_SKIP_CHANNELS = "1";
-  process.env.OPENCLAW_SKIP_PROVIDERS = "1";
-  process.env.OPENCLAW_SKIP_GMAIL_WATCHER = "1";
-  process.env.OPENCLAW_SKIP_CRON = "1";
-  process.env.OPENCLAW_SKIP_CANVAS_HOST = "1";
-  process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
-  process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = "1";
+  process.env.WINERYCLAW_SKIP_CHANNELS = "1";
+  process.env.WINERYCLAW_SKIP_PROVIDERS = "1";
+  process.env.WINERYCLAW_SKIP_GMAIL_WATCHER = "1";
+  process.env.WINERYCLAW_SKIP_CRON = "1";
+  process.env.WINERYCLAW_SKIP_CANVAS_HOST = "1";
+  process.env.WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
+  process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY = "1";
   if (!preservedEnv.has("ANTHROPIC_API_KEY")) {
     delete process.env.ANTHROPIC_API_KEY;
   }
@@ -300,17 +300,17 @@ export function applyCliBackendLiveEnv(preservedEnv: ReadonlySet<string>): void 
 }
 
 export function restoreCliBackendLiveEnv(snapshot: CliBackendLiveEnvSnapshot): void {
-  restoreEnvVar("OPENCLAW_CONFIG_PATH", snapshot.configPath);
-  restoreEnvVar("OPENCLAW_STATE_DIR", snapshot.stateDir);
-  restoreEnvVar("OPENCLAW_GATEWAY_TOKEN", snapshot.token);
-  restoreEnvVar("OPENCLAW_SKIP_CHANNELS", snapshot.skipChannels);
-  restoreEnvVar("OPENCLAW_SKIP_PROVIDERS", snapshot.skipProviders);
-  restoreEnvVar("OPENCLAW_SKIP_GMAIL_WATCHER", snapshot.skipGmail);
-  restoreEnvVar("OPENCLAW_SKIP_CRON", snapshot.skipCron);
-  restoreEnvVar("OPENCLAW_SKIP_CANVAS_HOST", snapshot.skipCanvas);
-  restoreEnvVar("OPENCLAW_SKIP_BROWSER_CONTROL_SERVER", snapshot.skipBrowserControl);
-  restoreEnvVar("OPENCLAW_BUNDLED_PLUGINS_DIR", snapshot.bundledPluginsDir);
-  restoreEnvVar("OPENCLAW_TEST_MINIMAL_GATEWAY", snapshot.minimalGateway);
+  restoreEnvVar("WINERYCLAW_CONFIG_PATH", snapshot.configPath);
+  restoreEnvVar("WINERYCLAW_STATE_DIR", snapshot.stateDir);
+  restoreEnvVar("WINERYCLAW_GATEWAY_TOKEN", snapshot.token);
+  restoreEnvVar("WINERYCLAW_SKIP_CHANNELS", snapshot.skipChannels);
+  restoreEnvVar("WINERYCLAW_SKIP_PROVIDERS", snapshot.skipProviders);
+  restoreEnvVar("WINERYCLAW_SKIP_GMAIL_WATCHER", snapshot.skipGmail);
+  restoreEnvVar("WINERYCLAW_SKIP_CRON", snapshot.skipCron);
+  restoreEnvVar("WINERYCLAW_SKIP_CANVAS_HOST", snapshot.skipCanvas);
+  restoreEnvVar("WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER", snapshot.skipBrowserControl);
+  restoreEnvVar("WINERYCLAW_BUNDLED_PLUGINS_DIR", snapshot.bundledPluginsDir);
+  restoreEnvVar("WINERYCLAW_TEST_MINIMAL_GATEWAY", snapshot.minimalGateway);
   restoreEnvVar("ANTHROPIC_API_KEY", snapshot.anthropicApiKey);
   restoreEnvVar("ANTHROPIC_API_KEY_OLD", snapshot.anthropicApiKeyOld);
 }
@@ -456,7 +456,7 @@ export async function verifyCliCronMcpProbe(params: {
     expectedSessionKey: params.sessionKey,
   });
   if (createdJob?.id) {
-    await runOpenClawCliJson(
+    await runWineryClawCliJson(
       [
         "cron",
         "rm",

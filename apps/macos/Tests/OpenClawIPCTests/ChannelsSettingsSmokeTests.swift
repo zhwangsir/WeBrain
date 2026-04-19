@@ -1,9 +1,9 @@
-import OpenClawProtocol
+import WineryClawProtocol
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
-private typealias SnapshotAnyCodable = OpenClaw.AnyCodable
+private typealias SnapshotAnyCodable = WineryClaw.AnyCodable
 
 private let channelOrder = ["whatsapp", "telegram", "signal", "imessage"]
 private let channelLabels = [

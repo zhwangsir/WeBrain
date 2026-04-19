@@ -3,7 +3,7 @@ import type { IncomingMessage } from "node:http";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createMockServerResponse } from "../../../test/helpers/plugins/mock-http-response.js";
 import { createRuntimeTaskFlow } from "../../../test/helpers/plugins/runtime-taskflow.js";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { WineryClawConfig } from "../runtime-api.js";
 import { createTaskFlowWebhookRequestHandler, type TaskFlowWebhookTarget } from "./http.js";
 
 const hoisted = vi.hoisted(() => {
@@ -84,7 +84,7 @@ function createHandler(): {
   const targetsByPath = new Map<string, TaskFlowWebhookTarget[]>([[target.path, [target]]]);
   return {
     handler: createTaskFlowWebhookRequestHandler({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       targetsByPath,
     }),
     target,

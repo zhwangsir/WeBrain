@@ -158,8 +158,8 @@ export function describeChannelPluginCatalogEntriesContract() {
             channelId: "demo-channel",
             env: {
               ...process.env,
-              OPENCLAW_STATE_DIR: stateDir,
-              OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+              WINERYCLAW_STATE_DIR: stateDir,
+              WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
             },
             expected: { pluginId: "@vendor/demo-runtime" },
           };
@@ -191,9 +191,9 @@ export function describeChannelPluginCatalogEntriesContract() {
             catalogPaths: [catalogPath],
             env: {
               ...process.env,
-              OPENCLAW_STATE_DIR: stateDir,
+              WINERYCLAW_STATE_DIR: stateDir,
               CLAWDBOT_STATE_DIR: undefined,
-              OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+              WINERYCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
             },
             expected: {
               install: { npmSpec: "@vendor/demo-channel-plugin" },
@@ -237,8 +237,8 @@ export function describeChannelPluginCatalogPathResolutionContract() {
           return {
             env: {
               ...process.env,
-              OPENCLAW_PLUGIN_CATALOG_PATHS: "~/catalog.json",
-              OPENCLAW_HOME: home,
+              WINERYCLAW_PLUGIN_CATALOG_PATHS: "~/catalog.json",
+              WINERYCLAW_HOME: home,
               HOME: home,
             },
             expectedId: "env-demo-channel",
@@ -263,7 +263,7 @@ export function describeChannelPluginCatalogPathResolutionContract() {
           return {
             env: {
               ...process.env,
-              OPENCLAW_STATE_DIR: stateDir,
+              WINERYCLAW_STATE_DIR: stateDir,
             },
             expectedId: "default-env-demo",
           };

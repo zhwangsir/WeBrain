@@ -1,7 +1,7 @@
 export { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 export type {
-  OpenClawPluginApi,
-  OpenClawPluginCommandDefinition,
+  WineryClawPluginApi,
+  WineryClawPluginCommandDefinition,
   PluginCommandContext,
-  OpenClawPluginService,
+  WineryClawPluginService,
 } from "openclaw/plugin-sdk/plugin-entry";

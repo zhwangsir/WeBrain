@@ -1,4 +1,4 @@
-import type { OpenClawConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig, TelegramAccountConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
@@ -23,7 +23,7 @@ type CommandBotHarness = ReturnType<typeof createCommandBot>;
 type CommandHandler = (ctx: unknown) => Promise<void>;
 type PlugCommandHarnessParams = {
   botHarness?: CommandBotHarness;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   command?: Record<string, unknown>;
   args?: string;
   result?: Record<string, unknown>;
@@ -82,7 +82,7 @@ describe("registerTelegramNativeCommands", () => {
   });
 
   it("scopes skill commands when account binding exists", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       agents: {
         list: [{ id: "main", default: true }, { id: "butler" }],
       },
@@ -103,7 +103,7 @@ describe("registerTelegramNativeCommands", () => {
   });
 
   it("scopes skill commands to default agent without a matching binding (#15599)", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       agents: {
         list: [{ id: "main", default: true }, { id: "butler" }],
       },
@@ -118,7 +118,7 @@ describe("registerTelegramNativeCommands", () => {
   });
 
   it("truncates Telegram command registration to 100 commands", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       commands: { native: false },
     };
     const customCommands = Array.from({ length: 120 }, (_, index) => ({
@@ -152,7 +152,7 @@ describe("registerTelegramNativeCommands", () => {
   });
 
   it("keeps sub-100 commands by shortening long descriptions to fit Telegram payload budget", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       commands: { native: false },
     };
     const customCommands = Array.from({ length: 92 }, (_, index) => ({
@@ -278,7 +278,7 @@ describe("registerTelegramNativeCommands", () => {
   });
 
   it("passes agent-scoped media roots for plugin command replies with media", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       agents: {
         list: [{ id: "main", default: true }, { id: "work" }],
       },

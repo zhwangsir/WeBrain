@@ -158,7 +158,7 @@ function runVitestSpec(spec) {
 }
 
 function applyDefaultParallelVitestWorkerBudget(specs, env) {
-  if (env.OPENCLAW_VITEST_MAX_WORKERS || env.OPENCLAW_TEST_WORKERS || isCiLikeEnv(env)) {
+  if (env.WINERYCLAW_VITEST_MAX_WORKERS || env.WINERYCLAW_TEST_WORKERS || isCiLikeEnv(env)) {
     return specs;
   }
   const { vitestMaxWorkers } = resolveLocalFullSuiteProfile(env);
@@ -166,7 +166,7 @@ function applyDefaultParallelVitestWorkerBudget(specs, env) {
     ...spec,
     env: {
       ...spec.env,
-      OPENCLAW_VITEST_MAX_WORKERS: String(vitestMaxWorkers),
+      WINERYCLAW_VITEST_MAX_WORKERS: String(vitestMaxWorkers),
     },
   }));
 }
@@ -267,9 +267,9 @@ async function main() {
       );
       if (
         !isCiLikeEnv(process.env) &&
-        !process.env.OPENCLAW_TEST_PROJECTS_PARALLEL &&
-        !process.env.OPENCLAW_VITEST_MAX_WORKERS &&
-        !process.env.OPENCLAW_TEST_WORKERS &&
+        !process.env.WINERYCLAW_TEST_PROJECTS_PARALLEL &&
+        !process.env.WINERYCLAW_VITEST_MAX_WORKERS &&
+        !process.env.WINERYCLAW_TEST_WORKERS &&
         localFullSuiteProfile.shardParallelism === 10 &&
         localFullSuiteProfile.vitestMaxWorkers === 2
       ) {

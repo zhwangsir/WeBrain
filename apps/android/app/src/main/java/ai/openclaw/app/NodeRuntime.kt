@@ -20,7 +20,7 @@ import ai.openclaw.app.gateway.GatewayTlsProbeFailure
 import ai.openclaw.app.gateway.GatewayTlsProbeResult
 import ai.openclaw.app.gateway.probeGatewayTlsFingerprint
 import ai.openclaw.app.node.*
-import ai.openclaw.app.protocol.OpenClawCanvasA2UIAction
+import ai.openclaw.app.protocol.WineryClawCanvasA2UIAction
 import ai.openclaw.app.voice.MicCaptureManager
 import ai.openclaw.app.voice.TalkModeManager
 import ai.openclaw.app.voice.VoiceConversationEntry
@@ -527,7 +527,7 @@ class NodeRuntime(
           _canvasRehydratePending.value = false
           _canvasRehydrateErrorText.value = "Failed to request restore. Tap to retry."
         }
-        Log.w("OpenClawCanvas", "canvas rehydrate request failed ($source): transport unavailable")
+        Log.w("WineryClawCanvas", "canvas rehydrate request failed ($source): transport unavailable")
         return@launch
       }
       scope.launch {
@@ -993,7 +993,7 @@ class NodeRuntime(
       val actionId = (userActionObj["id"] as? JsonPrimitive)?.content?.trim().orEmpty().ifEmpty {
         java.util.UUID.randomUUID().toString()
       }
-      val name = OpenClawCanvasA2UIAction.extractActionName(userActionObj) ?: return@launch
+      val name = WineryClawCanvasA2UIAction.extractActionName(userActionObj) ?: return@launch
 
       val surfaceId =
         (userActionObj["surfaceId"] as? JsonPrimitive)?.content?.trim().orEmpty().ifEmpty { "main" }
@@ -1003,7 +1003,7 @@ class NodeRuntime(
 
       val sessionKey = resolveMainSessionKey()
       val message =
-        OpenClawCanvasA2UIAction.formatAgentMessage(
+        WineryClawCanvasA2UIAction.formatAgentMessage(
           actionName = name,
           sessionKey = sessionKey,
           surfaceId = surfaceId,
@@ -1037,7 +1037,7 @@ class NodeRuntime(
 
       try {
         canvas.eval(
-          OpenClawCanvasA2UIAction.jsDispatchA2UIActionStatus(
+          WineryClawCanvasA2UIAction.jsDispatchA2UIActionStatus(
             actionId = actionId,
             ok = connected && error == null,
             error = error,
@@ -1191,7 +1191,7 @@ class NodeRuntime(
         HomeCanvasPayload(
           gatewayState = "connecting",
           eyebrow = "Reconnecting",
-          title = "OpenClaw is syncing back up",
+          title = "WineryClaw is syncing back up",
           subtitle =
             "The gateway session is coming back online. Agent shortcuts should settle automatically in a moment.",
           gatewayLabel = gatewayLabel,
@@ -1205,7 +1205,7 @@ class NodeRuntime(
       HomeCanvasGatewayState.Error, HomeCanvasGatewayState.Offline ->
         HomeCanvasPayload(
           gatewayState = if (state == HomeCanvasGatewayState.Error) "error" else "offline",
-          eyebrow = "Welcome to OpenClaw",
+          eyebrow = "Welcome to WineryClaw",
           title = "Your phone stays quiet until it is needed",
           subtitle =
             "Pair this device to your gateway to wake it only for real work, keep a live agent overview handy, and avoid battery-draining background loops.",

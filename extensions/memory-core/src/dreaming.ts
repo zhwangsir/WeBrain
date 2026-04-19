@@ -1,4 +1,4 @@
-import type { OpenClawConfig, OpenClawPluginApi } from "openclaw/plugin-sdk/memory-core";
+import type { WineryClawConfig, WineryClawPluginApi } from "openclaw/plugin-sdk/memory-core";
 import {
   DEFAULT_MEMORY_DREAMING_FREQUENCY as DEFAULT_MEMORY_DREAMING_CRON_EXPR,
   DEFAULT_MEMORY_DEEP_DREAMING_LIMIT as DEFAULT_MEMORY_DREAMING_LIMIT,
@@ -37,7 +37,7 @@ const LEGACY_REM_SLEEP_CRON_TAG = "[managed-by=memory-core.dreaming.rem]";
 const LEGACY_REM_SLEEP_EVENT_TEXT = "__openclaw_memory_core_rem_sleep__";
 const RUNTIME_CRON_RECONCILE_INTERVAL_MS = 60_000;
 
-type Logger = Pick<OpenClawPluginApi["logger"], "info" | "warn" | "error">;
+type Logger = Pick<WineryClawPluginApi["logger"], "info" | "warn" | "error">;
 
 type CronSchedule = { kind: "cron"; expr: string; tz?: string };
 type CronPayload = { kind: "systemEvent"; text: string };
@@ -334,19 +334,19 @@ function resolveCronServiceFromStartupEvent(event: unknown): CronServiceLike | n
   return resolveCronServiceFromStartupSource(resolveStartupCronSourceFromEvent(event));
 }
 
-function resolveStartupConfigFromEvent(event: unknown, fallback: OpenClawConfig): OpenClawConfig {
+function resolveStartupConfigFromEvent(event: unknown, fallback: WineryClawConfig): WineryClawConfig {
   const startupEvent = asRecord(event);
   const startupContext = asRecord(startupEvent?.context);
   const startupCfg = asRecord(startupContext?.cfg);
   if (!startupCfg) {
     return fallback;
   }
-  return startupCfg as OpenClawConfig;
+  return startupCfg as WineryClawConfig;
 }
 
 export function resolveShortTermPromotionDreamingConfig(params: {
   pluginConfig?: Record<string, unknown>;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
 }): ShortTermPromotionDreamingConfig {
   const resolved = resolveMemoryDeepDreamingConfig(params);
   return {
@@ -453,7 +453,7 @@ export async function runShortTermDreamingPromotionIfTriggered(params: {
   cleanedBody: string;
   trigger?: string;
   workspaceDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   config: ShortTermPromotionDreamingConfig;
   logger: Logger;
   subagent?: Parameters<typeof generateAndAppendDreamNarrative>[0]["subagent"];
@@ -616,7 +616,7 @@ export async function runShortTermDreamingPromotionIfTriggered(params: {
   return { handled: true, reason: "memory-core: short-term dreaming processed" };
 }
 
-export function registerShortTermPromotionDreaming(api: OpenClawPluginApi): void {
+export function registerShortTermPromotionDreaming(api: WineryClawPluginApi): void {
   let startupCronSource: StartupCronSourceRefs | null = null;
   let unavailableCronWarningEmitted = false;
   let lastRuntimeReconcileAtMs = 0;

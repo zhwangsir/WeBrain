@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/provider-auth";
 import { normalizeOptionalSecretInput } from "openclaw/plugin-sdk/provider-auth";
 import { resolveEnvApiKey } from "openclaw/plugin-sdk/provider-auth-runtime";
 import {
@@ -21,7 +21,7 @@ export type OllamaEmbeddingProvider = {
 };
 
 type OllamaEmbeddingOptions = {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   agentDir?: string;
   provider?: string;
   remote?: {

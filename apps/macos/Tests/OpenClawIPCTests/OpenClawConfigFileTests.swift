@@ -1,13 +1,13 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @Suite(.serialized)
-struct OpenClawConfigFileTests {
+struct WineryClawConfigFileTests {
     private func makeConfigOverridePath() -> String {
         FileManager().temporaryDirectory
             .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("wineryclaw.json")
             .path
     }
 
@@ -15,8 +15,8 @@ struct OpenClawConfigFileTests {
     func `config path respects env override`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
-            #expect(OpenClawConfigFile.url().path == override)
+        await TestIsolation.withEnvValues(["WINERYCLAW_CONFIG_PATH": override]) {
+            #expect(WineryClawConfigFile.url().path == override)
         }
     }
 
@@ -25,18 +25,18 @@ struct OpenClawConfigFileTests {
     func `remote gateway port parses and matches host`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
-            OpenClawConfigFile.saveDict([
+        await TestIsolation.withEnvValues(["WINERYCLAW_CONFIG_PATH": override]) {
+            WineryClawConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "ws://gateway.ts.net:19999",
                     ],
                 ],
             ])
-            #expect(OpenClawConfigFile.remoteGatewayPort() == 19999)
-            #expect(OpenClawConfigFile.remoteGatewayPort(matchingHost: "gateway.ts.net") == 19999)
-            #expect(OpenClawConfigFile.remoteGatewayPort(matchingHost: "gateway") == 19999)
-            #expect(OpenClawConfigFile.remoteGatewayPort(matchingHost: "other.ts.net") == nil)
+            #expect(WineryClawConfigFile.remoteGatewayPort() == 19999)
+            #expect(WineryClawConfigFile.remoteGatewayPort(matchingHost: "gateway.ts.net") == 19999)
+            #expect(WineryClawConfigFile.remoteGatewayPort(matchingHost: "gateway") == 19999)
+            #expect(WineryClawConfigFile.remoteGatewayPort(matchingHost: "other.ts.net") == nil)
         }
     }
 
@@ -45,16 +45,16 @@ struct OpenClawConfigFileTests {
     func `set remote gateway url preserves scheme`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
-            OpenClawConfigFile.saveDict([
+        await TestIsolation.withEnvValues(["WINERYCLAW_CONFIG_PATH": override]) {
+            WineryClawConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "wss://old-host:111",
                     ],
                 ],
             ])
-            OpenClawConfigFile.setRemoteGatewayUrl(host: "new-host", port: 2222)
-            let root = OpenClawConfigFile.loadDict()
+            WineryClawConfigFile.setRemoteGatewayUrl(host: "new-host", port: 2222)
+            let root = WineryClawConfigFile.loadDict()
             let url = ((root["gateway"] as? [String: Any])?["remote"] as? [String: Any])?["url"] as? String
             #expect(url == "wss://new-host:2222")
         }
@@ -65,8 +65,8 @@ struct OpenClawConfigFileTests {
     func `clear remote gateway url removes only url field`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
-            OpenClawConfigFile.saveDict([
+        await TestIsolation.withEnvValues(["WINERYCLAW_CONFIG_PATH": override]) {
+            WineryClawConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "wss://old-host:111",
@@ -74,8 +74,8 @@ struct OpenClawConfigFileTests {
                     ],
                 ],
             ])
-            OpenClawConfigFile.clearRemoteGatewayUrl()
-            let root = OpenClawConfigFile.loadDict()
+            WineryClawConfigFile.clearRemoteGatewayUrl()
+            let root = WineryClawConfigFile.loadDict()
             let remote = ((root["gateway"] as? [String: Any])?["remote"] as? [String: Any]) ?? [:]
             #expect((remote["url"] as? String) == nil)
             #expect((remote["token"] as? String) == "tok")
@@ -89,11 +89,11 @@ struct OpenClawConfigFileTests {
             .path
 
         await TestIsolation.withEnvValues([
-            "OPENCLAW_CONFIG_PATH": nil,
-            "OPENCLAW_STATE_DIR": dir,
+            "WINERYCLAW_CONFIG_PATH": nil,
+            "WINERYCLAW_STATE_DIR": dir,
         ]) {
-            #expect(OpenClawConfigFile.stateDirURL().path == dir)
-            #expect(OpenClawConfigFile.url().path == "\(dir)/openclaw.json")
+            #expect(WineryClawConfigFile.stateDirURL().path == dir)
+            #expect(WineryClawConfigFile.url().path == "\(dir)/wineryclaw.json")
         }
     }
 
@@ -102,16 +102,16 @@ struct OpenClawConfigFileTests {
     func `save dict appends config audit log`() async throws {
         let stateDir = FileManager().temporaryDirectory
             .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
-        let configPath = stateDir.appendingPathComponent("openclaw.json")
+        let configPath = stateDir.appendingPathComponent("wineryclaw.json")
         let auditPath = stateDir.appendingPathComponent("logs/config-audit.jsonl")
 
         defer { try? FileManager().removeItem(at: stateDir) }
 
         try await TestIsolation.withEnvValues([
-            "OPENCLAW_STATE_DIR": stateDir.path,
-            "OPENCLAW_CONFIG_PATH": configPath.path,
+            "WINERYCLAW_STATE_DIR": stateDir.path,
+            "WINERYCLAW_CONFIG_PATH": configPath.path,
         ]) {
-            OpenClawConfigFile.saveDict([
+            WineryClawConfigFile.saveDict([
                 "gateway": ["mode": "local"],
             ])
 
@@ -145,16 +145,16 @@ struct OpenClawConfigFileTests {
     func `load dict audits suspicious out-of-band clobbers`() async throws {
         let stateDir = FileManager().temporaryDirectory
             .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
-        let configPath = stateDir.appendingPathComponent("openclaw.json")
+        let configPath = stateDir.appendingPathComponent("wineryclaw.json")
         let auditPath = stateDir.appendingPathComponent("logs/config-audit.jsonl")
 
         defer { try? FileManager().removeItem(at: stateDir) }
 
         try await TestIsolation.withEnvValues([
-            "OPENCLAW_STATE_DIR": stateDir.path,
-            "OPENCLAW_CONFIG_PATH": configPath.path,
+            "WINERYCLAW_STATE_DIR": stateDir.path,
+            "WINERYCLAW_CONFIG_PATH": configPath.path,
         ]) {
-            OpenClawConfigFile.saveDict([
+            WineryClawConfigFile.saveDict([
                 "update": ["channel": "beta"],
                 "browser": ["enabled": true],
                 "gateway": ["mode": "local"],
@@ -165,7 +165,7 @@ struct OpenClawConfigFileTests {
                     ],
                 ],
             ])
-            _ = OpenClawConfigFile.loadDict()
+            _ = WineryClawConfigFile.loadDict()
 
             let clobbered = """
             {
@@ -176,7 +176,7 @@ struct OpenClawConfigFileTests {
             """
             try clobbered.write(to: configPath, atomically: true, encoding: .utf8)
 
-            let loaded = OpenClawConfigFile.loadDict()
+            let loaded = WineryClawConfigFile.loadDict()
             #expect((loaded["gateway"] as? [String: Any]) == nil)
 
             let rawAudit = try String(contentsOf: auditPath, encoding: .utf8)

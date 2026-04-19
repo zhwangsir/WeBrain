@@ -6,7 +6,7 @@ import {
   addSubagentRunForTests,
   resetSubagentRegistryForTests,
 } from "../agents/subagent-registry.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { SessionEntry } from "../config/sessions.js";
 import { withStateDirEnv } from "../test-helpers/state-dir-env.js";
 import { withEnv } from "../test-utils/env.js";
@@ -27,7 +27,7 @@ describe("listSessionsFromStore subagent metadata", () => {
   const cfg = {
     session: { mainKey: "main" },
     agents: { list: [{ id: "main", default: true }] },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 
   test("includes subagent status timing and direct child session keys", () => {
     const now = Date.now();
@@ -639,8 +639,8 @@ describe("listSessionsFromStore subagent metadata", () => {
 
       const row = withEnv(
         {
-          OPENCLAW_STATE_DIR: stateDir,
-          OPENCLAW_TEST_READ_SUBAGENT_RUNS_FROM_DISK: "1",
+          WINERYCLAW_STATE_DIR: stateDir,
+          WINERYCLAW_TEST_READ_SUBAGENT_RUNS_FROM_DISK: "1",
         },
         () => {
           const result = listSessionsFromStore({
@@ -854,7 +854,7 @@ describe("loadCombinedSessionStoreForGateway includes disk-only agents (#32804)"
         agents: {
           list: [{ id: "main", default: true }],
         },
-      } as OpenClawConfig;
+      } as WineryClawConfig;
 
       const { store } = loadCombinedSessionStoreForGateway(cfg);
       expect(store["agent:main:main"]).toBeDefined();

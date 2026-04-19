@@ -10,13 +10,15 @@ import { normalizeWindowsArgv } from "./cli/windows-argv.js";
 import { buildCliRespawnPlan } from "./entry.respawn.js";
 import { isTruthyEnvValue, normalizeEnv } from "./infra/env.js";
 import { isMainModule } from "./infra/is-main.js";
-import { ensureOpenClawExecMarkerOnProcess } from "./infra/openclaw-exec-env.js";
+import { ensureWineryClawExecMarkerOnProcess } from "./infra/openclaw-exec-env.js";
 import { installProcessWarningFilter } from "./infra/warning-filter.js";
 import { attachChildProcessBridge } from "./process/child-process-bridge.js";
 
 const ENTRY_WRAPPER_PAIRS = [
   { wrapperBasename: "openclaw.mjs", entryBasename: "entry.js" },
   { wrapperBasename: "openclaw.js", entryBasename: "entry.js" },
+  { wrapperBasename: "wineryclaw.mjs", entryBasename: "entry.js" },
+  { wrapperBasename: "wineryclaw.js", entryBasename: "entry.js" },
 ] as const;
 
 function shouldForceReadOnlyAuthStore(argv: string[]): boolean {
@@ -46,7 +48,7 @@ if (
 
   await installGaxiosFetchCompat();
   process.title = "openclaw";
-  ensureOpenClawExecMarkerOnProcess();
+  ensureWineryClawExecMarkerOnProcess();
   installProcessWarningFilter();
   normalizeEnv();
   if (!isTruthyEnvValue(process.env.NODE_DISABLE_COMPILE_CACHE)) {
@@ -58,7 +60,7 @@ if (
   }
 
   if (shouldForceReadOnlyAuthStore(process.argv)) {
-    process.env.OPENCLAW_AUTH_STORE_READONLY = "1";
+    process.env.WINERYCLAW_AUTH_STORE_READONLY = "1";
   }
 
   if (process.argv.includes("--no-color")) {
@@ -109,7 +111,7 @@ if (
     Promise.all([import("./version.js"), import("./infra/git-commit.js")])
       .then(([{ VERSION }, { resolveCommitHash }]) => {
         const commit = resolveCommitHash({ moduleUrl: import.meta.url });
-        console.log(commit ? `OpenClaw ${VERSION} (${commit})` : `OpenClaw ${VERSION}`);
+        console.log(commit ? `WineryClaw ${VERSION} (${commit})` : `WineryClaw ${VERSION}`);
         process.exit(0);
       })
       .catch((error) => {
@@ -144,8 +146,10 @@ if (
       process.exit(2);
     }
 
-    if (parsed.profile) {
-      applyCliProfileEnv({ profile: parsed.profile });
+    const envProfile = process.env.WINERYCLAW_PROFILE?.trim() || null;
+    const effectiveProfile = parsed.profile ?? envProfile;
+    if (effectiveProfile) {
+      applyCliProfileEnv({ profile: effectiveProfile });
       // Keep Commander and ad-hoc argv checks consistent.
       process.argv = parsed.argv;
     }

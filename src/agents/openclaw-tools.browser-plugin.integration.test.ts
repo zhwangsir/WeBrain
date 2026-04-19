@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
-import { resolveOpenClawPluginToolsForOptions } from "./openclaw-plugin-tools.js";
+import type { WineryClawConfig } from "../config/config.js";
+import { resolveWineryClawPluginToolsForOptions } from "./openclaw-plugin-tools.js";
 
 const hoisted = vi.hoisted(() => ({
   resolvePluginTools: vi.fn(),
@@ -10,7 +10,7 @@ vi.mock("../plugins/tools.js", () => ({
   resolvePluginTools: (...args: unknown[]) => hoisted.resolvePluginTools(...args),
 }));
 
-describe("createOpenClawTools browser plugin integration", () => {
+describe("createWineryClawTools browser plugin integration", () => {
   afterEach(() => {
     hoisted.resolvePluginTools.mockReset();
   });
@@ -36,9 +36,9 @@ describe("createOpenClawTools browser plugin integration", () => {
       plugins: {
         allow: ["browser"],
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
-    const tools = resolveOpenClawPluginToolsForOptions({
+    const tools = resolveWineryClawPluginToolsForOptions({
       options: { config },
       resolvedConfig: config,
     });
@@ -58,9 +58,9 @@ describe("createOpenClawTools browser plugin integration", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
-    const tools = resolveOpenClawPluginToolsForOptions({
+    const tools = resolveWineryClawPluginToolsForOptions({
       options: { config },
       resolvedConfig: config,
     });
@@ -91,20 +91,20 @@ describe("createOpenClawTools browser plugin integration", () => {
       ];
     });
 
-    const tools = resolveOpenClawPluginToolsForOptions({
+    const tools = resolveWineryClawPluginToolsForOptions({
       options: {
         config: {
           plugins: {
             allow: ["browser"],
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         fsPolicy: { workspaceOnly: true },
       },
       resolvedConfig: {
         plugins: {
           allow: ["browser"],
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     const browserTool = tools.find((tool) => tool.name === "browser");

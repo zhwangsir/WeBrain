@@ -2,7 +2,7 @@
   "name": "@openclaw/tavily-plugin",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw Tavily plugin",
+  "description": "WineryClaw Tavily plugin",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"

@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawIPC
+import WineryClawIPC
 import Testing
 
 struct CameraIPCTests {

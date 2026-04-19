@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import {
   createEmptyProviderRegistryAllowlistFallbackRegistry,
   getProviderRegistryAllowlistMocks,
@@ -18,7 +18,7 @@ describe("media-understanding provider registry allowlist fallback", () => {
   });
 
   it("adds bundled capability plugin ids to plugins.allow before fallback registry load", () => {
-    const cfg = { plugins: { allow: ["custom-plugin"] } } as OpenClawConfig;
+    const cfg = { plugins: { allow: ["custom-plugin"] } } as WineryClawConfig;
     const compatConfig = {
       plugins: {
         allow: ["custom-plugin", "openai"],

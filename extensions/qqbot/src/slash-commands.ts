@@ -169,15 +169,15 @@ export function getFrameworkCommands(): QQBotFrameworkCommand[] {
 // ============ Built-in commands ============
 
 /**
- * /bot-ping — test current network latency between OpenClaw and QQ.
+ * /bot-ping — test current network latency between WineryClaw and QQ.
  */
 registerCommand({
   name: "bot-ping",
-  description: "测试 OpenClaw 与 QQ 之间的网络延迟",
+  description: "测试 WineryClaw 与 QQ 之间的网络延迟",
   usage: [
     `/bot-ping`,
     ``,
-    `测试当前 OpenClaw 宿主机与 QQ 服务器之间的网络延迟。`,
+    `测试当前 WineryClaw 宿主机与 QQ 服务器之间的网络延迟。`,
     `返回网络传输耗时和插件处理耗时。`,
   ].join("\n"),
   handler: (ctx) => {
@@ -201,15 +201,15 @@ registerCommand({
 });
 
 /**
- * /bot-version — show the OpenClaw framework version.
+ * /bot-version — show the WineryClaw framework version.
  */
 registerCommand({
   name: "bot-version",
-  description: "查看 OpenClaw 框架版本",
-  usage: [`/bot-version`, ``, `查看当前 OpenClaw 框架版本。`].join("\n"),
+  description: "查看 WineryClaw 框架版本",
+  usage: [`/bot-version`, ``, `查看当前 WineryClaw 框架版本。`].join("\n"),
   handler: async () => {
     const frameworkVersion = resolveRuntimeServiceVersion();
-    const lines = [`🦞 OpenClaw 版本：${frameworkVersion}`];
+    const lines = [`😋 WineryClaw 版本：${frameworkVersion}`];
     lines.push(`🌟 官方 GitHub 仓库：[点击前往](${QQBOT_PLUGIN_GITHUB_URL})`);
     return lines.join("\n");
   },
@@ -302,12 +302,12 @@ function collectCandidateLogDirs(): string[] {
     if (!value) {
       continue;
     }
-    if (/STATE_DIR$/i.test(key) && /(OPENCLAW|CLAWDBOT|MOLTBOT)/i.test(key)) {
+    if (/STATE_DIR$/i.test(key) && /(WINERYCLAW|CLAWDBOT|MOLTBOT)/i.test(key)) {
       pushStateDir(value);
     }
   }
 
-  for (const name of [".openclaw", ".clawdbot", ".moltbot", "openclaw", "clawdbot", "moltbot"]) {
+  for (const name of [".wineryclaw", ".openclaw", ".moltbot", "openclaw", "clawdbot", "moltbot"]) {
     pushDir(path.join(homeDir, name));
     pushDir(path.join(homeDir, name, "logs"));
   }
@@ -589,7 +589,7 @@ registerCommand({
   usage: [
     `/bot-logs`,
     ``,
-    `导出最近的 OpenClaw 日志文件（最多 4 个文件）。`,
+    `导出最近的 WineryClaw 日志文件（最多 4 个文件）。`,
     `每个文件只保留最后 1000 行，并作为附件返回。`,
   ].join("\n"),
   handler: (ctx) => {

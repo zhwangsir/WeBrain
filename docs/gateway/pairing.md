@@ -121,10 +121,10 @@ If silent approval fails, it falls back to the normal “Approve/Reject” promp
 
 Pairing state is stored under the Gateway state directory (default `~/.openclaw`):
 
-- `~/.openclaw/nodes/paired.json`
-- `~/.openclaw/nodes/pending.json`
+- `~/.wineryclaw/nodes/paired.json`
+- `~/.wineryclaw/nodes/pending.json`
 
-If you override `OPENCLAW_STATE_DIR`, the `nodes/` folder moves with it.
+If you override `WINERYCLAW_STATE_DIR`, the `nodes/` folder moves with it.
 
 Security notes:
 

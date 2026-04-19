@@ -6,7 +6,7 @@ import {
   modelSupportsVision,
 } from "openclaw/plugin-sdk/agent-runtime";
 import { resolveDefaultModelForAgent } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { resolveAutoImageModel } from "openclaw/plugin-sdk/media-runtime";
 import {
   resolveAutoMediaKeyProviders,
@@ -29,7 +29,7 @@ const STICKER_DESCRIPTION_PROMPT =
 
 export interface DescribeStickerParams {
   imagePath: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentDir?: string;
   agentId?: string;
 }

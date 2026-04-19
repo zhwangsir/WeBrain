@@ -1,6 +1,6 @@
 import Testing
 import WebKit
-@testable import OpenClaw
+@testable import WineryClaw
 
 @MainActor
 private func mountScreen(_ screen: ScreenController) throws -> (ScreenWebViewCoordinator, WKWebView) {

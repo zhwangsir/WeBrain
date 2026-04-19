@@ -1,7 +1,7 @@
 import Foundation
-import OpenClawProtocol
+import WineryClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 @MainActor
 struct WorkActivityStoreTests {

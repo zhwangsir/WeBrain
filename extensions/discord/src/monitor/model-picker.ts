@@ -11,7 +11,7 @@ import {
 } from "@buape/carbon";
 import type { APISelectMenuOption } from "discord-api-types/v10";
 import { ButtonStyle } from "discord-api-types/v10";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ModelsProviderData } from "openclaw/plugin-sdk/models-provider-runtime";
 import { normalizeProviderId } from "openclaw/plugin-sdk/provider-model-shared";
 
@@ -547,7 +547,7 @@ function buildModelRows(params: {
  * same provider/model resolver used by text and Telegram model commands.
  */
 export async function loadDiscordModelPickerData(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   agentId?: string,
 ): Promise<ModelsProviderData> {
   const { buildModelsProviderData } = await loadModelsProviderRuntime();

@@ -2,11 +2,11 @@ package ai.openclaw.app.node
 
 import ai.openclaw.app.gateway.DeviceIdentityStore
 import ai.openclaw.app.gateway.GatewaySession
-import ai.openclaw.app.protocol.OpenClawCallLogCommand
-import ai.openclaw.app.protocol.OpenClawCameraCommand
-import ai.openclaw.app.protocol.OpenClawLocationCommand
-import ai.openclaw.app.protocol.OpenClawMotionCommand
-import ai.openclaw.app.protocol.OpenClawSmsCommand
+import ai.openclaw.app.protocol.WineryClawCallLogCommand
+import ai.openclaw.app.protocol.WineryClawCameraCommand
+import ai.openclaw.app.protocol.WineryClawLocationCommand
+import ai.openclaw.app.protocol.WineryClawMotionCommand
+import ai.openclaw.app.protocol.WineryClawSmsCommand
 import android.content.Context
 import android.content.pm.PackageManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -102,7 +102,7 @@ class InvokeDispatcherTest {
           readSmsAvailable = false,
           smsFeatureEnabled = true,
           smsTelephonyAvailable = true,
-        ).handleInvoke(OpenClawSmsCommand.Search.rawValue, "not-json")
+        ).handleInvoke(WineryClawSmsCommand.Search.rawValue, "not-json")
 
       assertEquals("SMS_PERMISSION_REQUIRED", result.error?.code)
       assertEquals("grant READ_SMS permission", result.error?.message)
@@ -116,7 +116,7 @@ class InvokeDispatcherTest {
           readSmsAvailable = false,
           smsFeatureEnabled = false,
           smsTelephonyAvailable = true,
-        ).handleInvoke(OpenClawSmsCommand.Search.rawValue, "not-json")
+        ).handleInvoke(WineryClawSmsCommand.Search.rawValue, "not-json")
 
       assertEquals("SMS_UNAVAILABLE", result.error?.code)
       assertEquals("SMS_UNAVAILABLE: SMS not available on this device", result.error?.message)
@@ -130,7 +130,7 @@ class InvokeDispatcherTest {
           sendSmsAvailable = true,
           smsFeatureEnabled = true,
           smsTelephonyAvailable = true,
-        ).handleInvoke(OpenClawSmsCommand.Send.rawValue, """{"to":"+15551234567","message":"hi"}""")
+        ).handleInvoke(WineryClawSmsCommand.Send.rawValue, """{"to":"+15551234567","message":"hi"}""")
 
       assertEquals("SMS_PERMISSION_REQUIRED", result.error?.code)
       assertEquals("grant SMS permission", result.error?.message)
@@ -144,7 +144,7 @@ class InvokeDispatcherTest {
           sendSmsAvailable = false,
           smsFeatureEnabled = true,
           smsTelephonyAvailable = true,
-        ).handleInvoke(OpenClawSmsCommand.Send.rawValue, """{"to":"+15551234567","message":"hi"}""")
+        ).handleInvoke(WineryClawSmsCommand.Send.rawValue, """{"to":"+15551234567","message":"hi"}""")
 
       assertEquals("SMS_UNAVAILABLE", result.error?.code)
       assertEquals("SMS_UNAVAILABLE: SMS not available on this device", result.error?.message)
@@ -153,7 +153,7 @@ class InvokeDispatcherTest {
   @Test
   fun handleInvoke_blocksCameraCommandsWhenCameraDisabled() =
     runTest {
-      val result = newDispatcher(cameraEnabled = false).handleInvoke(OpenClawCameraCommand.List.rawValue, null)
+      val result = newDispatcher(cameraEnabled = false).handleInvoke(WineryClawCameraCommand.List.rawValue, null)
 
       assertEquals("CAMERA_DISABLED", result.error?.code)
       assertEquals("CAMERA_DISABLED: enable Camera in Settings", result.error?.message)
@@ -162,7 +162,7 @@ class InvokeDispatcherTest {
   @Test
   fun handleInvoke_blocksLocationCommandWhenLocationDisabled() =
     runTest {
-      val result = newDispatcher(locationEnabled = false).handleInvoke(OpenClawLocationCommand.Get.rawValue, null)
+      val result = newDispatcher(locationEnabled = false).handleInvoke(WineryClawLocationCommand.Get.rawValue, null)
 
       assertEquals("LOCATION_DISABLED", result.error?.code)
       assertEquals("LOCATION_DISABLED: enable Location in Settings", result.error?.message)
@@ -173,7 +173,7 @@ class InvokeDispatcherTest {
     runTest {
       val result =
         newDispatcher(motionActivityAvailable = false)
-          .handleInvoke(OpenClawMotionCommand.Activity.rawValue, null)
+          .handleInvoke(WineryClawMotionCommand.Activity.rawValue, null)
 
       assertEquals("MOTION_UNAVAILABLE", result.error?.code)
       assertEquals("MOTION_UNAVAILABLE: accelerometer not available", result.error?.message)
@@ -184,7 +184,7 @@ class InvokeDispatcherTest {
     runTest {
       val result =
         newDispatcher(motionPedometerAvailable = false)
-          .handleInvoke(OpenClawMotionCommand.Pedometer.rawValue, null)
+          .handleInvoke(WineryClawMotionCommand.Pedometer.rawValue, null)
 
       assertEquals("PEDOMETER_UNAVAILABLE", result.error?.code)
       assertEquals("PEDOMETER_UNAVAILABLE: step counter not available", result.error?.message)
@@ -194,7 +194,7 @@ class InvokeDispatcherTest {
   fun handleInvoke_blocksCallLogWhenUnavailable() =
     runTest {
       val result =
-        newDispatcher(callLogAvailable = false).handleInvoke(OpenClawCallLogCommand.Search.rawValue, null)
+        newDispatcher(callLogAvailable = false).handleInvoke(WineryClawCallLogCommand.Search.rawValue, null)
 
       assertEquals("CALL_LOG_UNAVAILABLE", result.error?.code)
       assertEquals("CALL_LOG_UNAVAILABLE: call log not available on this build", result.error?.message)

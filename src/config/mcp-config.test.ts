@@ -15,7 +15,7 @@ function validationOk(raw: unknown) {
 const mockReadSourceConfigSnapshot = vi.hoisted(() => async () => {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
-  const configPath = path.join(process.env.OPENCLAW_STATE_DIR ?? "", "openclaw.json");
+  const configPath = path.join(process.env.WINERYCLAW_STATE_DIR ?? "", "wineryclaw.json");
   try {
     const raw = await fs.readFile(configPath, "utf-8");
     const parsed = JSON.parse(raw);
@@ -37,7 +37,7 @@ const mockReadSourceConfigSnapshot = vi.hoisted(() => async () => {
 const mockReplaceConfigFile = vi.hoisted(() => async ({ nextConfig }: { nextConfig: unknown }) => {
   const fs = await import("node:fs/promises");
   const path = await import("node:path");
-  const configPath = path.join(process.env.OPENCLAW_STATE_DIR ?? "", "openclaw.json");
+  const configPath = path.join(process.env.WINERYCLAW_STATE_DIR ?? "", "wineryclaw.json");
   await fs.writeFile(configPath, JSON.stringify(nextConfig, null, 2), "utf-8");
 });
 
@@ -60,7 +60,7 @@ async function withMcpConfigHome<T>(
 ) {
   return await withTempHome(
     async (home) => {
-      const configPath = path.join(home, ".openclaw", "openclaw.json");
+      const configPath = path.join(home, ".wineryclaw", "wineryclaw.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(configPath, JSON.stringify(config, null, 2), "utf-8");
       return await fn({ configPath });
@@ -69,9 +69,9 @@ async function withMcpConfigHome<T>(
       prefix: "openclaw-mcp-config-",
       skipSessionCleanup: true,
       env: {
-        OPENCLAW_CONFIG_PATH: undefined,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-        OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+        WINERYCLAW_CONFIG_PATH: undefined,
+        WINERYCLAW_BUNDLED_PLUGINS_DIR: undefined,
+        WINERYCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
       },
     },
   );

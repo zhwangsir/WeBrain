@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import type { RootHelpRenderOptions } from "../src/cli/program/root-help.js";
-import type { OpenClawConfig } from "../src/config/config.js";
+import type { WineryClawConfig } from "../src/config/config.js";
 
 function dedupe(values: string[]): string[] {
   const seen = new Set<string>();
@@ -139,15 +139,15 @@ function createIsolatedRootHelpRenderContext(
     LC_ALL: process.env.LC_ALL ?? "C.UTF-8",
     TERM: process.env.TERM ?? "dumb",
     NO_COLOR: "1",
-    OPENCLAW_BUNDLED_PLUGINS_DIR: bundledPluginsDir,
-    OPENCLAW_DISABLE_BUNDLED_PLUGINS: "",
-    OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-    OPENCLAW_DISABLE_PLUGIN_MANIFEST_CACHE: "1",
-    OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
-    OPENCLAW_PLUGIN_MANIFEST_CACHE_MS: "0",
-    OPENCLAW_STATE_DIR: stateDir,
+    WINERYCLAW_BUNDLED_PLUGINS_DIR: bundledPluginsDir,
+    WINERYCLAW_DISABLE_BUNDLED_PLUGINS: "",
+    WINERYCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+    WINERYCLAW_DISABLE_PLUGIN_MANIFEST_CACHE: "1",
+    WINERYCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
+    WINERYCLAW_PLUGIN_MANIFEST_CACHE_MS: "0",
+    WINERYCLAW_STATE_DIR: stateDir,
   };
-  const config: OpenClawConfig = {
+  const config: WineryClawConfig = {
     agents: {
       defaults: {
         workspace: workspaceDir,

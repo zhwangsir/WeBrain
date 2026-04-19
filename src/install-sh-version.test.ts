@@ -28,7 +28,7 @@ function resolveVersionFromInstaller(cliPath: string): string {
     [
       "-lc",
       `source "${installerPath}" >/dev/null 2>&1
-OPENCLAW_BIN="$FAKE_OPENCLAW_BIN"
+WINERYCLAW_BIN="$FAKE_WINERYCLAW_BIN"
 resolve_openclaw_version`,
     ],
     {
@@ -36,8 +36,8 @@ resolve_openclaw_version`,
       encoding: "utf-8",
       env: {
         ...process.env,
-        FAKE_OPENCLAW_BIN: cliPath,
-        OPENCLAW_INSTALL_SH_NO_RUN: "1",
+        FAKE_WINERYCLAW_BIN: cliPath,
+        WINERYCLAW_INSTALL_SH_NO_RUN: "1",
       },
     },
   );
@@ -51,13 +51,13 @@ function resolveVersionFromInstallerViaStdin(cliPath: string, cwd: string): stri
     cwd,
     encoding: "utf-8",
     input: `${installerSource}
-OPENCLAW_BIN="$FAKE_OPENCLAW_BIN"
+WINERYCLAW_BIN="$FAKE_WINERYCLAW_BIN"
 resolve_openclaw_version
 `,
     env: {
       ...process.env,
-      FAKE_OPENCLAW_BIN: cliPath,
-      OPENCLAW_INSTALL_SH_NO_RUN: "1",
+      FAKE_WINERYCLAW_BIN: cliPath,
+      WINERYCLAW_INSTALL_SH_NO_RUN: "1",
     },
   });
   return output.trim();
@@ -71,7 +71,7 @@ describe("install.sh version resolution", () => {
   it.runIf(process.platform !== "win32")(
     "extracts the semantic version from decorated CLI output",
     () => {
-      const fixture = withFakeCli("OpenClaw 2026.3.10 (abcdef0)");
+      const fixture = withFakeCli("WineryClaw 2026.3.10 (abcdef0)");
 
       expect(resolveVersionFromInstaller(fixture.cliPath)).toBe("2026.3.10");
     },
@@ -80,16 +80,16 @@ describe("install.sh version resolution", () => {
   it.runIf(process.platform !== "win32")(
     "falls back to raw output when no semantic version is present",
     () => {
-      const fixture = withFakeCli("OpenClaw dev's build");
+      const fixture = withFakeCli("WineryClaw dev's build");
 
-      expect(resolveVersionFromInstaller(fixture.cliPath)).toBe("OpenClaw dev's build");
+      expect(resolveVersionFromInstaller(fixture.cliPath)).toBe("WineryClaw dev's build");
     },
   );
 
   it.runIf(process.platform !== "win32")(
     "does not source version helpers from cwd when installer runs via stdin",
     () => {
-      const fixture = withFakeCli("OpenClaw 2026.3.10 (abcdef0)");
+      const fixture = withFakeCli("WineryClaw 2026.3.10 (abcdef0)");
 
       const hostileCwd = makeTempDir(tempRoots, "openclaw-install-stdin-");
       const hostileHelper = path.join(

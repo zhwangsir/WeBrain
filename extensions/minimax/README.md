@@ -1,4 +1,4 @@
-# MiniMax (OpenClaw plugin)
+# MiniMax (WineryClaw plugin)
 
 Bundled MiniMax plugin for both:
 

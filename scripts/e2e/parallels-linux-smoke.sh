@@ -583,7 +583,7 @@ install_latest_release() {
     version_args=(--version "$INSTALL_VERSION")
   fi
   guest_exec curl -fsSL "$INSTALL_URL" -o /tmp/openclaw-install.sh
-  guest_exec /usr/bin/env OPENCLAW_NO_ONBOARD=1 bash /tmp/openclaw-install.sh "${version_args[@]}" --no-onboard
+  guest_exec /usr/bin/env WINERYCLAW_NO_ONBOARD=1 bash /tmp/openclaw-install.sh "${version_args[@]}" --no-onboard
   guest_exec openclaw --version
 }
 
@@ -630,7 +630,7 @@ start_gateway_background() {
   cmd="$(cat <<EOF
 pkill -f "openclaw gateway run" >/dev/null 2>&1 || true
 rm -f /tmp/openclaw-parallels-linux-gateway.log
-setsid sh -lc 'exec env OPENCLAW_HOME=/root OPENCLAW_STATE_DIR=/root/.openclaw OPENCLAW_CONFIG_PATH=/root/.openclaw/openclaw.json ${API_KEY_ENV}=${api_key_value_q} openclaw gateway run --bind loopback --port 18789 --force >/tmp/openclaw-parallels-linux-gateway.log 2>&1' >/dev/null 2>&1 < /dev/null &
+setsid sh -lc 'exec env WINERYCLAW_HOME=/root WINERYCLAW_STATE_DIR=/root/.openclaw WINERYCLAW_CONFIG_PATH=/root/.openclaw/openclaw.json ${API_KEY_ENV}=${api_key_value_q} openclaw gateway run --bind loopback --port 18789 --force >/tmp/openclaw-parallels-linux-gateway.log 2>&1' >/dev/null 2>&1 < /dev/null &
 EOF
 )"
   guest_exec bash -lc "$cmd"
@@ -679,7 +679,7 @@ import re
 import sys
 
 text = pathlib.Path(sys.argv[1]).read_text(errors="replace")
-matches = re.findall(r"OpenClaw [^\r\n]+ \([0-9a-f]{7,}\)", text)
+matches = re.findall(r"WineryClaw [^\r\n]+ \([0-9a-f]{7,}\)", text)
 print(matches[-1] if matches else "")
 PY
 }

@@ -1,6 +1,6 @@
 import {
   createModelCatalogPresetAppliers,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 import {
   buildTogetherModelDefinition,
@@ -12,7 +12,7 @@ export const TOGETHER_DEFAULT_MODEL_REF = "together/moonshotai/Kimi-K2.5";
 
 const togetherPresetAppliers = createModelCatalogPresetAppliers({
   primaryModelRef: TOGETHER_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: OpenClawConfig) => ({
+  resolveParams: (_cfg: WineryClawConfig) => ({
     providerId: "together",
     api: "openai-completions",
     baseUrl: TOGETHER_BASE_URL,
@@ -21,10 +21,10 @@ const togetherPresetAppliers = createModelCatalogPresetAppliers({
   }),
 });
 
-export function applyTogetherProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyTogetherProviderConfig(cfg: WineryClawConfig): WineryClawConfig {
   return togetherPresetAppliers.applyProviderConfig(cfg);
 }
 
-export function applyTogetherConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyTogetherConfig(cfg: WineryClawConfig): WineryClawConfig {
   return togetherPresetAppliers.applyConfig(cfg);
 }

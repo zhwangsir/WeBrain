@@ -1,5 +1,5 @@
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 
 /**
  * Default max parent token count beyond which thread/session parent forking is skipped.
@@ -8,7 +8,7 @@ import type { OpenClawConfig } from "../../config/types.openclaw.js";
  */
 const DEFAULT_PARENT_FORK_MAX_TOKENS = 100_000;
 
-export function resolveParentForkMaxTokens(cfg: OpenClawConfig): number {
+export function resolveParentForkMaxTokens(cfg: WineryClawConfig): number {
   const configured = cfg.session?.parentForkMaxTokens;
   if (typeof configured === "number" && Number.isFinite(configured) && configured >= 0) {
     return Math.floor(configured);

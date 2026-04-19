@@ -44,7 +44,7 @@ import {
   projectCredentialSnapshotFields,
   resolveConfiguredFromCredentialStatuses,
   type ChannelPlugin,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "./channel-api.js";
 import { resolveDiscordCurrentConversationIdentity } from "./conversation-identity.js";
 import { shouldSuppressLocalDiscordExecApprovalPrompt } from "./exec-approvals.js";
@@ -205,7 +205,7 @@ const discordMessageActions = {
   },
 };
 
-function resolveDiscordStartupDelayMs(cfg: OpenClawConfig, accountId: string): number {
+function resolveDiscordStartupDelayMs(cfg: WineryClawConfig, accountId: string): number {
   const startupAccountIds = listDiscordAccountIds(cfg).filter((candidateId) => {
     const candidate = resolveDiscordAccount({ cfg, accountId: candidateId });
     return (
@@ -248,7 +248,7 @@ function formatDiscordIntents(intents?: {
 function buildDiscordCrossContextComponents(params: {
   originLabel: string;
   message: string;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
 }) {
   const { Separator, TextDisplay } = loadDiscordCarbonModule();
@@ -465,7 +465,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount, DiscordProbe> 
       agentPrompt: {
         messageToolHints: () => [
           "- Discord components: set `components` when sending messages to include buttons, selects, or v2 containers.",
-          "- Forms: add `components.modal` (title, fields). OpenClaw adds a trigger button and routes submissions as new messages.",
+          "- Forms: add `components.modal` (title, fields). WineryClaw adds a trigger button and routes submissions as new messages.",
         ],
       },
       messaging: {

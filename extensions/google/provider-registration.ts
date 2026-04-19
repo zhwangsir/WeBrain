@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
+import type { WineryClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
 import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth-api-key";
 import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
 import { buildProviderStreamFamilyHooks } from "openclaw/plugin-sdk/provider-stream-family";
@@ -18,7 +18,7 @@ const GOOGLE_GEMINI_PROVIDER_HOOKS = {
   ...buildProviderStreamFamilyHooks("google-thinking"),
 };
 
-export function registerGoogleProvider(api: OpenClawPluginApi) {
+export function registerGoogleProvider(api: WineryClawPluginApi) {
   api.registerProvider({
     id: "google",
     label: "Google AI Studio",

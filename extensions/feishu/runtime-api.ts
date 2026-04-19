@@ -11,13 +11,13 @@ export type {
   ChannelOutboundAdapter,
   ChannelPlugin,
   HistoryEntry,
-  OpenClawConfig,
-  OpenClawPluginApi,
+  WineryClawConfig,
+  WineryClawPluginApi,
   OutboundIdentity,
   PluginRuntime,
   ReplyPayload,
 } from "openclaw/plugin-sdk/core";
-export type { OpenClawConfig as ClawdbotConfig } from "openclaw/plugin-sdk/core";
+export type { WineryClawConfig as ClawdbotConfig } from "openclaw/plugin-sdk/core";
 export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
 export type { GroupToolPolicyConfig } from "openclaw/plugin-sdk/config-runtime";
 export {

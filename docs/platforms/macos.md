@@ -1,14 +1,14 @@
 ---
-summary: "OpenClaw macOS companion app (menu bar + gateway broker)"
+summary: "WineryClaw macOS companion app (menu bar + gateway broker)"
 read_when:
   - Implementing macOS app features
   - Changing gateway lifecycle or node bridging on macOS
 title: "macOS App"
 ---
 
-# OpenClaw macOS Companion (menu bar + gateway broker)
+# WineryClaw macOS Companion (menu bar + gateway broker)
 
-The macOS app is the **menu‑bar companion** for OpenClaw. It owns permissions,
+The macOS app is the **menu‑bar companion** for WineryClaw. It owns permissions,
 manages/attaches to the Gateway locally (launchd or manual), and exposes macOS
 capabilities to the agent as a node.
 
@@ -37,7 +37,7 @@ capabilities to the agent as a node.
 ## Launchd control
 
 The app manages a per‑user LaunchAgent labeled `ai.openclaw.gateway`
-(or `ai.openclaw.<profile>` when using `--profile`/`OPENCLAW_PROFILE`; legacy `com.openclaw.*` still unloads).
+(or `ai.openclaw.<profile>` when using `--profile`/`WINERYCLAW_PROFILE`; legacy `com.openclaw.*` still unloads).
 
 ```bash
 launchctl kickstart -k gui/$UID/ai.openclaw.gateway
@@ -80,7 +80,7 @@ Gateway -> Node Service (WS)
 Security + ask + allowlist are stored locally on the Mac in:
 
 ```
-~/.openclaw/exec-approvals.json
+~/.wineryclaw/exec-approvals.json
 ```
 
 Example:
@@ -140,21 +140,21 @@ Safety:
 
 ## Onboarding flow (typical)
 
-1. Install and launch **OpenClaw.app**.
+1. Install and launch **WineryClaw.app**.
 2. Complete the permissions checklist (TCC prompts).
 3. Ensure **Local** mode is active and the Gateway is running.
 4. Install the CLI if you want terminal access.
 
 ## State dir placement (macOS)
 
-Avoid putting your OpenClaw state dir in iCloud or other cloud-synced folders.
+Avoid putting your WineryClaw state dir in iCloud or other cloud-synced folders.
 Sync-backed paths can add latency and occasionally cause file-lock/sync races for
 sessions and credentials.
 
 Prefer a local non-synced state path such as:
 
 ```bash
-OPENCLAW_STATE_DIR=~/.openclaw
+WINERYCLAW_STATE_DIR=~/.openclaw
 ```
 
 If `openclaw doctor` detects state under:
@@ -167,7 +167,7 @@ it will warn and recommend moving back to a local path.
 ## Build & dev workflow (native)
 
 - `cd apps/macos && swift build`
-- `swift run OpenClaw` (or Xcode)
+- `swift run WineryClaw` (or Xcode)
 - Package app: `scripts/package-mac-app.sh`
 
 ## Debug gateway connectivity (macOS CLI)

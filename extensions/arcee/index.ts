@@ -5,7 +5,7 @@ import {
   type ProviderCatalogContext,
 } from "openclaw/plugin-sdk/provider-catalog-shared";
 import { buildProviderReplayFamilyHooks } from "openclaw/plugin-sdk/provider-model-shared";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-onboard";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/provider-onboard";
 import {
   applyArceeConfig,
   applyArceeOpenRouterConfig,
@@ -73,7 +73,7 @@ function buildArceeAuthMethods() {
   ];
 }
 
-function readConfiguredArceeCatalogEntries(config: OpenClawConfig | undefined) {
+function readConfiguredArceeCatalogEntries(config: WineryClawConfig | undefined) {
   return readConfiguredProviderCatalogEntries({
     config,
     providerId: PROVIDER_ID,

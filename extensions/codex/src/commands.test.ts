@@ -74,7 +74,7 @@ describe("codex command", () => {
     await expect(
       handleCodexCommand(createContext("resume thread-123", sessionFile), { deps }),
     ).resolves.toEqual({
-      text: "Attached this OpenClaw session to Codex thread thread-123.",
+      text: "Attached this WineryClaw session to Codex thread thread-123.",
     });
 
     expect(requests).toEqual([
@@ -158,7 +158,7 @@ describe("codex command", () => {
     await expect(
       handleCodexCommand(createContext("compact", sessionFile), { deps: createDeps() }),
     ).resolves.toEqual({
-      text: "No Codex thread is attached to this OpenClaw session yet.",
+      text: "No Codex thread is attached to this WineryClaw session yet.",
     });
   });
 

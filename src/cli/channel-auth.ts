@@ -9,7 +9,7 @@ import {
   loadConfig,
   readConfigFileSnapshot,
   replaceConfigFile,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "../config/config.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import { setVerbose } from "../globals.js";
@@ -31,7 +31,7 @@ function supportsChannelAuthMode(plugin: ChannelPlugin, mode: ChannelAuthMode): 
   return mode === "login" ? Boolean(plugin.auth?.login) : Boolean(plugin.gateway?.logoutAccount);
 }
 
-function isConfiguredAuthPlugin(plugin: ChannelPlugin, cfg: OpenClawConfig): boolean {
+function isConfiguredAuthPlugin(plugin: ChannelPlugin, cfg: WineryClawConfig): boolean {
   const key = plugin.id;
   if (isBlockedObjectKey(key)) {
     return false;
@@ -65,7 +65,7 @@ function isConfiguredAuthPlugin(plugin: ChannelPlugin, cfg: OpenClawConfig): boo
   return false;
 }
 
-function resolveConfiguredAuthChannelInput(cfg: OpenClawConfig, mode: ChannelAuthMode): string {
+function resolveConfiguredAuthChannelInput(cfg: WineryClawConfig, mode: ChannelAuthMode): string {
   const configured = listChannelPlugins()
     .filter((plugin): plugin is ChannelPlugin => supportsChannelAuthMode(plugin, mode))
     .filter((plugin) => isConfiguredAuthPlugin(plugin, cfg))
@@ -86,10 +86,10 @@ function resolveConfiguredAuthChannelInput(cfg: OpenClawConfig, mode: ChannelAut
 async function resolveChannelPluginForMode(
   opts: ChannelAuthOptions,
   mode: ChannelAuthMode,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   runtime: RuntimeEnv,
 ): Promise<{
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   configChanged: boolean;
   channelInput: string;
   channelId: string;
@@ -127,7 +127,7 @@ async function resolveChannelPluginForMode(
 function resolveAccountContext(
   plugin: ChannelPlugin,
   opts: ChannelAuthOptions,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ) {
   const accountId =
     normalizeOptionalString(opts.account) || resolveChannelDefaultAccountId({ plugin, cfg });

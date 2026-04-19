@@ -29,7 +29,7 @@ export { writeJsonFileAtomically } from "openclaw/plugin-sdk/json-store";
 export type {
   ChannelDirectoryEntry,
   ChannelMessageActionContext,
-  OpenClawConfig,
+  WineryClawConfig,
   PluginRuntime,
   RuntimeLogger,
   RuntimeEnv,

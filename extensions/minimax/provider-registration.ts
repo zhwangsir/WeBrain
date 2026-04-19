@@ -1,6 +1,6 @@
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import type {
-  OpenClawPluginApi,
+  WineryClawPluginApi,
   ProviderAuthContext,
   ProviderAuthResult,
   ProviderCatalogContext,
@@ -168,7 +168,7 @@ function createOAuthHandler(region: MiniMaxRegion) {
   };
 }
 
-export function registerMinimaxProviders(api: OpenClawPluginApi) {
+export function registerMinimaxProviders(api: WineryClawPluginApi) {
   api.registerProvider({
     id: API_PROVIDER_ID,
     label: PROVIDER_LABEL,

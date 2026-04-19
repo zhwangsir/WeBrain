@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import type { HeartbeatEventPayload } from "../infra/heartbeat-events.js";
 import type { HealthSummary } from "./health.js";
 import { getDaemonStatusSummary, getNodeDaemonStatusSummary } from "./status.daemon.js";
@@ -23,8 +23,8 @@ function loadGatewayCallModule() {
 }
 
 export async function resolveStatusSecurityAudit(params: {
-  config: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  config: WineryClawConfig;
+  sourceConfig: WineryClawConfig;
 }) {
   const { runSecurityAudit } = await loadSecurityAuditModule();
   return await runSecurityAudit({
@@ -46,7 +46,7 @@ export async function loadStatusProviderUsageModule() {
 }
 
 export async function resolveStatusGatewayHealth(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   timeoutMs?: number;
 }) {
   const { callGateway } = await loadGatewayCallModule();
@@ -59,7 +59,7 @@ export async function resolveStatusGatewayHealth(params: {
 }
 
 export async function resolveStatusGatewayHealthSafe(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   timeoutMs?: number;
   gatewayReachable: boolean;
   gatewayProbeError?: string | null;
@@ -83,7 +83,7 @@ export async function resolveStatusGatewayHealthSafe(params: {
 }
 
 export async function resolveStatusLastHeartbeat(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   timeoutMs?: number;
   gatewayReachable: boolean;
 }) {
@@ -111,7 +111,7 @@ type StatusNodeServiceSummary = Awaited<ReturnType<typeof getNodeDaemonStatusSum
 type StatusSecurityAudit = Awaited<ReturnType<typeof resolveStatusSecurityAudit>>;
 
 export async function resolveStatusRuntimeDetails(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   timeoutMs?: number;
   usage?: boolean;
   deep?: boolean;
@@ -119,7 +119,7 @@ export async function resolveStatusRuntimeDetails(params: {
   suppressHealthErrors?: boolean;
   resolveUsage?: (timeoutMs?: number) => Promise<StatusUsageSummary>;
   resolveHealth?: (input: {
-    config: OpenClawConfig;
+    config: WineryClawConfig;
     timeoutMs?: number;
   }) => Promise<StatusGatewayHealth>;
 }) {
@@ -162,8 +162,8 @@ export async function resolveStatusRuntimeDetails(params: {
 }
 
 export async function resolveStatusRuntimeSnapshot(params: {
-  config: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  config: WineryClawConfig;
+  sourceConfig: WineryClawConfig;
   timeoutMs?: number;
   usage?: boolean;
   deep?: boolean;
@@ -171,12 +171,12 @@ export async function resolveStatusRuntimeSnapshot(params: {
   includeSecurityAudit?: boolean;
   suppressHealthErrors?: boolean;
   resolveSecurityAudit?: (input: {
-    config: OpenClawConfig;
-    sourceConfig: OpenClawConfig;
+    config: WineryClawConfig;
+    sourceConfig: WineryClawConfig;
   }) => Promise<StatusSecurityAudit>;
   resolveUsage?: (timeoutMs?: number) => Promise<StatusUsageSummary>;
   resolveHealth?: (input: {
-    config: OpenClawConfig;
+    config: WineryClawConfig;
     timeoutMs?: number;
   }) => Promise<StatusGatewayHealth>;
 }) {

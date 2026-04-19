@@ -1,10 +1,10 @@
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { resolvePluginCapabilityProviders } from "../plugins/capability-provider-runtime.js";
 import { normalizeMediaProviderId } from "./provider-id.js";
 import type { MediaUnderstandingCapabilityRegistry, MediaUnderstandingProvider } from "./types.js";
 
 type ConfigProvider = NonNullable<
-  NonNullable<NonNullable<OpenClawConfig["models"]>["providers"]>[string]
+  NonNullable<NonNullable<WineryClawConfig["models"]>["providers"]>[string]
 >;
 
 type ConfigProviderModel = NonNullable<ConfigProvider["models"]>[number];
@@ -21,7 +21,7 @@ function mergeProviderCapabilities(
 }
 
 export function buildMediaUnderstandingCapabilityRegistry(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): MediaUnderstandingCapabilityRegistry {
   const registry: MediaUnderstandingCapabilityRegistry = new Map();
 

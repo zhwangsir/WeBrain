@@ -70,7 +70,7 @@ export type ApnsPushResult = {
 export type ApnsPushAlertResult = ApnsPushResult;
 export type ApnsPushWakeResult = ApnsPushResult;
 
-const EXEC_APPROVAL_GENERIC_ALERT_BODY = "Open OpenClaw to review this request.";
+const EXEC_APPROVAL_GENERIC_ALERT_BODY = "Open WineryClaw to review this request.";
 const EXEC_APPROVAL_NOTIFICATION_CATEGORY = "openclaw.exec-approval";
 
 type ApnsPushType = "alert" | "background";
@@ -593,18 +593,18 @@ export function shouldClearStoredApnsRegistration(params: {
 export async function resolveApnsAuthConfigFromEnv(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<ApnsAuthConfigResolution> {
-  const teamId = normalizeNonEmptyString(env.OPENCLAW_APNS_TEAM_ID);
-  const keyId = normalizeNonEmptyString(env.OPENCLAW_APNS_KEY_ID);
+  const teamId = normalizeNonEmptyString(env.WINERYCLAW_APNS_TEAM_ID);
+  const keyId = normalizeNonEmptyString(env.WINERYCLAW_APNS_KEY_ID);
   if (!teamId || !keyId) {
     return {
       ok: false,
-      error: "APNs auth missing: set OPENCLAW_APNS_TEAM_ID and OPENCLAW_APNS_KEY_ID",
+      error: "APNs auth missing: set WINERYCLAW_APNS_TEAM_ID and WINERYCLAW_APNS_KEY_ID",
     };
   }
 
   const inlineKeyRaw =
-    normalizeNonEmptyString(env.OPENCLAW_APNS_PRIVATE_KEY_P8) ??
-    normalizeNonEmptyString(env.OPENCLAW_APNS_PRIVATE_KEY);
+    normalizeNonEmptyString(env.WINERYCLAW_APNS_PRIVATE_KEY_P8) ??
+    normalizeNonEmptyString(env.WINERYCLAW_APNS_PRIVATE_KEY);
   if (inlineKeyRaw) {
     return {
       ok: true,
@@ -616,12 +616,12 @@ export async function resolveApnsAuthConfigFromEnv(
     };
   }
 
-  const keyPath = normalizeNonEmptyString(env.OPENCLAW_APNS_PRIVATE_KEY_PATH);
+  const keyPath = normalizeNonEmptyString(env.WINERYCLAW_APNS_PRIVATE_KEY_PATH);
   if (!keyPath) {
     return {
       ok: false,
       error:
-        "APNs private key missing: set OPENCLAW_APNS_PRIVATE_KEY_P8 or OPENCLAW_APNS_PRIVATE_KEY_PATH",
+        "APNs private key missing: set WINERYCLAW_APNS_PRIVATE_KEY_P8 or WINERYCLAW_APNS_PRIVATE_KEY_PATH",
     };
   }
   try {
@@ -638,7 +638,7 @@ export async function resolveApnsAuthConfigFromEnv(
     const message = formatErrorMessage(err);
     return {
       ok: false,
-      error: `failed reading OPENCLAW_APNS_PRIVATE_KEY_PATH (${keyPath}): ${message}`,
+      error: `failed reading WINERYCLAW_APNS_PRIVATE_KEY_PATH (${keyPath}): ${message}`,
     };
   }
 }

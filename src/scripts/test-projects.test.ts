@@ -432,27 +432,27 @@ describe("test-projects args", () => {
   it("caps project-level parallelism when the Vitest worker budget is conservative", () => {
     expect(
       resolveParallelFullSuiteConcurrency(58, {
-        OPENCLAW_VITEST_MAX_WORKERS: "1",
+        WINERYCLAW_VITEST_MAX_WORKERS: "1",
       }),
     ).toBe(1);
 
     expect(
       resolveParallelFullSuiteConcurrency(58, {
-        OPENCLAW_TEST_WORKERS: "1",
+        WINERYCLAW_TEST_WORKERS: "1",
       }),
     ).toBe(1);
   });
 
   it("keeps conservative full-suite runs on aggregate shards", () => {
-    const originalVitestMaxWorkers = process.env.OPENCLAW_VITEST_MAX_WORKERS;
-    const originalTestWorkers = process.env.OPENCLAW_TEST_WORKERS;
-    const originalProjectParallel = process.env.OPENCLAW_TEST_PROJECTS_PARALLEL;
-    const originalLeafShards = process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+    const originalVitestMaxWorkers = process.env.WINERYCLAW_VITEST_MAX_WORKERS;
+    const originalTestWorkers = process.env.WINERYCLAW_TEST_WORKERS;
+    const originalProjectParallel = process.env.WINERYCLAW_TEST_PROJECTS_PARALLEL;
+    const originalLeafShards = process.env.WINERYCLAW_TEST_PROJECTS_LEAF_SHARDS;
     try {
-      process.env.OPENCLAW_VITEST_MAX_WORKERS = "1";
-      delete process.env.OPENCLAW_TEST_WORKERS;
-      delete process.env.OPENCLAW_TEST_PROJECTS_PARALLEL;
-      delete process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+      process.env.WINERYCLAW_VITEST_MAX_WORKERS = "1";
+      delete process.env.WINERYCLAW_TEST_WORKERS;
+      delete process.env.WINERYCLAW_TEST_PROJECTS_PARALLEL;
+      delete process.env.WINERYCLAW_TEST_PROJECTS_LEAF_SHARDS;
 
       const configs = buildFullSuiteVitestRunPlans([]).map((plan) => plan.config);
 
@@ -460,24 +460,24 @@ describe("test-projects args", () => {
       expect(configs).not.toContain("test/vitest/vitest.plugins.config.ts");
     } finally {
       if (originalVitestMaxWorkers === undefined) {
-        delete process.env.OPENCLAW_VITEST_MAX_WORKERS;
+        delete process.env.WINERYCLAW_VITEST_MAX_WORKERS;
       } else {
-        process.env.OPENCLAW_VITEST_MAX_WORKERS = originalVitestMaxWorkers;
+        process.env.WINERYCLAW_VITEST_MAX_WORKERS = originalVitestMaxWorkers;
       }
       if (originalTestWorkers === undefined) {
-        delete process.env.OPENCLAW_TEST_WORKERS;
+        delete process.env.WINERYCLAW_TEST_WORKERS;
       } else {
-        process.env.OPENCLAW_TEST_WORKERS = originalTestWorkers;
+        process.env.WINERYCLAW_TEST_WORKERS = originalTestWorkers;
       }
       if (originalProjectParallel === undefined) {
-        delete process.env.OPENCLAW_TEST_PROJECTS_PARALLEL;
+        delete process.env.WINERYCLAW_TEST_PROJECTS_PARALLEL;
       } else {
-        process.env.OPENCLAW_TEST_PROJECTS_PARALLEL = originalProjectParallel;
+        process.env.WINERYCLAW_TEST_PROJECTS_PARALLEL = originalProjectParallel;
       }
       if (originalLeafShards === undefined) {
-        delete process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS;
+        delete process.env.WINERYCLAW_TEST_PROJECTS_LEAF_SHARDS;
       } else {
-        process.env.OPENCLAW_TEST_PROJECTS_LEAF_SHARDS = originalLeafShards;
+        process.env.WINERYCLAW_TEST_PROJECTS_LEAF_SHARDS = originalLeafShards;
       }
     }
   });
@@ -486,8 +486,8 @@ describe("test-projects args", () => {
     expect(
       resolveParallelFullSuiteConcurrency(58, {
         GITHUB_ACTIONS: "true",
-        OPENCLAW_TEST_PROJECTS_PARALLEL: "3",
-        OPENCLAW_VITEST_MAX_WORKERS: "1",
+        WINERYCLAW_TEST_PROJECTS_PARALLEL: "3",
+        WINERYCLAW_VITEST_MAX_WORKERS: "1",
       }),
     ).toBe(3);
   });
@@ -497,7 +497,7 @@ describe("test-projects args", () => {
       resolveParallelFullSuiteConcurrency(
         58,
         {
-          OPENCLAW_TEST_PROJECTS_LEAF_SHARDS: "1",
+          WINERYCLAW_TEST_PROJECTS_LEAF_SHARDS: "1",
         },
         {
           cpuCount: 8,
@@ -528,10 +528,10 @@ describe("test-projects args", () => {
 
     expect(specs[0]?.env).toMatchObject({
       KEEP_ME: "1",
-      OPENCLAW_VITEST_FS_MODULE_CACHE_PATH:
+      WINERYCLAW_VITEST_FS_MODULE_CACHE_PATH:
         "/repo/node_modules/.experimental-vitest-cache/0-test-vitest-vitest.gateway.config.ts",
     });
-    expect(specs[1]?.env.OPENCLAW_VITEST_FS_MODULE_CACHE_PATH).toBe(
+    expect(specs[1]?.env.WINERYCLAW_VITEST_FS_MODULE_CACHE_PATH).toBe(
       "/repo/node_modules/.experimental-vitest-cache/1-test-vitest-vitest.gateway-server.config.ts",
     );
   });
@@ -548,7 +548,7 @@ describe("test-projects args", () => {
       applyParallelVitestCachePaths(specs, {
         cwd: "/repo",
         env: {
-          OPENCLAW_VITEST_FS_MODULE_CACHE_PATH: "/tmp/cache",
+          WINERYCLAW_VITEST_FS_MODULE_CACHE_PATH: "/tmp/cache",
         },
       }),
     ).toBe(specs);
@@ -892,7 +892,7 @@ describe("test-projects args", () => {
       "extensions/discord/src/monitor/message-handler.preflight.test.ts",
     ]);
     expect(spec?.includeFilePath).toContain("openclaw-vitest-include-");
-    expect(spec?.env.OPENCLAW_VITEST_INCLUDE_FILE).toBe(spec?.includeFilePath);
+    expect(spec?.env.WINERYCLAW_VITEST_INCLUDE_FILE).toBe(spec?.includeFilePath);
   });
 
   it("rejects watch mode when a command spans multiple suites", () => {

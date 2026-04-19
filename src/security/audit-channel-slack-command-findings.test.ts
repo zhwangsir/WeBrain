@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { collectSlackSecurityAuditFindings } from "../../test/helpers/channels/security-audit-contract.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { withChannelSecurityStateDir } from "./audit-channel-security.test-helpers.js";
 
 const { readChannelAllowFromStoreMock } = vi.hoisted(() => ({
@@ -12,7 +12,7 @@ vi.mock("openclaw/plugin-sdk/conversation-runtime", () => ({
 }));
 
 function createSlackAccount(
-  config: NonNullable<OpenClawConfig["channels"]>["slack"],
+  config: NonNullable<WineryClawConfig["channels"]>["slack"],
 ): Parameters<typeof collectSlackSecurityAuditFindings>[0]["account"] {
   return {
     accountId: "default",
@@ -26,7 +26,7 @@ function createSlackAccount(
 
 describe("security audit slack command findings", () => {
   it("flags Slack slash commands without a channel users allowlist", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         slack: {
           enabled: true,
@@ -41,9 +41,9 @@ describe("security audit slack command findings", () => {
     await withChannelSecurityStateDir(async () => {
       readChannelAllowFromStoreMock.mockResolvedValue([]);
       const findings = await collectSlackSecurityAuditFindings({
-        cfg: cfg as OpenClawConfig & {
+        cfg: cfg as WineryClawConfig & {
           channels: {
-            slack: NonNullable<OpenClawConfig["channels"]>["slack"];
+            slack: NonNullable<WineryClawConfig["channels"]>["slack"];
           };
         },
         account: createSlackAccount(cfg.channels!.slack),
@@ -62,7 +62,7 @@ describe("security audit slack command findings", () => {
   });
 
   it("flags Slack slash commands when access-group enforcement is disabled", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       commands: { useAccessGroups: false },
       channels: {
         slack: {
@@ -78,9 +78,9 @@ describe("security audit slack command findings", () => {
     await withChannelSecurityStateDir(async () => {
       readChannelAllowFromStoreMock.mockResolvedValue([]);
       const findings = await collectSlackSecurityAuditFindings({
-        cfg: cfg as OpenClawConfig & {
+        cfg: cfg as WineryClawConfig & {
           channels: {
-            slack: NonNullable<OpenClawConfig["channels"]>["slack"];
+            slack: NonNullable<WineryClawConfig["channels"]>["slack"];
           };
         },
         account: createSlackAccount(cfg.channels!.slack),

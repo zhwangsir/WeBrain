@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   resolveThreadBindingIdleTimeoutMs,
   resolveThreadBindingMaxAgeMs,
@@ -13,7 +13,7 @@ export {
 };
 
 export function resolveDiscordThreadBindingIdleTimeoutMs(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string;
 }): number {
   const accountId = normalizeAccountId(params.accountId);
@@ -26,7 +26,7 @@ export function resolveDiscordThreadBindingIdleTimeoutMs(params: {
 }
 
 export function resolveDiscordThreadBindingMaxAgeMs(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string;
 }): number {
   const accountId = normalizeAccountId(params.accountId);

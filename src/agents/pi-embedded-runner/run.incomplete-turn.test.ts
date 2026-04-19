@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { makeAttemptResult } from "./run.overflow-compaction.fixture.js";
 import {
   loadRunOverflowCompactionHarness,
@@ -92,7 +92,7 @@ describe("runEmbeddedPiAgent incomplete-turn safety", () => {
             },
           ],
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
     });
 
     expect(mockedRunEmbeddedAttempt).toHaveBeenCalledTimes(3);

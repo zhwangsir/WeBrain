@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   computeBackoff,
   sleepWithAbort,
@@ -20,7 +20,7 @@ export const DEFAULT_RECONNECT_POLICY: ReconnectPolicy = {
   maxAttempts: 12,
 };
 
-export function resolveHeartbeatSeconds(cfg: OpenClawConfig, overrideSeconds?: number): number {
+export function resolveHeartbeatSeconds(cfg: WineryClawConfig, overrideSeconds?: number): number {
   const candidate = overrideSeconds ?? cfg.web?.heartbeatSeconds;
   if (typeof candidate === "number" && candidate > 0) {
     return candidate;
@@ -29,7 +29,7 @@ export function resolveHeartbeatSeconds(cfg: OpenClawConfig, overrideSeconds?: n
 }
 
 export function resolveReconnectPolicy(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   overrides?: Partial<ReconnectPolicy>,
 ): ReconnectPolicy {
   const reconnectOverrides = cfg.web?.reconnect ?? {};

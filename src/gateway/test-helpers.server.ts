@@ -63,17 +63,17 @@ async function getServerModule() {
 const GATEWAY_TEST_ENV_KEYS = [
   "HOME",
   "USERPROFILE",
-  "OPENCLAW_STATE_DIR",
-  "OPENCLAW_CONFIG_PATH",
-  "OPENCLAW_GATEWAY_TOKEN",
-  "OPENCLAW_SKIP_BROWSER_CONTROL_SERVER",
-  "OPENCLAW_SKIP_GMAIL_WATCHER",
-  "OPENCLAW_SKIP_CANVAS_HOST",
-  "OPENCLAW_BUNDLED_PLUGINS_DIR",
-  "OPENCLAW_SKIP_CHANNELS",
-  "OPENCLAW_SKIP_PROVIDERS",
-  "OPENCLAW_SKIP_CRON",
-  "OPENCLAW_TEST_MINIMAL_GATEWAY",
+  "WINERYCLAW_STATE_DIR",
+  "WINERYCLAW_CONFIG_PATH",
+  "WINERYCLAW_GATEWAY_TOKEN",
+  "WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER",
+  "WINERYCLAW_SKIP_GMAIL_WATCHER",
+  "WINERYCLAW_SKIP_CANVAS_HOST",
+  "WINERYCLAW_BUNDLED_PLUGINS_DIR",
+  "WINERYCLAW_SKIP_CHANNELS",
+  "WINERYCLAW_SKIP_PROVIDERS",
+  "WINERYCLAW_SKIP_CRON",
+  "WINERYCLAW_TEST_MINIMAL_GATEWAY",
 ] as const;
 
 let gatewayEnvSnapshot: ReturnType<typeof captureEnv> | undefined;
@@ -120,11 +120,11 @@ function hasUnsyncedGatewayTestSessionConfig(): boolean {
 
 async function persistTestSessionConfig(): Promise<void> {
   const configPaths = new Set<string>();
-  if (process.env.OPENCLAW_CONFIG_PATH) {
-    configPaths.add(process.env.OPENCLAW_CONFIG_PATH);
+  if (process.env.WINERYCLAW_CONFIG_PATH) {
+    configPaths.add(process.env.WINERYCLAW_CONFIG_PATH);
   }
-  if (process.env.OPENCLAW_STATE_DIR) {
-    configPaths.add(path.join(process.env.OPENCLAW_STATE_DIR, "openclaw.json"));
+  if (process.env.WINERYCLAW_STATE_DIR) {
+    configPaths.add(path.join(process.env.WINERYCLAW_STATE_DIR, "wineryclaw.json"));
   }
   const parsedConfigs = new Map<string, Record<string, unknown>>();
   let preservedTemplateStore: string | undefined;
@@ -223,19 +223,19 @@ async function setupGatewayTestHome() {
   tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-gateway-home-"));
   process.env.HOME = tempHome;
   process.env.USERPROFILE = tempHome;
-  process.env.OPENCLAW_STATE_DIR = path.join(tempHome, ".openclaw");
-  delete process.env.OPENCLAW_CONFIG_PATH;
+  process.env.WINERYCLAW_STATE_DIR = path.join(tempHome, ".wineryclaw");
+  delete process.env.WINERYCLAW_CONFIG_PATH;
 }
 
 function applyGatewaySkipEnv() {
-  process.env.OPENCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
-  process.env.OPENCLAW_SKIP_GMAIL_WATCHER = "1";
-  process.env.OPENCLAW_SKIP_CANVAS_HOST = "1";
-  process.env.OPENCLAW_SKIP_CHANNELS = "1";
-  process.env.OPENCLAW_SKIP_PROVIDERS = "1";
-  process.env.OPENCLAW_SKIP_CRON = "1";
-  process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = "1";
-  process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = tempHome
+  process.env.WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER = "1";
+  process.env.WINERYCLAW_SKIP_GMAIL_WATCHER = "1";
+  process.env.WINERYCLAW_SKIP_CANVAS_HOST = "1";
+  process.env.WINERYCLAW_SKIP_CHANNELS = "1";
+  process.env.WINERYCLAW_SKIP_PROVIDERS = "1";
+  process.env.WINERYCLAW_SKIP_CRON = "1";
+  process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY = "1";
+  process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = tempHome
     ? path.join(tempHome, "openclaw-test-no-bundled-extensions")
     : "openclaw-test-no-bundled-extensions";
 }
@@ -248,8 +248,8 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     throw new Error("resetGatewayTestState called before temp home was initialized");
   }
   applyGatewaySkipEnv();
-  delete process.env.OPENCLAW_GATEWAY_TOKEN;
-  const stateDir = process.env.OPENCLAW_STATE_DIR;
+  delete process.env.WINERYCLAW_GATEWAY_TOKEN;
+  const stateDir = process.env.WINERYCLAW_STATE_DIR;
   if (stateDir) {
     await fs.rm(stateDir, {
       recursive: true,
@@ -260,7 +260,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     await fs.mkdir(stateDir, { recursive: true });
   }
   if (options.uniqueConfigRoot) {
-    const suiteRoot = path.join(tempHome, ".openclaw-test-suite");
+    const suiteRoot = path.join(tempHome, ".wineryclaw-test-suite");
     await fs.mkdir(suiteRoot, { recursive: true });
     tempConfigRoot = path.join(suiteRoot, `case-${suiteConfigRootSeq++}`);
     await fs.rm(tempConfigRoot, {
@@ -271,7 +271,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     });
     await fs.mkdir(tempConfigRoot, { recursive: true });
   } else {
-    tempConfigRoot = path.join(tempHome, ".openclaw-test");
+    tempConfigRoot = path.join(tempHome, ".wineryclaw-test");
     await fs.rm(tempConfigRoot, {
       recursive: true,
       force: true,
@@ -281,7 +281,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     await fs.mkdir(tempConfigRoot, { recursive: true });
   }
   setTestConfigRoot(tempConfigRoot);
-  tempControlUiRoot = path.join(tempHome, ".openclaw-test-control-ui");
+  tempControlUiRoot = path.join(tempHome, ".wineryclaw-test-control-ui");
   await fs.rm(tempControlUiRoot, {
     recursive: true,
     force: true,
@@ -384,7 +384,7 @@ async function resetGatewayTestRuntimeOnly() {
   vi.useRealTimers();
   setLoggerOverride({ level: "silent", consoleLevel: "silent" });
   applyGatewaySkipEnv();
-  delete process.env.OPENCLAW_GATEWAY_TOKEN;
+  delete process.env.WINERYCLAW_GATEWAY_TOKEN;
   resetConfigRuntimeState();
   resetTestPluginRegistry();
   clearGatewaySubagentRuntime();
@@ -581,7 +581,7 @@ export async function startGatewayServer(port: number, opts?: GatewayServerOptio
     opts?.controlUiEnabled === undefined ? { ...opts, controlUiEnabled: false } : opts;
   if (
     resolvedOpts?.controlUiEnabled === true &&
-    process.env.OPENCLAW_TEST_MINIMAL_GATEWAY === "1" &&
+    process.env.WINERYCLAW_TEST_MINIMAL_GATEWAY === "1" &&
     tempControlUiRoot &&
     typeof (testState.gatewayControlUi as { root?: unknown } | undefined)?.root !== "string"
   ) {
@@ -718,8 +718,8 @@ export async function startServerWithClient(
 ) {
   const { wsHeaders, ...gatewayOpts } = opts ?? {};
   let port = await getFreePort();
-  const envSnapshot = captureEnv(["OPENCLAW_GATEWAY_TOKEN"]);
-  const prev = process.env.OPENCLAW_GATEWAY_TOKEN;
+  const envSnapshot = captureEnv(["WINERYCLAW_GATEWAY_TOKEN"]);
+  const prev = process.env.WINERYCLAW_GATEWAY_TOKEN;
   if (typeof token === "string") {
     testState.gatewayAuth = { mode: "token", token };
   }
@@ -729,9 +729,9 @@ export async function startServerWithClient(
       ? (testState.gatewayAuth as { token?: string }).token
       : undefined);
   if (fallbackToken === undefined) {
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
+    delete process.env.WINERYCLAW_GATEWAY_TOKEN;
   } else {
-    process.env.OPENCLAW_GATEWAY_TOKEN = fallbackToken;
+    process.env.WINERYCLAW_GATEWAY_TOKEN = fallbackToken;
   }
 
   const resolvedGatewayOpts: GatewayServerOptions =
@@ -780,7 +780,7 @@ function resolveDefaultTestDeviceIdentityPath(params: {
       "_",
     ),
   );
-  const suiteRoot = process.env.OPENCLAW_STATE_DIR ?? process.env.HOME ?? os.tmpdir();
+  const suiteRoot = process.env.WINERYCLAW_STATE_DIR ?? process.env.HOME ?? os.tmpdir();
   return path.join(suiteRoot, "test-device-identities", `${safe}.json`);
 }
 
@@ -877,13 +877,13 @@ export async function connectReq(
       ? undefined
       : typeof (testState.gatewayAuth as { token?: unknown } | undefined)?.token === "string"
         ? ((testState.gatewayAuth as { token?: string }).token ?? undefined)
-        : process.env.OPENCLAW_GATEWAY_TOKEN;
+        : process.env.WINERYCLAW_GATEWAY_TOKEN;
   const defaultPassword =
     opts?.skipDefaultAuth === true
       ? undefined
       : typeof (testState.gatewayAuth as { password?: unknown } | undefined)?.password === "string"
         ? ((testState.gatewayAuth as { password?: string }).password ?? undefined)
-        : process.env.OPENCLAW_GATEWAY_PASSWORD;
+        : process.env.WINERYCLAW_GATEWAY_PASSWORD;
   const token = opts?.token ?? defaultToken;
   const bootstrapToken = normalizeOptionalString(opts?.bootstrapToken);
   const deviceToken = normalizeOptionalString(opts?.deviceToken);

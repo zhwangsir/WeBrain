@@ -9,7 +9,7 @@ title: "Logging Overview"
 
 # Logging
 
-OpenClaw has two main log surfaces:
+WineryClaw has two main log surfaces:
 
 - **File logs** (JSON lines) written by the Gateway.
 - **Console output** shown in terminals and the Gateway Debug UI.
@@ -25,7 +25,7 @@ By default, the Gateway writes a rolling log file under:
 
 The date uses the gateway host's local timezone.
 
-You can override this in `~/.openclaw/openclaw.json`:
+You can override this in `~/.wineryclaw/wineryclaw.json`:
 
 ```json
 {
@@ -129,7 +129,7 @@ openclaw gateway --verbose --ws-log full
 
 ## Configuring logging
 
-All logging configuration lives under `logging` in `~/.openclaw/openclaw.json`.
+All logging configuration lives under `logging` in `~/.wineryclaw/wineryclaw.json`.
 
 ```json
 {
@@ -149,7 +149,7 @@ All logging configuration lives under `logging` in `~/.openclaw/openclaw.json`.
 - `logging.level`: **file logs** (JSONL) level.
 - `logging.consoleLevel`: **console** verbosity level.
 
-You can override both via the **`OPENCLAW_LOG_LEVEL`** environment variable (e.g. `OPENCLAW_LOG_LEVEL=debug`). The env var takes precedence over the config file, so you can raise verbosity for a single run without editing `openclaw.json`. You can also pass the global CLI option **`--log-level <level>`** (for example, `openclaw --log-level debug gateway run`), which overrides the environment variable for that command.
+You can override both via the **`WINERYCLAW_LOG_LEVEL`** environment variable (e.g. `WINERYCLAW_LOG_LEVEL=debug`). The env var takes precedence over the config file, so you can raise verbosity for a single run without editing `wineryclaw.json`. You can also pass the global CLI option **`--log-level <level>`** (for example, `openclaw --log-level debug gateway run`), which overrides the environment variable for that command.
 
 `--verbose` only affects console output and WS log verbosity; it does not change
 file log levels.
@@ -184,7 +184,7 @@ diagnostics + the exporter plugin are enabled.
 
 - **OpenTelemetry (OTel)**: the data model + SDKs for traces, metrics, and logs.
 - **OTLP**: the wire protocol used to export OTel data to a collector/backend.
-- OpenClaw exports via **OTLP/HTTP (protobuf)** today.
+- WineryClaw exports via **OTLP/HTTP (protobuf)** today.
 
 ### Signals exported
 
@@ -244,7 +244,7 @@ Flags are case-insensitive and support wildcards (e.g. `telegram.*` or `*`).
 Env override (one-off):
 
 ```
-OPENCLAW_DIAGNOSTICS=telegram.http,telegram.payload
+WINERYCLAW_DIAGNOSTICS=telegram.http,telegram.payload
 ```
 
 Notes:

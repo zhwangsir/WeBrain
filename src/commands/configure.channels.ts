@@ -1,7 +1,7 @@
 import { getChannelPlugin, listChannelPlugins } from "../channels/plugins/index.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { CONFIG_PATH } from "../config/config.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { note } from "../terminal/note.js";
 import { shortenHomePath } from "../utils.js";
@@ -10,9 +10,9 @@ import { confirm, select } from "./configure.shared.js";
 import { guardCancel } from "./onboard-helpers.js";
 
 export async function removeChannelConfigWizard(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   runtime: RuntimeEnv,
-): Promise<OpenClawConfig> {
+): Promise<WineryClawConfig> {
   let next = { ...cfg };
 
   const listConfiguredChannels = () =>
@@ -68,7 +68,7 @@ export async function removeChannelConfigWizard(
     const nextChannels: Record<string, unknown> = { ...next.channels };
     delete nextChannels[channel];
     if (Object.keys(nextChannels).length) {
-      next.channels = nextChannels as OpenClawConfig["channels"];
+      next.channels = nextChannels as WineryClawConfig["channels"];
     } else {
       delete next.channels;
     }

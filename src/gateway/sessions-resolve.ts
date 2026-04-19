@@ -1,5 +1,5 @@
 import { loadSessionStore, updateSessionStore } from "../config/sessions.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { parseSessionLabel } from "../sessions/session-label.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import {
@@ -34,7 +34,7 @@ function noSessionFoundResult(key: string): SessionsResolveResult {
 }
 
 function isResolvedSessionKeyVisible(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   p: SessionsResolveParams;
   storePath: string;
   store: ReturnType<typeof loadSessionStore>;
@@ -52,7 +52,7 @@ function isResolvedSessionKeyVisible(params: {
 }
 
 export async function resolveSessionKeyFromResolveParams(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   p: SessionsResolveParams;
 }): Promise<SessionsResolveResult> {
   const { cfg, p } = params;

@@ -8,7 +8,7 @@ import {
   readNumberParam,
   readReactionParams,
   readStringParam,
-  type OpenClawConfig,
+  type WineryClawConfig,
   withNormalizedTimestamp,
 } from "./runtime-api.js";
 import { recordSlackThreadParticipation } from "./sent-thread-cache.js";
@@ -139,7 +139,7 @@ function readSlackBlocksParam(params: Record<string, unknown>) {
 
 export async function handleSlackAction(
   params: Record<string, unknown>,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   context?: SlackActionContext,
 ): Promise<AgentToolResult<unknown>> {
   const resolveChannelId = () =>

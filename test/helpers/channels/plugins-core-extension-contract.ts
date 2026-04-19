@@ -4,7 +4,7 @@ import type {
   BaseTokenResolution,
   ChannelDirectoryEntry,
 } from "../../../src/channels/plugins/types.js";
-import type { OpenClawConfig } from "../../../src/config/config.js";
+import type { WineryClawConfig } from "../../../src/config/config.js";
 import type { LineProbeResult } from "../../../src/plugin-sdk/line.js";
 import {
   loadBundledPluginApiSync,
@@ -59,13 +59,13 @@ function getWhatsAppApi(): WhatsAppApiSurface {
 }
 
 type DirectoryListFn = (params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string;
   query?: string | null;
   limit?: number | null;
 }) => Promise<ChannelDirectoryEntry[]>;
 
-async function listDirectoryEntriesWithDefaults(listFn: DirectoryListFn, cfg: OpenClawConfig) {
+async function listDirectoryEntriesWithDefaults(listFn: DirectoryListFn, cfg: WineryClawConfig) {
   return await listFn({
     cfg,
     accountId: "default",
@@ -76,7 +76,7 @@ async function listDirectoryEntriesWithDefaults(listFn: DirectoryListFn, cfg: Op
 
 async function expectDirectoryIds(
   listFn: DirectoryListFn,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   expected: string[],
   options?: { sorted?: boolean },
 ) {
@@ -118,7 +118,7 @@ export function describeDiscordPluginsCoreExtensionContract() {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(
         listPeers(),
@@ -151,7 +151,7 @@ export function describeDiscordPluginsCoreExtensionContract() {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(listPeers(), cfg, ["user:111"]);
       await expectDirectoryIds(listGroups(), cfg, ["channel:555"]);
@@ -173,7 +173,7 @@ export function describeDiscordPluginsCoreExtensionContract() {
             },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       const groups = await listGroups()({
         cfg,
@@ -206,7 +206,7 @@ export function describeSlackPluginsCoreExtensionContract() {
             channels: { C111: { users: ["U777"] } },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(
         listPeers(),
@@ -232,7 +232,7 @@ export function describeSlackPluginsCoreExtensionContract() {
             channels: { C111: {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(listPeers(), cfg, ["user:u123"]);
       await expectDirectoryIds(listGroups(), cfg, ["channel:c111"]);
@@ -248,7 +248,7 @@ export function describeSlackPluginsCoreExtensionContract() {
             dms: { U300: {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       const peers = await listPeers()({
         cfg,
@@ -285,7 +285,7 @@ export function describeTelegramPluginsCoreExtensionContract() {
             groups: { "-1001": {}, "*": {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(listPeers(), cfg, ["123", "456", "@alice", "@bob"], {
         sorted: true,
@@ -309,7 +309,7 @@ export function describeTelegramPluginsCoreExtensionContract() {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as WineryClawConfig;
 
         await expectDirectoryIds(listPeers(), cfg, ["@alice"]);
         await expectDirectoryIds(listGroups(), cfg, ["-1001"]);
@@ -330,7 +330,7 @@ export function describeTelegramPluginsCoreExtensionContract() {
             groups: { "-1001": {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(listPeers(), cfg, ["@alice"]);
       await expectDirectoryIds(listGroups(), cfg, ["-1001"]);
@@ -344,7 +344,7 @@ export function describeTelegramPluginsCoreExtensionContract() {
             groups: { "-1001": {}, "-1002": {}, "-2001": {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       const groups = await listGroups()({
         cfg,
@@ -370,7 +370,7 @@ export function describeWhatsAppPluginsCoreExtensionContract() {
             groups: { "999@g.us": { requireMention: true }, "*": {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       await expectDirectoryIds(listPeers(), cfg, ["+15550000000"]);
       await expectDirectoryIds(listGroups(), cfg, ["999@g.us"]);
@@ -383,7 +383,7 @@ export function describeWhatsAppPluginsCoreExtensionContract() {
             groups: { "111@g.us": {}, "222@g.us": {}, "333@s.whatsapp.net": {} },
           },
         },
-      } as unknown as OpenClawConfig;
+      } as unknown as WineryClawConfig;
 
       const groups = await listGroups()({
         cfg,

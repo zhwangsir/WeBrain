@@ -120,7 +120,7 @@ function instantiatePiModelRegistry(
   return new Registry(authStorage, modelsJsonPath);
 }
 
-function createOpenClawModelRegistry(
+function createWineryClawModelRegistry(
   authStorage: PiAuthStorage,
   modelsJsonPath: string,
   agentDir: string,
@@ -141,7 +141,7 @@ function createOpenClawModelRegistry(
 }
 
 export function scrubLegacyStaticAuthJsonEntriesForDiscovery(pathname: string): void {
-  if (process.env.OPENCLAW_AUTH_STORE_READONLY === "1") {
+  if (process.env.WINERYCLAW_AUTH_STORE_READONLY === "1") {
     return;
   }
   if (!fs.existsSync(pathname)) {
@@ -288,5 +288,5 @@ export function discoverAuthStorage(agentDir: string): PiAuthStorage {
 }
 
 export function discoverModels(authStorage: PiAuthStorage, agentDir: string): PiModelRegistry {
-  return createOpenClawModelRegistry(authStorage, path.join(agentDir, "models.json"), agentDir);
+  return createWineryClawModelRegistry(authStorage, path.join(agentDir, "models.json"), agentDir);
 }

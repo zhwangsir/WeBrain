@@ -221,7 +221,7 @@ describe("buildAgentSystemPrompt", () => {
       workspaceDir: "/tmp/openclaw",
     });
 
-    expect(prompt).toContain("## OpenClaw CLI Quick Reference");
+    expect(prompt).toContain("## WineryClaw CLI Quick Reference");
     expect(prompt).toContain("openclaw gateway restart");
     expect(prompt).toContain("Do not invent commands");
   });
@@ -342,7 +342,7 @@ describe("buildAgentSystemPrompt", () => {
     expect(prompt).not.toContain('runtime="acp" requires `agentId`');
     expect(prompt).not.toContain("not ACP harness ids");
     expect(prompt).toContain("- sessions_spawn: Spawn an isolated sub-agent session");
-    expect(prompt).toContain("- agents_list: List OpenClaw agent ids allowed for sessions_spawn");
+    expect(prompt).toContain("- agents_list: List WineryClaw agent ids allowed for sessions_spawn");
   });
 
   it("omits ACP harness spawn guidance for sandboxed sessions and shows ACP block note", () => {
@@ -381,9 +381,9 @@ describe("buildAgentSystemPrompt", () => {
     expect(prompt).toContain(
       "- If exactly one skill clearly applies: read its SKILL.md at <location> with `Read`, then follow it.",
     );
-    expect(prompt).toContain("OpenClaw docs: /tmp/openclaw/docs");
+    expect(prompt).toContain("WineryClaw docs: /tmp/openclaw/docs");
     expect(prompt).toContain(
-      "For OpenClaw behavior, commands, config, or architecture: consult local docs first.",
+      "For WineryClaw behavior, commands, config, or architecture: consult local docs first.",
     );
   });
 
@@ -394,9 +394,9 @@ describe("buildAgentSystemPrompt", () => {
     });
 
     expect(prompt).toContain("## Documentation");
-    expect(prompt).toContain("OpenClaw docs: /tmp/openclaw/docs");
+    expect(prompt).toContain("WineryClaw docs: /tmp/openclaw/docs");
     expect(prompt).toContain(
-      "For OpenClaw behavior, commands, config, or architecture: consult local docs first.",
+      "For WineryClaw behavior, commands, config, or architecture: consult local docs first.",
     );
   });
 
@@ -501,7 +501,7 @@ describe("buildAgentSystemPrompt", () => {
       toolNames: ["gateway", "exec"],
     });
 
-    expect(prompt).toContain("## OpenClaw Self-Update");
+    expect(prompt).toContain("## WineryClaw Self-Update");
     expect(prompt).toContain("config.schema.lookup");
     expect(prompt).toContain("config.apply");
     expect(prompt).toContain("config.patch");
@@ -837,7 +837,7 @@ describe("buildSubagentSystemPrompt", () => {
     expect(prompt).toContain("set `agentId` unless `acp.defaultAgent` is configured");
     expect(prompt).toContain("Do not ask users to run slash commands or CLI");
     expect(prompt).toContain("Do not use `exec` (`openclaw ...`, `acpx ...`)");
-    expect(prompt).toContain("Use `subagents` only for OpenClaw subagents");
+    expect(prompt).toContain("Use `subagents` only for WineryClaw subagents");
     expect(prompt).toContain("Subagent results auto-announce back to you");
     expect(prompt).toContain(
       "After spawning children, do NOT call sessions_list, sessions_history, exec sleep, or any polling tool.",

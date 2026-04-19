@@ -29,7 +29,7 @@ const EXTRA_MARKERS = ["openclaw", "clawdbot"] as const;
 export function renderGatewayServiceCleanupHints(
   env: Record<string, string | undefined> = process.env as Record<string, string | undefined>,
 ): string[] {
-  const profile = env.OPENCLAW_PROFILE;
+  const profile = env.WINERYCLAW_PROFILE;
   switch (process.platform) {
     case "darwin": {
       const label = resolveGatewayLaunchAgentLabel(profile);
@@ -95,7 +95,7 @@ function hasGatewayServiceMarker(content: string): boolean {
   );
 }
 
-function isOpenClawGatewayLaunchdService(label: string, contents: string): boolean {
+function isWineryClawGatewayLaunchdService(label: string, contents: string): boolean {
   if (hasGatewayServiceMarker(contents)) {
     return true;
   }
@@ -106,7 +106,7 @@ function isOpenClawGatewayLaunchdService(label: string, contents: string): boole
   return label.startsWith("ai.openclaw.");
 }
 
-function isOpenClawGatewaySystemdService(name: string, contents: string): boolean {
+function isWineryClawGatewaySystemdService(name: string, contents: string): boolean {
   if (hasGatewayServiceMarker(contents)) {
     return true;
   }
@@ -116,7 +116,7 @@ function isOpenClawGatewaySystemdService(name: string, contents: string): boolea
   return normalizeLowercaseStringOrEmpty(contents).includes("gateway");
 }
 
-function isOpenClawGatewayTaskName(name: string): boolean {
+function isWineryClawGatewayTaskName(name: string): boolean {
   const normalized = normalizeLowercaseStringOrEmpty(name);
   if (!normalized) {
     return false;
@@ -226,7 +226,7 @@ async function scanLaunchdDir(params: {
     if (isIgnoredLaunchdLabel(label)) {
       continue;
     }
-    if (marker === "openclaw" && isOpenClawGatewayLaunchdService(label, contents)) {
+    if (marker === "openclaw" && isWineryClawGatewayLaunchdService(label, contents)) {
       continue;
     }
     results.push({
@@ -258,7 +258,7 @@ async function scanSystemdDir(params: {
     if (!marker) {
       continue;
     }
-    if (marker === "openclaw" && isOpenClawGatewaySystemdService(name, contents)) {
+    if (marker === "openclaw" && isWineryClawGatewaySystemdService(name, contents)) {
       continue;
     }
     results.push({
@@ -411,7 +411,7 @@ export async function findExtraGatewayServices(
       if (!name) {
         continue;
       }
-      if (isOpenClawGatewayTaskName(name)) {
+      if (isWineryClawGatewayTaskName(name)) {
         continue;
       }
       const lowerName = normalizeLowercaseStringOrEmpty(name);

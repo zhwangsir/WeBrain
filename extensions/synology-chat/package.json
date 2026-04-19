@@ -1,7 +1,7 @@
 {
   "name": "@openclaw/synology-chat",
   "version": "2026.4.12",
-  "description": "Synology Chat channel plugin for OpenClaw",
+  "description": "Synology Chat channel plugin for WineryClaw",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*"
@@ -17,7 +17,7 @@
       "selectionLabel": "Synology Chat (Webhook)",
       "docsPath": "/channels/synology-chat",
       "docsLabel": "synology-chat",
-      "blurb": "Connect your Synology NAS Chat to OpenClaw with full agent capabilities.",
+      "blurb": "Connect your Synology NAS Chat to WineryClaw with full agent capabilities.",
       "order": 90
     },
     "install": {

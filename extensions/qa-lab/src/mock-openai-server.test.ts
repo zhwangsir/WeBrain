@@ -945,7 +945,7 @@ describe("qa mock openai server", () => {
           },
           {
             type: "function_call_output",
-            output: "QA mission: Understand this OpenClaw repo from source + docs before acting.",
+            output: "QA mission: Understand this WineryClaw repo from source + docs before acting.",
           },
         ],
       }),

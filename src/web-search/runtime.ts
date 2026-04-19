@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { logVerbose } from "../globals.js";
 import type {
   PluginWebSearchProviderEntry,
@@ -37,7 +37,7 @@ export type {
   RuntimeWebSearchToolDefinition,
 } from "./runtime-types.js";
 
-function resolveSearchConfig(cfg?: OpenClawConfig): WebSearchConfig {
+function resolveSearchConfig(cfg?: WineryClawConfig): WebSearchConfig {
   return resolveWebProviderConfig<"search", NonNullable<WebSearchConfig>>(cfg, "search");
 }
 
@@ -64,7 +64,7 @@ function hasEntryCredential(
     | "getCredentialValue"
     | "requiresCredential"
   >,
-  config: OpenClawConfig | undefined,
+  config: WineryClawConfig | undefined,
   search: WebSearchConfig | undefined,
 ): boolean {
   return hasWebProviderEntryCredential({
@@ -90,13 +90,13 @@ export function isWebSearchProviderConfigured(params: {
     | "getCredentialValue"
     | "requiresCredential"
   >;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 }): boolean {
   return hasEntryCredential(params.provider, params.config, resolveSearchConfig(params.config));
 }
 
 export function listWebSearchProviders(params?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 }): PluginWebSearchProviderEntry[] {
   return resolveRuntimeWebSearchProviders({
     config: params?.config,
@@ -105,7 +105,7 @@ export function listWebSearchProviders(params?: {
 }
 
 export function listConfiguredWebSearchProviders(params?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
 }): PluginWebSearchProviderEntry[] {
   return resolvePluginWebSearchProviders({
     config: params?.config,
@@ -115,7 +115,7 @@ export function listConfiguredWebSearchProviders(params?: {
 
 export function resolveWebSearchProviderId(params: {
   search?: WebSearchConfig;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   providers?: PluginWebSearchProviderEntry[];
 }): string {
   const providers = sortWebSearchProvidersForAutoDetect(

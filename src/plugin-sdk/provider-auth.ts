@@ -4,7 +4,7 @@ import { listProfilesForProvider } from "../agents/auth-profiles/profiles.js";
 import { ensureAuthProfileStore } from "../agents/auth-profiles/store.js";
 import { resolveEnvApiKey } from "../agents/model-auth-env.js";
 
-export type { OpenClawConfig } from "../config/config.js";
+export type { WineryClawConfig } from "../config/config.js";
 export type { SecretInput } from "../config/types.secrets.js";
 export type { ProviderAuthResult } from "../plugins/types.js";
 export type { ProviderAuthContext } from "../plugins/types.js";

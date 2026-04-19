@@ -6,10 +6,10 @@ import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import {
   formatXHighModelHint,
   normalizeThinkLevel,
-  resolvePreferredOpenClawTmpDir,
+  resolvePreferredWineryClawTmpDir,
   supportsXHighThinking,
 } from "../api.js";
-import type { OpenClawPluginApi } from "../api.js";
+import type { WineryClawPluginApi } from "../api.js";
 
 const AjvCtor = Ajv as unknown as typeof import("ajv").default;
 
@@ -63,7 +63,7 @@ type LlmTaskParams = {
 const INVALID_THINKING_LEVELS_HINT =
   "off, minimal, low, medium, high, adaptive, and xhigh where supported";
 
-export function createLlmTaskTool(api: OpenClawPluginApi) {
+export function createLlmTaskTool(api: WineryClawPluginApi) {
   return {
     name: "llm-task",
     label: "LLM Task",
@@ -187,7 +187,7 @@ export function createLlmTaskTool(api: OpenClawPluginApi) {
       let tmpDir: string | null = null;
       try {
         tmpDir = await fs.mkdtemp(
-          path.join(resolvePreferredOpenClawTmpDir(), "openclaw-llm-task-"),
+          path.join(resolvePreferredWineryClawTmpDir(), "openclaw-llm-task-"),
         );
         const sessionId = `llm-task-${Date.now()}`;
         const sessionFile = path.join(tmpDir, "session.json");

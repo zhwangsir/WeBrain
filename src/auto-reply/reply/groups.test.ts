@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import { resetPluginRuntimeStateForTest } from "../../plugins/runtime.js";
 
 describe("group runtime loading", () => {
@@ -28,7 +28,7 @@ describe("group runtime loading", () => {
     ).toContain('You are in the WhatsApp group chat "Ops".');
     expect(
       groups.buildGroupIntro({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         sessionCtx: { Provider: "whatsapp" },
         defaultActivation: "mention",
         silentToken: "NO_REPLY",
@@ -36,7 +36,7 @@ describe("group runtime loading", () => {
     ).toContain("Activation: trigger-only");
     expect(
       groups.buildGroupIntro({
-        cfg: {} as OpenClawConfig,
+        cfg: {} as WineryClawConfig,
         sessionCtx: { Provider: "whatsapp" },
         defaultActivation: "mention",
         silentToken: "NO_REPLY",
@@ -67,7 +67,7 @@ describe("group runtime loading", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig,
+        } as unknown as WineryClawConfig,
         ctx: {
           Provider: "slack",
           From: "slack:channel:C123",

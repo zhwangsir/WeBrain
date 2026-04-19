@@ -42,7 +42,7 @@ export const CLAUDE_CLI_SESSION_ID_FIELDS = [
 
 // Claude Code honors provider-routing, auth, and config-root env before
 // consulting its local login state, so inherited shell overrides must not
-// steer OpenClaw-managed Claude CLI runs toward a different provider,
+// steer WineryClaw-managed Claude CLI runs toward a different provider,
 // endpoint, token source, plugin/config tree, or telemetry bootstrap mode.
 export const CLAUDE_CLI_CLEAR_ENV = [
   "ANTHROPIC_API_KEY",

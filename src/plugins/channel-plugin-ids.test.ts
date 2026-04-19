@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 const listPotentialConfiguredChannelIds = vi.hoisted(() => vi.fn());
 const hasPotentialConfiguredChannels = vi.hoisted(() => vi.fn());
@@ -131,8 +131,8 @@ function createManifestRegistryFixture() {
 }
 
 function expectStartupPluginIds(params: {
-  config: OpenClawConfig;
-  activationSourceConfig?: OpenClawConfig;
+  config: WineryClawConfig;
+  activationSourceConfig?: WineryClawConfig;
   expected: readonly string[];
 }) {
   expect(
@@ -149,8 +149,8 @@ function expectStartupPluginIds(params: {
 }
 
 function expectStartupPluginIdsCase(params: {
-  config: OpenClawConfig;
-  activationSourceConfig?: OpenClawConfig;
+  config: WineryClawConfig;
+  activationSourceConfig?: WineryClawConfig;
   expected: readonly string[];
 }) {
   expectStartupPluginIds(params);
@@ -229,18 +229,18 @@ function createStartupConfig(params: {
           },
         }
       : {}),
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 describe("resolveGatewayStartupPluginIds", () => {
   beforeEach(() => {
-    listPotentialConfiguredChannelIds.mockReset().mockImplementation((config: OpenClawConfig) => {
+    listPotentialConfiguredChannelIds.mockReset().mockImplementation((config: WineryClawConfig) => {
       if (Object.prototype.hasOwnProperty.call(config, "channels")) {
         return Object.keys(config.channels ?? {});
       }
       return ["demo-channel"];
     });
-    hasPotentialConfiguredChannels.mockReset().mockImplementation((config: OpenClawConfig) => {
+    hasPotentialConfiguredChannels.mockReset().mockImplementation((config: WineryClawConfig) => {
       if (Object.prototype.hasOwnProperty.call(config, "channels")) {
         return Object.keys(config.channels ?? {}).length > 0;
       }
@@ -260,7 +260,7 @@ describe("resolveGatewayStartupPluginIds", () => {
     ],
     [
       "keeps bundled startup sidecars with enabledByDefault at idle startup",
-      {} as OpenClawConfig,
+      {} as WineryClawConfig,
       ["demo-channel", "browser"],
     ],
     [
@@ -313,7 +313,7 @@ describe("resolveGatewayStartupPluginIds", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     expectStartupPluginIdsCase({
       config: effectiveConfig,
@@ -354,13 +354,13 @@ describe("resolveGatewayStartupPluginIds", () => {
 
 describe("resolveConfiguredChannelPluginIds", () => {
   beforeEach(() => {
-    listPotentialConfiguredChannelIds.mockReset().mockImplementation((config: OpenClawConfig) => {
+    listPotentialConfiguredChannelIds.mockReset().mockImplementation((config: WineryClawConfig) => {
       if (Object.prototype.hasOwnProperty.call(config, "channels")) {
         return Object.keys(config.channels ?? {});
       }
       return [];
     });
-    hasPotentialConfiguredChannels.mockReset().mockImplementation((config: OpenClawConfig) => {
+    hasPotentialConfiguredChannels.mockReset().mockImplementation((config: WineryClawConfig) => {
       if (Object.prototype.hasOwnProperty.call(config, "channels")) {
         return Object.keys(config.channels ?? {}).length > 0;
       }
@@ -404,7 +404,7 @@ describe("resolveConfiguredChannelPluginIds", () => {
           plugins: {
             deny: ["activation-only-channel-plugin"],
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         workspaceDir: "/tmp",
         env: process.env,
       }),
@@ -421,7 +421,7 @@ describe("resolveConfiguredChannelPluginIds", () => {
           plugins: {
             enabled: false,
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         workspaceDir: "/tmp",
         env: process.env,
       }),
@@ -495,7 +495,7 @@ describe("resolveConfiguredChannelPluginIds", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         workspaceDir: "/tmp",
         env: process.env,
       }),

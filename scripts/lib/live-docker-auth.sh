@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-OPENCLAW_DOCKER_LIVE_AUTH_ALL=(.gemini .minimax)
-OPENCLAW_DOCKER_LIVE_AUTH_FILES_ALL=(
+WINERYCLAW_DOCKER_LIVE_AUTH_ALL=(.gemini .minimax)
+WINERYCLAW_DOCKER_LIVE_AUTH_FILES_ALL=(
   .codex/auth.json
   .codex/config.toml
   .claude.json
@@ -70,11 +70,11 @@ openclaw_live_collect_auth_dirs_from_csv() {
 
 openclaw_live_collect_auth_dirs_from_override() {
   local raw token normalized
-  raw="$(openclaw_live_trim "${OPENCLAW_DOCKER_AUTH_DIRS:-}")"
+  raw="$(openclaw_live_trim "${WINERYCLAW_DOCKER_AUTH_DIRS:-}")"
   [[ -n "$raw" ]] || return 1
   case "$raw" in
     all)
-      printf '%s\n' "${OPENCLAW_DOCKER_LIVE_AUTH_ALL[@]}"
+      printf '%s\n' "${WINERYCLAW_DOCKER_LIVE_AUTH_ALL[@]}"
       return 0
       ;;
     none)
@@ -93,7 +93,7 @@ openclaw_live_collect_auth_dirs() {
   if openclaw_live_collect_auth_dirs_from_override; then
     return 0
   fi
-  printf '%s\n' "${OPENCLAW_DOCKER_LIVE_AUTH_ALL[@]}"
+  printf '%s\n' "${WINERYCLAW_DOCKER_LIVE_AUTH_ALL[@]}"
 }
 
 openclaw_live_collect_auth_files_from_csv() {
@@ -110,11 +110,11 @@ openclaw_live_collect_auth_files_from_csv() {
 
 openclaw_live_collect_auth_files_from_override() {
   local raw
-  raw="$(openclaw_live_trim "${OPENCLAW_DOCKER_AUTH_DIRS:-}")"
+  raw="$(openclaw_live_trim "${WINERYCLAW_DOCKER_AUTH_DIRS:-}")"
   [[ -n "$raw" ]] || return 1
   case "$raw" in
     all)
-      printf '%s\n' "${OPENCLAW_DOCKER_LIVE_AUTH_FILES_ALL[@]}"
+      printf '%s\n' "${WINERYCLAW_DOCKER_LIVE_AUTH_FILES_ALL[@]}"
       return 0
       ;;
     none)
@@ -128,7 +128,7 @@ openclaw_live_collect_auth_files() {
   if openclaw_live_collect_auth_files_from_override; then
     return 0
   fi
-  printf '%s\n' "${OPENCLAW_DOCKER_LIVE_AUTH_FILES_ALL[@]}"
+  printf '%s\n' "${WINERYCLAW_DOCKER_LIVE_AUTH_FILES_ALL[@]}"
 }
 
 openclaw_live_join_csv() {

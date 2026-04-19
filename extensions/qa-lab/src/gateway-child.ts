@@ -6,7 +6,7 @@ import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import {
   applyAuthProfileConfig,
@@ -15,7 +15,7 @@ import {
 } from "openclaw/plugin-sdk/provider-auth";
 import type { ModelProviderConfig } from "openclaw/plugin-sdk/provider-model-shared";
 import { fetchWithSsrFGuard } from "openclaw/plugin-sdk/ssrf-runtime";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/temp-path";
+import { resolvePreferredWineryClawTmpDir } from "openclaw/plugin-sdk/temp-path";
 import { assertRepoBoundPath, ensureRepoBoundDirectory } from "./cli-paths.js";
 import { formatQaGatewayLogsForError, redactQaGatewayDebugText } from "./gateway-log-redaction.js";
 import { startQaGatewayRpcClient } from "./gateway-rpc-client.js";
@@ -26,15 +26,15 @@ import type { QaTransportAdapter } from "./qa-transport.js";
 
 const QA_LIVE_ENV_ALIASES = Object.freeze([
   {
-    liveVar: "OPENCLAW_LIVE_OPENAI_KEY",
+    liveVar: "WINERYCLAW_LIVE_OPENAI_KEY",
     providerVar: "OPENAI_API_KEY",
   },
   {
-    liveVar: "OPENCLAW_LIVE_ANTHROPIC_KEY",
+    liveVar: "WINERYCLAW_LIVE_ANTHROPIC_KEY",
     providerVar: "ANTHROPIC_API_KEY",
   },
   {
-    liveVar: "OPENCLAW_LIVE_GEMINI_KEY",
+    liveVar: "WINERYCLAW_LIVE_GEMINI_KEY",
     providerVar: "GEMINI_API_KEY",
   },
 ]);
@@ -55,10 +55,10 @@ const QA_MOCK_BLOCKED_ENV_VARS = Object.freeze([
   "OPENAI_API_KEYS",
   "OPENAI_BASE_URL",
   "CODEX_HOME",
-  "OPENCLAW_LIVE_ANTHROPIC_KEY",
-  "OPENCLAW_LIVE_ANTHROPIC_KEYS",
-  "OPENCLAW_LIVE_GEMINI_KEY",
-  "OPENCLAW_LIVE_OPENAI_KEY",
+  "WINERYCLAW_LIVE_ANTHROPIC_KEY",
+  "WINERYCLAW_LIVE_ANTHROPIC_KEYS",
+  "WINERYCLAW_LIVE_GEMINI_KEY",
+  "WINERYCLAW_LIVE_OPENAI_KEY",
   "VOYAGE_API_KEY",
 ]);
 
@@ -76,14 +76,14 @@ const QA_MOCK_BLOCKED_ENV_KEY_PATTERNS = Object.freeze([
   /^NGROK_/i,
 ]);
 
-const QA_LIVE_PROVIDER_CONFIG_PATH_ENV = "OPENCLAW_QA_LIVE_PROVIDER_CONFIG_PATH";
-const QA_LIVE_ANTHROPIC_SETUP_TOKEN_ENV = "OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN";
-const QA_LIVE_SETUP_TOKEN_VALUE_ENV = "OPENCLAW_LIVE_SETUP_TOKEN_VALUE";
-const QA_LIVE_ANTHROPIC_SETUP_TOKEN_PROFILE_ENV = "OPENCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN_PROFILE";
+const QA_LIVE_PROVIDER_CONFIG_PATH_ENV = "WINERYCLAW_QA_LIVE_PROVIDER_CONFIG_PATH";
+const QA_LIVE_ANTHROPIC_SETUP_TOKEN_ENV = "WINERYCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN";
+const QA_LIVE_SETUP_TOKEN_VALUE_ENV = "WINERYCLAW_LIVE_SETUP_TOKEN_VALUE";
+const QA_LIVE_ANTHROPIC_SETUP_TOKEN_PROFILE_ENV = "WINERYCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN_PROFILE";
 const QA_LIVE_ANTHROPIC_SETUP_TOKEN_PROFILE_ID = "anthropic:qa-setup-token";
 const QA_OPENAI_PLUGIN_ID = "openai";
-const QA_LIVE_CLI_BACKEND_PRESERVE_ENV = "OPENCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV";
-const QA_LIVE_CLI_BACKEND_AUTH_MODE_ENV = "OPENCLAW_LIVE_CLI_BACKEND_AUTH_MODE";
+const QA_LIVE_CLI_BACKEND_PRESERVE_ENV = "WINERYCLAW_LIVE_CLI_BACKEND_PRESERVE_ENV";
+const QA_LIVE_CLI_BACKEND_AUTH_MODE_ENV = "WINERYCLAW_LIVE_CLI_BACKEND_AUTH_MODE";
 export type QaCliBackendAuthMode = "auto" | "api-key" | "subscription";
 const QA_GATEWAY_CHILD_STARTUP_MAX_ATTEMPTS = 5;
 async function getFreePort() {
@@ -246,11 +246,11 @@ function resolveQaLiveCliAuthEnv(
   const renderPreservedCliEnv = (values: string[]) => JSON.stringify([...new Set(values)]);
   const authMode = opts?.claudeCliAuthMode ?? "auto";
   const hasAnthropicKey = Boolean(
-    baseEnv.ANTHROPIC_API_KEY?.trim() || baseEnv.OPENCLAW_LIVE_ANTHROPIC_KEY?.trim(),
+    baseEnv.ANTHROPIC_API_KEY?.trim() || baseEnv.WINERYCLAW_LIVE_ANTHROPIC_KEY?.trim(),
   );
   if (opts?.forwardHostHomeForClaudeCli && authMode === "api-key" && !hasAnthropicKey) {
     throw new Error(
-      "Claude CLI API-key QA mode requires ANTHROPIC_API_KEY or OPENCLAW_LIVE_ANTHROPIC_KEY",
+      "Claude CLI API-key QA mode requires ANTHROPIC_API_KEY or WINERYCLAW_LIVE_ANTHROPIC_KEY",
     );
   }
   const preserveEnvValues = (() => {
@@ -316,26 +316,26 @@ export function buildQaRuntimeEnv(params: {
           claudeCliAuthMode: params.claudeCliAuthMode,
         })
       : {}),
-    OPENCLAW_HOME: params.homeDir,
-    OPENCLAW_CONFIG_PATH: params.configPath,
-    OPENCLAW_STATE_DIR: params.stateDir,
-    OPENCLAW_OAUTH_DIR: path.join(params.stateDir, "credentials"),
-    OPENCLAW_GATEWAY_TOKEN: params.gatewayToken,
-    OPENCLAW_SKIP_BROWSER_CONTROL_SERVER: "1",
-    OPENCLAW_SKIP_GMAIL_WATCHER: "1",
-    OPENCLAW_SKIP_CANVAS_HOST: "1",
-    OPENCLAW_NO_RESPAWN: "1",
-    OPENCLAW_TEST_FAST: "1",
-    OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER: "1",
+    WINERYCLAW_HOME: params.homeDir,
+    WINERYCLAW_CONFIG_PATH: params.configPath,
+    WINERYCLAW_STATE_DIR: params.stateDir,
+    WINERYCLAW_OAUTH_DIR: path.join(params.stateDir, "credentials"),
+    WINERYCLAW_GATEWAY_TOKEN: params.gatewayToken,
+    WINERYCLAW_SKIP_BROWSER_CONTROL_SERVER: "1",
+    WINERYCLAW_SKIP_GMAIL_WATCHER: "1",
+    WINERYCLAW_SKIP_CANVAS_HOST: "1",
+    WINERYCLAW_NO_RESPAWN: "1",
+    WINERYCLAW_TEST_FAST: "1",
+    WINERYCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER: "1",
     // QA uses the fast runtime envelope for speed, but it still exercises
     // normal config-driven heartbeats and runtime config writes.
-    OPENCLAW_ALLOW_SLOW_REPLY_TESTS: "1",
+    WINERYCLAW_ALLOW_SLOW_REPLY_TESTS: "1",
     XDG_CONFIG_HOME: params.xdgConfigHome,
     XDG_DATA_HOME: params.xdgDataHome,
     XDG_CACHE_HOME: params.xdgCacheHome,
-    ...(params.bundledPluginsDir ? { OPENCLAW_BUNDLED_PLUGINS_DIR: params.bundledPluginsDir } : {}),
+    ...(params.bundledPluginsDir ? { WINERYCLAW_BUNDLED_PLUGINS_DIR: params.bundledPluginsDir } : {}),
     ...(params.compatibilityHostVersion
-      ? { OPENCLAW_COMPATIBILITY_HOST_VERSION: params.compatibilityHostVersion }
+      ? { WINERYCLAW_COMPATIBILITY_HOST_VERSION: params.compatibilityHostVersion }
       : {}),
   };
   const normalizedEnv = normalizeQaProviderModeEnv(env, params.providerMode);
@@ -364,10 +364,10 @@ function resolveQaLiveAnthropicSetupToken(env: NodeJS.ProcessEnv = process.env) 
 }
 
 export async function stageQaLiveAnthropicSetupToken(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   stateDir: string;
   env?: NodeJS.ProcessEnv;
-}): Promise<OpenClawConfig> {
+}): Promise<WineryClawConfig> {
   const resolved = resolveQaLiveAnthropicSetupToken(params.env);
   if (!resolved) {
     return params.cfg;
@@ -577,10 +577,10 @@ function resolveQaUserPath(value: string, env: NodeJS.ProcessEnv = process.env) 
 
 function resolveQaLiveProviderConfigPath(env: NodeJS.ProcessEnv = process.env) {
   const explicit =
-    env[QA_LIVE_PROVIDER_CONFIG_PATH_ENV]?.trim() || env.OPENCLAW_CONFIG_PATH?.trim();
+    env[QA_LIVE_PROVIDER_CONFIG_PATH_ENV]?.trim() || env.WINERYCLAW_CONFIG_PATH?.trim();
   return explicit
     ? { path: resolveQaUserPath(explicit, env), explicit: true }
-    : { path: path.join(os.homedir(), ".openclaw", "openclaw.json"), explicit: false };
+    : { path: path.join(os.homedir(), ".wineryclaw", "wineryclaw.json"), explicit: false };
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -837,10 +837,10 @@ export async function startQaGatewayChild(params: {
   claudeCliAuthMode?: QaCliBackendAuthMode;
   controlUiEnabled?: boolean;
   enabledPluginIds?: string[];
-  mutateConfig?: (cfg: OpenClawConfig) => OpenClawConfig;
+  mutateConfig?: (cfg: WineryClawConfig) => WineryClawConfig;
 }) {
   const tempRoot = await fs.mkdtemp(
-    path.join(resolvePreferredOpenClawTmpDir(), "openclaw-qa-suite-"),
+    path.join(resolvePreferredWineryClawTmpDir(), "openclaw-qa-suite-"),
   );
   const runtimeCwd = tempRoot;
   const distEntryPath = path.join(params.repoRoot, "dist", "index.js");
@@ -850,7 +850,7 @@ export async function startQaGatewayChild(params: {
   const xdgConfigHome = path.join(tempRoot, "xdg-config");
   const xdgDataHome = path.join(tempRoot, "xdg-data");
   const xdgCacheHome = path.join(tempRoot, "xdg-cache");
-  const configPath = path.join(tempRoot, "openclaw.json");
+  const configPath = path.join(tempRoot, "wineryclaw.json");
   const gatewayToken = `qa-suite-${randomUUID()}`;
   await seedQaAgentWorkspace({
     workspaceDir,
@@ -927,7 +927,7 @@ export async function startQaGatewayChild(params: {
 
   const logs = () =>
     `${Buffer.concat(stdout).toString("utf8")}\n${Buffer.concat(stderr).toString("utf8")}`.trim();
-  const keepTemp = process.env.OPENCLAW_QA_KEEP_TEMP === "1";
+  const keepTemp = process.env.WINERYCLAW_QA_KEEP_TEMP === "1";
   let gatewayPort = 0;
   let baseUrl = "";
   let wsUrl = "";

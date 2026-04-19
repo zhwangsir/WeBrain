@@ -27,27 +27,27 @@ function isBatchSafe(value: string): boolean {
 }
 
 function resolveSystemdUnit(env: NodeJS.ProcessEnv): string {
-  const override = normalizeOptionalString(env.OPENCLAW_SYSTEMD_UNIT);
+  const override = normalizeOptionalString(env.WINERYCLAW_SYSTEMD_UNIT);
   if (override) {
     return override.endsWith(".service") ? override : `${override}.service`;
   }
-  return `${resolveGatewaySystemdServiceName(env.OPENCLAW_PROFILE)}.service`;
+  return `${resolveGatewaySystemdServiceName(env.WINERYCLAW_PROFILE)}.service`;
 }
 
 function resolveLaunchdLabel(env: NodeJS.ProcessEnv): string {
-  const override = normalizeOptionalString(env.OPENCLAW_LAUNCHD_LABEL);
+  const override = normalizeOptionalString(env.WINERYCLAW_LAUNCHD_LABEL);
   if (override) {
     return override;
   }
-  return resolveGatewayLaunchAgentLabel(env.OPENCLAW_PROFILE);
+  return resolveGatewayLaunchAgentLabel(env.WINERYCLAW_PROFILE);
 }
 
 function resolveWindowsTaskName(env: NodeJS.ProcessEnv): string {
-  const override = env.OPENCLAW_WINDOWS_TASK_NAME?.trim();
+  const override = env.WINERYCLAW_WINDOWS_TASK_NAME?.trim();
   if (override) {
     return override;
   }
-  return resolveGatewayWindowsTaskName(env.OPENCLAW_PROFILE);
+  return resolveGatewayWindowsTaskName(env.WINERYCLAW_PROFILE);
 }
 
 /**

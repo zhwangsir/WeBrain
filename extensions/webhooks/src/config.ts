@@ -3,7 +3,7 @@ import type { PluginLogger } from "../api.js";
 import {
   normalizeWebhookPath,
   resolveConfiguredSecretInputString,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "../runtime-api.js";
 
 const secretRefSchema = z
@@ -44,7 +44,7 @@ export type ResolvedWebhookRouteConfig = {
 
 export async function resolveWebhooksPluginConfig(params: {
   pluginConfig: unknown;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   logger?: PluginLogger;
 }): Promise<ResolvedWebhookRouteConfig[]> {

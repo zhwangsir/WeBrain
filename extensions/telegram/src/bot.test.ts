@@ -1,5 +1,5 @@
 import { rm } from "node:fs/promises";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   clearPluginInteractiveHandlers,
   registerPluginInteractiveHandler,
@@ -851,7 +851,7 @@ describe("createTelegramBot", () => {
 
     const modelId = "us.anthropic.claude-3-5-sonnet-20240620-v1:0";
     const storePath = `/tmp/openclaw-telegram-model-compact-${process.pid}-${Date.now()}.json`;
-    const config: OpenClawConfig = {
+    const config: WineryClawConfig = {
       agents: {
         defaults: {
           model: `bedrock/${modelId}`,
@@ -916,7 +916,7 @@ describe("createTelegramBot", () => {
     editMessageTextSpy.mockClear();
 
     const storePath = `/tmp/openclaw-telegram-model-default-${process.pid}-${Date.now()}.json`;
-    const config: OpenClawConfig = {
+    const config: WineryClawConfig = {
       agents: {
         defaults: {
           model: "claude-opus-4-6",
@@ -1760,7 +1760,7 @@ describe("createTelegramBot", () => {
         reply_to_message: {
           message_id: 42,
           text: "original reply",
-          from: { id: 999, first_name: "OpenClaw" },
+          from: { id: 999, first_name: "WineryClaw" },
         },
       },
       me: { id: 999, username: "openclaw_bot" },

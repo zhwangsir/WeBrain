@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
+import type { WineryClawPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
 import {
   jsonResult,
   readNumberParam,
@@ -51,7 +51,7 @@ const TavilyExtractToolSchema = Type.Object(
   { additionalProperties: false },
 );
 
-export function createTavilyExtractTool(api: OpenClawPluginApi) {
+export function createTavilyExtractTool(api: WineryClawPluginApi) {
   return {
     name: "tavily_extract",
     label: "Tavily Extract",

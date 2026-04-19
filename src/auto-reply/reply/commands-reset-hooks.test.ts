@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { MsgContext } from "../templating.js";
 import { maybeHandleResetCommand } from "./commands-reset.js";
 import type { HandleCommandsParams } from "./commands-types.js";
@@ -58,7 +58,7 @@ vi.mock("./route-reply.runtime.js", () => ({
 
 function buildResetParams(
   commandBody: string,
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   ctxOverrides?: Partial<MsgContext>,
 ): HandleCommandsParams {
   const ctx = {
@@ -119,7 +119,7 @@ describe("handleCommands reset hooks", () => {
         params: buildResetParams("/new take notes", {
           commands: { text: true },
           channels: { whatsapp: { allowFrom: ["*"] } },
-        } as OpenClawConfig),
+        } as WineryClawConfig),
         expectedCall: expect.objectContaining({ type: "command", action: "new" }),
       },
       {
@@ -130,7 +130,7 @@ describe("handleCommands reset hooks", () => {
             {
               commands: { text: true },
               channels: { telegram: { allowFrom: ["*"] } },
-            } as OpenClawConfig,
+            } as WineryClawConfig,
             {
               Provider: "telegram",
               Surface: "telegram",
@@ -173,7 +173,7 @@ describe("handleCommands reset hooks", () => {
       {
         commands: { text: true },
         channels: { discord: { allowFrom: ["*"] } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       {
         Provider: "discord",
         Surface: "discord",
@@ -206,7 +206,7 @@ describe("handleCommands reset hooks", () => {
       {
         commands: { text: true },
         channels: { discord: { allowFrom: ["*"] } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       {
         Provider: "discord",
         Surface: "discord",
@@ -231,7 +231,7 @@ describe("handleCommands reset hooks", () => {
       {
         commands: { text: true },
         channels: { whatsapp: { allowFrom: ["*"] } },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       {
         SenderId: "id:whatsapp:123",
         SenderName: "Alice",
@@ -260,7 +260,7 @@ describe("handleCommands reset hooks", () => {
     const params = buildResetParams("/reset", {
       commands: { text: true },
       channels: { whatsapp: { allowFrom: ["*"] } },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
     params.sessionEntry = {
       sessionId: "wrapper-session",
       updatedAt: Date.now(),

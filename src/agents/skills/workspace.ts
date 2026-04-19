@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { isPathInside } from "../../infra/path-guards.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
@@ -11,7 +11,7 @@ import { resolveEffectiveAgentSkillFilter } from "./agent-filter.js";
 import { resolveBundledSkillsDir } from "./bundled-dir.js";
 import { shouldIncludeSkill } from "./config.js";
 import { normalizeSkillFilter } from "./filter.js";
-import { resolveOpenClawMetadata, resolveSkillInvocationPolicy } from "./frontmatter.js";
+import { resolveWineryClawMetadata, resolveSkillInvocationPolicy } from "./frontmatter.js";
 import { loadSkillsFromDirSafe, readSkillFrontmatterSafe } from "./local-loader.js";
 import { resolvePluginSkillDirs } from "./plugin-skills.js";
 import { serializeByKey } from "./serialize.js";
@@ -90,7 +90,7 @@ function isSkillVisibleInAvailableSkillsPrompt(entry: SkillEntry): boolean {
 
 function filterSkillEntries(
   entries: SkillEntry[],
-  config?: OpenClawConfig,
+  config?: WineryClawConfig,
   skillFilter?: string[],
   eligibility?: SkillEligibilityContext,
 ): SkillEntry[] {
@@ -125,7 +125,7 @@ type ResolvedSkillsLimits = {
   maxSkillFileBytes: number;
 };
 
-function resolveSkillsLimits(config?: OpenClawConfig): ResolvedSkillsLimits {
+function resolveSkillsLimits(config?: WineryClawConfig): ResolvedSkillsLimits {
   const limits = config?.skills?.limits;
   return {
     maxCandidatesPerRoot: limits?.maxCandidatesPerRoot ?? DEFAULT_MAX_CANDIDATES_PER_ROOT,
@@ -341,7 +341,7 @@ function unwrapLoadedSkills(loaded: unknown): Skill[] {
 function loadSkillEntries(
   workspaceDir: string,
   opts?: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     managedSkillsDir?: string;
     bundledSkillsDir?: string;
   },
@@ -577,7 +577,7 @@ function loadSkillEntries(
     return {
       skill,
       frontmatter,
-      metadata: resolveOpenClawMetadata(frontmatter),
+      metadata: resolveWineryClawMetadata(frontmatter),
       invocation,
       exposure: {
         includeInRuntimeRegistry: true,
@@ -628,7 +628,7 @@ export function formatSkillsCompact(skills: Skill[]): string {
 // Budget reserved for the compact-mode warning line prepended by the caller.
 const COMPACT_WARNING_OVERHEAD = 150;
 
-function applySkillsPromptLimits(params: { skills: Skill[]; config?: OpenClawConfig }): {
+function applySkillsPromptLimits(params: { skills: Skill[]; config?: WineryClawConfig }): {
   skillsForPrompt: Skill[];
   truncated: boolean;
   compact: boolean;
@@ -703,7 +703,7 @@ export function buildWorkspaceSkillsPrompt(
 }
 
 type WorkspaceSkillBuildOptions = {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   managedSkillsDir?: string;
   bundledSkillsDir?: string;
   entries?: SkillEntry[];
@@ -771,7 +771,7 @@ function resolveWorkspaceSkillPromptState(
 export function resolveSkillsPromptForRun(params: {
   skillsSnapshot?: SkillSnapshot;
   entries?: SkillEntry[];
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   workspaceDir: string;
   agentId?: string;
 }): string {
@@ -793,7 +793,7 @@ export function resolveSkillsPromptForRun(params: {
 export function loadWorkspaceSkillEntries(
   workspaceDir: string,
   opts?: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     managedSkillsDir?: string;
     bundledSkillsDir?: string;
     skillFilter?: string[];
@@ -812,7 +812,7 @@ export function loadWorkspaceSkillEntries(
 export function loadVisibleWorkspaceSkillEntries(
   workspaceDir: string,
   opts?: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     managedSkillsDir?: string;
     bundledSkillsDir?: string;
     skillFilter?: string[];
@@ -867,7 +867,7 @@ function resolveSyncedSkillDestinationPath(params: {
 export async function syncSkillsToWorkspace(params: {
   sourceWorkspaceDir: string;
   targetWorkspaceDir: string;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   skillFilter?: string[];
   agentId?: string;
   eligibility?: SkillEligibilityContext;
@@ -934,7 +934,7 @@ export async function syncSkillsToWorkspace(params: {
 
 export function filterWorkspaceSkillEntries(
   entries: SkillEntry[],
-  config?: OpenClawConfig,
+  config?: WineryClawConfig,
 ): SkillEntry[] {
   return filterSkillEntries(entries, config);
 }
@@ -942,7 +942,7 @@ export function filterWorkspaceSkillEntries(
 export function filterWorkspaceSkillEntriesWithOptions(
   entries: SkillEntry[],
   opts?: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     skillFilter?: string[];
     eligibility?: SkillEligibilityContext;
   },

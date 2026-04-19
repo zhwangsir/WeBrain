@@ -6,7 +6,7 @@ import {
   DEFAULT_ACCOUNT_ID,
   migrateBaseNameToDefaultAccount,
   normalizeAccountId,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "./runtime-api.js";
 import {
   resolveMattermostAccount,
@@ -23,7 +23,7 @@ export function isMattermostConfigured(account: ResolvedMattermostAccount): bool
   return tokenConfigured && Boolean(account.baseUrl);
 }
 
-export function resolveMattermostAccountWithSecrets(cfg: OpenClawConfig, accountId: string) {
+export function resolveMattermostAccountWithSecrets(cfg: WineryClawConfig, accountId: string) {
   return resolveMattermostAccount({
     cfg,
     accountId,

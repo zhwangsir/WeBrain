@@ -130,7 +130,7 @@ function toBlobPart(value: unknown): BlobPart {
 }
 
 // Carbon 0.14 removed the custom fetch seam from RequestClientOptions.
-// Keep a local proxy-aware clone so Discord proxy config still works on OpenClaw.
+// Keep a local proxy-aware clone so Discord proxy config still works on WineryClaw.
 class ProxyRequestClientCompat {
   readonly options: ProxyRequestClientOptions;
   readonly customFetch?: typeof fetch;

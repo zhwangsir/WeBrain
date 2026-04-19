@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolvePluginCapabilityProviders } from "./capability-provider-runtime.js";
 import {
   getRegisteredMemoryEmbeddingProvider,
@@ -12,7 +12,7 @@ export function listRegisteredMemoryEmbeddingProviderAdapters(): MemoryEmbedding
   return listRegisteredMemoryEmbeddingProviders().map((entry) => entry.adapter);
 }
 export function listMemoryEmbeddingProviders(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): MemoryEmbeddingProviderAdapter[] {
   const registered = listRegisteredMemoryEmbeddingProviderAdapters();
   if (registered.length > 0) {
@@ -26,7 +26,7 @@ export function listMemoryEmbeddingProviders(
 
 export function getMemoryEmbeddingProvider(
   id: string,
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): MemoryEmbeddingProviderAdapter | undefined {
   const registered = getRegisteredMemoryEmbeddingProvider(id);
   if (registered) {

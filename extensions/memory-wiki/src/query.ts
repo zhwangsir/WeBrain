@@ -4,7 +4,7 @@ import { resolveDefaultAgentId, resolveSessionAgentId } from "openclaw/plugin-sd
 import type { MemorySearchResult } from "openclaw/plugin-sdk/memory-host-files";
 import { getActiveMemorySearchManager } from "openclaw/plugin-sdk/memory-host-search";
 import { normalizeLowercaseStringOrEmpty } from "openclaw/plugin-sdk/text-runtime";
-import type { OpenClawConfig } from "../api.js";
+import type { WineryClawConfig } from "../api.js";
 import { assessClaimFreshness, isClaimContestedStatus } from "./claim-health.js";
 import type { ResolvedMemoryWikiConfig, WikiSearchBackend, WikiSearchCorpus } from "./config.js";
 import {
@@ -447,7 +447,7 @@ function shouldSearchWiki(config: ResolvedMemoryWikiConfig): boolean {
 
 function shouldSearchSharedMemory(
   config: ResolvedMemoryWikiConfig,
-  appConfig?: OpenClawConfig,
+  appConfig?: WineryClawConfig,
 ): boolean {
   return (
     config.search.backend === "shared" &&
@@ -457,7 +457,7 @@ function shouldSearchSharedMemory(
 }
 
 function resolveActiveMemoryAgentId(params: {
-  appConfig?: OpenClawConfig;
+  appConfig?: WineryClawConfig;
   agentId?: string;
   agentSessionKey?: string;
 }): string | null {
@@ -477,7 +477,7 @@ function resolveActiveMemoryAgentId(params: {
 }
 
 async function resolveActiveMemoryManager(params: {
-  appConfig?: OpenClawConfig;
+  appConfig?: WineryClawConfig;
   agentId?: string;
   agentSessionKey?: string;
 }) {
@@ -637,7 +637,7 @@ export function resolveQueryableWikiPageByLookup(
 
 export async function searchMemoryWiki(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
+  appConfig?: WineryClawConfig;
   agentId?: string;
   agentSessionKey?: string;
   query: string;
@@ -682,7 +682,7 @@ export async function searchMemoryWiki(params: {
 
 export async function getMemoryWikiPage(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: OpenClawConfig;
+  appConfig?: WineryClawConfig;
   agentId?: string;
   agentSessionKey?: string;
   lookup: string;

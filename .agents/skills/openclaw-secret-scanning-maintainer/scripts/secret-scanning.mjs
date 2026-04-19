@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Secret scanning alert handler for OpenClaw maintainers.
+// Secret scanning alert handler for WineryClaw maintainers.
 // Usage: node secret-scanning.mjs <command> [options]
 
 import { execFileSync, spawnSync } from "node:child_process";

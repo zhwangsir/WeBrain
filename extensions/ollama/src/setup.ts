@@ -1,5 +1,5 @@
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/provider-auth";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/provider-auth";
 import { upsertAuthProfileWithLock } from "openclaw/plugin-sdk/provider-auth";
 import { applyAgentDefaultModelPrimary } from "openclaw/plugin-sdk/provider-onboard";
 import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";
@@ -261,11 +261,11 @@ function buildOllamaModelsConfig(
 }
 
 function applyOllamaProviderConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   baseUrl: string,
   modelNames: string[],
   discoveredModelsByName?: Map<string, OllamaModelWithContext>,
-): OpenClawConfig {
+): WineryClawConfig {
   return {
     ...cfg,
     models: {
@@ -316,11 +316,11 @@ export async function buildOllamaProvider(
 }
 
 export async function promptAndConfigureOllama(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   prompter: WizardPrompter;
   isRemote: boolean;
   openUrl: (url: string) => Promise<void>;
-}): Promise<{ config: OpenClawConfig }> {
+}): Promise<{ config: WineryClawConfig }> {
   const baseUrlRaw = await params.prompter.text({
     message: "Ollama base URL",
     initialValue: OLLAMA_DEFAULT_BASE_URL,
@@ -414,11 +414,11 @@ export async function promptAndConfigureOllama(params: {
 }
 
 export async function configureOllamaNonInteractive(params: {
-  nextConfig: OpenClawConfig;
+  nextConfig: WineryClawConfig;
   opts: OllamaSetupOptions;
   runtime: RuntimeEnv;
   agentDir?: string;
-}): Promise<OpenClawConfig> {
+}): Promise<WineryClawConfig> {
   const baseUrl = resolveOllamaApiBase(
     (params.opts.customBaseUrl?.trim() || OLLAMA_DEFAULT_BASE_URL).replace(/\/+$/, ""),
   );
@@ -507,7 +507,7 @@ export async function configureOllamaNonInteractive(params: {
 }
 
 export async function ensureOllamaModelPulled(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   model: string;
   prompter: WizardPrompter;
 }): Promise<void> {

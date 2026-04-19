@@ -112,12 +112,12 @@ class CanvasController {
     withWebViewOnMain { wv ->
       if (currentUrl == null) {
         if (BuildConfig.DEBUG) {
-          Log.d("OpenClawCanvas", "load scaffold: $scaffoldAssetUrl")
+          Log.d("WineryClawCanvas", "load scaffold: $scaffoldAssetUrl")
         }
         wv.loadUrl(scaffoldAssetUrl)
       } else {
         if (BuildConfig.DEBUG) {
-          Log.d("OpenClawCanvas", "load url: $currentUrl")
+          Log.d("WineryClawCanvas", "load url: $currentUrl")
         }
         wv.loadUrl(currentUrl)
       }

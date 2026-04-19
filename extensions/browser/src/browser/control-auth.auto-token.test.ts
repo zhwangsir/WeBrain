@@ -1,15 +1,15 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { expectGeneratedTokenPersistedToGatewayAuth } from "../../test-support.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 const mocks = vi.hoisted(() => ({
-  loadConfig: vi.fn<() => OpenClawConfig>(),
-  writeConfigFile: vi.fn<(cfg: OpenClawConfig) => Promise<void>>(async (_cfg) => {}),
+  loadConfig: vi.fn<() => WineryClawConfig>(),
+  writeConfigFile: vi.fn<(cfg: WineryClawConfig) => Promise<void>>(async (_cfg) => {}),
   resolveGatewayAuth: vi.fn(
     ({
       authConfig,
     }: {
-      authConfig?: NonNullable<NonNullable<OpenClawConfig["gateway"]>["auth"]>;
+      authConfig?: NonNullable<NonNullable<WineryClawConfig["gateway"]>["auth"]>;
     }) => {
       const token =
         typeof authConfig?.token === "string"
@@ -24,7 +24,7 @@ const mocks = vi.hoisted(() => ({
       };
     },
   ),
-  ensureGatewayStartupAuth: vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+  ensureGatewayStartupAuth: vi.fn(async ({ cfg }: { cfg: WineryClawConfig }) => ({
     cfg: {
       ...cfg,
       gateway: {
@@ -58,7 +58,7 @@ vi.mock("../gateway/auth.js", () => ({
   resolveGatewayAuth: mocks.resolveGatewayAuth,
 }));
 
-function readPersistedConfig(): OpenClawConfig {
+function readPersistedConfig(): WineryClawConfig {
   const persistedCfg = mocks.writeConfigFile.mock.calls[0]?.[0];
   if (!persistedCfg) {
     throw new Error("expected persisted config");
@@ -67,7 +67,7 @@ function readPersistedConfig(): OpenClawConfig {
 }
 
 async function expectGeneratedBrowserAuthPersistence(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   mode: "none" | "trusted-proxy";
   generatedAuthField: "token" | "password";
 }) {
@@ -85,7 +85,7 @@ async function expectGeneratedBrowserAuthPersistence(params: {
   expect(mocks.ensureGatewayStartupAuth).not.toHaveBeenCalled();
 }
 
-async function expectUnresolvedBrowserSecretRefSkipsPersistence(cfg: OpenClawConfig) {
+async function expectUnresolvedBrowserSecretRefSkipsPersistence(cfg: WineryClawConfig) {
   mocks.loadConfig.mockReturnValue(cfg);
 
   const result = await ensureBrowserControlAuth({ cfg, env: {} as NodeJS.ProcessEnv });
@@ -99,7 +99,7 @@ let ensureBrowserControlAuth: typeof import("./control-auth.js").ensureBrowserCo
 
 describe("ensureBrowserControlAuth", () => {
   const expectExplicitModeSkipsAutoAuth = async (mode: "password") => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: { mode },
       },
@@ -141,7 +141,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("returns existing auth and skips writes", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: {
           token: "already-set",
@@ -158,7 +158,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("auto-generates and persists a token when auth is missing", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       browser: {
         enabled: true,
       },
@@ -175,7 +175,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("skips auto-generation in test env", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       browser: {
         enabled: true,
       },
@@ -197,7 +197,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("auto-generates and persists browser auth token in none mode", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: { mode: "none" },
       },
@@ -213,7 +213,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("does not persist over unresolved token SecretRef in none mode", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "none",
@@ -228,7 +228,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("still auto-generates in none mode when only password SecretRef is set", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "none",
@@ -247,7 +247,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("auto-generates in trusted-proxy mode and persists browser auth password", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: { mode: "trusted-proxy", trustedProxy: { userHeader: "x-forwarded-user" } },
       },
@@ -263,7 +263,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("still auto-generates in trusted-proxy mode when only token SecretRef is set", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "trusted-proxy",
@@ -283,7 +283,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("does not persist over unresolved password SecretRef in trusted-proxy mode", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "trusted-proxy",
@@ -299,7 +299,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("reuses auth from latest config snapshot", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       browser: {
         enabled: true,
       },
@@ -323,7 +323,7 @@ describe("ensureBrowserControlAuth", () => {
   });
 
   it("fails when gateway.auth.token SecretRef is unresolved", async () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       gateway: {
         auth: {
           mode: "token",

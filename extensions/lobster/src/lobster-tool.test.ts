@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { createTestPluginApi } from "../../../test/helpers/plugins/plugin-api.js";
-import type { OpenClawPluginApi, OpenClawPluginToolContext } from "../runtime-api.js";
+import type { WineryClawPluginApi, WineryClawPluginToolContext } from "../runtime-api.js";
 import { createLobsterTool } from "./lobster-tool.js";
 import { createFakeTaskFlow } from "./taskflow-test-helpers.js";
 
-function fakeApi(overrides: Partial<OpenClawPluginApi> = {}): OpenClawPluginApi {
+function fakeApi(overrides: Partial<WineryClawPluginApi> = {}): WineryClawPluginApi {
   return createTestPluginApi({
     id: "lobster",
     name: "lobster",
@@ -15,7 +15,7 @@ function fakeApi(overrides: Partial<OpenClawPluginApi> = {}): OpenClawPluginApi 
   });
 }
 
-function fakeCtx(overrides: Partial<OpenClawPluginToolContext> = {}): OpenClawPluginToolContext {
+function fakeCtx(overrides: Partial<WineryClawPluginToolContext> = {}): WineryClawPluginToolContext {
   return {
     config: {},
     workspaceDir: "/tmp",
@@ -292,7 +292,7 @@ describe("lobster plugin tool", () => {
 
   it("can be gated off in sandboxed contexts", async () => {
     const api = fakeApi();
-    const factoryTool = (ctx: OpenClawPluginToolContext) => {
+    const factoryTool = (ctx: WineryClawPluginToolContext) => {
       if (ctx.sandboxed) {
         return null;
       }

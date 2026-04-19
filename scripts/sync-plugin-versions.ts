@@ -19,14 +19,14 @@ type PackageJson = {
   };
 };
 
-const OPENCLAW_VERSION_RANGE_RE = /^>=\d{4}\.\d{1,2}\.\d{1,2}(?:[-.][^"\s]+)?$/u;
+const WINERYCLAW_VERSION_RANGE_RE = /^>=\d{4}\.\d{1,2}\.\d{1,2}(?:[-.][^"\s]+)?$/u;
 
-function syncOpenClawDependencyRange(
+function syncWineryClawDependencyRange(
   deps: Record<string, string> | undefined,
   targetVersion: string,
 ): boolean {
   const current = deps?.openclaw;
-  if (!current || current === "workspace:*" || !OPENCLAW_VERSION_RANGE_RE.test(current)) {
+  if (!current || current === "workspace:*" || !WINERYCLAW_VERSION_RANGE_RE.test(current)) {
     return false;
   }
   const next = `>=${targetVersion}`;
@@ -40,7 +40,7 @@ function syncOpenClawDependencyRange(
 function syncPluginApiVersion(pkg: PackageJson, targetVersion: string): boolean {
   const compat = pkg.openclaw?.compat;
   const current = compat?.pluginApi;
-  if (!current || !OPENCLAW_VERSION_RANGE_RE.test(current)) {
+  if (!current || !WINERYCLAW_VERSION_RANGE_RE.test(current)) {
     return false;
   }
   const next = `>=${targetVersion}`;
@@ -51,7 +51,7 @@ function syncPluginApiVersion(pkg: PackageJson, targetVersion: string): boolean 
   return true;
 }
 
-function syncBuildOpenClawVersion(pkg: PackageJson, targetVersion: string): boolean {
+function syncBuildWineryClawVersion(pkg: PackageJson, targetVersion: string): boolean {
   const build = pkg.openclaw?.build;
   const current = build?.openclawVersion;
   if (!current) {
@@ -72,7 +72,7 @@ function ensureChangelogEntry(changelogPath: string, version: string): boolean {
   if (content.includes(`## ${version}`)) {
     return false;
   }
-  const entry = `## ${version}\n\n### Changes\n- Version alignment with core OpenClaw release numbers.\n\n`;
+  const entry = `## ${version}\n\n### Changes\n- Version alignment with core WineryClaw release numbers.\n\n`;
   if (content.startsWith("# Changelog\n\n")) {
     const next = content.replace("# Changelog\n\n", `# Changelog\n\n${entry}`);
     writeFileSync(changelogPath, next);
@@ -120,18 +120,18 @@ export function syncPluginVersions(rootDir = resolve(".")) {
     }
 
     const versionChanged = pkg.version !== targetVersion;
-    const devDependencyChanged = syncOpenClawDependencyRange(pkg.devDependencies, targetVersion);
-    const peerDependencyChanged = syncOpenClawDependencyRange(pkg.peerDependencies, targetVersion);
+    const devDependencyChanged = syncWineryClawDependencyRange(pkg.devDependencies, targetVersion);
+    const peerDependencyChanged = syncWineryClawDependencyRange(pkg.peerDependencies, targetVersion);
     // minHostVersion is a compatibility floor, not release alignment metadata.
     // Keep it stable unless the owning plugin intentionally raises it.
     const pluginApiChanged = syncPluginApiVersion(pkg, targetVersion);
-    const buildOpenClawVersionChanged = syncBuildOpenClawVersion(pkg, targetVersion);
+    const buildWineryClawVersionChanged = syncBuildWineryClawVersion(pkg, targetVersion);
     const packageChanged =
       versionChanged ||
       devDependencyChanged ||
       peerDependencyChanged ||
       pluginApiChanged ||
-      buildOpenClawVersionChanged;
+      buildWineryClawVersionChanged;
     if (!packageChanged) {
       skipped.push(pkg.name);
       continue;

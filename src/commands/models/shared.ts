@@ -9,7 +9,7 @@ import {
 } from "../../agents/model-selection.js";
 import { formatCliCommand } from "../../cli/command-format.js";
 import {
-  type OpenClawConfig,
+  type WineryClawConfig,
   readConfigFileSnapshot,
   replaceConfigFile,
 } from "../../config/config.js";
@@ -65,7 +65,7 @@ export const isLocalBaseUrl = (baseUrl: string) => {
   }
 };
 
-export async function loadValidConfigOrThrow(): Promise<OpenClawConfig> {
+export async function loadValidConfigOrThrow(): Promise<WineryClawConfig> {
   const snapshot = await readConfigFileSnapshot();
   if (!snapshot.valid) {
     const issues = formatConfigIssueLines(snapshot.issues, "-").join("\n");
@@ -75,8 +75,8 @@ export async function loadValidConfigOrThrow(): Promise<OpenClawConfig> {
 }
 
 export async function updateConfig(
-  mutator: (cfg: OpenClawConfig) => OpenClawConfig,
-): Promise<OpenClawConfig> {
+  mutator: (cfg: WineryClawConfig) => WineryClawConfig,
+): Promise<WineryClawConfig> {
   const snapshot = await readConfigFileSnapshot();
   if (!snapshot.valid) {
     const issues = formatConfigIssueLines(snapshot.issues, "-").join("\n");
@@ -90,7 +90,7 @@ export async function updateConfig(
   return next;
 }
 
-export function resolveModelTarget(params: { raw: string; cfg: OpenClawConfig }): {
+export function resolveModelTarget(params: { raw: string; cfg: WineryClawConfig }): {
   provider: string;
   model: string;
 } {
@@ -110,7 +110,7 @@ export function resolveModelTarget(params: { raw: string; cfg: OpenClawConfig })
 }
 
 export function resolveModelKeysFromEntries(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   entries: readonly string[];
 }): string[] {
   const aliasIndex = buildModelAliasIndex({
@@ -129,7 +129,7 @@ export function resolveModelKeysFromEntries(params: {
     .map((entry) => modelKey(entry.ref.provider, entry.ref.model));
 }
 
-export function buildAllowlistSet(cfg: OpenClawConfig): Set<string> {
+export function buildAllowlistSet(cfg: WineryClawConfig): Set<string> {
   const allowed = new Set<string>();
   const models = cfg.agents?.defaults?.models ?? {};
   for (const raw of Object.keys(models)) {
@@ -154,7 +154,7 @@ export function normalizeAlias(alias: string): string {
 }
 
 export function resolveKnownAgentId(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   rawAgentId?: string | null;
 }): string | undefined {
   const raw = params.rawAgentId?.trim();
@@ -208,10 +208,10 @@ export function mergePrimaryFallbackConfig(
 }
 
 export function applyDefaultModelPrimaryUpdate(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   modelRaw: string;
   field: "model" | "imageModel";
-}): OpenClawConfig {
+}): WineryClawConfig {
   const resolved = resolveModelTarget({ raw: params.modelRaw, cfg: params.cfg });
   const nextModels = {
     ...params.cfg.agents?.defaults?.models,

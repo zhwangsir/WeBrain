@@ -1,6 +1,6 @@
 ---
 title: "Codex Harness"
-summary: "Run OpenClaw embedded agent turns through the bundled Codex app-server harness"
+summary: "Run WineryClaw embedded agent turns through the bundled Codex app-server harness"
 read_when:
   - You want to use the bundled Codex app-server harness
   - You need Codex model refs and config examples
@@ -9,27 +9,27 @@ read_when:
 
 # Codex Harness
 
-The bundled `codex` plugin lets OpenClaw run embedded agent turns through the
+The bundled `codex` plugin lets WineryClaw run embedded agent turns through the
 Codex app-server instead of the built-in PI harness.
 
 Use this when you want Codex to own the low-level agent session: model
 discovery, native thread resume, native compaction, and app-server execution.
-OpenClaw still owns chat channels, session files, model selection, tools,
+WineryClaw still owns chat channels, session files, model selection, tools,
 approvals, media delivery, and the visible transcript mirror.
 
 The harness is off by default. It is selected only when the `codex` plugin is
 enabled and the resolved model is a `codex/*` model, or when you explicitly
-force `embeddedHarness.runtime: "codex"` or `OPENCLAW_AGENT_RUNTIME=codex`.
+force `embeddedHarness.runtime: "codex"` or `WINERYCLAW_AGENT_RUNTIME=codex`.
 If you never configure `codex/*`, existing PI, OpenAI, Anthropic, Gemini, local,
 and custom-provider runs keep their current behavior.
 
 ## Pick the right model prefix
 
-OpenClaw has separate routes for OpenAI and Codex-shaped access:
+WineryClaw has separate routes for OpenAI and Codex-shaped access:
 
 | Model ref              | Runtime path                                 | Use when                                                                |
 | ---------------------- | -------------------------------------------- | ----------------------------------------------------------------------- |
-| `openai/gpt-5.4`       | OpenAI provider through OpenClaw/PI plumbing | You want direct OpenAI Platform API access with `OPENAI_API_KEY`.       |
+| `openai/gpt-5.4`       | OpenAI provider through WineryClaw/PI plumbing | You want direct OpenAI Platform API access with `OPENAI_API_KEY`.       |
 | `openai-codex/gpt-5.4` | OpenAI Codex OAuth provider through PI       | You want ChatGPT/Codex OAuth without the Codex app-server harness.      |
 | `codex/gpt-5.4`        | Bundled Codex provider plus Codex harness    | You want native Codex app-server execution for the embedded agent turn. |
 
@@ -39,12 +39,12 @@ their normal paths.
 
 ## Requirements
 
-- OpenClaw with the bundled `codex` plugin available.
+- WineryClaw with the bundled `codex` plugin available.
 - Codex app-server `0.118.0` or newer.
 - Codex auth available to the app-server process.
 
 The plugin blocks older or unversioned app-server handshakes. That keeps
-OpenClaw on the protocol surface it has been tested against.
+WineryClaw on the protocol surface it has been tested against.
 
 For live and Docker smoke tests, auth usually comes from `OPENAI_API_KEY`, plus
 optional Codex CLI files such as `~/.codex/auth.json` and
@@ -159,12 +159,12 @@ the Codex harness:
 Environment override:
 
 ```bash
-OPENCLAW_AGENT_RUNTIME=codex \
-OPENCLAW_AGENT_HARNESS_FALLBACK=none \
+WINERYCLAW_AGENT_RUNTIME=codex \
+WINERYCLAW_AGENT_HARNESS_FALLBACK=none \
 openclaw gateway run
 ```
 
-With fallback disabled, OpenClaw fails early if the Codex plugin is disabled,
+With fallback disabled, WineryClaw fails early if the Codex plugin is disabled,
 the requested model is not a `codex/*` ref, the app-server is too old, or the
 app-server cannot start.
 
@@ -203,8 +203,8 @@ auto-selection:
 ```
 
 Use normal session commands to switch agents and models. `/new` creates a fresh
-OpenClaw session and the Codex harness creates or resumes its sidecar app-server
-thread as needed. `/reset` clears the OpenClaw session binding for that thread.
+WineryClaw session and the Codex harness creates or resumes its sidecar app-server
+thread as needed. `/reset` clears the WineryClaw session binding for that thread.
 
 ## Model discovery
 
@@ -325,11 +325,11 @@ Supported `appServer` fields:
 The older environment variables still work as fallbacks for local testing when
 the matching config field is unset:
 
-- `OPENCLAW_CODEX_APP_SERVER_BIN`
-- `OPENCLAW_CODEX_APP_SERVER_ARGS`
-- `OPENCLAW_CODEX_APP_SERVER_APPROVAL_POLICY`
-- `OPENCLAW_CODEX_APP_SERVER_SANDBOX`
-- `OPENCLAW_CODEX_APP_SERVER_GUARDIAN=1`
+- `WINERYCLAW_CODEX_APP_SERVER_BIN`
+- `WINERYCLAW_CODEX_APP_SERVER_ARGS`
+- `WINERYCLAW_CODEX_APP_SERVER_APPROVAL_POLICY`
+- `WINERYCLAW_CODEX_APP_SERVER_SANDBOX`
+- `WINERYCLAW_CODEX_APP_SERVER_GUARDIAN=1`
 
 Config is preferred for repeatable deployments.
 
@@ -400,7 +400,7 @@ Remote app-server with explicit headers:
             transport: "websocket",
             url: "ws://gateway-host:39175",
             headers: {
-              "X-OpenClaw-Agent": "main",
+              "X-WineryClaw-Agent": "main",
             },
           },
         },
@@ -410,7 +410,7 @@ Remote app-server with explicit headers:
 }
 ```
 
-Model switching stays OpenClaw-controlled. When an OpenClaw session is attached
+Model switching stays WineryClaw-controlled. When an WineryClaw session is attached
 to an existing Codex thread, the next turn sends the currently selected
 `codex/*` model, provider, approval policy, sandbox, and service tier to
 app-server again. Switching from `codex/gpt-5.4` to `codex/gpt-5.2` keeps the
@@ -419,14 +419,14 @@ thread binding but asks Codex to continue with the newly selected model.
 ## Codex command
 
 The bundled plugin registers `/codex` as an authorized slash command. It is
-generic and works on any channel that supports OpenClaw text commands.
+generic and works on any channel that supports WineryClaw text commands.
 
 Common forms:
 
 - `/codex status` shows live app-server connectivity, models, account, rate limits, MCP servers, and skills.
 - `/codex models` lists live Codex app-server models.
 - `/codex threads [filter]` lists recent Codex threads.
-- `/codex resume <thread-id>` attaches the current OpenClaw session to an existing Codex thread.
+- `/codex resume <thread-id>` attaches the current WineryClaw session to an existing Codex thread.
 - `/codex compact` asks Codex app-server to compact the attached thread.
 - `/codex review` starts Codex native review for the attached thread.
 - `/codex account` shows account and rate-limit status.
@@ -434,8 +434,8 @@ Common forms:
 - `/codex skills` lists Codex app-server skills.
 
 `/codex resume` writes the same sidecar binding file that the harness uses for
-normal turns. On the next message, OpenClaw resumes that Codex thread, passes the
-currently selected OpenClaw `codex/*` model into app-server, and keeps extended
+normal turns. On the next message, WineryClaw resumes that Codex thread, passes the
+currently selected WineryClaw `codex/*` model into app-server, and keeps extended
 history enabled.
 
 The command surface requires Codex app-server `0.118.0` or newer. Individual
@@ -446,12 +446,12 @@ future or custom app-server does not expose that JSON-RPC method.
 
 The Codex harness changes the low-level embedded agent executor only.
 
-OpenClaw still builds the tool list and receives dynamic tool results from the
+WineryClaw still builds the tool list and receives dynamic tool results from the
 harness. Text, images, video, music, TTS, approvals, and messaging-tool output
-continue through the normal OpenClaw delivery path.
+continue through the normal WineryClaw delivery path.
 
 When the selected model uses the Codex harness, native thread compaction is
-delegated to Codex app-server. OpenClaw keeps a transcript mirror for channel
+delegated to Codex app-server. WineryClaw keeps a transcript mirror for channel
 history, search, `/new`, `/reset`, and future model or harness switching. The
 mirror includes the user prompt, final assistant text, and lightweight Codex
 reasoning or plan records when the app-server emits them.
@@ -466,8 +466,8 @@ understanding continue to use the matching provider/model settings such as
 **Codex does not appear in `/model`:** enable `plugins.entries.codex.enabled`,
 set a `codex/*` model ref, or check whether `plugins.allow` excludes `codex`.
 
-**OpenClaw falls back to PI:** set `embeddedHarness.fallback: "none"` or
-`OPENCLAW_AGENT_HARNESS_FALLBACK=none` while testing.
+**WineryClaw falls back to PI:** set `embeddedHarness.fallback: "none"` or
+`WINERYCLAW_AGENT_HARNESS_FALLBACK=none` while testing.
 
 **The app-server is rejected:** upgrade Codex so the app-server handshake
 reports version `0.118.0` or newer.

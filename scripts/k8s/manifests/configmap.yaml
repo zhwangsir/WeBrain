@@ -5,7 +5,7 @@ metadata:
   labels:
     app: openclaw
 data:
-  openclaw.json: |
+  wineryclaw.json: |
     {
       "gateway": {
         "mode": "local",
@@ -20,19 +20,19 @@ data:
       },
       "agents": {
         "defaults": {
-          "workspace": "~/.openclaw/workspace"
+          "workspace": "~/.wineryclaw/workspace"
         },
         "list": [
           {
             "id": "default",
-            "name": "OpenClaw Assistant",
-            "workspace": "~/.openclaw/workspace"
+            "name": "WineryClaw Assistant",
+            "workspace": "~/.wineryclaw/workspace"
           }
         ]
       },
       "cron": { "enabled": false }
     }
   AGENTS.md: |
-    # OpenClaw Assistant
+    # WineryClaw Assistant
 
     You are a helpful AI assistant running in Kubernetes.

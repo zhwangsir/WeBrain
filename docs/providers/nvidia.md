@@ -1,7 +1,7 @@
 ---
-summary: "Use NVIDIA's OpenAI-compatible API in OpenClaw"
+summary: "Use NVIDIA's OpenAI-compatible API in WineryClaw"
 read_when:
-  - You want to use open models in OpenClaw for free
+  - You want to use open models in WineryClaw for free
   - You need NVIDIA_API_KEY setup
 title: "NVIDIA"
 ---

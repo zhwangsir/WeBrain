@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { stopOpenClawChromeMock } = vi.hoisted(() => ({
-  stopOpenClawChromeMock: vi.fn(async () => {}),
+const { stopWineryClawChromeMock } = vi.hoisted(() => ({
+  stopWineryClawChromeMock: vi.fn(async () => {}),
 }));
 
 const { createBrowserRouteContextMock, listKnownProfileNamesMock } = vi.hoisted(() => ({
@@ -10,7 +10,7 @@ const { createBrowserRouteContextMock, listKnownProfileNamesMock } = vi.hoisted(
 }));
 
 vi.mock("./chrome.js", () => ({
-  stopOpenClawChrome: stopOpenClawChromeMock,
+  stopWineryClawChrome: stopWineryClawChromeMock,
 }));
 
 vi.mock("./server-context.js", () => ({
@@ -24,7 +24,7 @@ const { ensureExtensionRelayForProfiles, stopKnownBrowserProfiles } =
 beforeEach(() => {
   createBrowserRouteContextMock.mockClear();
   listKnownProfileNamesMock.mockClear();
-  stopOpenClawChromeMock.mockClear();
+  stopWineryClawChromeMock.mockClear();
 });
 
 describe("ensureExtensionRelayForProfiles", () => {
@@ -94,7 +94,7 @@ describe("stopKnownBrowserProfiles", () => {
       onWarn: vi.fn(),
     });
 
-    expect(stopOpenClawChromeMock).toHaveBeenCalledWith(launchedBrowser);
+    expect(stopWineryClawChromeMock).toHaveBeenCalledWith(launchedBrowser);
     expect(localRuntime.running).toBeNull();
   });
 

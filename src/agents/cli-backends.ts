@@ -1,5 +1,5 @@
 import type { CliBackendConfig } from "../config/types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { resolveRuntimeCliBackends } from "../plugins/cli-backends.runtime.js";
 import { resolvePluginSetupCliBackend } from "../plugins/setup-registry.js";
 import { resolveRuntimeTextTransforms } from "../plugins/text-transforms.runtime.js";
@@ -156,7 +156,7 @@ function mergeBackendConfig(base: CliBackendConfig, override?: CliBackendConfig)
   };
 }
 
-export function resolveCliBackendIds(cfg?: OpenClawConfig): Set<string> {
+export function resolveCliBackendIds(cfg?: WineryClawConfig): Set<string> {
   const ids = new Set<string>();
   for (const backend of cliBackendsDeps.resolveRuntimeCliBackends()) {
     ids.add(normalizeBackendKey(backend.id));
@@ -190,7 +190,7 @@ export function resolveCliBackendLiveTest(provider: string): ResolvedCliBackendL
 
 export function resolveCliBackendConfig(
   provider: string,
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
 ): ResolvedCliBackend | null {
   const normalized = normalizeBackendKey(provider);
   const runtimeTextTransforms = resolveRuntimeTextTransforms();

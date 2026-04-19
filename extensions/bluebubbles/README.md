@@ -1,6 +1,6 @@
 # BlueBubbles extension (developer reference)
 
-This package contains the **BlueBubbles external channel plugin** for OpenClaw.
+This package contains the **BlueBubbles external channel plugin** for WineryClaw.
 
 If you’re looking for **how to use BlueBubbles as an agent/tool user**, see:
 

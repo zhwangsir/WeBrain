@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import type {
   RealtimeVoiceProviderConfig,
@@ -151,7 +151,7 @@ async function resolveProvider(config: VoiceCallConfig): Promise<VoiceCallProvid
 
 async function resolveRealtimeProvider(params: {
   config: VoiceCallConfig;
-  fullConfig: OpenClawConfig;
+  fullConfig: WineryClawConfig;
 }): Promise<ResolvedRealtimeProvider> {
   const { getRealtimeVoiceProvider, listRealtimeVoiceProviders } =
     await import("./realtime-voice.runtime.js");
@@ -189,7 +189,7 @@ async function resolveRealtimeProvider(params: {
 export async function createVoiceCallRuntime(params: {
   config: VoiceCallConfig;
   coreConfig: CoreConfig;
-  fullConfig?: OpenClawConfig;
+  fullConfig?: WineryClawConfig;
   agentRuntime: CoreAgentDeps;
   ttsRuntime?: TelephonyTtsRuntime;
   logger?: Logger;
@@ -224,7 +224,7 @@ export async function createVoiceCallRuntime(params: {
   const realtimeProvider = config.realtime.enabled
     ? await resolveRealtimeProvider({
         config,
-        fullConfig: fullConfig ?? (coreConfig as OpenClawConfig),
+        fullConfig: fullConfig ?? (coreConfig as WineryClawConfig),
       })
     : null;
   const webhookServer = new VoiceCallWebhookServer(
@@ -232,7 +232,7 @@ export async function createVoiceCallRuntime(params: {
     manager,
     provider,
     coreConfig,
-    fullConfig ?? (coreConfig as OpenClawConfig),
+    fullConfig ?? (coreConfig as WineryClawConfig),
     agentRuntime,
   );
   if (realtimeProvider) {

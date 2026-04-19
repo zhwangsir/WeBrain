@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import type {
   GatewayAuthConfig,
   GatewayTailscaleConfig,
-  OpenClawConfig,
+  WineryClawConfig,
 } from "../config/config.js";
 import { replaceConfigFile } from "../config/config.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
@@ -86,7 +86,7 @@ export function mergeGatewayTailscaleConfig(
 }
 
 function resolveGatewayAuthFromConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   authOverride?: GatewayAuthConfig;
   tailscaleOverride?: GatewayTailscaleConfig;
@@ -121,11 +121,11 @@ function shouldPersistGeneratedToken(params: {
 }
 
 function hasGatewayTokenCandidate(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env: NodeJS.ProcessEnv;
   authOverride?: GatewayAuthConfig;
 }): boolean {
-  const envToken = trimToUndefined(params.env.OPENCLAW_GATEWAY_TOKEN);
+  const envToken = trimToUndefined(params.env.WINERYCLAW_GATEWAY_TOKEN);
   if (envToken) {
     return true;
   }
@@ -158,14 +158,14 @@ function hasGatewayPasswordOverrideCandidate(params: {
 }
 
 export async function ensureGatewayStartupAuth(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   env?: NodeJS.ProcessEnv;
   authOverride?: GatewayAuthConfig;
   tailscaleOverride?: GatewayTailscaleConfig;
   persist?: boolean;
   baseHash?: string;
 }): Promise<{
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   auth: ReturnType<typeof resolveGatewayAuth>;
   generatedToken?: string;
   persistedGeneratedToken: boolean;
@@ -222,7 +222,7 @@ export async function ensureGatewayStartupAuth(params: {
   }
 
   const generatedToken = crypto.randomBytes(24).toString("hex");
-  const nextCfg: OpenClawConfig = {
+  const nextCfg: WineryClawConfig = {
     ...params.cfg,
     gateway: {
       ...params.cfg.gateway,
@@ -271,7 +271,7 @@ export function assertGatewayAuthNotKnownWeak(auth: ResolvedGatewayAuth): void {
       throw new Error(
         "Invalid config: gateway auth token is set to the example placeholder " +
           "from .env.example. Generate a real secret (e.g. `openssl rand -hex 32`) " +
-          "and set OPENCLAW_GATEWAY_TOKEN or gateway.auth.token before starting " +
+          "and set WINERYCLAW_GATEWAY_TOKEN or gateway.auth.token before starting " +
           "the gateway.",
       );
     }
@@ -282,7 +282,7 @@ export function assertGatewayAuthNotKnownWeak(auth: ResolvedGatewayAuth): void {
     if (password && KNOWN_WEAK_GATEWAY_PASSWORDS.has(password)) {
       throw new Error(
         "Invalid config: gateway auth password is set to the example placeholder " +
-          "from .env.example. Choose a real password and set OPENCLAW_GATEWAY_PASSWORD " +
+          "from .env.example. Choose a real password and set WINERYCLAW_GATEWAY_PASSWORD " +
           "or gateway.auth.password before starting the gateway.",
       );
     }
@@ -290,7 +290,7 @@ export function assertGatewayAuthNotKnownWeak(auth: ResolvedGatewayAuth): void {
 }
 
 export function assertHooksTokenSeparateFromGatewayAuth(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   auth: ResolvedGatewayAuth;
 }): void {
   if (params.cfg.hooks?.enabled !== true) {

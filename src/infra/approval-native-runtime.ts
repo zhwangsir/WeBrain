@@ -1,5 +1,5 @@
 import type { ChannelApprovalNativeAdapter } from "../channels/plugins/approval-native.types.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import {
   resolveChannelNativeApprovalDeliveryPlan,
   type ChannelApprovalNativePlannedTarget,
@@ -37,7 +37,7 @@ export async function deliverApprovalRequestViaChannelNativePlan<
   TPendingEntry,
   TRequest extends ApprovalRequest = ApprovalRequest,
 >(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   approvalKind: ChannelApprovalKind;
   request: TRequest;

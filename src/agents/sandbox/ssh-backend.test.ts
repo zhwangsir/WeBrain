@@ -6,7 +6,7 @@ import {
   createSandboxPruneConfig,
   createSandboxSshConfig,
 } from "../../../test/helpers/sandbox-fixtures.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type { SandboxConfig } from "./types.js";
 
 const sshMocks = vi.hoisted(() => ({
@@ -31,7 +31,7 @@ vi.mock("./ssh.js", async () => {
 
 const { createSshSandboxBackend, sshSandboxBackendManager } = await import("./ssh-backend.js");
 
-function createConfig(): OpenClawConfig {
+function createConfig(): WineryClawConfig {
   return {
     agents: {
       defaults: {
@@ -67,7 +67,7 @@ function createBackendSandboxConfig(params?: { binds?: string[]; target?: string
     backend: "ssh",
     scope: "session",
     workspaceAccess: "rw" as const,
-    workspaceRoot: "~/.openclaw/sandboxes",
+    workspaceRoot: "~/.wineryclaw/sandboxes",
     docker: {
       image: "img",
       containerPrefix: "prefix-",
@@ -234,7 +234,7 @@ describe("ssh sandbox backend", () => {
         backend: "ssh",
         scope: "session",
         workspaceAccess: "rw",
-        workspaceRoot: "~/.openclaw/sandboxes",
+        workspaceRoot: "~/.wineryclaw/sandboxes",
         docker: {
           image: "openclaw-sandbox:bookworm-slim",
           containerPrefix: "openclaw-sbx-",

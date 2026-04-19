@@ -2,12 +2,12 @@
 // Keep this list additive and scoped to the bundled diffs surface.
 
 export { definePluginEntry } from "./plugin-entry.js";
-export type { OpenClawConfig } from "../config/config.js";
-export { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+export type { WineryClawConfig } from "../config/config.js";
+export { resolvePreferredWineryClawTmpDir } from "../infra/tmp-openclaw-dir.js";
 export type {
   AnyAgentTool,
-  OpenClawPluginApi,
-  OpenClawPluginConfigSchema,
-  OpenClawPluginToolContext,
+  WineryClawPluginApi,
+  WineryClawPluginConfigSchema,
+  WineryClawPluginToolContext,
   PluginLogger,
 } from "../plugins/types.js";

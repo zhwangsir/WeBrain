@@ -87,7 +87,7 @@ const sharedBaseExcludePatterns = [
   "apps/macos/.build/**",
   "**/node_modules/**",
   "**/vendor/**",
-  "dist/OpenClaw.app/**",
+  "dist/WineryClaw.app/**",
   "**/*.live.test.ts",
   "**/*.e2e.test.ts",
 ];

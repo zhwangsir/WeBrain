@@ -3,7 +3,7 @@ import {
   getMediaGenerationRuntimeMocks,
   resetImageGenerationRuntimeMocks,
 } from "../../test/helpers/media-generation/runtime-module-mocks.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { generateImage, listRuntimeImageGenerationProviders } from "./runtime.js";
 import type { ImageGenerationProvider } from "./types.js";
 
@@ -56,7 +56,7 @@ describe("image-generation runtime", () => {
             imageGenerationModel: { primary: "image-plugin/img-v1" },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       prompt: "draw a cat",
       agentDir: "/tmp/agent",
       authStore,
@@ -135,7 +135,7 @@ describe("image-generation runtime", () => {
     ]);
 
     const result = await generateImage({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       prompt: "draw a cat",
     });
 
@@ -196,7 +196,7 @@ describe("image-generation runtime", () => {
             imageGenerationModel: { primary: "openai/gpt-image-1" },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       prompt: "draw a cat",
       size: "1024x1024",
       aspectRatio: "1:1",
@@ -261,7 +261,7 @@ describe("image-generation runtime", () => {
             imageGenerationModel: { primary: "minimax/image-01" },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       prompt: "draw a cat",
       size: "1280x720",
     });
@@ -310,10 +310,10 @@ describe("image-generation runtime", () => {
     ];
     mocks.listImageGenerationProviders.mockReturnValue(providers);
 
-    expect(listRuntimeImageGenerationProviders({ config: {} as OpenClawConfig })).toEqual(
+    expect(listRuntimeImageGenerationProviders({ config: {} as WineryClawConfig })).toEqual(
       providers,
     );
-    expect(mocks.listImageGenerationProviders).toHaveBeenCalledWith({} as OpenClawConfig);
+    expect(mocks.listImageGenerationProviders).toHaveBeenCalledWith({} as WineryClawConfig);
   });
 
   it("builds a generic config hint without hardcoded provider ids", async () => {
@@ -353,7 +353,7 @@ describe("image-generation runtime", () => {
       return [];
     });
 
-    const promise = generateImage({ cfg: {} as OpenClawConfig, prompt: "draw a cat" });
+    const promise = generateImage({ cfg: {} as WineryClawConfig, prompt: "draw a cat" });
 
     await expect(promise).rejects.toThrow("No image-generation model configured.");
     await expect(promise).rejects.toThrow(

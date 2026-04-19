@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { WineryClawConfig } from "../../config/config.js";
 import type {
   AcpRuntime,
   AcpRuntimeEnsureInput,
@@ -54,7 +54,7 @@ function setNoAbort() {
 
 function createMockAcpSessionManager() {
   return {
-    resolveSession: (params: { cfg: OpenClawConfig; sessionKey: string }) => {
+    resolveSession: (params: { cfg: WineryClawConfig; sessionKey: string }) => {
       const entry = acpMocks.readAcpSessionEntry({
         cfg: params.cfg,
         sessionKey: params.sessionKey,
@@ -82,7 +82,7 @@ function createMockAcpSessionManager() {
     }),
     runTurn: vi.fn(
       async (params: {
-        cfg: OpenClawConfig;
+        cfg: WineryClawConfig;
         sessionKey: string;
         text?: string;
         attachments?: unknown[];
@@ -244,7 +244,7 @@ describe("dispatchReplyFromConfig ACP abort", () => {
           enabled: true,
           dispatch: { enabled: true },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       dispatcher,
       replyOptions: { abortSignal: abortController.signal },
     });

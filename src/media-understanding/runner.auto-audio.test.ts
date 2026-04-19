@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { runCapability } from "./runner.js";
 import { withAudioFixture } from "./runner.test-utils.js";
@@ -48,7 +48,7 @@ function createOpenAiAudioProvider(
   });
 }
 
-function createOpenAiAudioCfg(extra?: Partial<OpenClawConfig>): OpenClawConfig {
+function createOpenAiAudioCfg(extra?: Partial<WineryClawConfig>): WineryClawConfig {
   return {
     models: {
       providers: {
@@ -59,12 +59,12 @@ function createOpenAiAudioCfg(extra?: Partial<OpenClawConfig>): OpenClawConfig {
       },
     },
     ...extra,
-  } as unknown as OpenClawConfig;
+  } as unknown as WineryClawConfig;
 }
 
 async function runAutoAudioCase(params: {
   transcribeAudio: (req: AudioTranscriptionRequest) => Promise<{ text: string; model: string }>;
-  cfgExtra?: Partial<OpenClawConfig>;
+  cfgExtra?: Partial<WineryClawConfig>;
 }) {
   let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
   await withAudioFixture("openclaw-auto-audio", async ({ ctx, media, cache }) => {
@@ -170,7 +170,7 @@ describe("runCapability auto audio entries", () => {
             },
           },
         },
-      } as Partial<OpenClawConfig>,
+      } as Partial<WineryClawConfig>,
     });
 
     expect(result.outputs[0]?.text).toBe("ok");
@@ -190,7 +190,7 @@ describe("runCapability auto audio entries", () => {
           GEMINI_API_KEY: undefined,
           GOOGLE_API_KEY: undefined,
           MISTRAL_API_KEY: "mistral-test-key", // pragma: allowlist secret
-          OPENCLAW_AGENT_DIR: isolatedAgentDir,
+          WINERYCLAW_AGENT_DIR: isolatedAgentDir,
           PI_CODING_AGENT_DIR: isolatedAgentDir,
         },
         async () => {
@@ -229,7 +229,7 @@ describe("runCapability auto audio entries", () => {
                   },
                 },
               },
-            } as unknown as OpenClawConfig;
+            } as unknown as WineryClawConfig;
 
             runResult = await runCapability({
               capability: "audio",

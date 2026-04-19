@@ -4,7 +4,7 @@ import {
   readNumberParam,
   readStringParam,
   type AnyAgentTool,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 import type {
   MemorySearchResult,
@@ -87,7 +87,7 @@ function isActiveMemorySessionKey(sessionKey?: string): boolean {
 }
 
 function resolveActiveMemoryQmdSearchModeOverride(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   sessionKey?: string,
 ): "search" | "vsearch" | "query" | undefined {
   if (!isActiveMemorySessionKey(sessionKey)) {
@@ -179,7 +179,7 @@ async function executeMemoryReadResult<T>(params: {
 }
 
 export function createMemorySearchTool(options: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   agentSessionKey?: string;
 }): AnyAgentTool | null {
   return createMemoryTool({
@@ -318,7 +318,7 @@ export function createMemorySearchTool(options: {
 }
 
 export function createMemoryGetTool(options: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   agentSessionKey?: string;
 }): AnyAgentTool | null {
   return createMemoryTool({

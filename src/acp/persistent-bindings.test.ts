@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveAgentWorkspaceDir } from "../agents/agent-scope.js";
 import type { ChannelConfiguredBindingProvider, ChannelPlugin } from "../channels/plugins/types.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
 import { createChannelTestPluginBase, createTestRegistry } from "../test-utils/channel-plugins.js";
 import { buildConfiguredAcpSessionKey } from "./persistent-bindings.types.js";
@@ -45,7 +45,7 @@ let persistentBindingsResolveModule: Pick<
   "resolveConfiguredAcpBindingRecord" | "resolveConfiguredAcpBindingSpecBySessionKey"
 >;
 
-type ConfiguredBinding = NonNullable<OpenClawConfig["bindings"]>[number];
+type ConfiguredBinding = NonNullable<WineryClawConfig["bindings"]>[number];
 type BindingRecordInput = Parameters<
   PersistentBindingsModule["resolveConfiguredAcpBindingRecord"]
 >[0];
@@ -58,7 +58,7 @@ const baseCfg = {
   agents: {
     list: [{ id: "codex" }, { id: "claude" }],
   },
-} satisfies OpenClawConfig;
+} satisfies WineryClawConfig;
 
 const defaultDiscordConversationId = "1478836151241412759";
 const defaultDiscordAccountId = "default";
@@ -291,13 +291,13 @@ function createConfiguredBindingTestPlugin(
 
 function createCfgWithBindings(
   bindings: ConfiguredBinding[],
-  overrides?: Partial<OpenClawConfig>,
-): OpenClawConfig {
+  overrides?: Partial<WineryClawConfig>,
+): WineryClawConfig {
   return {
     ...baseCfg,
     ...overrides,
     bindings,
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createDiscordBinding(params: {
@@ -356,7 +356,7 @@ function createFeishuBinding(params: {
   } as ConfiguredBinding;
 }
 
-function resolveBindingRecord(cfg: OpenClawConfig, overrides: Partial<BindingRecordInput> = {}) {
+function resolveBindingRecord(cfg: WineryClawConfig, overrides: Partial<BindingRecordInput> = {}) {
   return persistentBindings.resolveConfiguredAcpBindingRecord({
     cfg,
     channel: "discord",
@@ -367,7 +367,7 @@ function resolveBindingRecord(cfg: OpenClawConfig, overrides: Partial<BindingRec
 }
 
 function resolveDiscordBindingSpecBySession(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   conversationId = defaultDiscordConversationId,
 ) {
   const resolved = resolveBindingRecord(cfg, { conversationId });
@@ -1115,7 +1115,7 @@ describe("resetAcpSessionInPlace", () => {
       agents: {
         list: [{ id: "main" }, { id: "coding" }],
       },
-    } satisfies OpenClawConfig;
+    } satisfies WineryClawConfig;
     const sessionKey = buildConfiguredAcpSessionKey({
       channel: "discord",
       accountId: "default",

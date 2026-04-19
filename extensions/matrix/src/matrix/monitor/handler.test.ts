@@ -8,7 +8,7 @@ import {
 } from "openclaw/plugin-sdk/conversation-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { installMatrixMonitorTestRuntime } from "../../test-runtime.js";
-import { MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY } from "../send/types.js";
+import { MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY } from "../send/types.js";
 import { createMatrixRoomMessageHandler } from "./handler.js";
 import {
   createMatrixHandlerTestHarness,
@@ -2112,7 +2112,7 @@ describe("matrix monitor handler draft streaming", () => {
       "$draft1",
       "Single block",
       expect.objectContaining({
-        extraContent: { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true },
+        extraContent: { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true },
       }),
     );
     expect(deliverMatrixRepliesMock).not.toHaveBeenCalled();
@@ -2200,7 +2200,7 @@ describe("matrix monitor handler draft streaming", () => {
       "$draft1",
       "Block one",
       expect.objectContaining({
-        extraContent: { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true },
+        extraContent: { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true },
       }),
     );
     expect(deliverMatrixRepliesMock).not.toHaveBeenCalled();
@@ -2223,7 +2223,7 @@ describe("matrix monitor handler draft streaming", () => {
       "$draft2",
       "Block two",
       expect.objectContaining({
-        extraContent: { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true },
+        extraContent: { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true },
       }),
     );
     expect(deliverMatrixRepliesMock).not.toHaveBeenCalled();
@@ -2519,7 +2519,7 @@ describe("matrix monitor handler draft streaming", () => {
       "$draft1",
       "Alpha",
       expect.objectContaining({
-        extraContent: { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true },
+        extraContent: { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true },
       }),
     );
 
@@ -2540,7 +2540,7 @@ describe("matrix monitor handler draft streaming", () => {
       "$draft2",
       "Beta",
       expect.objectContaining({
-        extraContent: { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true },
+        extraContent: { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true },
       }),
     );
 
@@ -2819,7 +2819,7 @@ describe("matrix monitor handler draft streaming", () => {
       "$draft1",
       "@room screenshot ready",
       expect.objectContaining({
-        extraContent: { [MATRIX_OPENCLAW_FINALIZED_PREVIEW_KEY]: true },
+        extraContent: { [MATRIX_WINERYCLAW_FINALIZED_PREVIEW_KEY]: true },
       }),
     );
     expect(redactEventMock).not.toHaveBeenCalled();

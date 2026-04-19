@@ -11,7 +11,7 @@ Manage sandbox runtimes for isolated agent execution.
 
 ## Overview
 
-OpenClaw can run agents in isolated sandbox runtimes for security. The `sandbox` commands help you inspect and recreate those runtimes after updates or configuration changes.
+WineryClaw can run agents in isolated sandbox runtimes for security. The `sandbox` commands help you inspect and recreate those runtimes after updates or configuration changes.
 
 Today that usually means:
 
@@ -165,7 +165,7 @@ It uses the Gateway’s runtime registry and avoids mismatches when scope/sessio
 
 ## Configuration
 
-Sandbox settings live in `~/.openclaw/openclaw.json` under `agents.defaults.sandbox` (per-agent overrides go in `agents.list[].sandbox`):
+Sandbox settings live in `~/.wineryclaw/wineryclaw.json` under `agents.defaults.sandbox` (per-agent overrides go in `agents.list[].sandbox`):
 
 ```jsonc
 {

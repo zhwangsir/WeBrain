@@ -473,7 +473,7 @@ describe("dispatchCronDelivery — double-announce guard", () => {
     vi.mocked(countActiveDescendantRuns).mockReturnValue(0);
     vi.mocked(isLikelyInterimCronMessage).mockReturnValue(false);
 
-    const params = makeBaseParams({ synthesizedText: "HEARTBEAT_OK 🦞" });
+    const params = makeBaseParams({ synthesizedText: "HEARTBEAT_OK 😋" });
     (params.job as { deleteAfterRun?: boolean }).deleteAfterRun = true;
 
     const state = await dispatchCronDelivery(params);
@@ -508,7 +508,7 @@ describe("dispatchCronDelivery — double-announce guard", () => {
   });
 
   it("retries transient direct announce failures before succeeding", async () => {
-    vi.stubEnv("OPENCLAW_TEST_FAST", "1");
+    vi.stubEnv("WINERYCLAW_TEST_FAST", "1");
     vi.mocked(countActiveDescendantRuns).mockReturnValue(0);
     vi.mocked(isLikelyInterimCronMessage).mockReturnValue(false);
     vi.mocked(deliverOutboundPayloads)
@@ -580,7 +580,7 @@ describe("dispatchCronDelivery — double-announce guard", () => {
   });
 
   it("does not retry permanent direct announce failures", async () => {
-    vi.stubEnv("OPENCLAW_TEST_FAST", "1");
+    vi.stubEnv("WINERYCLAW_TEST_FAST", "1");
     vi.mocked(countActiveDescendantRuns).mockReturnValue(0);
     vi.mocked(isLikelyInterimCronMessage).mockReturnValue(false);
     vi.mocked(deliverOutboundPayloads).mockRejectedValue(new Error("chat not found"));
@@ -694,7 +694,7 @@ describe("dispatchCronDelivery — double-announce guard", () => {
       .mockRejectedValueOnce(new Error("gateway timeout"))
       .mockResolvedValueOnce([{ ok: true } as never]);
 
-    vi.stubEnv("OPENCLAW_TEST_FAST", "1");
+    vi.stubEnv("WINERYCLAW_TEST_FAST", "1");
     try {
       const params = makeBaseParams({ synthesizedText: "Retry test." });
       const state = await dispatchCronDelivery(params);

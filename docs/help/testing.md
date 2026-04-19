@@ -9,7 +9,7 @@ title: "Testing"
 
 # Testing
 
-OpenClaw has three Vitest suites (unit/integration, e2e, live) and a small set of Docker runners.
+WineryClaw has three Vitest suites (unit/integration, e2e, live) and a small set of Docker runners.
 
 This doc is a “how we test” guide:
 
@@ -68,11 +68,11 @@ These commands sit beside the main test suites when you need QA-lab realism:
 - `pnpm openclaw qa matrix`
   - Runs the Matrix live QA lane against a disposable Docker-backed Tuwunel homeserver.
   - Provisions three temporary Matrix users (`driver`, `sut`, `observer`) plus one private room, then starts a QA gateway child with the real Matrix plugin as the SUT transport.
-  - Uses the pinned stable Tuwunel image `ghcr.io/matrix-construct/tuwunel:v1.5.1` by default. Override with `OPENCLAW_QA_MATRIX_TUWUNEL_IMAGE` when you need to test a different image.
+  - Uses the pinned stable Tuwunel image `ghcr.io/matrix-construct/tuwunel:v1.5.1` by default. Override with `WINERYCLAW_QA_MATRIX_TUWUNEL_IMAGE` when you need to test a different image.
   - Writes a Matrix QA report, summary, and observed-events artifact under `.artifacts/qa-e2e/...`.
 - `pnpm openclaw qa telegram`
   - Runs the Telegram live QA lane against a real private group using the driver and SUT bot tokens from env.
-  - Requires `OPENCLAW_QA_TELEGRAM_GROUP_ID`, `OPENCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN`, and `OPENCLAW_QA_TELEGRAM_SUT_BOT_TOKEN`. The group id must be the numeric Telegram chat id.
+  - Requires `WINERYCLAW_QA_TELEGRAM_GROUP_ID`, `WINERYCLAW_QA_TELEGRAM_DRIVER_BOT_TOKEN`, and `WINERYCLAW_QA_TELEGRAM_SUT_BOT_TOKEN`. The group id must be the numeric Telegram chat id.
   - Requires two distinct bots in the same private group, with the SUT bot exposing a Telegram username.
   - For stable bot-to-bot observation, enable Bot-to-Bot Communication Mode in `@BotFather` for both bots and ensure the driver bot can observe group bot traffic.
   - Writes a Telegram QA report, summary, and observed-messages artifact under `.artifacts/qa-e2e/...`.
@@ -200,13 +200,13 @@ Think of the suites as “increasing realism” (and increasing flakiness/cost):
   - The shared Vitest config also fixes `isolate: false` and uses the non-isolated runner across the root projects, e2e, and live configs.
   - The root UI lane keeps its `jsdom` setup and optimizer, but now runs on the shared non-isolated runner too.
   - Each `pnpm test` shard inherits the same `threads` + `isolate: false` defaults from the shared Vitest config.
-  - The shared `scripts/run-vitest.mjs` launcher now also adds `--no-maglev` for Vitest child Node processes by default to reduce V8 compile churn during big local runs. Set `OPENCLAW_VITEST_ENABLE_MAGLEV=1` if you need to compare against stock V8 behavior.
+  - The shared `scripts/run-vitest.mjs` launcher now also adds `--no-maglev` for Vitest child Node processes by default to reduce V8 compile churn during big local runs. Set `WINERYCLAW_VITEST_ENABLE_MAGLEV=1` if you need to compare against stock V8 behavior.
 - Fast-local iteration note:
   - `pnpm test:changed` routes through scoped lanes when the changed paths map cleanly to a smaller suite.
   - `pnpm test:max` and `pnpm test:changed:max` keep the same routing behavior, just with a higher worker cap.
   - Local worker auto-scaling is intentionally conservative now and also backs off when the host load average is already high, so multiple concurrent Vitest runs do less damage by default.
   - The base Vitest config marks the projects/config files as `forceRerunTriggers` so changed-mode reruns stay correct when test wiring changes.
-  - The config keeps `OPENCLAW_VITEST_FS_MODULE_CACHE` enabled on supported hosts; set `OPENCLAW_VITEST_FS_MODULE_CACHE_PATH=/abs/path` if you want one explicit cache location for direct profiling.
+  - The config keeps `WINERYCLAW_VITEST_FS_MODULE_CACHE` enabled on supported hosts; set `WINERYCLAW_VITEST_FS_MODULE_CACHE_PATH=/abs/path` if you want one explicit cache location for direct profiling.
 - Perf-debug note:
   - `pnpm test:perf:imports` enables Vitest import-duration reporting plus import-breakdown output.
   - `pnpm test:perf:imports:changed` scopes the same profiling view to files changed since `origin/main`.
@@ -225,8 +225,8 @@ Think of the suites as “increasing realism” (and increasing flakiness/cost):
   - Uses adaptive workers (CI: up to 2, local: 1 by default).
   - Runs in silent mode by default to reduce console I/O overhead.
 - Useful overrides:
-  - `OPENCLAW_E2E_WORKERS=<n>` to force worker count (capped at 16).
-  - `OPENCLAW_E2E_VERBOSE=1` to re-enable verbose console output.
+  - `WINERYCLAW_E2E_WORKERS=<n>` to force worker count (capped at 16).
+  - `WINERYCLAW_E2E_VERBOSE=1` to re-enable verbose console output.
 - Scope:
   - Multi-instance gateway end-to-end behavior
   - WebSocket/HTTP surfaces, node pairing, and heavier networking
@@ -242,22 +242,22 @@ Think of the suites as “increasing realism” (and increasing flakiness/cost):
 - Scope:
   - Starts an isolated OpenShell gateway on the host via Docker
   - Creates a sandbox from a temporary local Dockerfile
-  - Exercises OpenClaw's OpenShell backend over real `sandbox ssh-config` + SSH exec
+  - Exercises WineryClaw's OpenShell backend over real `sandbox ssh-config` + SSH exec
   - Verifies remote-canonical filesystem behavior through the sandbox fs bridge
 - Expectations:
   - Opt-in only; not part of the default `pnpm test:e2e` run
   - Requires a local `openshell` CLI plus a working Docker daemon
   - Uses isolated `HOME` / `XDG_CONFIG_HOME`, then destroys the test gateway and sandbox
 - Useful overrides:
-  - `OPENCLAW_E2E_OPENSHELL=1` to enable the test when running the broader e2e suite manually
-  - `OPENCLAW_E2E_OPENSHELL_COMMAND=/path/to/openshell` to point at a non-default CLI binary or wrapper script
+  - `WINERYCLAW_E2E_OPENSHELL=1` to enable the test when running the broader e2e suite manually
+  - `WINERYCLAW_E2E_OPENSHELL_COMMAND=/path/to/openshell` to point at a non-default CLI binary or wrapper script
 
 ### Live (real providers + real models)
 
 - Command: `pnpm test:live`
 - Config: `vitest.live.config.ts`
 - Files: `src/**/*.live.test.ts`
-- Default: **enabled** by `pnpm test:live` (sets `OPENCLAW_LIVE_TEST=1`)
+- Default: **enabled** by `pnpm test:live` (sets `WINERYCLAW_LIVE_TEST=1`)
 - Scope:
   - “Does this provider/model actually work _today_ with real creds?”
   - Catch provider format changes, tool-calling quirks, auth issues, and rate limit behavior
@@ -267,14 +267,14 @@ Think of the suites as “increasing realism” (and increasing flakiness/cost):
   - Prefer running narrowed subsets instead of “everything”
 - Live runs source `~/.profile` to pick up missing API keys.
 - By default, live runs still isolate `HOME` and copy config/auth material into a temp test home so unit fixtures cannot mutate your real `~/.openclaw`.
-- Set `OPENCLAW_LIVE_USE_REAL_HOME=1` only when you intentionally need live tests to use your real home directory.
-- `pnpm test:live` now defaults to a quieter mode: it keeps `[live] ...` progress output, but suppresses the extra `~/.profile` notice and mutes gateway bootstrap logs/Bonjour chatter. Set `OPENCLAW_LIVE_TEST_QUIET=0` if you want the full startup logs back.
-- API key rotation (provider-specific): set `*_API_KEYS` with comma/semicolon format or `*_API_KEY_1`, `*_API_KEY_2` (for example `OPENAI_API_KEYS`, `ANTHROPIC_API_KEYS`, `GEMINI_API_KEYS`) or per-live override via `OPENCLAW_LIVE_*_KEY`; tests retry on rate limit responses.
+- Set `WINERYCLAW_LIVE_USE_REAL_HOME=1` only when you intentionally need live tests to use your real home directory.
+- `pnpm test:live` now defaults to a quieter mode: it keeps `[live] ...` progress output, but suppresses the extra `~/.profile` notice and mutes gateway bootstrap logs/Bonjour chatter. Set `WINERYCLAW_LIVE_TEST_QUIET=0` if you want the full startup logs back.
+- API key rotation (provider-specific): set `*_API_KEYS` with comma/semicolon format or `*_API_KEY_1`, `*_API_KEY_2` (for example `OPENAI_API_KEYS`, `ANTHROPIC_API_KEYS`, `GEMINI_API_KEYS`) or per-live override via `WINERYCLAW_LIVE_*_KEY`; tests retry on rate limit responses.
 - Progress/heartbeat output:
   - Live suites now emit progress lines to stderr so long provider calls are visibly active even when Vitest console capture is quiet.
   - `vitest.live.config.ts` disables Vitest console interception so provider/gateway progress lines stream immediately during live runs.
-  - Tune direct-model heartbeats with `OPENCLAW_LIVE_HEARTBEAT_MS`.
-  - Tune gateway/probe heartbeats with `OPENCLAW_LIVE_GATEWAY_HEARTBEAT_MS`.
+  - Tune direct-model heartbeats with `WINERYCLAW_LIVE_HEARTBEAT_MS`.
+  - Tune gateway/probe heartbeats with `WINERYCLAW_LIVE_GATEWAY_HEARTBEAT_MS`.
 
 ## Which suite should I run?
 
@@ -297,8 +297,8 @@ Use this decision table:
   - App kept in foreground.
   - Permissions/capture consent granted for capabilities you expect to pass.
 - Optional target overrides:
-  - `OPENCLAW_ANDROID_NODE_ID` or `OPENCLAW_ANDROID_NODE_NAME`.
-  - `OPENCLAW_ANDROID_GATEWAY_URL` / `OPENCLAW_ANDROID_GATEWAY_TOKEN` / `OPENCLAW_ANDROID_GATEWAY_PASSWORD`.
+  - `WINERYCLAW_ANDROID_NODE_ID` or `WINERYCLAW_ANDROID_NODE_NAME`.
+  - `WINERYCLAW_ANDROID_GATEWAY_URL` / `WINERYCLAW_ANDROID_GATEWAY_TOKEN` / `WINERYCLAW_ANDROID_GATEWAY_PASSWORD`.
 - Full Android setup details: [Android App](/platforms/android)
 
 ## Live: model smoke (profile keys)
@@ -316,18 +316,18 @@ Live tests are split into two layers so we can isolate failures:
   - Use `getApiKeyForModel` to select models you have creds for
   - Run a small completion per model (and targeted regressions where needed)
 - How to enable:
-  - `pnpm test:live` (or `OPENCLAW_LIVE_TEST=1` if invoking Vitest directly)
-- Set `OPENCLAW_LIVE_MODELS=modern` (or `all`, alias for modern) to actually run this suite; otherwise it skips to keep `pnpm test:live` focused on gateway smoke
+  - `pnpm test:live` (or `WINERYCLAW_LIVE_TEST=1` if invoking Vitest directly)
+- Set `WINERYCLAW_LIVE_MODELS=modern` (or `all`, alias for modern) to actually run this suite; otherwise it skips to keep `pnpm test:live` focused on gateway smoke
 - How to select models:
-  - `OPENCLAW_LIVE_MODELS=modern` to run the modern allowlist (Opus/Sonnet 4.6+, GPT-5.x + Codex, Gemini 3, GLM 4.7, MiniMax M2.7, Grok 4)
-  - `OPENCLAW_LIVE_MODELS=all` is an alias for the modern allowlist
-  - or `OPENCLAW_LIVE_MODELS="openai/gpt-5.4,anthropic/claude-opus-4-6,..."` (comma allowlist)
-  - Modern/all sweeps default to a curated high-signal cap; set `OPENCLAW_LIVE_MAX_MODELS=0` for an exhaustive modern sweep or a positive number for a smaller cap.
+  - `WINERYCLAW_LIVE_MODELS=modern` to run the modern allowlist (Opus/Sonnet 4.6+, GPT-5.x + Codex, Gemini 3, GLM 4.7, MiniMax M2.7, Grok 4)
+  - `WINERYCLAW_LIVE_MODELS=all` is an alias for the modern allowlist
+  - or `WINERYCLAW_LIVE_MODELS="openai/gpt-5.4,anthropic/claude-opus-4-6,..."` (comma allowlist)
+  - Modern/all sweeps default to a curated high-signal cap; set `WINERYCLAW_LIVE_MAX_MODELS=0` for an exhaustive modern sweep or a positive number for a smaller cap.
 - How to select providers:
-  - `OPENCLAW_LIVE_PROVIDERS="google,google-antigravity,google-gemini-cli"` (comma allowlist)
+  - `WINERYCLAW_LIVE_PROVIDERS="google,google-antigravity,google-gemini-cli"` (comma allowlist)
 - Where keys come from:
   - By default: profile store and env fallbacks
-  - Set `OPENCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to enforce **profile store** only
+  - Set `WINERYCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to enforce **profile store** only
 - Why this exists:
   - Separates “provider API is broken / key is invalid” from “gateway agent pipeline is broken”
   - Contains small, isolated regressions (example: OpenAI Responses/Codex Responses reasoning replay + tool-call flows)
@@ -349,14 +349,14 @@ Live tests are split into two layers so we can isolate failures:
   - image probe: the test attaches a generated PNG (cat + randomized code) and expects the model to return `cat <CODE>`.
   - Implementation reference: `src/gateway/gateway-models.profiles.live.test.ts` and `src/gateway/live-image-probe.ts`.
 - How to enable:
-  - `pnpm test:live` (or `OPENCLAW_LIVE_TEST=1` if invoking Vitest directly)
+  - `pnpm test:live` (or `WINERYCLAW_LIVE_TEST=1` if invoking Vitest directly)
 - How to select models:
   - Default: modern allowlist (Opus/Sonnet 4.6+, GPT-5.x + Codex, Gemini 3, GLM 4.7, MiniMax M2.7, Grok 4)
-  - `OPENCLAW_LIVE_GATEWAY_MODELS=all` is an alias for the modern allowlist
-  - Or set `OPENCLAW_LIVE_GATEWAY_MODELS="provider/model"` (or comma list) to narrow
-  - Modern/all gateway sweeps default to a curated high-signal cap; set `OPENCLAW_LIVE_GATEWAY_MAX_MODELS=0` for an exhaustive modern sweep or a positive number for a smaller cap.
+  - `WINERYCLAW_LIVE_GATEWAY_MODELS=all` is an alias for the modern allowlist
+  - Or set `WINERYCLAW_LIVE_GATEWAY_MODELS="provider/model"` (or comma list) to narrow
+  - Modern/all gateway sweeps default to a curated high-signal cap; set `WINERYCLAW_LIVE_GATEWAY_MAX_MODELS=0` for an exhaustive modern sweep or a positive number for a smaller cap.
 - How to select providers (avoid “OpenRouter everything”):
-  - `OPENCLAW_LIVE_GATEWAY_PROVIDERS="google,google-antigravity,google-gemini-cli,openai,anthropic,zai,minimax"` (comma allowlist)
+  - `WINERYCLAW_LIVE_GATEWAY_PROVIDERS="google,google-antigravity,google-gemini-cli,openai,anthropic,zai,minimax"` (comma allowlist)
 - Tool + image probes are always on in this live test:
   - `read` probe + `exec+read` probe (tool stress)
   - image probe runs when the model advertises image input support
@@ -380,26 +380,26 @@ openclaw models list --json
 - Goal: validate the Gateway + agent pipeline using a local CLI backend, without touching your default config.
 - Backend-specific smoke defaults live with the owning extension's `cli-backend.ts` definition.
 - Enable:
-  - `pnpm test:live` (or `OPENCLAW_LIVE_TEST=1` if invoking Vitest directly)
-  - `OPENCLAW_LIVE_CLI_BACKEND=1`
+  - `pnpm test:live` (or `WINERYCLAW_LIVE_TEST=1` if invoking Vitest directly)
+  - `WINERYCLAW_LIVE_CLI_BACKEND=1`
 - Defaults:
   - Default provider/model: `claude-cli/claude-sonnet-4-6`
   - Command/args/image behavior come from the owning CLI backend plugin metadata.
 - Overrides (optional):
-  - `OPENCLAW_LIVE_CLI_BACKEND_MODEL="codex-cli/gpt-5.4"`
-  - `OPENCLAW_LIVE_CLI_BACKEND_COMMAND="/full/path/to/codex"`
-  - `OPENCLAW_LIVE_CLI_BACKEND_ARGS='["exec","--json","--color","never","--sandbox","read-only","--skip-git-repo-check"]'`
-  - `OPENCLAW_LIVE_CLI_BACKEND_IMAGE_PROBE=1` to send a real image attachment (paths are injected into the prompt).
-  - `OPENCLAW_LIVE_CLI_BACKEND_IMAGE_ARG="--image"` to pass image file paths as CLI args instead of prompt injection.
-  - `OPENCLAW_LIVE_CLI_BACKEND_IMAGE_MODE="repeat"` (or `"list"`) to control how image args are passed when `IMAGE_ARG` is set.
-  - `OPENCLAW_LIVE_CLI_BACKEND_RESUME_PROBE=1` to send a second turn and validate resume flow.
-  - `OPENCLAW_LIVE_CLI_BACKEND_MODEL_SWITCH_PROBE=0` to disable the default Claude Sonnet -> Opus same-session continuity probe (set to `1` to force it on when the selected model supports a switch target).
+  - `WINERYCLAW_LIVE_CLI_BACKEND_MODEL="codex-cli/gpt-5.4"`
+  - `WINERYCLAW_LIVE_CLI_BACKEND_COMMAND="/full/path/to/codex"`
+  - `WINERYCLAW_LIVE_CLI_BACKEND_ARGS='["exec","--json","--color","never","--sandbox","read-only","--skip-git-repo-check"]'`
+  - `WINERYCLAW_LIVE_CLI_BACKEND_IMAGE_PROBE=1` to send a real image attachment (paths are injected into the prompt).
+  - `WINERYCLAW_LIVE_CLI_BACKEND_IMAGE_ARG="--image"` to pass image file paths as CLI args instead of prompt injection.
+  - `WINERYCLAW_LIVE_CLI_BACKEND_IMAGE_MODE="repeat"` (or `"list"`) to control how image args are passed when `IMAGE_ARG` is set.
+  - `WINERYCLAW_LIVE_CLI_BACKEND_RESUME_PROBE=1` to send a second turn and validate resume flow.
+  - `WINERYCLAW_LIVE_CLI_BACKEND_MODEL_SWITCH_PROBE=0` to disable the default Claude Sonnet -> Opus same-session continuity probe (set to `1` to force it on when the selected model supports a switch target).
 
 Example:
 
 ```bash
-OPENCLAW_LIVE_CLI_BACKEND=1 \
-  OPENCLAW_LIVE_CLI_BACKEND_MODEL="codex-cli/gpt-5.4" \
+WINERYCLAW_LIVE_CLI_BACKEND=1 \
+  WINERYCLAW_LIVE_CLI_BACKEND_MODEL="codex-cli/gpt-5.4" \
   pnpm test:live src/gateway/gateway-cli-backend.live.test.ts
 ```
 
@@ -422,7 +422,7 @@ Notes:
 
 - The Docker runner lives at `scripts/test-live-cli-backend-docker.sh`.
 - It runs the live CLI-backend smoke inside the repo Docker image as the non-root `node` user.
-- It resolves CLI smoke metadata from the owning extension, then installs the matching Linux CLI package (`@anthropic-ai/claude-code`, `@openai/codex`, or `@google/gemini-cli`) into a cached writable prefix at `OPENCLAW_DOCKER_CLI_TOOLS_DIR` (default: `~/.cache/openclaw/docker-cli-tools`).
+- It resolves CLI smoke metadata from the owning extension, then installs the matching Linux CLI package (`@anthropic-ai/claude-code`, `@openai/codex`, or `@google/gemini-cli`) into a cached writable prefix at `WINERYCLAW_DOCKER_CLI_TOOLS_DIR` (default: `~/.cache/openclaw/docker-cli-tools`).
 - `pnpm test:docker:live-cli-backend:claude-subscription` requires portable Claude Code subscription OAuth through either `~/.claude/.credentials.json` with `claudeAiOauth.subscriptionType` or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`. It first proves direct `claude -p` in Docker, then runs two Gateway CLI-backend turns without preserving Anthropic API-key env vars. This subscription lane disables the Claude MCP/tool and image probes by default because Claude currently routes third-party app usage through extra-usage billing instead of normal subscription plan limits.
 - The live CLI-backend smoke now exercises the same end-to-end flow for Claude, Codex, and Gemini: text turn, image classification turn, then MCP `cron` tool call verified through the gateway CLI.
 - Claude's default smoke also patches the session from Sonnet to Opus and verifies the resumed session still remembers an earlier note.
@@ -437,27 +437,27 @@ Notes:
   - verify the follow-up lands in the bound ACP session transcript
 - Enable:
   - `pnpm test:live src/gateway/gateway-acp-bind.live.test.ts`
-  - `OPENCLAW_LIVE_ACP_BIND=1`
+  - `WINERYCLAW_LIVE_ACP_BIND=1`
 - Defaults:
   - ACP agents in Docker: `claude,codex,gemini`
   - ACP agent for direct `pnpm test:live ...`: `claude`
   - Synthetic channel: Slack DM-style conversation context
   - ACP backend: `acpx`
 - Overrides:
-  - `OPENCLAW_LIVE_ACP_BIND_AGENT=claude`
-  - `OPENCLAW_LIVE_ACP_BIND_AGENT=codex`
-  - `OPENCLAW_LIVE_ACP_BIND_AGENT=gemini`
-  - `OPENCLAW_LIVE_ACP_BIND_AGENTS=claude,codex,gemini`
-  - `OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND='npx -y @agentclientprotocol/claude-agent-acp@<version>'`
+  - `WINERYCLAW_LIVE_ACP_BIND_AGENT=claude`
+  - `WINERYCLAW_LIVE_ACP_BIND_AGENT=codex`
+  - `WINERYCLAW_LIVE_ACP_BIND_AGENT=gemini`
+  - `WINERYCLAW_LIVE_ACP_BIND_AGENTS=claude,codex,gemini`
+  - `WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND='npx -y @agentclientprotocol/claude-agent-acp@<version>'`
 - Notes:
   - This lane uses the gateway `chat.send` surface with admin-only synthetic originating-route fields so tests can attach message-channel context without pretending to deliver externally.
-  - When `OPENCLAW_LIVE_ACP_BIND_AGENT_COMMAND` is unset, the test uses the embedded `acpx` plugin's built-in agent registry for the selected ACP harness agent.
+  - When `WINERYCLAW_LIVE_ACP_BIND_AGENT_COMMAND` is unset, the test uses the embedded `acpx` plugin's built-in agent registry for the selected ACP harness agent.
 
 Example:
 
 ```bash
-OPENCLAW_LIVE_ACP_BIND=1 \
-  OPENCLAW_LIVE_ACP_BIND_AGENT=claude \
+WINERYCLAW_LIVE_ACP_BIND=1 \
+  WINERYCLAW_LIVE_ACP_BIND_AGENT=claude \
   pnpm test:live src/gateway/gateway-acp-bind.live.test.ts
 ```
 
@@ -479,27 +479,27 @@ Docker notes:
 
 - The Docker runner lives at `scripts/test-live-acp-bind-docker.sh`.
 - By default, it runs the ACP bind smoke against all supported live CLI agents in sequence: `claude`, `codex`, then `gemini`.
-- Use `OPENCLAW_LIVE_ACP_BIND_AGENTS=claude`, `OPENCLAW_LIVE_ACP_BIND_AGENTS=codex`, or `OPENCLAW_LIVE_ACP_BIND_AGENTS=gemini` to narrow the matrix.
+- Use `WINERYCLAW_LIVE_ACP_BIND_AGENTS=claude`, `WINERYCLAW_LIVE_ACP_BIND_AGENTS=codex`, or `WINERYCLAW_LIVE_ACP_BIND_AGENTS=gemini` to narrow the matrix.
 - It sources `~/.profile`, stages the matching CLI auth material into the container, installs `acpx` into a writable npm prefix, then installs the requested live CLI (`@anthropic-ai/claude-code`, `@openai/codex`, or `@google/gemini-cli`) if missing.
-- Inside Docker, the runner sets `OPENCLAW_LIVE_ACP_BIND_ACPX_COMMAND=$HOME/.npm-global/bin/acpx` so acpx keeps provider env vars from the sourced profile available to the child harness CLI.
+- Inside Docker, the runner sets `WINERYCLAW_LIVE_ACP_BIND_ACPX_COMMAND=$HOME/.npm-global/bin/acpx` so acpx keeps provider env vars from the sourced profile available to the child harness CLI.
 
 ## Live: Codex app-server harness smoke
 
 - Goal: validate the plugin-owned Codex harness through the normal gateway
   `agent` method:
   - load the bundled `codex` plugin
-  - select `OPENCLAW_AGENT_RUNTIME=codex`
+  - select `WINERYCLAW_AGENT_RUNTIME=codex`
   - send a first gateway agent turn to `codex/gpt-5.4`
-  - send a second turn to the same OpenClaw session and verify the app-server
+  - send a second turn to the same WineryClaw session and verify the app-server
     thread can resume
   - run `/codex status` and `/codex models` through the same gateway command
     path
 - Test: `src/gateway/gateway-codex-harness.live.test.ts`
-- Enable: `OPENCLAW_LIVE_CODEX_HARNESS=1`
+- Enable: `WINERYCLAW_LIVE_CODEX_HARNESS=1`
 - Default model: `codex/gpt-5.4`
-- Optional image probe: `OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE=1`
-- Optional MCP/tool probe: `OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE=1`
-- The smoke sets `OPENCLAW_AGENT_HARNESS_FALLBACK=none` so a broken Codex
+- Optional image probe: `WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE=1`
+- Optional MCP/tool probe: `WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE=1`
+- The smoke sets `WINERYCLAW_AGENT_HARNESS_FALLBACK=none` so a broken Codex
   harness cannot pass by silently falling back to PI.
 - Auth: `OPENAI_API_KEY` from the shell/profile, plus optional copied
   `~/.codex/auth.json` and `~/.codex/config.toml`
@@ -508,10 +508,10 @@ Local recipe:
 
 ```bash
 source ~/.profile
-OPENCLAW_LIVE_CODEX_HARNESS=1 \
-  OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE=1 \
-  OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE=1 \
-  OPENCLAW_LIVE_CODEX_HARNESS_MODEL=codex/gpt-5.4 \
+WINERYCLAW_LIVE_CODEX_HARNESS=1 \
+  WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE=1 \
+  WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE=1 \
+  WINERYCLAW_LIVE_CODEX_HARNESS_MODEL=codex/gpt-5.4 \
   pnpm test:live -- src/gateway/gateway-codex-harness.live.test.ts
 ```
 
@@ -529,9 +529,9 @@ Docker notes:
   auth files when present, installs `@openai/codex` into a writable mounted npm
   prefix, stages the source tree, then runs only the Codex-harness live test.
 - Docker enables the image and MCP/tool probes by default. Set
-  `OPENCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE=0` or
-  `OPENCLAW_LIVE_CODEX_HARNESS_MCP_PROBE=0` when you need a narrower debug run.
-- Docker also exports `OPENCLAW_AGENT_HARNESS_FALLBACK=none`, matching the live
+  `WINERYCLAW_LIVE_CODEX_HARNESS_IMAGE_PROBE=0` or
+  `WINERYCLAW_LIVE_CODEX_HARNESS_MCP_PROBE=0` when you need a narrower debug run.
+- Docker also exports `WINERYCLAW_AGENT_HARNESS_FALLBACK=none`, matching the live
   test config so `openai-codex/*` or PI fallback cannot hide a Codex harness
   regression.
 
@@ -540,17 +540,17 @@ Docker notes:
 Narrow, explicit allowlists are fastest and least flaky:
 
 - Single model, direct (no gateway):
-  - `OPENCLAW_LIVE_MODELS="openai/gpt-5.4" pnpm test:live src/agents/models.profiles.live.test.ts`
+  - `WINERYCLAW_LIVE_MODELS="openai/gpt-5.4" pnpm test:live src/agents/models.profiles.live.test.ts`
 
 - Single model, gateway smoke:
-  - `OPENCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.4" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
+  - `WINERYCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.4" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
 
 - Tool calling across several providers:
-  - `OPENCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.4,anthropic/claude-opus-4-6,google/gemini-3-flash-preview,zai/glm-4.7,minimax/MiniMax-M2.7" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
+  - `WINERYCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.4,anthropic/claude-opus-4-6,google/gemini-3-flash-preview,zai/glm-4.7,minimax/MiniMax-M2.7" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
 
 - Google focus (Gemini API key + Antigravity):
-  - Gemini (API key): `OPENCLAW_LIVE_GATEWAY_MODELS="google/gemini-3-flash-preview" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
-  - Antigravity (OAuth): `OPENCLAW_LIVE_GATEWAY_MODELS="google-antigravity/claude-opus-4-6-thinking,google-antigravity/gemini-3-pro-high" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
+  - Gemini (API key): `WINERYCLAW_LIVE_GATEWAY_MODELS="google/gemini-3-flash-preview" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
+  - Antigravity (OAuth): `WINERYCLAW_LIVE_GATEWAY_MODELS="google-antigravity/claude-opus-4-6-thinking,google-antigravity/gemini-3-pro-high" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
 
 Notes:
 
@@ -558,8 +558,8 @@ Notes:
 - `google-antigravity/...` uses the Antigravity OAuth bridge (Cloud Code Assist-style agent endpoint).
 - `google-gemini-cli/...` uses the local Gemini CLI on your machine (separate auth + tooling quirks).
 - Gemini API vs Gemini CLI:
-  - API: OpenClaw calls Google’s hosted Gemini API over HTTP (API key / profile auth); this is what most users mean by “Gemini”.
-  - CLI: OpenClaw shells out to a local `gemini` binary; it has its own auth and can behave differently (streaming/tool support/version skew).
+  - API: WineryClaw calls Google’s hosted Gemini API over HTTP (API key / profile auth); this is what most users mean by “Gemini”.
+  - CLI: WineryClaw shells out to a local `gemini` binary; it has its own auth and can behave differently (streaming/tool support/version skew).
 
 ## Live: model matrix (what we cover)
 
@@ -578,7 +578,7 @@ This is the “common models” run we expect to keep working:
 - MiniMax: `minimax/MiniMax-M2.7`
 
 Run gateway smoke with tools + image:
-`OPENCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.4,openai-codex/gpt-5.4,anthropic/claude-opus-4-6,google/gemini-3.1-pro-preview,google/gemini-3-flash-preview,google-antigravity/claude-opus-4-6-thinking,google-antigravity/gemini-3-flash,zai/glm-4.7,minimax/MiniMax-M2.7" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
+`WINERYCLAW_LIVE_GATEWAY_MODELS="openai/gpt-5.4,openai-codex/gpt-5.4,anthropic/claude-opus-4-6,google/gemini-3.1-pro-preview,google/gemini-3-flash-preview,google-antigravity/claude-opus-4-6-thinking,google-antigravity/gemini-3-flash,zai/glm-4.7,minimax/MiniMax-M2.7" pnpm test:live src/gateway/gateway-models.profiles.live.test.ts`
 
 ### Baseline: tool calling (Read + optional Exec)
 
@@ -599,7 +599,7 @@ Optional additional coverage (nice to have):
 
 ### Vision: image send (attachment → multimodal message)
 
-Include at least one image-capable model in `OPENCLAW_LIVE_GATEWAY_MODELS` (Claude/Gemini/OpenAI vision-capable variants, etc.) to exercise the image probe.
+Include at least one image-capable model in `WINERYCLAW_LIVE_GATEWAY_MODELS` (Claude/Gemini/OpenAI vision-capable variants, etc.) to exercise the image probe.
 
 ### Aggregators / alternate gateways
 
@@ -622,9 +622,9 @@ Live tests discover credentials the same way the CLI does. Practical implication
 - If the CLI works, live tests should find the same keys.
 - If a live test says “no creds”, debug the same way you’d debug `openclaw models list` / model selection.
 
-- Per-agent auth profiles: `~/.openclaw/agents/<agentId>/agent/auth-profiles.json` (this is what “profile keys” means in the live tests)
-- Config: `~/.openclaw/openclaw.json` (or `OPENCLAW_CONFIG_PATH`)
-- Legacy state dir: `~/.openclaw/credentials/` (copied into the staged live home when present, but not the main profile-key store)
+- Per-agent auth profiles: `~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json` (this is what “profile keys” means in the live tests)
+- Config: `~/.wineryclaw/wineryclaw.json` (or `WINERYCLAW_CONFIG_PATH`)
+- Legacy state dir: `~/.wineryclaw/credentials/` (copied into the staged live home when present, but not the main profile-key store)
 - Live local runs copy the active config, per-agent `auth-profiles.json` files, legacy `credentials/`, and supported external CLI auth dirs into a temp test home by default; staged live homes skip `workspace/` and `sandboxes/`, and `agents.*.workspace` / `agentDir` path overrides are stripped so probes stay off your real host workspace.
 
 If you want to rely on env keys (e.g. exported in your `~/.profile`), run local tests after `source ~/.profile`, or use the Docker runners below (they can mount `~/.profile` into the container).
@@ -643,7 +643,7 @@ If you want to rely on env keys (e.g. exported in your `~/.profile`), run local 
 ## ComfyUI workflow media live
 
 - Test: `extensions/comfy/comfy.live.test.ts`
-- Enable: `OPENCLAW_LIVE_TEST=1 COMFY_LIVE_TEST=1 pnpm test:live -- extensions/comfy/comfy.live.test.ts`
+- Enable: `WINERYCLAW_LIVE_TEST=1 COMFY_LIVE_TEST=1 pnpm test:live -- extensions/comfy/comfy.live.test.ts`
 - Scope:
   - Exercises the bundled comfy image, video, and `music_generate` paths
   - Skips each capability unless `models.providers.comfy.<capability>` is configured
@@ -668,16 +668,16 @@ If you want to rely on env keys (e.g. exported in your `~/.profile`), run local 
   - `openai`
   - `google`
 - Optional narrowing:
-  - `OPENCLAW_LIVE_IMAGE_GENERATION_PROVIDERS="openai,google"`
-  - `OPENCLAW_LIVE_IMAGE_GENERATION_MODELS="openai/gpt-image-1,google/gemini-3.1-flash-image-preview"`
-  - `OPENCLAW_LIVE_IMAGE_GENERATION_CASES="google:flash-generate,google:pro-edit"`
+  - `WINERYCLAW_LIVE_IMAGE_GENERATION_PROVIDERS="openai,google"`
+  - `WINERYCLAW_LIVE_IMAGE_GENERATION_MODELS="openai/gpt-image-1,google/gemini-3.1-flash-image-preview"`
+  - `WINERYCLAW_LIVE_IMAGE_GENERATION_CASES="google:flash-generate,google:pro-edit"`
 - Optional auth behavior:
-  - `OPENCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to force profile-store auth and ignore env-only overrides
+  - `WINERYCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to force profile-store auth and ignore env-only overrides
 
 ## Music generation live
 
 - Test: `extensions/music-generation-providers.live.test.ts`
-- Enable: `OPENCLAW_LIVE_TEST=1 pnpm test:live -- extensions/music-generation-providers.live.test.ts`
+- Enable: `WINERYCLAW_LIVE_TEST=1 pnpm test:live -- extensions/music-generation-providers.live.test.ts`
 - Harness: `pnpm test:live:media music`
 - Scope:
   - Exercises the shared bundled music-generation provider path
@@ -693,15 +693,15 @@ If you want to rely on env keys (e.g. exported in your `~/.profile`), run local 
     - `minimax`: `generate`
     - `comfy`: separate Comfy live file, not this shared sweep
 - Optional narrowing:
-  - `OPENCLAW_LIVE_MUSIC_GENERATION_PROVIDERS="google,minimax"`
-  - `OPENCLAW_LIVE_MUSIC_GENERATION_MODELS="google/lyria-3-clip-preview,minimax/music-2.5+"`
+  - `WINERYCLAW_LIVE_MUSIC_GENERATION_PROVIDERS="google,minimax"`
+  - `WINERYCLAW_LIVE_MUSIC_GENERATION_MODELS="google/lyria-3-clip-preview,minimax/music-2.5+"`
 - Optional auth behavior:
-  - `OPENCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to force profile-store auth and ignore env-only overrides
+  - `WINERYCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to force profile-store auth and ignore env-only overrides
 
 ## Video generation live
 
 - Test: `extensions/video-generation-providers.live.test.ts`
-- Enable: `OPENCLAW_LIVE_TEST=1 pnpm test:live -- extensions/video-generation-providers.live.test.ts`
+- Enable: `WINERYCLAW_LIVE_TEST=1 pnpm test:live -- extensions/video-generation-providers.live.test.ts`
 - Harness: `pnpm test:live:media video`
 - Scope:
   - Exercises the shared bundled video-generation provider path
@@ -715,7 +715,7 @@ If you want to rely on env keys (e.g. exported in your `~/.profile`), run local 
   - Current declared-but-skipped `imageToVideo` providers in the shared sweep:
     - `vydra` because bundled `veo3` is text-only and bundled `kling` requires a remote image URL
   - Provider-specific Vydra coverage:
-    - `OPENCLAW_LIVE_TEST=1 OPENCLAW_LIVE_VYDRA_VIDEO=1 pnpm test:live -- extensions/vydra/vydra.live.test.ts`
+    - `WINERYCLAW_LIVE_TEST=1 WINERYCLAW_LIVE_VYDRA_VIDEO=1 pnpm test:live -- extensions/vydra/vydra.live.test.ts`
     - that file runs `veo3` text-to-video plus a `kling` lane that uses a remote image URL fixture by default
   - Current `videoToVideo` live coverage:
     - `runway` only when the selected model is `runway/gen4_aleph`
@@ -724,10 +724,10 @@ If you want to rely on env keys (e.g. exported in your `~/.profile`), run local 
     - `google` because the current shared Gemini/Veo lane uses local buffer-backed input and that path is not accepted in the shared sweep
     - `openai` because the current shared lane lacks org-specific video inpaint/remix access guarantees
 - Optional narrowing:
-  - `OPENCLAW_LIVE_VIDEO_GENERATION_PROVIDERS="google,openai,runway"`
-  - `OPENCLAW_LIVE_VIDEO_GENERATION_MODELS="google/veo-3.1-fast-generate-preview,openai/sora-2,runway/gen4_aleph"`
+  - `WINERYCLAW_LIVE_VIDEO_GENERATION_PROVIDERS="google,openai,runway"`
+  - `WINERYCLAW_LIVE_VIDEO_GENERATION_MODELS="google/veo-3.1-fast-generate-preview,openai/sora-2,runway/gen4_aleph"`
 - Optional auth behavior:
-  - `OPENCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to force profile-store auth and ignore env-only overrides
+  - `WINERYCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to force profile-store auth and ignore env-only overrides
 
 ## Media live harness
 
@@ -749,11 +749,11 @@ These Docker runners split into two buckets:
 
 - Live-model runners: `test:docker:live-models` and `test:docker:live-gateway` run only their matching profile-key live file inside the repo Docker image (`src/agents/models.profiles.live.test.ts` and `src/gateway/gateway-models.profiles.live.test.ts`), mounting your local config dir and workspace (and sourcing `~/.profile` if mounted). The matching local entrypoints are `test:live:models-profiles` and `test:live:gateway-profiles`.
 - Docker live runners default to a smaller smoke cap so a full Docker sweep stays practical:
-  `test:docker:live-models` defaults to `OPENCLAW_LIVE_MAX_MODELS=12`, and
-  `test:docker:live-gateway` defaults to `OPENCLAW_LIVE_GATEWAY_SMOKE=1`,
-  `OPENCLAW_LIVE_GATEWAY_MAX_MODELS=8`,
-  `OPENCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS=45000`, and
-  `OPENCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS=90000`. Override those env vars when you
+  `test:docker:live-models` defaults to `WINERYCLAW_LIVE_MAX_MODELS=12`, and
+  `test:docker:live-gateway` defaults to `WINERYCLAW_LIVE_GATEWAY_SMOKE=1`,
+  `WINERYCLAW_LIVE_GATEWAY_MAX_MODELS=8`,
+  `WINERYCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS=45000`, and
+  `WINERYCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS=90000`. Override those env vars when you
   explicitly want the larger exhaustive scan.
 - `test:docker:all` builds the live Docker image once via `test:docker:live-build`, then reuses it for the two live Docker lanes.
 - Container smoke runners: `test:docker:openwebui`, `test:docker:onboard`, `test:docker:gateway-network`, `test:docker:mcp-channels`, and `test:docker:plugins` boot one or more real containers and verify higher-level integration paths.
@@ -778,19 +778,19 @@ The staging step skips large local-only caches and app build outputs such as
 `.pnpm-store`, `.worktrees`, `__openclaw_vitest__`, and app-local `.build` or
 Gradle output directories so Docker live runs do not spend minutes copying
 machine-specific artifacts.
-They also set `OPENCLAW_SKIP_CHANNELS=1` so gateway live probes do not start
+They also set `WINERYCLAW_SKIP_CHANNELS=1` so gateway live probes do not start
 real Telegram/Discord/etc. channel workers inside the container.
 `test:docker:live-models` still runs `pnpm test:live`, so pass through
-`OPENCLAW_LIVE_GATEWAY_*` as well when you need to narrow or exclude gateway
+`WINERYCLAW_LIVE_GATEWAY_*` as well when you need to narrow or exclude gateway
 live coverage from that Docker lane.
 `test:docker:openwebui` is a higher-level compatibility smoke: it starts an
-OpenClaw gateway container with the OpenAI-compatible HTTP endpoints enabled,
+WineryClaw gateway container with the OpenAI-compatible HTTP endpoints enabled,
 starts a pinned Open WebUI container against that gateway, signs in through
 Open WebUI, verifies `/api/models` exposes `openclaw/default`, then sends a
 real chat request through Open WebUI's `/api/chat/completions` proxy.
 The first run can be noticeably slower because Docker may need to pull the
 Open WebUI image and Open WebUI may need to finish its own cold-start setup.
-This lane expects a usable live model key, and `OPENCLAW_PROFILE_FILE`
+This lane expects a usable live model key, and `WINERYCLAW_PROFILE_FILE`
 (`~/.profile` by default) is the primary way to provide it in Dockerized runs.
 Successful runs print a small JSON payload like `{ "ok": true, "model":
 "openclaw/default", ... }`.
@@ -810,21 +810,21 @@ Manual ACP plain-language thread smoke (not CI):
 
 Useful env vars:
 
-- `OPENCLAW_CONFIG_DIR=...` (default: `~/.openclaw`) mounted to `/home/node/.openclaw`
-- `OPENCLAW_WORKSPACE_DIR=...` (default: `~/.openclaw/workspace`) mounted to `/home/node/.openclaw/workspace`
-- `OPENCLAW_PROFILE_FILE=...` (default: `~/.profile`) mounted to `/home/node/.profile` and sourced before running tests
-- `OPENCLAW_DOCKER_CLI_TOOLS_DIR=...` (default: `~/.cache/openclaw/docker-cli-tools`) mounted to `/home/node/.npm-global` for cached CLI installs inside Docker
+- `WINERYCLAW_CONFIG_DIR=...` (default: `~/.openclaw`) mounted to `/home/node/.openclaw`
+- `WINERYCLAW_WORKSPACE_DIR=...` (default: `~/.wineryclaw/workspace`) mounted to `/home/node/.wineryclaw/workspace`
+- `WINERYCLAW_PROFILE_FILE=...` (default: `~/.profile`) mounted to `/home/node/.profile` and sourced before running tests
+- `WINERYCLAW_DOCKER_CLI_TOOLS_DIR=...` (default: `~/.cache/openclaw/docker-cli-tools`) mounted to `/home/node/.npm-global` for cached CLI installs inside Docker
 - External CLI auth dirs/files under `$HOME` are mounted read-only under `/host-auth...`, then copied into `/home/node/...` before tests start
   - Default dirs: `.minimax`
   - Default files: `~/.codex/auth.json`, `~/.codex/config.toml`, `.claude.json`, `~/.claude/.credentials.json`, `~/.claude/settings.json`, `~/.claude/settings.local.json`
-  - Narrowed provider runs mount only the needed dirs/files inferred from `OPENCLAW_LIVE_PROVIDERS` / `OPENCLAW_LIVE_GATEWAY_PROVIDERS`
-  - Override manually with `OPENCLAW_DOCKER_AUTH_DIRS=all`, `OPENCLAW_DOCKER_AUTH_DIRS=none`, or a comma list like `OPENCLAW_DOCKER_AUTH_DIRS=.claude,.codex`
-- `OPENCLAW_LIVE_GATEWAY_MODELS=...` / `OPENCLAW_LIVE_MODELS=...` to narrow the run
-- `OPENCLAW_LIVE_GATEWAY_PROVIDERS=...` / `OPENCLAW_LIVE_PROVIDERS=...` to filter providers in-container
-- `OPENCLAW_SKIP_DOCKER_BUILD=1` to reuse an existing `openclaw:local-live` image for reruns that do not need a rebuild
-- `OPENCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to ensure creds come from the profile store (not env)
-- `OPENCLAW_OPENWEBUI_MODEL=...` to choose the model exposed by the gateway for the Open WebUI smoke
-- `OPENCLAW_OPENWEBUI_PROMPT=...` to override the nonce-check prompt used by the Open WebUI smoke
+  - Narrowed provider runs mount only the needed dirs/files inferred from `WINERYCLAW_LIVE_PROVIDERS` / `WINERYCLAW_LIVE_GATEWAY_PROVIDERS`
+  - Override manually with `WINERYCLAW_DOCKER_AUTH_DIRS=all`, `WINERYCLAW_DOCKER_AUTH_DIRS=none`, or a comma list like `WINERYCLAW_DOCKER_AUTH_DIRS=.claude,.codex`
+- `WINERYCLAW_LIVE_GATEWAY_MODELS=...` / `WINERYCLAW_LIVE_MODELS=...` to narrow the run
+- `WINERYCLAW_LIVE_GATEWAY_PROVIDERS=...` / `WINERYCLAW_LIVE_PROVIDERS=...` to filter providers in-container
+- `WINERYCLAW_SKIP_DOCKER_BUILD=1` to reuse an existing `openclaw:local-live` image for reruns that do not need a rebuild
+- `WINERYCLAW_LIVE_REQUIRE_PROFILE_KEYS=1` to ensure creds come from the profile store (not env)
+- `WINERYCLAW_OPENWEBUI_MODEL=...` to choose the model exposed by the gateway for the Open WebUI smoke
+- `WINERYCLAW_OPENWEBUI_PROMPT=...` to override the nonce-check prompt used by the Open WebUI smoke
 - `OPENWEBUI_IMAGE=...` to override the pinned Open WebUI image tag
 
 ## Docs sanity

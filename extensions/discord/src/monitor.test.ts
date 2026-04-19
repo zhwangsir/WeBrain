@@ -216,14 +216,14 @@ describe("DiscordMessageListener", () => {
 
 describe("discord allowlist helpers", () => {
   it("normalizes slugs", () => {
-    expect(normalizeDiscordSlug("Friends of OpenClaw")).toBe("friends-of-openclaw");
+    expect(normalizeDiscordSlug("Friends of WineryClaw")).toBe("friends-of-openclaw");
     expect(normalizeDiscordSlug("#General")).toBe("general");
     expect(normalizeDiscordSlug("Dev__Chat")).toBe("dev-chat");
   });
 
   it("matches ids by default and names only when enabled", () => {
     const allow = normalizeDiscordAllowList(
-      ["123", "steipete", "Friends of OpenClaw"],
+      ["123", "steipete", "Friends of WineryClaw"],
       ["discord:", "user:", "guild:", "channel:"],
     );
     expect(allow).not.toBeNull();
@@ -257,7 +257,7 @@ describe("discord guild/channel resolution", () => {
       "123": { slug: "friends-of-openclaw" },
     });
     const resolved = resolveDiscordGuildEntry({
-      guild: fakeGuild("123", "Friends of OpenClaw"),
+      guild: fakeGuild("123", "Friends of WineryClaw"),
       guildEntries,
     });
     expect(resolved?.id).toBe("123");
@@ -281,7 +281,7 @@ describe("discord guild/channel resolution", () => {
       "friends-of-openclaw": { slug: "friends-of-openclaw" },
     });
     const resolved = resolveDiscordGuildEntry({
-      guild: fakeGuild("123", "Friends of OpenClaw"),
+      guild: fakeGuild("123", "Friends of WineryClaw"),
       guildEntries,
     });
     expect(resolved?.id).toBe("123");
@@ -293,7 +293,7 @@ describe("discord guild/channel resolution", () => {
       "*": { requireMention: false },
     });
     const resolved = resolveDiscordGuildEntry({
-      guild: fakeGuild("123", "Friends of OpenClaw"),
+      guild: fakeGuild("123", "Friends of WineryClaw"),
       guildEntries,
     });
     expect(resolved?.id).toBe("123");
@@ -642,7 +642,7 @@ describe("discord group DM gating", () => {
       resolveGroupDmAllow({
         channels: ["openclaw-dm"],
         channelId: "1",
-        channelName: "OpenClaw DM",
+        channelName: "WineryClaw DM",
         channelSlug: "openclaw-dm",
       }),
     ).toBe(true);

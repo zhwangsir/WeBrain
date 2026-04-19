@@ -1,17 +1,17 @@
 package ai.openclaw.app.node
 
-import ai.openclaw.app.protocol.OpenClawCalendarCommand
-import ai.openclaw.app.protocol.OpenClawCameraCommand
-import ai.openclaw.app.protocol.OpenClawCallLogCommand
-import ai.openclaw.app.protocol.OpenClawCapability
-import ai.openclaw.app.protocol.OpenClawContactsCommand
-import ai.openclaw.app.protocol.OpenClawDeviceCommand
-import ai.openclaw.app.protocol.OpenClawLocationCommand
-import ai.openclaw.app.protocol.OpenClawMotionCommand
-import ai.openclaw.app.protocol.OpenClawNotificationsCommand
-import ai.openclaw.app.protocol.OpenClawPhotosCommand
-import ai.openclaw.app.protocol.OpenClawSmsCommand
-import ai.openclaw.app.protocol.OpenClawSystemCommand
+import ai.openclaw.app.protocol.WineryClawCalendarCommand
+import ai.openclaw.app.protocol.WineryClawCameraCommand
+import ai.openclaw.app.protocol.WineryClawCallLogCommand
+import ai.openclaw.app.protocol.WineryClawCapability
+import ai.openclaw.app.protocol.WineryClawContactsCommand
+import ai.openclaw.app.protocol.WineryClawDeviceCommand
+import ai.openclaw.app.protocol.WineryClawLocationCommand
+import ai.openclaw.app.protocol.WineryClawMotionCommand
+import ai.openclaw.app.protocol.WineryClawNotificationsCommand
+import ai.openclaw.app.protocol.WineryClawPhotosCommand
+import ai.openclaw.app.protocol.WineryClawSmsCommand
+import ai.openclaw.app.protocol.WineryClawSystemCommand
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -22,52 +22,52 @@ import org.junit.Test
 class InvokeCommandRegistryTest {
   private val coreCapabilities =
     setOf(
-      OpenClawCapability.Canvas.rawValue,
-      OpenClawCapability.Device.rawValue,
-      OpenClawCapability.Notifications.rawValue,
-      OpenClawCapability.System.rawValue,
-      OpenClawCapability.Photos.rawValue,
-      OpenClawCapability.Contacts.rawValue,
-      OpenClawCapability.Calendar.rawValue,
+      WineryClawCapability.Canvas.rawValue,
+      WineryClawCapability.Device.rawValue,
+      WineryClawCapability.Notifications.rawValue,
+      WineryClawCapability.System.rawValue,
+      WineryClawCapability.Photos.rawValue,
+      WineryClawCapability.Contacts.rawValue,
+      WineryClawCapability.Calendar.rawValue,
     )
 
   private val optionalCapabilities =
     setOf(
-      OpenClawCapability.Camera.rawValue,
-      OpenClawCapability.Location.rawValue,
-      OpenClawCapability.Sms.rawValue,
-      OpenClawCapability.CallLog.rawValue,
-      OpenClawCapability.VoiceWake.rawValue,
-      OpenClawCapability.Motion.rawValue,
+      WineryClawCapability.Camera.rawValue,
+      WineryClawCapability.Location.rawValue,
+      WineryClawCapability.Sms.rawValue,
+      WineryClawCapability.CallLog.rawValue,
+      WineryClawCapability.VoiceWake.rawValue,
+      WineryClawCapability.Motion.rawValue,
     )
 
   private val coreCommands =
     setOf(
-      OpenClawDeviceCommand.Status.rawValue,
-      OpenClawDeviceCommand.Info.rawValue,
-      OpenClawDeviceCommand.Permissions.rawValue,
-      OpenClawDeviceCommand.Health.rawValue,
-      OpenClawNotificationsCommand.List.rawValue,
-      OpenClawNotificationsCommand.Actions.rawValue,
-      OpenClawSystemCommand.Notify.rawValue,
-      OpenClawPhotosCommand.Latest.rawValue,
-      OpenClawContactsCommand.Search.rawValue,
-      OpenClawContactsCommand.Add.rawValue,
-      OpenClawCalendarCommand.Events.rawValue,
-      OpenClawCalendarCommand.Add.rawValue,
+      WineryClawDeviceCommand.Status.rawValue,
+      WineryClawDeviceCommand.Info.rawValue,
+      WineryClawDeviceCommand.Permissions.rawValue,
+      WineryClawDeviceCommand.Health.rawValue,
+      WineryClawNotificationsCommand.List.rawValue,
+      WineryClawNotificationsCommand.Actions.rawValue,
+      WineryClawSystemCommand.Notify.rawValue,
+      WineryClawPhotosCommand.Latest.rawValue,
+      WineryClawContactsCommand.Search.rawValue,
+      WineryClawContactsCommand.Add.rawValue,
+      WineryClawCalendarCommand.Events.rawValue,
+      WineryClawCalendarCommand.Add.rawValue,
     )
 
   private val optionalCommands =
     setOf(
-      OpenClawCameraCommand.Snap.rawValue,
-      OpenClawCameraCommand.Clip.rawValue,
-      OpenClawCameraCommand.List.rawValue,
-      OpenClawLocationCommand.Get.rawValue,
-      OpenClawMotionCommand.Activity.rawValue,
-      OpenClawMotionCommand.Pedometer.rawValue,
-      OpenClawSmsCommand.Send.rawValue,
-      OpenClawSmsCommand.Search.rawValue,
-      OpenClawCallLogCommand.Search.rawValue,
+      WineryClawCameraCommand.Snap.rawValue,
+      WineryClawCameraCommand.Clip.rawValue,
+      WineryClawCameraCommand.List.rawValue,
+      WineryClawLocationCommand.Get.rawValue,
+      WineryClawMotionCommand.Activity.rawValue,
+      WineryClawMotionCommand.Pedometer.rawValue,
+      WineryClawSmsCommand.Send.rawValue,
+      WineryClawSmsCommand.Search.rawValue,
+      WineryClawCallLogCommand.Search.rawValue,
     )
 
   private val debugCommands = setOf("debug.logs", "debug.ed25519")
@@ -146,8 +146,8 @@ class InvokeCommandRegistryTest {
         ),
       )
 
-    assertTrue(commands.contains(OpenClawMotionCommand.Activity.rawValue))
-    assertFalse(commands.contains(OpenClawMotionCommand.Pedometer.rawValue))
+    assertTrue(commands.contains(WineryClawMotionCommand.Activity.rawValue))
+    assertFalse(commands.contains(WineryClawMotionCommand.Pedometer.rawValue))
   }
 
   @Test
@@ -165,11 +165,11 @@ class InvokeCommandRegistryTest {
         defaultFlags(smsSearchPossible = true),
       )
 
-    assertTrue(readOnlyCommands.contains(OpenClawSmsCommand.Search.rawValue))
-    assertFalse(readOnlyCommands.contains(OpenClawSmsCommand.Send.rawValue))
-    assertTrue(sendOnlyCommands.contains(OpenClawSmsCommand.Send.rawValue))
-    assertFalse(sendOnlyCommands.contains(OpenClawSmsCommand.Search.rawValue))
-    assertTrue(requestableSearchCommands.contains(OpenClawSmsCommand.Search.rawValue))
+    assertTrue(readOnlyCommands.contains(WineryClawSmsCommand.Search.rawValue))
+    assertFalse(readOnlyCommands.contains(WineryClawSmsCommand.Send.rawValue))
+    assertTrue(sendOnlyCommands.contains(WineryClawSmsCommand.Send.rawValue))
+    assertFalse(sendOnlyCommands.contains(WineryClawSmsCommand.Search.rawValue))
+    assertTrue(requestableSearchCommands.contains(WineryClawSmsCommand.Search.rawValue))
   }
 
   @Test
@@ -187,23 +187,23 @@ class InvokeCommandRegistryTest {
         defaultFlags(smsSearchPossible = true),
       )
 
-    assertTrue(readOnlyCapabilities.contains(OpenClawCapability.Sms.rawValue))
-    assertTrue(sendOnlyCapabilities.contains(OpenClawCapability.Sms.rawValue))
-    assertFalse(requestableSearchCapabilities.contains(OpenClawCapability.Sms.rawValue))
+    assertTrue(readOnlyCapabilities.contains(WineryClawCapability.Sms.rawValue))
+    assertTrue(sendOnlyCapabilities.contains(WineryClawCapability.Sms.rawValue))
+    assertFalse(requestableSearchCapabilities.contains(WineryClawCapability.Sms.rawValue))
   }
 
   @Test
   fun advertisedCommands_excludesCallLogWhenUnavailable() {
     val commands = InvokeCommandRegistry.advertisedCommands(defaultFlags(callLogAvailable = false))
 
-    assertFalse(commands.contains(OpenClawCallLogCommand.Search.rawValue))
+    assertFalse(commands.contains(WineryClawCallLogCommand.Search.rawValue))
   }
 
   @Test
   fun advertisedCapabilities_excludesCallLogWhenUnavailable() {
     val capabilities = InvokeCommandRegistry.advertisedCapabilities(defaultFlags(callLogAvailable = false))
 
-    assertFalse(capabilities.contains(OpenClawCapability.CallLog.rawValue))
+    assertFalse(capabilities.contains(WineryClawCapability.CallLog.rawValue))
   }
 
   @Test
@@ -211,14 +211,14 @@ class InvokeCommandRegistryTest {
     val capabilities = InvokeCommandRegistry.advertisedCapabilities(defaultFlags(voiceWakeEnabled = true))
     val commands = InvokeCommandRegistry.advertisedCommands(defaultFlags(voiceWakeEnabled = true))
 
-    assertTrue(capabilities.contains(OpenClawCapability.VoiceWake.rawValue))
+    assertTrue(capabilities.contains(WineryClawCapability.VoiceWake.rawValue))
     assertFalse(commands.any { it.contains("voice", ignoreCase = true) })
   }
 
   @Test
   fun find_returnsForegroundMetadataForCameraCommands() {
-    val list = InvokeCommandRegistry.find(OpenClawCameraCommand.List.rawValue)
-    val location = InvokeCommandRegistry.find(OpenClawLocationCommand.Get.rawValue)
+    val list = InvokeCommandRegistry.find(WineryClawCameraCommand.List.rawValue)
+    val location = InvokeCommandRegistry.find(WineryClawLocationCommand.Get.rawValue)
 
     assertNotNull(list)
     assertEquals(true, list?.requiresForeground)

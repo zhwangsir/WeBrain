@@ -1,6 +1,6 @@
 import { getAcpSessionManager } from "../acp/control-plane/manager.js";
 import { ACP_SESSION_IDENTITY_RENDERER_VERSION } from "../acp/runtime/session-identifiers.js";
-import { resolveOpenClawAgentDir } from "../agents/agent-paths.js";
+import { resolveWineryClawAgentDir } from "../agents/agent-paths.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { selectAgentHarness } from "../agents/harness/selection.js";
 import { loadModelCatalog } from "../agents/model-catalog.js";
@@ -10,7 +10,7 @@ import {
   resolveConfiguredModelRef,
   resolveHooksGmailModel,
 } from "../agents/model-selection.js";
-import { ensureOpenClawModelsJson } from "../agents/models-config.js";
+import { ensureWineryClawModelsJson } from "../agents/models-config.js";
 import { resolveModel } from "../agents/pi-embedded-runner/model.js";
 import { resolveEmbeddedAgentRuntime } from "../agents/pi-embedded-runner/runtime.js";
 import { resolveAgentSessionDirs } from "../agents/session-dirs.js";
@@ -20,7 +20,7 @@ import type { CliDeps } from "../cli/deps.types.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import { resolveStateDir } from "../config/paths.js";
 import type { GatewayTailscaleMode } from "../config/types.gateway.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { startGmailWatcherWithLogs } from "../hooks/gmail-watcher-lifecycle.js";
 import {
   createInternalHookEvent,
@@ -31,7 +31,7 @@ import { loadInternalHooks } from "../hooks/loader.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { scheduleGatewayUpdateCheck } from "../infra/update-startup.js";
 import { getGlobalHookRunner } from "../plugins/hook-runner-global.js";
-import type { loadOpenClawPlugins } from "../plugins/loader.js";
+import type { loadWineryClawPlugins } from "../plugins/loader.js";
 import { type PluginServicesHandle, startPluginServices } from "../plugins/services.js";
 import {
   GATEWAY_EVENT_UPDATE_AVAILABLE,
@@ -48,7 +48,7 @@ import { startGatewayTailscaleExposure } from "./server-tailscale.js";
 const SESSION_LOCK_STALE_MS = 30 * 60 * 1000;
 
 async function prewarmConfiguredPrimaryModel(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   log: { warn: (msg: string) => void };
 }): Promise<void> {
   const explicitPrimary = resolveAgentModelPrimaryValue(params.cfg.agents?.defaults?.model)?.trim();
@@ -70,9 +70,9 @@ async function prewarmConfiguredPrimaryModel(params: {
   if (selectAgentHarness({ provider, modelId: model, config: params.cfg }).id !== "pi") {
     return;
   }
-  const agentDir = resolveOpenClawAgentDir();
+  const agentDir = resolveWineryClawAgentDir();
   try {
-    await ensureOpenClawModelsJson(params.cfg, agentDir);
+    await ensureWineryClawModelsJson(params.cfg, agentDir);
     const resolved = resolveModel(provider, model, agentDir, params.cfg, {
       skipProviderRuntimeHooks: true,
     });
@@ -88,8 +88,8 @@ async function prewarmConfiguredPrimaryModel(params: {
 }
 
 export async function startGatewaySidecars(params: {
-  cfg: OpenClawConfig;
-  pluginRegistry: ReturnType<typeof loadOpenClawPlugins>;
+  cfg: WineryClawConfig;
+  pluginRegistry: ReturnType<typeof loadWineryClawPlugins>;
   defaultWorkspaceDir: string;
   deps: CliDeps;
   startChannels: () => Promise<void>;
@@ -166,8 +166,8 @@ export async function startGatewaySidecars(params: {
   }
 
   const skipChannels =
-    isTruthyEnvValue(process.env.OPENCLAW_SKIP_CHANNELS) ||
-    isTruthyEnvValue(process.env.OPENCLAW_SKIP_PROVIDERS);
+    isTruthyEnvValue(process.env.WINERYCLAW_SKIP_CHANNELS) ||
+    isTruthyEnvValue(process.env.WINERYCLAW_SKIP_PROVIDERS);
   if (!skipChannels) {
     try {
       await prewarmConfiguredPrimaryModel({
@@ -180,7 +180,7 @@ export async function startGatewaySidecars(params: {
     }
   } else {
     params.logChannels.info(
-      "skipping channel start (OPENCLAW_SKIP_CHANNELS=1 or OPENCLAW_SKIP_PROVIDERS=1)",
+      "skipping channel start (WINERYCLAW_SKIP_CHANNELS=1 or WINERYCLAW_SKIP_PROVIDERS=1)",
     );
   }
 
@@ -239,7 +239,7 @@ export async function startGatewaySidecars(params: {
 
 export async function startGatewayPostAttachRuntime(params: {
   minimalTestGateway: boolean;
-  cfgAtStart: OpenClawConfig;
+  cfgAtStart: WineryClawConfig;
   bindHost: string;
   bindHosts: string[];
   port: number;
@@ -260,8 +260,8 @@ export async function startGatewayPostAttachRuntime(params: {
     error: (msg: string) => void;
     debug?: (msg: string) => void;
   };
-  gatewayPluginConfigAtStart: OpenClawConfig;
-  pluginRegistry: ReturnType<typeof loadOpenClawPlugins>;
+  gatewayPluginConfigAtStart: WineryClawConfig;
+  pluginRegistry: ReturnType<typeof loadWineryClawPlugins>;
   defaultWorkspaceDir: string;
   deps: CliDeps;
   startChannels: () => Promise<void>;

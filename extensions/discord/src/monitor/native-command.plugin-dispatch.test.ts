@@ -1,6 +1,6 @@
 import { ChannelType } from "discord-api-types/v10";
 import type { NativeCommandSpec } from "openclaw/plugin-sdk/command-auth";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { clearPluginCommands, registerPluginCommand } from "openclaw/plugin-sdk/plugin-runtime";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
@@ -63,14 +63,14 @@ function createInteraction(params?: {
   });
 }
 
-function createConfig(): OpenClawConfig {
+function createConfig(): WineryClawConfig {
   return {
     channels: {
       discord: {
         dm: { enabled: true, policy: "open" },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 function createConfiguredAcpBinding(params: {
@@ -136,7 +136,7 @@ function createConfiguredAcpCase(params: {
           agentId: params.agentId,
         }),
       ],
-    } as OpenClawConfig,
+    } as WineryClawConfig,
     interaction: createInteraction({
       channelType: params.channelType,
       channelId: params.channelId,
@@ -146,7 +146,7 @@ function createConfiguredAcpCase(params: {
   };
 }
 
-async function createNativeCommand(cfg: OpenClawConfig, commandSpec: NativeCommandSpec) {
+async function createNativeCommand(cfg: WineryClawConfig, commandSpec: NativeCommandSpec) {
   return createDiscordNativeCommand({
     command: commandSpec,
     cfg,
@@ -224,7 +224,7 @@ function createUnboundRouteState(params: {
   >;
 }
 
-async function createPluginCommand(params: { cfg: OpenClawConfig; name: string }) {
+async function createPluginCommand(params: { cfg: WineryClawConfig; name: string }) {
   return createDiscordNativeCommand({
     command: {
       name: params.name,
@@ -261,7 +261,7 @@ function registerPairPlugin(params?: { discordNativeName?: string }) {
 }
 
 async function expectPairCommandReply(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   commandName: string;
   interaction: MockCommandInteraction;
 }) {
@@ -288,7 +288,7 @@ async function expectPairCommandReply(params: {
   expect(params.interaction.reply).not.toHaveBeenCalled();
 }
 
-async function createStatusCommand(cfg: OpenClawConfig) {
+async function createStatusCommand(cfg: WineryClawConfig) {
   return await createNativeCommand(cfg, {
     name: "status",
     description: "Status",
@@ -322,7 +322,7 @@ function expectBoundSessionDispatch(
 }
 
 async function expectBoundStatusCommandDispatch(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   interaction: MockCommandInteraction;
   expectedPattern: RegExp;
 }) {
@@ -431,7 +431,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -492,7 +492,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const interaction = createInteraction({
       channelType: ChannelType.GroupDM,
       channelId: "blocked-group",
@@ -573,7 +573,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const commandSpec: NativeCommandSpec = {
       name: "cron_jobs",
       description: "List cron jobs",
@@ -668,7 +668,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const interaction = createInteraction({
       channelType: ChannelType.GuildText,
       channelId,

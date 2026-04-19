@@ -199,7 +199,7 @@ Choose your provider and follow the setup steps.
 
 ## Kimi web search
 
-OpenClaw also ships **Kimi** as a `web_search` provider, backed by Moonshot web
+WineryClaw also ships **Kimi** as a `web_search` provider, backed by Moonshot web
 search.
 
 <Steps>
@@ -277,7 +277,7 @@ Config lives under `plugins.entries.moonshot.config.webSearch`:
     }
     ```
 
-    OpenClaw also maps runtime `/think` levels for Moonshot:
+    WineryClaw also maps runtime `/think` levels for Moonshot:
 
     | `/think` level       | Moonshot behavior          |
     | -------------------- | -------------------------- |
@@ -285,7 +285,7 @@ Config lives under `plugins.entries.moonshot.config.webSearch`:
     | Any non-off level    | `thinking.type=enabled`    |
 
     <Warning>
-    When Moonshot thinking is enabled, `tool_choice` must be `auto` or `none`. OpenClaw normalizes incompatible `tool_choice` values to `auto` for compatibility.
+    When Moonshot thinking is enabled, `tool_choice` must be `auto` or `none`. WineryClaw normalizes incompatible `tool_choice` values to `auto` for compatibility.
     </Warning>
 
   </Accordion>
@@ -293,7 +293,7 @@ Config lives under `plugins.entries.moonshot.config.webSearch`:
   <Accordion title="Streaming usage compatibility">
     Native Moonshot endpoints (`https://api.moonshot.ai/v1` and
     `https://api.moonshot.cn/v1`) advertise streaming usage compatibility on the
-    shared `openai-completions` transport. OpenClaw keys that off endpoint
+    shared `openai-completions` transport. WineryClaw keys that off endpoint
     capabilities, so compatible custom provider ids targeting the same native
     Moonshot hosts inherit the same streaming-usage behavior.
   </Accordion>

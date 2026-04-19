@@ -1,5 +1,5 @@
 import { listPotentialConfiguredChannelIds } from "../../../channels/config-presence.js";
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import {
   normalizePluginsConfig,
   resolveEffectivePluginActivationState,
@@ -14,7 +14,7 @@ export type ChannelPluginBlockerHit = {
 };
 
 export function scanConfiguredChannelPluginBlockers(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): ChannelPluginBlockerHit[] {
   const configuredChannelIds = new Set(

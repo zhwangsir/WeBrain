@@ -10,8 +10,8 @@ export type {
   ChannelPlugin,
   ChatType,
   HistoryEntry,
-  OpenClawConfig,
-  OpenClawPluginApi,
+  WineryClawConfig,
+  WineryClawPluginApi,
   PluginRuntime,
 } from "openclaw/plugin-sdk/core";
 export type { RuntimeEnv } from "openclaw/plugin-sdk/runtime";

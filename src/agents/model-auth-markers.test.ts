@@ -2,22 +2,22 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 import { captureEnv, withEnvAsync } from "../test-utils/env.js";
 
 const PLUGIN_MANIFEST_ENV_KEYS = [
-  "OPENCLAW_BUNDLED_PLUGINS_DIR",
-  "OPENCLAW_DISABLE_BUNDLED_PLUGINS",
-  "OPENCLAW_SKIP_PROVIDERS",
-  "OPENCLAW_SKIP_CHANNELS",
-  "OPENCLAW_SKIP_CRON",
-  "OPENCLAW_TEST_MINIMAL_GATEWAY",
+  "WINERYCLAW_BUNDLED_PLUGINS_DIR",
+  "WINERYCLAW_DISABLE_BUNDLED_PLUGINS",
+  "WINERYCLAW_SKIP_PROVIDERS",
+  "WINERYCLAW_SKIP_CHANNELS",
+  "WINERYCLAW_SKIP_CRON",
+  "WINERYCLAW_TEST_MINIMAL_GATEWAY",
 ] as const;
 
 function cleanPluginManifestEnv(): Record<(typeof PLUGIN_MANIFEST_ENV_KEYS)[number], undefined> {
   return {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-    OPENCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
-    OPENCLAW_SKIP_PROVIDERS: undefined,
-    OPENCLAW_SKIP_CHANNELS: undefined,
-    OPENCLAW_SKIP_CRON: undefined,
-    OPENCLAW_TEST_MINIMAL_GATEWAY: undefined,
+    WINERYCLAW_BUNDLED_PLUGINS_DIR: undefined,
+    WINERYCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
+    WINERYCLAW_SKIP_PROVIDERS: undefined,
+    WINERYCLAW_SKIP_CHANNELS: undefined,
+    WINERYCLAW_SKIP_CRON: undefined,
+    WINERYCLAW_TEST_MINIMAL_GATEWAY: undefined,
   };
 }
 

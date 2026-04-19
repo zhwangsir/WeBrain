@@ -11,7 +11,7 @@ import {
   buildPluginRuntimeLoadOptions,
   resolvePluginRuntimeLoadContext,
 } from "./runtime/load-context.js";
-import type { OpenClawPluginToolContext } from "./types.js";
+import type { WineryClawPluginToolContext } from "./types.js";
 
 type PluginToolMeta = {
   pluginId: string;
@@ -69,7 +69,7 @@ function resolvePluginToolRegistry(params: {
 }
 
 export function resolvePluginTools(params: {
-  context: OpenClawPluginToolContext;
+  context: WineryClawPluginToolContext;
   existingToolNames?: Set<string>;
   toolAllowlist?: string[];
   suppressNameConflicts?: boolean;

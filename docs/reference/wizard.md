@@ -17,7 +17,7 @@ For a high-level overview, see [Onboarding (CLI)](/start/wizard).
 
 <Steps>
   <Step title="Existing config detection">
-    - If `~/.openclaw/openclaw.json` exists, choose **Keep / Modify / Reset**.
+    - If `~/.wineryclaw/wineryclaw.json` exists, choose **Keep / Modify / Reset**.
     - Re-running onboarding does **not** wipe anything unless you explicitly choose **Reset**
       (or pass `--reset`).
     - CLI `--reset` defaults to `config+creds+sessions`; use `--reset-scope full`
@@ -32,8 +32,8 @@ For a high-level overview, see [Onboarding (CLI)](/start/wizard).
   <Step title="Model/Auth">
     - **Anthropic API key**: uses `ANTHROPIC_API_KEY` if present or prompts for a key, then saves it for daemon use.
     - **Anthropic API key**: preferred Anthropic assistant choice in onboarding/configure.
-    - **Anthropic setup-token**: still available in onboarding/configure, though OpenClaw now prefers Claude CLI reuse when available.
-    - **OpenAI Code (Codex) subscription (Codex CLI)**: if `~/.codex/auth.json` exists, onboarding can reuse it. Reused Codex CLI credentials stay managed by Codex CLI; on expiry OpenClaw re-reads that source first and, when the provider can refresh it, writes the refreshed credential back to Codex storage instead of taking ownership itself.
+    - **Anthropic setup-token**: still available in onboarding/configure, though WineryClaw now prefers Claude CLI reuse when available.
+    - **OpenAI Code (Codex) subscription (Codex CLI)**: if `~/.codex/auth.json` exists, onboarding can reuse it. Reused Codex CLI credentials stay managed by Codex CLI; on expiry WineryClaw re-reads that source first and, when the provider can refresh it, writes the refreshed credential back to Codex storage instead of taking ownership itself.
     - **OpenAI Code (Codex) subscription (OAuth)**: browser flow; paste the `code#state`.
       - Sets `agents.defaults.model` to `openai-codex/gpt-5.4` when model is unset or `openai/*`.
     - **OpenAI API key**: uses `OPENAI_API_KEY` if present or prompts for a key, then stores it in auth profiles.
@@ -63,18 +63,18 @@ For a high-level overview, see [Onboarding (CLI)](/start/wizard).
     - Pick a default model from detected options (or enter provider/model manually). For best quality and lower prompt-injection risk, choose the strongest latest-generation model available in your provider stack.
     - Onboarding runs a model check and warns if the configured model is unknown or missing auth.
     - API key storage mode defaults to plaintext auth-profile values. Use `--secret-input-mode ref` to store env-backed refs instead (for example `keyRef: { source: "env", provider: "default", id: "OPENAI_API_KEY" }`).
-    - Auth profiles live in `~/.openclaw/agents/<agentId>/agent/auth-profiles.json` (API keys + OAuth). `~/.openclaw/credentials/oauth.json` is legacy import-only.
+    - Auth profiles live in `~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json` (API keys + OAuth). `~/.wineryclaw/credentials/oauth.json` is legacy import-only.
     - More detail: [/concepts/oauth](/concepts/oauth)
     <Note>
     Headless/server tip: complete OAuth on a machine with a browser, then copy
     that agent's `auth-profiles.json` (for example
-    `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`, or the matching
-    `$OPENCLAW_STATE_DIR/...` path) to the gateway host. `credentials/oauth.json`
+    `~/.wineryclaw/agents/<agentId>/agent/auth-profiles.json`, or the matching
+    `$WINERYCLAW_STATE_DIR/...` path) to the gateway host. `credentials/oauth.json`
     is only a legacy import source.
     </Note>
   </Step>
   <Step title="Workspace">
-    - Default `~/.openclaw/workspace` (configurable).
+    - Default `~/.wineryclaw/workspace` (configurable).
     - Seeds the workspace files needed for the agent bootstrap ritual.
     - Full workspace layout + backup guide: [Agent workspace](/concepts/agent-workspace)
   </Step>
@@ -161,12 +161,12 @@ Add `--json` for a machine‑readable summary.
 Gateway token SecretRef in non-interactive mode:
 
 ```bash
-export OPENCLAW_GATEWAY_TOKEN="your-token"
+export WINERYCLAW_GATEWAY_TOKEN="your-token"
 openclaw onboard --non-interactive \
   --mode local \
   --auth-choice skip \
   --gateway-auth token \
-  --gateway-token-ref-env OPENCLAW_GATEWAY_TOKEN
+  --gateway-token-ref-env WINERYCLAW_GATEWAY_TOKEN
 ```
 
 `--gateway-token` and `--gateway-token-ref-env` are mutually exclusive.
@@ -182,7 +182,7 @@ Use this reference page for flag semantics and step ordering.
 
 ```bash
 openclaw agents add work \
-  --workspace ~/.openclaw/workspace-work \
+  --workspace ~/.wineryclaw/workspace-work \
   --model openai/gpt-5.4 \
   --bind whatsapp:biz \
   --non-interactive \
@@ -199,7 +199,7 @@ Clients (macOS app, Control UI) can render steps without re‑implementing onboa
 Onboarding can install `signal-cli` from GitHub releases:
 
 - Downloads the appropriate release asset.
-- Stores it under `~/.openclaw/tools/signal-cli/<version>/`.
+- Stores it under `~/.wineryclaw/tools/signal-cli/<version>/`.
 - Writes `channels.signal.cliPath` to your config.
 
 Notes:
@@ -210,7 +210,7 @@ Notes:
 
 ## What the wizard writes
 
-Typical fields in `~/.openclaw/openclaw.json`:
+Typical fields in `~/.wineryclaw/wineryclaw.json`:
 
 - `agents.defaults.workspace`
 - `agents.defaults.model` / `models.providers` (if Minimax chosen)
@@ -230,8 +230,8 @@ Typical fields in `~/.openclaw/openclaw.json`:
 
 `openclaw agents add` writes `agents.list[]` and optional `bindings`.
 
-WhatsApp credentials go under `~/.openclaw/credentials/whatsapp/<accountId>/`.
-Sessions are stored under `~/.openclaw/agents/<agentId>/sessions/`.
+WhatsApp credentials go under `~/.wineryclaw/credentials/whatsapp/<accountId>/`.
+Sessions are stored under `~/.wineryclaw/agents/<agentId>/sessions/`.
 
 Some channels are delivered as plugins. When you pick one during setup, onboarding
 will prompt to install it (npm or a local path) before it can be configured.

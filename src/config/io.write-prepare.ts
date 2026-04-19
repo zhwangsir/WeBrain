@@ -2,7 +2,7 @@ import { isDeepStrictEqual } from "node:util";
 import { isRecord } from "../utils.js";
 import { applyMergePatch } from "./merge-patch.js";
 import { isBlockedObjectKey } from "./prototype-keys.js";
-import type { OpenClawConfig } from "./types.js";
+import type { WineryClawConfig } from "./types.js";
 
 const OPEN_DM_POLICY_ALLOW_FROM_RE =
   /^(?<policyPath>[a-z0-9_.-]+)\s*=\s*"open"\s+requires\s+(?<allowPath>[a-z0-9_.-]+)(?:\s+\(or\s+[a-z0-9_.-]+\))?\s+to include "\*"$/i;
@@ -106,11 +106,11 @@ function hasOwnObjectKey(value: Record<string, unknown>, key: string): boolean {
 
 const WRITE_PRUNED_OBJECT = Symbol("write-pruned-object");
 
-function coerceConfig(value: unknown): OpenClawConfig {
+function coerceConfig(value: unknown): WineryClawConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return {};
   }
-  return value as OpenClawConfig;
+  return value as WineryClawConfig;
 }
 
 function unsetPathForWriteAt(
@@ -183,9 +183,9 @@ function unsetPathForWriteAt(
 }
 
 export function unsetPathForWrite(
-  root: OpenClawConfig,
+  root: WineryClawConfig,
   pathSegments: string[],
-): { changed: boolean; next: OpenClawConfig } {
+): { changed: boolean; next: WineryClawConfig } {
   if (pathSegments.length === 0) {
     return { changed: false, next: root };
   }

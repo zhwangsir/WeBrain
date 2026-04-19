@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { resolveOpenClawAgentDir } from "../agents/agent-paths.js";
+import { resolveWineryClawAgentDir } from "../agents/agent-paths.js";
 import { AUTH_PROFILE_FILENAME } from "../agents/auth-profiles/constants.js";
 import { __testing as controlPlaneRateLimitTesting } from "./control-plane-rate-limit.js";
 import {
@@ -72,7 +72,7 @@ async function expectSchemaLookupInvalid(path: unknown) {
 
 async function writeUnresolvedAuthProfileTokenRef(missingEnvVar: string) {
   delete process.env[missingEnvVar];
-  const authStorePath = path.join(resolveOpenClawAgentDir(), AUTH_PROFILE_FILENAME);
+  const authStorePath = path.join(resolveWineryClawAgentDir(), AUTH_PROFILE_FILENAME);
   await fs.mkdir(path.dirname(authStorePath), { recursive: true });
   await fs.writeFile(
     authStorePath,
@@ -100,7 +100,7 @@ beforeEach(() => {
 
 describe("gateway config methods", () => {
   it("rejects config.set when SecretRef resolution fails", async () => {
-    const missingEnvVar = `OPENCLAW_MISSING_SECRETREF_${Date.now()}`;
+    const missingEnvVar = `WINERYCLAW_MISSING_SECRETREF_${Date.now()}`;
     delete process.env[missingEnvVar];
     const current = await rpcReq<{
       hash?: string;
@@ -158,7 +158,7 @@ describe("gateway config methods", () => {
   });
 
   it("does not reject config.set for unresolved auth-profile refs outside submitted config", async () => {
-    const missingEnvVar = `OPENCLAW_MISSING_AUTH_PROFILE_REF_${Date.now()}`;
+    const missingEnvVar = `WINERYCLAW_MISSING_AUTH_PROFILE_REF_${Date.now()}`;
     await writeUnresolvedAuthProfileTokenRef(missingEnvVar);
 
     const current = await rpcReq<{
@@ -300,7 +300,7 @@ describe("gateway config methods", () => {
   });
 
   it("rejects config.patch when merged SecretRefs cannot resolve", async () => {
-    const missingEnvVar = `OPENCLAW_MISSING_SECRETREF_PATCH_${Date.now()}`;
+    const missingEnvVar = `WINERYCLAW_MISSING_SECRETREF_PATCH_${Date.now()}`;
     delete process.env[missingEnvVar];
     const beforeHash = await getConfigHash();
     const res = await rpcReq<{ ok?: boolean; error?: { message?: string } }>(
@@ -332,7 +332,7 @@ describe("gateway config methods", () => {
 
 describe("gateway config.apply", () => {
   it("rejects config.apply when SecretRef resolution fails", async () => {
-    const missingEnvVar = `OPENCLAW_MISSING_SECRETREF_APPLY_${Date.now()}`;
+    const missingEnvVar = `WINERYCLAW_MISSING_SECRETREF_APPLY_${Date.now()}`;
     delete process.env[missingEnvVar];
     const current = await rpcReq<{
       hash?: string;
@@ -368,7 +368,7 @@ describe("gateway config.apply", () => {
   });
 
   it("does not reject config.apply for unresolved auth-profile refs outside submitted config", async () => {
-    const missingEnvVar = `OPENCLAW_MISSING_AUTH_PROFILE_REF_APPLY_${Date.now()}`;
+    const missingEnvVar = `WINERYCLAW_MISSING_AUTH_PROFILE_REF_APPLY_${Date.now()}`;
     await writeUnresolvedAuthProfileTokenRef(missingEnvVar);
 
     const current = await rpcReq<{

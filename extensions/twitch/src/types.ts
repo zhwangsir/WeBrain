@@ -2,7 +2,7 @@
  * Twitch channel plugin types.
  *
  * This file defines Twitch-specific types. Generic channel types are imported
- * from OpenClaw core.
+ * from WineryClaw core.
  */
 
 import type {
@@ -19,7 +19,7 @@ import type {
   ChannelResolveKind,
   ChannelResolveResult,
   ChannelStatusAdapter,
-  OpenClawConfig,
+  WineryClawConfig,
   OutboundDeliveryResult,
   RuntimeEnv,
 } from "../runtime-api.js";
@@ -137,5 +137,5 @@ import type { z } from "openclaw/plugin-sdk/zod";
 import type { TwitchConfigSchema } from "./config-schema.js";
 export type TwitchConfig = z.infer<typeof TwitchConfigSchema>;
 
-export type { OpenClawConfig };
+export type { WineryClawConfig };
 export type { RuntimeEnv };

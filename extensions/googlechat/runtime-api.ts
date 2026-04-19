@@ -29,7 +29,7 @@ export {
 } from "openclaw/plugin-sdk/channel-policy";
 export { PAIRING_APPROVED_MESSAGE } from "openclaw/plugin-sdk/channel-status";
 export { chunkTextForOutbound } from "openclaw/plugin-sdk/text-chunking";
-export type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+export type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 export {
   GROUP_POLICY_BLOCKED_LABEL,
   isDangerousNameMatchingEnabled,

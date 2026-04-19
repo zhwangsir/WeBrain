@@ -1,7 +1,7 @@
 import { formatCliCommand } from "../../cli/command-format.js";
 import { replaceConfigFile } from "../../config/config.js";
 import { logConfigUpdated } from "../../config/logging.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import { type RuntimeEnv, writeRuntimeJson } from "../../runtime.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
 import { applyWizardMetadata } from "../onboard-helpers.js";
@@ -10,7 +10,7 @@ import type { OnboardOptions } from "../onboard-types.js";
 export async function runNonInteractiveRemoteSetup(params: {
   opts: OnboardOptions;
   runtime: RuntimeEnv;
-  baseConfig: OpenClawConfig;
+  baseConfig: WineryClawConfig;
   baseHash?: string;
 }) {
   const { opts, runtime, baseConfig, baseHash } = params;
@@ -23,7 +23,7 @@ export async function runNonInteractiveRemoteSetup(params: {
     return;
   }
 
-  let nextConfig: OpenClawConfig = {
+  let nextConfig: WineryClawConfig = {
     ...baseConfig,
     gateway: {
       ...baseConfig.gateway,

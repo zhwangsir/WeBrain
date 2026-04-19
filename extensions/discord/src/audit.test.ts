@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   auditDiscordChannelPermissionsWithFetcher,
@@ -7,7 +7,7 @@ import {
 
 const fetchChannelPermissionsDiscordMock = vi.fn();
 
-function readDiscordGuilds(cfg: OpenClawConfig) {
+function readDiscordGuilds(cfg: WineryClawConfig) {
   const guilds = cfg.channels?.discord?.guilds;
   expect(guilds).toBeDefined();
   return guilds ?? {};
@@ -36,7 +36,7 @@ describe("discord audit", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const collected = collectDiscordAuditChannelIdsForGuilds(readDiscordGuilds(cfg));
     expect(collected.channelIds).toEqual(["111", "222"]);
@@ -85,7 +85,7 @@ describe("discord audit", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const collected = collectDiscordAuditChannelIdsForGuilds(readDiscordGuilds(cfg));
     expect(collected.channelIds).toEqual(["111"]);
@@ -108,7 +108,7 @@ describe("discord audit", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const collected = collectDiscordAuditChannelIdsForGuilds(readDiscordGuilds(cfg));
     expect(collected.channelIds).toEqual([]);
@@ -135,7 +135,7 @@ describe("discord audit", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as WineryClawConfig;
 
     const collected = collectDiscordAuditChannelIdsForGuilds(readDiscordGuilds(cfg));
     expect(collected.channelIds).toEqual(["111"]);

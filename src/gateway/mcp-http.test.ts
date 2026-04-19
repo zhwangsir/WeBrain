@@ -207,13 +207,13 @@ describe("createMcpLoopbackServerConfig", () => {
     };
     expect(config.mcpServers?.openclaw?.url).toBe("http://127.0.0.1:23119/mcp");
     expect(config.mcpServers?.openclaw?.headers?.Authorization).toBe(
-      "Bearer ${OPENCLAW_MCP_TOKEN}",
+      "Bearer ${WINERYCLAW_MCP_TOKEN}",
     );
     expect(config.mcpServers?.openclaw?.headers?.["x-openclaw-message-channel"]).toBe(
-      "${OPENCLAW_MCP_MESSAGE_CHANNEL}",
+      "${WINERYCLAW_MCP_MESSAGE_CHANNEL}",
     );
     expect(config.mcpServers?.openclaw?.headers?.["x-openclaw-sender-is-owner"]).toBe(
-      "${OPENCLAW_MCP_SENDER_IS_OWNER}",
+      "${WINERYCLAW_MCP_SENDER_IS_OWNER}",
     );
   });
 });

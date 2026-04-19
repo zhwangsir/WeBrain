@@ -4,7 +4,7 @@ import type { IncomingMessage } from "node:http";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+import { resolvePreferredWineryClawTmpDir } from "../infra/tmp-openclaw-dir.js";
 import type { ResolvedGatewayAuth } from "./auth.js";
 import { CONTROL_UI_BOOTSTRAP_CONFIG_PATH } from "./control-ui-contract.js";
 import {
@@ -131,7 +131,7 @@ describe("handleControlUiHttpRequest", () => {
     prefix: string;
     fn: (tmpRoot: string) => Promise<T>;
   }) {
-    const tmpRoot = await fs.mkdtemp(path.join(resolvePreferredOpenClawTmpDir(), params.prefix));
+    const tmpRoot = await fs.mkdtemp(path.join(resolvePreferredWineryClawTmpDir(), params.prefix));
     try {
       return await params.fn(tmpRoot);
     } finally {

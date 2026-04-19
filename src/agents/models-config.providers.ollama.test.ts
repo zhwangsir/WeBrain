@@ -2,7 +2,7 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import type { ModelDefinitionConfig } from "../config/types.models.js";
 import {
   normalizePluginDiscoveryResult,
@@ -65,7 +65,7 @@ describe("Ollama provider", () => {
   }) {
     const env = {
       ...process.env,
-      OPENCLAW_TEST_ONLY_PROVIDER_PLUGIN_IDS: "ollama",
+      WINERYCLAW_TEST_ONLY_PROVIDER_PLUGIN_IDS: "ollama",
       VITEST: "1",
       NODE_ENV: "test",
       ...params.env,
@@ -82,14 +82,14 @@ describe("Ollama provider", () => {
 
   async function loadOllamaCatalogProvider(): Promise<ProviderPlugin | undefined> {
     ollamaCatalogProviderPromise ??= resolvePluginDiscoveryProviders({
-      env: { ...process.env, OPENCLAW_TEST_ONLY_PROVIDER_PLUGIN_IDS: "ollama", VITEST: "1" },
+      env: { ...process.env, WINERYCLAW_TEST_ONLY_PROVIDER_PLUGIN_IDS: "ollama", VITEST: "1" },
       onlyPluginIds: ["ollama"],
     }).then((providers) => providers.find((provider) => provider.id === "ollama"));
     return ollamaCatalogProviderPromise;
   }
 
   async function runOllamaCatalog(params: {
-    config?: OpenClawConfig;
+    config?: WineryClawConfig;
     env?: NodeJS.ProcessEnv;
   }): Promise<ProviderConfig | undefined> {
     const provider = await loadOllamaCatalogProvider();

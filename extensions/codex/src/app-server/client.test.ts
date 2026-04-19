@@ -135,7 +135,7 @@ describe("CodexAppServerClient", () => {
       params: {
         clientInfo: {
           name: "openclaw",
-          title: "OpenClaw",
+          title: "WineryClaw",
           version: expect.any(String),
         },
       },

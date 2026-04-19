@@ -2,7 +2,7 @@ import {
   type ChannelDoctorAdapter,
   type ChannelDoctorEmptyAllowlistAccountContext,
 } from "openclaw/plugin-sdk/channel-contract";
-import { type OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import { type WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import { normalizeOptionalString } from "openclaw/plugin-sdk/text-runtime";
 import { inspectTelegramAccount } from "./account-inspect.js";
@@ -39,7 +39,7 @@ function hasAllowFromEntries(values?: DoctorAllowFromList): boolean {
 }
 
 function collectTelegramAccountScopes(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ): Array<{ prefix: string; account: Record<string, unknown> }> {
   const scopes: Array<{ prefix: string; account: Record<string, unknown> }> = [];
   const telegram = asObjectRecord((cfg.channels as Record<string, unknown> | undefined)?.telegram);
@@ -102,7 +102,7 @@ function collectTelegramAllowFromLists(
 }
 
 export function scanTelegramInvalidAllowFromEntries(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ): TelegramAllowFromInvalidHit[] {
   const hits: TelegramAllowFromInvalidHit[] = [];
   const scanList = (pathLabel: string, list: unknown) => {
@@ -140,8 +140,8 @@ export function collectTelegramInvalidAllowFromWarnings(params: {
   ];
 }
 
-export async function maybeRepairTelegramAllowFromUsernames(cfg: OpenClawConfig): Promise<{
-  config: OpenClawConfig;
+export async function maybeRepairTelegramAllowFromUsernames(cfg: WineryClawConfig): Promise<{
+  config: WineryClawConfig;
   changes: string[];
 }> {
   const hits = scanTelegramInvalidAllowFromEntries(cfg);

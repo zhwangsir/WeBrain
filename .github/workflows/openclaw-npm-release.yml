@@ -1,4 +1,4 @@
-name: OpenClaw NPM Release
+name: WineryClaw NPM Release
 
 on:
   workflow_dispatch:
@@ -109,7 +109,7 @@ jobs:
 
       - name: Check
         env:
-          OPENCLAW_LOCAL_CHECK: "0"
+          WINERYCLAW_LOCAL_CHECK: "0"
         run: pnpm check
 
       - name: Build
@@ -121,11 +121,11 @@ jobs:
       - name: Validate release metadata
         if: ${{ inputs.preflight_run_id == '' }}
         env:
-          OPENCLAW_NPM_RELEASE_SKIP_PACK_CHECK: "1"
+          WINERYCLAW_NPM_RELEASE_SKIP_PACK_CHECK: "1"
           RELEASE_REF: ${{ inputs.tag }}
           PREFLIGHT_ONLY: ${{ inputs.preflight_only }}
           RELEASE_MAIN_REF: origin/main
-          OPENCLAW_NPM_PUBLISH_TAG: ${{ inputs.npm_dist_tag }}
+          WINERYCLAW_NPM_PUBLISH_TAG: ${{ inputs.npm_dist_tag }}
         run: |
           set -euo pipefail
           RELEASE_SHA=$(git rev-parse HEAD)
@@ -157,7 +157,7 @@ jobs:
       - name: Pack prepared npm tarball
         id: packed_tarball
         env:
-          OPENCLAW_PREPACK_PREPARED: "1"
+          WINERYCLAW_PREPACK_PREPARED: "1"
           RELEASE_TAG: ${{ inputs.tag }}
           RELEASE_NPM_DIST_TAG: ${{ inputs.npm_dist_tag }}
         run: |
@@ -326,7 +326,7 @@ jobs:
         run: |
           set -euo pipefail
           RUN_JSON="$(gh run view "$PREFLIGHT_RUN_ID" --repo "$GITHUB_REPOSITORY" --json workflowName,headBranch,event,conclusion,url)"
-          printf '%s' "$RUN_JSON" | node -e 'const fs = require("node:fs"); const run = JSON.parse(fs.readFileSync(0, "utf8")); const checks = [["workflowName", "OpenClaw NPM Release"], ["headBranch", "main"], ["event", "workflow_dispatch"], ["conclusion", "success"]]; for (const [key, expected] of checks) { if (run[key] !== expected) { console.error(`Referenced npm preflight run ${process.env.PREFLIGHT_RUN_ID} must have ${key}=${expected}, got ${run[key] ?? "<missing>"}.`); process.exit(1); } } console.log(`Using npm preflight run ${process.env.PREFLIGHT_RUN_ID}: ${run.url}`);'
+          printf '%s' "$RUN_JSON" | node -e 'const fs = require("node:fs"); const run = JSON.parse(fs.readFileSync(0, "utf8")); const checks = [["workflowName", "WineryClaw NPM Release"], ["headBranch", "main"], ["event", "workflow_dispatch"], ["conclusion", "success"]]; for (const [key, expected] of checks) { if (run[key] !== expected) { console.error(`Referenced npm preflight run ${process.env.PREFLIGHT_RUN_ID} must have ${key}=${expected}, got ${run[key] ?? "<missing>"}.`); process.exit(1); } } console.log(`Using npm preflight run ${process.env.PREFLIGHT_RUN_ID}: ${run.url}`);'
 
       - name: Download prepared npm tarball
         uses: actions/download-artifact@v8
@@ -340,7 +340,7 @@ jobs:
       - name: Validate release tag and package metadata
         if: ${{ inputs.preflight_run_id == '' }}
         env:
-          OPENCLAW_NPM_RELEASE_SKIP_PACK_CHECK: "1"
+          WINERYCLAW_NPM_RELEASE_SKIP_PACK_CHECK: "1"
           RELEASE_TAG: ${{ inputs.tag }}
           RELEASE_MAIN_REF: origin/main
         run: |
@@ -397,8 +397,8 @@ jobs:
 
       - name: Publish
         env:
-          OPENCLAW_PREPACK_PREPARED: "1"
-          OPENCLAW_NPM_PUBLISH_TAG: ${{ inputs.npm_dist_tag }}
+          WINERYCLAW_PREPACK_PREPARED: "1"
+          WINERYCLAW_NPM_PUBLISH_TAG: ${{ inputs.npm_dist_tag }}
         run: |
           set -euo pipefail
           publish_target="${{ steps.publish_tarball.outputs.path }}"

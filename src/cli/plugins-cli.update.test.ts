@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import {
   loadConfig,
   registerPluginsCli,
@@ -17,7 +17,7 @@ function createTrackedPluginConfig(params: {
   pluginId: string;
   spec: string;
   resolvedName?: string;
-}): OpenClawConfig {
+}): WineryClawConfig {
   return {
     plugins: {
       installs: {
@@ -29,7 +29,7 @@ function createTrackedPluginConfig(params: {
         },
       },
     },
-  } as OpenClawConfig;
+  } as WineryClawConfig;
 }
 
 describe("plugins cli update", () => {
@@ -64,7 +64,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const nextConfig = {
       hooks: {
         internal: {
@@ -77,7 +77,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
 
     loadConfig.mockReturnValue(cfg);
     updateNpmInstalledPlugins.mockResolvedValue({
@@ -116,7 +116,7 @@ describe("plugins cli update", () => {
       plugins: {
         installs: {},
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     await expect(runPluginsCommand(["plugins", "update"])).rejects.toThrow("__exit__:1");
 
@@ -129,7 +129,7 @@ describe("plugins cli update", () => {
       plugins: {
         installs: {},
       },
-    } as OpenClawConfig);
+    } as WineryClawConfig);
 
     await runPluginsCommand(["plugins", "update", "--all"]);
 
@@ -176,7 +176,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     const nextConfig = {
       plugins: {
         installs: {
@@ -186,7 +186,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as WineryClawConfig;
     loadConfig.mockReturnValue(cfg);
     updateNpmInstalledPlugins.mockResolvedValue({
       outcomes: [{ status: "ok", message: "Updated alpha -> 1.1.0" }],

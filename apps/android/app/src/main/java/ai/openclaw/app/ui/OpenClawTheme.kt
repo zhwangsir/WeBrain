@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 @Composable
-fun OpenClawTheme(content: @Composable () -> Unit) {
+fun WineryClawTheme(content: @Composable () -> Unit) {
   val context = LocalContext.current
   val isDark = isSystemInDarkTheme()
   val colorScheme = if (isDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)

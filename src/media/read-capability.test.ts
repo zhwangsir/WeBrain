@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { resolveAgentScopedOutboundMediaAccess } from "./read-capability.js";
 
 vi.mock("../channels/plugins/index.js", () => ({
@@ -9,7 +9,7 @@ vi.mock("../channels/plugins/index.js", () => ({
 describe("resolveAgentScopedOutboundMediaAccess", () => {
   it("preserves caller-provided workspaceDir from mediaAccess", () => {
     const result = resolveAgentScopedOutboundMediaAccess({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       mediaAccess: { workspaceDir: "/tmp/media-workspace" },
     });
 
@@ -18,7 +18,7 @@ describe("resolveAgentScopedOutboundMediaAccess", () => {
 
   it("prefers explicit workspaceDir over mediaAccess.workspaceDir", () => {
     const result = resolveAgentScopedOutboundMediaAccess({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       workspaceDir: "/tmp/explicit-workspace",
       mediaAccess: { workspaceDir: "/tmp/media-workspace" },
     });
@@ -27,7 +27,7 @@ describe("resolveAgentScopedOutboundMediaAccess", () => {
   });
 
   it("does not enable host reads when sender group policy denies read", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       tools: {
         allow: ["read"],
       },
@@ -58,7 +58,7 @@ describe("resolveAgentScopedOutboundMediaAccess", () => {
   });
 
   it("keeps host reads enabled when sender group policy allows read", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       tools: {
         allow: ["read"],
       },
@@ -92,7 +92,7 @@ describe("resolveAgentScopedOutboundMediaAccess", () => {
         tools: {
           allow: ["read"],
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       messageProvider: "whatsapp",
       requesterSenderId: "trusted-user",
     });
@@ -119,7 +119,7 @@ describe("resolveAgentScopedOutboundMediaAccess", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as WineryClawConfig,
       messageProvider: "whatsapp",
       requesterSenderId: "dm-sender",
     });

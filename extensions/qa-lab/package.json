@@ -2,7 +2,7 @@
   "name": "@openclaw/qa-lab",
   "version": "2026.4.12",
   "private": true,
-  "description": "OpenClaw QA lab plugin with private debugger UI and scenario runner",
+  "description": "WineryClaw QA lab plugin with private debugger UI and scenario runner",
   "type": "module",
   "devDependencies": {
     "@openclaw/plugin-sdk": "workspace:*",

@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import { loadConfig } from "../../config/config.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import {
   isSameMemoryDreamingDay,
   resolveMemoryDeepDreamingConfig,
@@ -179,7 +179,7 @@ async function listWorkspaceDailyFiles(memoryDir: string): Promise<string[]> {
 }
 
 function resolveDreamingConfig(
-  cfg: OpenClawConfig,
+  cfg: WineryClawConfig,
 ): Omit<
   DoctorMemoryDreamingPayload,
   | "shortTermCount"

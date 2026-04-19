@@ -28,7 +28,7 @@ const {
 
 let handlersByAccount = new Map<string, Record<string, (data: unknown) => Promise<void>>>();
 let runtimesByAccount = new Map<string, RuntimeEnv>();
-const originalStateDir = process.env.OPENCLAW_STATE_DIR;
+const originalStateDir = process.env.WINERYCLAW_STATE_DIR;
 
 function createLifecycleConfig(): ClawdbotConfig {
   return {

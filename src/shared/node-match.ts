@@ -42,7 +42,7 @@ function formatNodeCandidateLabel(node: NodeMatchCandidate): string {
   return `${label} [${details.join(", ")}]`;
 }
 
-function isCurrentOpenClawClient(clientId: string | undefined): boolean {
+function isCurrentWineryClawClient(clientId: string | undefined): boolean {
   const normalized = normalizeOptionalLowercaseString(clientId) ?? "";
   return normalized.startsWith("openclaw-");
 }
@@ -55,7 +55,7 @@ function isLegacyClawdbotClient(clientId: string | undefined): boolean {
 function pickPreferredLegacyMigrationMatch(
   matches: NodeMatchCandidate[],
 ): NodeMatchCandidate | undefined {
-  const current = matches.filter((match) => isCurrentOpenClawClient(match.clientId));
+  const current = matches.filter((match) => isCurrentWineryClawClient(match.clientId));
   if (current.length !== 1) {
     return undefined;
   }
@@ -92,7 +92,7 @@ function scoreNodeCandidate(node: NodeMatchCandidate, matchScore: number): numbe
   if (node.connected === true) {
     score += 100;
   }
-  if (isCurrentOpenClawClient(node.clientId)) {
+  if (isCurrentWineryClawClient(node.clientId)) {
     score += 10;
   } else if (isLegacyClawdbotClient(node.clientId)) {
     score -= 10;

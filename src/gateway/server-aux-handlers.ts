@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createExecApprovalForwarder } from "../infra/exec-approval-forwarder.js";
 import { type PluginApprovalRequestPayload } from "../infra/plugin-approvals.js";
 import {
@@ -29,7 +29,7 @@ export function createGatewayAuxHandlers(params: {
   log: GatewayAuxHandlerLogger;
   activateRuntimeSecrets: ActivateRuntimeSecrets;
   sharedGatewaySessionGenerationState: SharedGatewaySessionGenerationState;
-  resolveSharedGatewaySessionGenerationForConfig: (config: OpenClawConfig) => string | undefined;
+  resolveSharedGatewaySessionGenerationForConfig: (config: WineryClawConfig) => string | undefined;
   clients: Iterable<SharedGatewayAuthClient>;
 }) {
   const execApprovalManager = new ExecApprovalManager();

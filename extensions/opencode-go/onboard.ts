@@ -1,7 +1,7 @@
 import {
   applyAgentDefaultModelPrimary,
   withAgentModelAliases,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/provider-onboard";
 
 export const OPENCODE_GO_DEFAULT_MODEL_REF = "opencode-go/kimi-k2.5";
@@ -12,7 +12,7 @@ const OPENCODE_GO_ALIAS_DEFAULTS: Record<string, string> = {
   "opencode-go/minimax-m2.5": "MiniMax",
 };
 
-export function applyOpencodeGoProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyOpencodeGoProviderConfig(cfg: WineryClawConfig): WineryClawConfig {
   return {
     ...cfg,
     agents: {
@@ -31,7 +31,7 @@ export function applyOpencodeGoProviderConfig(cfg: OpenClawConfig): OpenClawConf
   };
 }
 
-export function applyOpencodeGoConfig(cfg: OpenClawConfig): OpenClawConfig {
+export function applyOpencodeGoConfig(cfg: WineryClawConfig): WineryClawConfig {
   return applyAgentDefaultModelPrimary(
     applyOpencodeGoProviderConfig(cfg),
     OPENCODE_GO_DEFAULT_MODEL_REF,

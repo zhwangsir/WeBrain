@@ -6,7 +6,7 @@ import {
 import {
   applySetupAccountConfigPatch,
   DEFAULT_ACCOUNT_ID,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "./runtime-api.js";
 import { isMattermostConfigured, resolveMattermostAccountWithSecrets } from "./setup-core.js";
 import { normalizeMattermostBaseUrl } from "./setup.client.runtime.js";
@@ -110,7 +110,7 @@ export const mattermostSetupWizard: ChannelSetupWizard = {
       normalizeValue: ({ value }) => normalizeMattermostBaseUrl(value) ?? value.trim(),
     },
   ],
-  disable: (cfg: OpenClawConfig) => ({
+  disable: (cfg: WineryClawConfig) => ({
     ...cfg,
     channels: {
       ...cfg.channels,

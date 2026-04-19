@@ -1,6 +1,6 @@
-import OpenClawProtocol
+import WineryClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 private func makeSkillStatus(
     name: String,

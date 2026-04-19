@@ -1,7 +1,7 @@
 ---
-summary: "Use Z.AI (GLM models) with OpenClaw"
+summary: "Use Z.AI (GLM models) with WineryClaw"
 read_when:
-  - You want Z.AI / GLM models in OpenClaw
+  - You want Z.AI / GLM models in WineryClaw
   - You need a simple ZAI_API_KEY setup
 title: "Z.AI"
 ---
@@ -9,7 +9,7 @@ title: "Z.AI"
 # Z.AI
 
 Z.AI is the API platform for **GLM** models. It provides REST APIs for GLM and uses API keys
-for authentication. Create your API key in the Z.AI console. OpenClaw uses the `zai` provider
+for authentication. Create your API key in the Z.AI console. WineryClaw uses the `zai` provider
 with a Z.AI API key.
 
 - Provider: `zai`
@@ -20,7 +20,7 @@ with a Z.AI API key.
 
 <Tabs>
   <Tab title="Auto-detect endpoint">
-    **Best for:** most users. OpenClaw detects the matching Z.AI endpoint from the key and applies the correct base URL automatically.
+    **Best for:** most users. WineryClaw detects the matching Z.AI endpoint from the key and applies the correct base URL automatically.
 
     <Steps>
       <Step title="Run onboarding">
@@ -84,7 +84,7 @@ with a Z.AI API key.
 
 ## Bundled GLM catalog
 
-OpenClaw currently seeds the bundled `zai` provider with:
+WineryClaw currently seeds the bundled `zai` provider with:
 
 | Model ref            | Notes         |
 | -------------------- | ------------- |

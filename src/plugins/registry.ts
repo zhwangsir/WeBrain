@@ -78,22 +78,22 @@ import type {
   CliBackendPlugin,
   ImageGenerationProviderPlugin,
   MusicGenerationProviderPlugin,
-  OpenClawPluginApi,
-  OpenClawPluginChannelRegistration,
-  OpenClawPluginCliCommandDescriptor,
-  OpenClawPluginCliRegistrar,
-  OpenClawPluginCommandDefinition,
+  WineryClawPluginApi,
+  WineryClawPluginChannelRegistration,
+  WineryClawPluginCliCommandDescriptor,
+  WineryClawPluginCliRegistrar,
+  WineryClawPluginCommandDefinition,
   PluginConversationBindingResolvedEvent,
-  OpenClawPluginGatewayRuntimeScopeSurface,
-  OpenClawPluginHttpRouteParams,
-  OpenClawPluginHookOptions,
-  OpenClawPluginNodeHostCommand,
-  OpenClawPluginReloadRegistration,
-  OpenClawPluginSecurityAuditCollector,
+  WineryClawPluginGatewayRuntimeScopeSurface,
+  WineryClawPluginHttpRouteParams,
+  WineryClawPluginHookOptions,
+  WineryClawPluginNodeHostCommand,
+  WineryClawPluginReloadRegistration,
+  WineryClawPluginSecurityAuditCollector,
   MediaUnderstandingProviderPlugin,
-  OpenClawPluginService,
-  OpenClawPluginToolContext,
-  OpenClawPluginToolFactory,
+  WineryClawPluginService,
+  WineryClawPluginToolContext,
+  WineryClawPluginToolFactory,
   PluginHookHandlerMap,
   PluginHookName,
   PluginHookRegistration as TypedPluginHookRegistration,
@@ -109,7 +109,7 @@ import type {
 } from "./types.js";
 
 export type PluginHttpRouteRegistration = RegistryTypesPluginHttpRouteRegistration & {
-  gatewayRuntimeScopeSurface?: OpenClawPluginGatewayRuntimeScopeSurface;
+  gatewayRuntimeScopeSurface?: WineryClawPluginGatewayRuntimeScopeSurface;
 };
 type PluginOwnedProviderRegistration<T extends { id: string }> = {
   pluginId: string;
@@ -185,13 +185,13 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerTool = (
     record: PluginRecord,
-    tool: AnyAgentTool | OpenClawPluginToolFactory,
+    tool: AnyAgentTool | WineryClawPluginToolFactory,
     opts?: { name?: string; names?: string[]; optional?: boolean },
   ) => {
     const names = opts?.names ?? (opts?.name ? [opts.name] : []);
     const optional = opts?.optional === true;
-    const factory: OpenClawPluginToolFactory =
-      typeof tool === "function" ? tool : (_ctx: OpenClawPluginToolContext) => tool;
+    const factory: WineryClawPluginToolFactory =
+      typeof tool === "function" ? tool : (_ctx: WineryClawPluginToolContext) => tool;
 
     if (typeof tool !== "function") {
       names.push(tool.name);
@@ -216,8 +216,8 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     record: PluginRecord,
     events: string | string[],
     handler: Parameters<typeof registerInternalHook>[1],
-    opts: OpenClawPluginHookOptions | undefined,
-    config: OpenClawPluginApi["config"],
+    opts: WineryClawPluginHookOptions | undefined,
+    config: WineryClawPluginApi["config"],
   ) => {
     const eventList = Array.isArray(events) ? events : [events];
     const normalizedEvents = eventList.map((event) => event.trim()).filter(Boolean);
@@ -350,7 +350,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     return `${plugin} (${source})`;
   };
 
-  const registerHttpRoute = (record: PluginRecord, params: OpenClawPluginHttpRouteParams) => {
+  const registerHttpRoute = (record: PluginRecord, params: WineryClawPluginHttpRouteParams) => {
     const normalizedPath = normalizePluginHttpPath(params.path);
     if (!normalizedPath) {
       pushDiagnostic({
@@ -442,12 +442,12 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerChannel = (
     record: PluginRecord,
-    registration: OpenClawPluginChannelRegistration | ChannelPlugin,
+    registration: WineryClawPluginChannelRegistration | ChannelPlugin,
     mode: PluginRegistrationMode = "full",
   ) => {
     const normalized =
-      typeof (registration as OpenClawPluginChannelRegistration).plugin === "object"
-        ? (registration as OpenClawPluginChannelRegistration)
+      typeof (registration as WineryClawPluginChannelRegistration).plugin === "object"
+        ? (registration as WineryClawPluginChannelRegistration)
         : { plugin: registration as ChannelPlugin };
     const plugin = normalized.plugin;
     const id =
@@ -794,8 +794,8 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerCli = (
     record: PluginRecord,
-    registrar: OpenClawPluginCliRegistrar,
-    opts?: { commands?: string[]; descriptors?: OpenClawPluginCliCommandDescriptor[] },
+    registrar: WineryClawPluginCliRegistrar,
+    opts?: { commands?: string[]; descriptors?: WineryClawPluginCliCommandDescriptor[] },
   ) => {
     const descriptors = (opts?.descriptors ?? [])
       .map((descriptor) => ({
@@ -850,10 +850,10 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     NODE_SYSTEM_NOTIFY_COMMAND,
   ]);
 
-  const registerReload = (record: PluginRecord, registration: OpenClawPluginReloadRegistration) => {
+  const registerReload = (record: PluginRecord, registration: WineryClawPluginReloadRegistration) => {
     const normalize = (values?: string[]) =>
       (values ?? []).map((value) => value.trim()).filter(Boolean);
-    const normalized: OpenClawPluginReloadRegistration = {
+    const normalized: WineryClawPluginReloadRegistration = {
       restartPrefixes: normalize(registration.restartPrefixes),
       hotPrefixes: normalize(registration.hotPrefixes),
       noopPrefixes: normalize(registration.noopPrefixes),
@@ -883,7 +883,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerNodeHostCommand = (
     record: PluginRecord,
-    nodeCommand: OpenClawPluginNodeHostCommand,
+    nodeCommand: WineryClawPluginNodeHostCommand,
   ) => {
     const command = nodeCommand.command.trim();
     if (!command) {
@@ -930,7 +930,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerSecurityAuditCollector = (
     record: PluginRecord,
-    collector: OpenClawPluginSecurityAuditCollector,
+    collector: WineryClawPluginSecurityAuditCollector,
   ) => {
     registry.securityAuditCollectors ??= [];
     registry.securityAuditCollectors.push({
@@ -942,7 +942,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     });
   };
 
-  const registerService = (record: PluginRecord, service: OpenClawPluginService) => {
+  const registerService = (record: PluginRecord, service: WineryClawPluginService) => {
     const id = service.id.trim();
     if (!id) {
       return;
@@ -972,7 +972,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     });
   };
 
-  const registerCommand = (record: PluginRecord, command: OpenClawPluginCommandDefinition) => {
+  const registerCommand = (record: PluginRecord, command: WineryClawPluginCommandDefinition) => {
     const name = command.name.trim();
     if (!name) {
       pushDiagnostic({
@@ -1130,12 +1130,12 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
   const createApi = (
     record: PluginRecord,
     params: {
-      config: OpenClawPluginApi["config"];
+      config: WineryClawPluginApi["config"];
       pluginConfig?: Record<string, unknown>;
       hookPolicy?: PluginTypedHookPolicy;
       registrationMode?: PluginRegistrationMode;
     },
-  ): OpenClawPluginApi => {
+  ): WineryClawPluginApi => {
     const registrationMode = params.registrationMode ?? "full";
     return buildPluginApi({
       id: record.id,
@@ -1223,7 +1223,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
                 }
               },
               registerCompactionProvider: (
-                provider: Parameters<OpenClawPluginApi["registerCompactionProvider"]>[0],
+                provider: Parameters<WineryClawPluginApi["registerCompactionProvider"]>[0],
               ) => {
                 const existing = getRegisteredCompactionProvider(provider.id);
                 if (existing) {

@@ -437,7 +437,7 @@ function Invoke-CaptureLogged {
 
 function Wait-GatewayRpcReady {
   param(
-    [Parameter(Mandatory = $true)][string]$OpenClawPath,
+    [Parameter(Mandatory = $true)][string]$WineryClawPath,
     [int]$Attempts = 20,
     [int]$SleepSeconds = 3
   )
@@ -445,7 +445,7 @@ function Wait-GatewayRpcReady {
   for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
     Write-ProgressLog "update.gateway-status.attempt-$attempt"
     try {
-      Invoke-Logged 'openclaw gateway status' { & $OpenClawPath gateway status --deep --require-rpc }
+      Invoke-Logged 'openclaw gateway status' { & $WineryClawPath gateway status --deep --require-rpc }
       return
     } catch {
       if ($attempt -ge $Attempts) {
@@ -457,7 +457,7 @@ function Wait-GatewayRpcReady {
   }
 }
 
-function Stop-OpenClawGatewayProcesses {
+function Stop-WineryClawGatewayProcesses {
   Write-ProgressLog 'update.stop-old-gateway'
   $patterns = @(
     'openclaw-gateway',
@@ -494,7 +494,7 @@ function Stop-OpenClawGatewayProcesses {
 
 function Restart-GatewayWithRecovery {
   param(
-    [Parameter(Mandatory = $true)][string]$OpenClawPath
+    [Parameter(Mandatory = $true)][string]$WineryClawPath
   )
 
   $restartFailed = $false
@@ -505,7 +505,7 @@ function Restart-GatewayWithRecovery {
       ExitCode = $LASTEXITCODE
       Output = ($output | Out-String).Trim()
     }
-  } -ArgumentList $OpenClawPath
+  } -ArgumentList $WineryClawPath
 
   $restartCompleted = Wait-Job $restartJob -Timeout 20
   if ($null -ne $restartCompleted) {
@@ -528,26 +528,26 @@ function Restart-GatewayWithRecovery {
 
   Write-ProgressLog 'update.gateway-status'
   try {
-    Wait-GatewayRpcReady -OpenClawPath $OpenClawPath
+    Wait-GatewayRpcReady -WineryClawPath $WineryClawPath
     return
   } catch {
     if (-not $restartFailed) {
       throw
     }
     Write-ProgressLog 'update.gateway-start-recover'
-    Invoke-Logged 'openclaw gateway start' { & $OpenClawPath gateway start }
+    Invoke-Logged 'openclaw gateway start' { & $WineryClawPath gateway start }
     Write-ProgressLog 'update.gateway-status-recover'
-    Wait-GatewayRpcReady -OpenClawPath $OpenClawPath
+    Wait-GatewayRpcReady -WineryClawPath $WineryClawPath
   }
 }
 
 try {
-  $env:PATH = "$env:LOCALAPPDATA\OpenClaw\deps\portable-git\cmd;$env:LOCALAPPDATA\OpenClaw\deps\portable-git\mingw64\bin;$env:LOCALAPPDATA\OpenClaw\deps\portable-git\usr\bin;$env:PATH"
+  $env:PATH = "$env:LOCALAPPDATA\WineryClaw\deps\portable-git\cmd;$env:LOCALAPPDATA\WineryClaw\deps\portable-git\mingw64\bin;$env:LOCALAPPDATA\WineryClaw\deps\portable-git\usr\bin;$env:PATH"
   Remove-Item $LogPath, $DonePath -Force -ErrorAction SilentlyContinue
   Write-ProgressLog 'update.start'
   Set-Item -Path ('Env:' + $ProviderKeyEnv) -Value $ProviderKey
   $openclaw = Join-Path $env:APPDATA 'npm\openclaw.cmd'
-  Stop-OpenClawGatewayProcesses
+  Stop-WineryClawGatewayProcesses
   Write-ProgressLog 'update.openclaw-update'
   Invoke-Logged 'openclaw update' { & $openclaw update --tag $UpdateTarget --yes --json }
   Write-ProgressLog 'update.verify-version'
@@ -566,7 +566,7 @@ try {
   # is fully observable again, so verify readiness separately and fall back to
   # an explicit start only if the RPC endpoint never returns.
   Write-ProgressLog 'update.restart-gateway'
-  Restart-GatewayWithRecovery -OpenClawPath $openclaw
+  Restart-GatewayWithRecovery -WineryClawPath $openclaw
   Write-ProgressLog 'update.agent-turn'
   Invoke-CaptureLogged 'openclaw agent' { & $openclaw agent --agent main --session-id $SessionId --message 'Reply with exact ASCII text OK only.' --json } | Out-Null
   $exitCode = $LASTEXITCODE
@@ -705,8 +705,8 @@ import re
 import sys
 
 text = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace")
-matches = re.findall(r"OpenClaw [^\r\n]+", text)
-matches = [match for match in matches if re.search(r"OpenClaw \d", match)]
+matches = re.findall(r"WineryClaw [^\r\n]+", text)
+matches = [match for match in matches if re.search(r"WineryClaw \d", match)]
 print(matches[-1] if matches else "")
 PY
 }

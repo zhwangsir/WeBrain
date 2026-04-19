@@ -5,10 +5,10 @@ import {
 } from "openclaw/plugin-sdk/config-runtime";
 import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
 import type { ResolvedSlackAccount } from "./accounts.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { WineryClawConfig } from "./runtime-api.js";
 
 export async function collectSlackSecurityAuditFindings(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   accountId?: string | null;
   account: ResolvedSlackAccount;
 }) {

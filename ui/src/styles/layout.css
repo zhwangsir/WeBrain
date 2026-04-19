@@ -12,11 +12,11 @@
   --shell-focus-ease: var(--ease-out);
   height: 100vh;
   display: grid;
-  grid-template-columns: var(--shell-nav-width) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: var(--shell-topbar-height) 1fr;
   grid-template-areas:
-    "nav topbar"
-    "nav content";
+    "topbar"
+    "content";
   gap: 0;
   animation: dashboard-enter 0.3s var(--ease-out);
   transition: grid-template-columns var(--shell-focus-duration) var(--shell-focus-ease);
@@ -47,6 +47,17 @@
 
 .shell--chat-focus {
   grid-template-columns: 0px minmax(0, 1fr);
+}
+
+.shell--no-sidebar {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "topbar"
+    "content";
+}
+
+.shell--no-sidebar .shell-nav {
+  display: none;
 }
 
 .shell--onboarding {
@@ -302,6 +313,46 @@
   stroke-width: 1.75px;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.topbar-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.topnav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.topnav-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition:
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+  white-space: nowrap;
+}
+
+.topnav-tab:hover {
+  color: var(--text);
+  background: var(--bg-hover);
+}
+
+.topnav-tab--active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+  font-weight: 600;
 }
 
 /* ===========================================

@@ -6,7 +6,7 @@ import {
   resolveAgentDir,
   resolveAgentWorkspaceDir,
   resolveMemorySearchConfig,
-  type OpenClawConfig,
+  type WineryClawConfig,
   type ResolvedMemorySearchConfig,
 } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
 import { extractKeywords } from "openclaw/plugin-sdk/memory-core-host-engine-qmd";
@@ -77,7 +77,7 @@ export async function closeAllMemoryIndexManagers(): Promise<void> {
 
 export class MemoryIndexManager extends MemoryManagerEmbeddingOps implements MemorySearchManager {
   private readonly cacheKey: string;
-  protected readonly cfg: OpenClawConfig;
+  protected readonly cfg: WineryClawConfig;
   protected readonly agentId: string;
   protected readonly workspaceDir: string;
   protected readonly settings: ResolvedMemorySearchConfig;
@@ -141,7 +141,7 @@ export class MemoryIndexManager extends MemoryManagerEmbeddingOps implements Mem
   private readonlyRecoveryLastError?: string;
 
   private static async loadProviderResult(params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     agentId: string;
     settings: ResolvedMemorySearchConfig;
   }): Promise<EmbeddingProviderResult> {
@@ -153,7 +153,7 @@ export class MemoryIndexManager extends MemoryManagerEmbeddingOps implements Mem
   }
 
   static async get(params: {
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     agentId: string;
     purpose?: "default" | "status";
   }): Promise<MemoryIndexManager | null> {
@@ -185,7 +185,7 @@ export class MemoryIndexManager extends MemoryManagerEmbeddingOps implements Mem
 
   private constructor(params: {
     cacheKey: string;
-    cfg: OpenClawConfig;
+    cfg: WineryClawConfig;
     agentId: string;
     workspaceDir: string;
     settings: ResolvedMemorySearchConfig;

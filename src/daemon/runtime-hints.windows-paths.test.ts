@@ -21,7 +21,7 @@ describe("buildPlatformRuntimeLogHints", () => {
       buildPlatformRuntimeLogHints({
         platform: "darwin",
         systemdServiceName: "openclaw-gateway",
-        windowsTaskName: "OpenClaw Gateway",
+        windowsTaskName: "WineryClaw Gateway",
       }),
     ).toEqual([
       "Launchd stdout (if installed): /tmp/openclaw-state/logs/gateway.log",

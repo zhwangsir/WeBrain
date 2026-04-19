@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { bundledPluginRootAt } from "../../test/helpers/bundled-plugin-paths.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 
 const APP_ROOT = "/app";
 
@@ -85,7 +85,7 @@ function createMarketplaceInstallConfig(params: {
   marketplaceSource: string;
   marketplacePlugin: string;
   marketplaceName?: string;
-}): OpenClawConfig {
+}): WineryClawConfig {
   return {
     plugins: {
       installs: {
@@ -108,7 +108,7 @@ function createClawHubInstallConfig(params: {
   clawhubPackage: string;
   clawhubFamily: "bundle-plugin" | "code-plugin";
   clawhubChannel: "community" | "official" | "private";
-}): OpenClawConfig {
+}): WineryClawConfig {
   return {
     plugins: {
       installs: {
@@ -131,7 +131,7 @@ function createBundledPathInstallConfig(params: {
   installPath: string;
   sourcePath?: string;
   spec?: string;
-}): OpenClawConfig {
+}): WineryClawConfig {
   return {
     plugins: {
       load: { paths: params.loadPaths },
@@ -687,7 +687,7 @@ describe("syncPluginsForUpdateChannel", () => {
 
   it("forwards an explicit env to bundled plugin source resolution", async () => {
     resolveBundledPluginSourcesMock.mockReturnValue(new Map());
-    const env = { OPENCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { WINERYCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
 
     await syncPluginsForUpdateChannel({
       channel: "beta",
@@ -717,7 +717,7 @@ describe("syncPluginsForUpdateChannel", () => {
         channel: "beta",
         env: {
           ...process.env,
-          OPENCLAW_HOME: bundledHome,
+          WINERYCLAW_HOME: bundledHome,
           HOME: "/tmp/ignored-home",
         },
         config: {

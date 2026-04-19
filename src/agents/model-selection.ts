@@ -4,7 +4,7 @@ import {
   resolveAgentModelPrimaryValue,
   toAgentModelListLike,
 } from "../config/model-input.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
   normalizeLowercaseStringOrEmpty,
@@ -178,7 +178,7 @@ export function normalizeStoredOverrideModel(params: {
 }
 
 export function inferUniqueProviderFromConfiguredModels(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   model: string;
 }): string | undefined {
   const model = params.model.trim();
@@ -251,7 +251,7 @@ export function resolveAllowlistModelKey(raw: string, defaultProvider: string): 
 }
 
 export function buildConfiguredAllowlistKeys(params: {
-  cfg: OpenClawConfig | undefined;
+  cfg: WineryClawConfig | undefined;
   defaultProvider: string;
 }): Set<string> | null {
   const rawAllowlist = Object.keys(params.cfg?.agents?.defaults?.models ?? {});
@@ -270,7 +270,7 @@ export function buildConfiguredAllowlistKeys(params: {
 }
 
 export function buildModelAliasIndex(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   defaultProvider: string;
   allowPluginNormalization?: boolean;
 }): ModelAliasIndex {
@@ -307,7 +307,7 @@ type ModelCatalogMetadata = {
 };
 
 function buildModelCatalogMetadata(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   defaultProvider: string;
 }): ModelCatalogMetadata {
   const configuredByKey = new Map<string, ModelCatalogEntry>();
@@ -406,7 +406,7 @@ export function resolveModelRefFromString(params: {
 }
 
 export function resolveConfiguredModelRef(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   defaultProvider: string;
   defaultModel: string;
   allowPluginNormalization?: boolean;
@@ -475,7 +475,7 @@ export function resolveConfiguredModelRef(params: {
 }
 
 export function resolveDefaultModelForAgent(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId?: string;
 }): ModelRef {
   const agentModelOverride = params.agentId
@@ -504,7 +504,7 @@ export function resolveDefaultModelForAgent(params: {
   });
 }
 
-function resolveAllowedFallbacks(params: { cfg: OpenClawConfig; agentId?: string }): string[] {
+function resolveAllowedFallbacks(params: { cfg: WineryClawConfig; agentId?: string }): string[] {
   if (params.agentId) {
     const override = resolveAgentModelFallbacksOverride(params.cfg, params.agentId);
     if (override !== undefined) {
@@ -515,7 +515,7 @@ function resolveAllowedFallbacks(params: { cfg: OpenClawConfig; agentId?: string
 }
 
 export function resolveSubagentConfiguredModelSelection(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
 }): string | undefined {
   const agentConfig = resolveAgentConfig(params.cfg, params.agentId);
@@ -527,7 +527,7 @@ export function resolveSubagentConfiguredModelSelection(params: {
 }
 
 export function resolveSubagentSpawnModelSelection(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   modelOverride?: unknown;
 }): string {
@@ -547,7 +547,7 @@ export function resolveSubagentSpawnModelSelection(params: {
 }
 
 export function buildAllowedModelSet(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   catalog: ModelCatalogEntry[];
   defaultProvider: string;
   defaultModel?: string;
@@ -641,7 +641,7 @@ export function buildAllowedModelSet(params: {
   return { allowAny: false, allowedCatalog, allowedKeys };
 }
 
-export function buildConfiguredModelCatalog(params: { cfg: OpenClawConfig }): ModelCatalogEntry[] {
+export function buildConfiguredModelCatalog(params: { cfg: WineryClawConfig }): ModelCatalogEntry[] {
   const providers = params.cfg.models?.providers;
   if (!providers || typeof providers !== "object") {
     return [];
@@ -687,7 +687,7 @@ export type ModelRefStatus = {
 };
 
 export function getModelRefStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   catalog: ModelCatalogEntry[];
   ref: ModelRef;
   defaultProvider: string;
@@ -709,7 +709,7 @@ export function getModelRefStatus(params: {
 }
 
 export function resolveAllowedModelRef(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   catalog: ModelCatalogEntry[];
   raw: string;
   defaultProvider: string;
@@ -762,7 +762,7 @@ export function resolveAllowedModelRef(params: {
 }
 
 export function resolveThinkingDefault(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   provider: string;
   model: string;
   catalog?: ModelCatalogEntry[];
@@ -840,7 +840,7 @@ export function resolveReasoningDefault(params: {
  * Returns null if hooks.gmail.model is not set.
  */
 export function resolveHooksGmailModel(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   defaultProvider: string;
 }): ModelRef | null {
   const hooksModel = params.cfg.hooks?.gmail?.model;

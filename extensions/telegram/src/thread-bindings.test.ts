@@ -23,7 +23,7 @@ describe("telegram thread bindings", () => {
     vi.useRealTimers();
     await __testing.resetTelegramThreadBindingsForTests();
     if (stateDirOverride) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.WINERYCLAW_STATE_DIR;
       fs.rmSync(stateDirOverride, { recursive: true, force: true });
       stateDirOverride = undefined;
     }
@@ -198,7 +198,7 @@ describe("telegram thread bindings", () => {
 
   it("does not persist lifecycle updates when manager persistence is disabled", async () => {
     stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-bindings-"));
-    process.env.OPENCLAW_STATE_DIR = stateDirOverride;
+    process.env.WINERYCLAW_STATE_DIR = stateDirOverride;
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-06T10:00:00.000Z"));
 
@@ -239,7 +239,7 @@ describe("telegram thread bindings", () => {
 
   it("persists unbinds before restart so removed bindings do not come back", async () => {
     stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-bindings-"));
-    process.env.OPENCLAW_STATE_DIR = stateDirOverride;
+    process.env.WINERYCLAW_STATE_DIR = stateDirOverride;
 
     createTelegramThreadBindingManager({
       accountId: "default",
@@ -275,7 +275,7 @@ describe("telegram thread bindings", () => {
 
   it("flushes pending lifecycle update persists before test reset", async () => {
     stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-telegram-bindings-"));
-    process.env.OPENCLAW_STATE_DIR = stateDirOverride;
+    process.env.WINERYCLAW_STATE_DIR = stateDirOverride;
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-06T10:00:00.000Z"));
 

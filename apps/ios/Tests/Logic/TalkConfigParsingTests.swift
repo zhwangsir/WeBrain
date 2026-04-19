@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import WineryClawKit
 import Testing
 
 private let iOSSilenceTimeoutMs = 900

@@ -78,7 +78,7 @@ export function resolveCliContainerTarget(
   if (!parsed.ok) {
     throw new Error(parsed.error);
   }
-  return parsed.container ?? normalizeOptionalString(env.OPENCLAW_CONTAINER) ?? null;
+  return parsed.container ?? normalizeOptionalString(env.WINERYCLAW_CONTAINER) ?? null;
 }
 
 function isContainerRunning(params: {
@@ -158,9 +158,9 @@ function buildContainerExecArgs(params: {
     "exec",
     ...interactiveFlags,
     envFlag,
-    `OPENCLAW_CONTAINER_HINT=${params.containerName}`,
+    `WINERYCLAW_CONTAINER_HINT=${params.containerName}`,
     envFlag,
-    "OPENCLAW_CLI_CONTAINER_BYPASS=1",
+    "WINERYCLAW_CLI_CONTAINER_BYPASS=1",
     params.containerName,
     "openclaw",
     ...params.argv,
@@ -171,15 +171,15 @@ function buildContainerExecEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   const next = { ...env };
   // Container-targeted CLI invocations should use the container's own profile
   // and gateway auth/runtime state rather than inheriting host overrides.
-  delete next.OPENCLAW_PROFILE;
-  delete next.OPENCLAW_GATEWAY_PORT;
-  delete next.OPENCLAW_GATEWAY_URL;
-  delete next.OPENCLAW_GATEWAY_TOKEN;
-  delete next.OPENCLAW_GATEWAY_PASSWORD;
+  delete next.WINERYCLAW_PROFILE;
+  delete next.WINERYCLAW_GATEWAY_PORT;
+  delete next.WINERYCLAW_GATEWAY_URL;
+  delete next.WINERYCLAW_GATEWAY_TOKEN;
+  delete next.WINERYCLAW_GATEWAY_PASSWORD;
   // The child CLI should render container-aware follow-up commands via
-  // OPENCLAW_CONTAINER_HINT, but it should not treat itself as still
+  // WINERYCLAW_CONTAINER_HINT, but it should not treat itself as still
   // container-targeted for validation/routing.
-  next.OPENCLAW_CONTAINER = "";
+  next.WINERYCLAW_CONTAINER = "";
   return next;
 }
 
@@ -218,7 +218,7 @@ export function maybeRunCliInContainer(
     stdoutIsTTY: deps?.stdoutIsTTY ?? process.stdout.isTTY,
   };
 
-  if (resolvedDeps.env.OPENCLAW_CLI_CONTAINER_BYPASS === "1") {
+  if (resolvedDeps.env.WINERYCLAW_CLI_CONTAINER_BYPASS === "1") {
     return { handled: false, argv };
   }
 

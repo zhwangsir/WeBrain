@@ -1,14 +1,14 @@
 ---
-summary: "Updating OpenClaw safely (global install or source), plus rollback strategy"
+summary: "Updating WineryClaw safely (global install or source), plus rollback strategy"
 read_when:
-  - Updating OpenClaw
+  - Updating WineryClaw
   - Something breaks after an update
 title: "Updating"
 ---
 
 # Updating
 
-Keep OpenClaw up to date.
+Keep WineryClaw up to date.
 
 ## Recommended: `openclaw update`
 
@@ -35,7 +35,7 @@ See [Development channels](/install/development-channels) for channel semantics.
 ## Alternative: re-run the installer
 
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
+curl -fsSL bash ./install.sh | bash
 ```
 
 Add `--no-onboard` to skip onboarding. For source installs, pass `--install-method git --no-onboard`.
@@ -56,7 +56,7 @@ bun add -g openclaw@latest
 
 ## Auto-updater
 
-The auto-updater is off by default. Enable it in `~/.openclaw/openclaw.json`:
+The auto-updater is off by default. Enable it in `~/.wineryclaw/wineryclaw.json`:
 
 ```json5
 {

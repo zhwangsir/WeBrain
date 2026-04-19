@@ -32,9 +32,9 @@ function setPackageRoot(root: string, name = "openclaw") {
 }
 
 function expectResolvedPackageRoot(
-  syncResolver: typeof import("./openclaw-root.js").resolveOpenClawPackageRootSync,
-  asyncResolver: typeof import("./openclaw-root.js").resolveOpenClawPackageRoot,
-  opts: Parameters<typeof import("./openclaw-root.js").resolveOpenClawPackageRootSync>[0],
+  syncResolver: typeof import("./openclaw-root.js").resolveWineryClawPackageRootSync,
+  asyncResolver: typeof import("./openclaw-root.js").resolveWineryClawPackageRoot,
+  opts: Parameters<typeof import("./openclaw-root.js").resolveWineryClawPackageRootSync>[0],
   expected: string | null,
 ) {
   expect(syncResolver(opts)).toBe(expected);
@@ -105,9 +105,9 @@ vi.mock("./openclaw-root.fs.runtime.js", () => ({
   openClawRootFs: mockFsPromisesModule(),
 }));
 
-describe("resolveOpenClawPackageRoot", () => {
-  let resolveOpenClawPackageRoot: typeof import("./openclaw-root.js").resolveOpenClawPackageRoot;
-  let resolveOpenClawPackageRootSync: typeof import("./openclaw-root.js").resolveOpenClawPackageRootSync;
+describe("resolveWineryClawPackageRoot", () => {
+  let resolveWineryClawPackageRoot: typeof import("./openclaw-root.js").resolveWineryClawPackageRoot;
+  let resolveWineryClawPackageRootSync: typeof import("./openclaw-root.js").resolveWineryClawPackageRootSync;
 
   beforeEach(() => {
     state.entries.clear();
@@ -117,7 +117,7 @@ describe("resolveOpenClawPackageRoot", () => {
 
   beforeEach(async () => {
     vi.resetModules();
-    ({ resolveOpenClawPackageRoot, resolveOpenClawPackageRootSync } =
+    ({ resolveWineryClawPackageRoot, resolveWineryClawPackageRootSync } =
       await import("./openclaw-root.js"));
   });
 
@@ -224,8 +224,8 @@ describe("resolveOpenClawPackageRoot", () => {
   ])("$name", async ({ setup }) => {
     const { opts, expected } = setup();
     await expectResolvedPackageRoot(
-      resolveOpenClawPackageRootSync,
-      resolveOpenClawPackageRoot,
+      resolveWineryClawPackageRootSync,
+      resolveWineryClawPackageRoot,
       opts,
       expected,
     );

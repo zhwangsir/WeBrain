@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { ImageGenerationProvider } from "openclaw/plugin-sdk/image-generation";
 import { isProviderApiKeyConfigured } from "openclaw/plugin-sdk/provider-auth";
 import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth-runtime";
@@ -19,7 +19,7 @@ const MOCK_OPENAI_PROVIDER_ID = "mock-openai";
 
 function shouldAllowPrivateImageEndpoint(req: {
   provider: string;
-  cfg: OpenClawConfig | undefined;
+  cfg: WineryClawConfig | undefined;
 }) {
   if (req.provider === MOCK_OPENAI_PROVIDER_ID) {
     return true;
@@ -28,7 +28,7 @@ function shouldAllowPrivateImageEndpoint(req: {
   if (!baseUrl.startsWith("http://127.0.0.1:") && !baseUrl.startsWith("http://localhost:")) {
     return false;
   }
-  return process.env.OPENCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER === "1";
+  return process.env.WINERYCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER === "1";
 }
 
 type OpenAIImageApiResponse = {

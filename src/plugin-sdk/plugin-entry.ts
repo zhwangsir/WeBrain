@@ -1,22 +1,22 @@
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { emptyPluginConfigSchema } from "../plugins/config-schema.js";
 import type { ProviderRuntimeModel } from "../plugins/provider-runtime-model.types.js";
 import type {
   AnyAgentTool,
   AgentHarness,
   MediaUnderstandingProviderPlugin,
-  OpenClawPluginApi,
-  OpenClawPluginCommandDefinition,
-  OpenClawPluginConfigSchema,
-  OpenClawPluginDefinition,
-  OpenClawPluginNodeHostCommand,
-  OpenClawPluginReloadRegistration,
-  OpenClawPluginSecurityAuditCollector,
-  OpenClawPluginSecurityAuditContext,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
-  OpenClawPluginToolContext,
-  OpenClawPluginToolFactory,
+  WineryClawPluginApi,
+  WineryClawPluginCommandDefinition,
+  WineryClawPluginConfigSchema,
+  WineryClawPluginDefinition,
+  WineryClawPluginNodeHostCommand,
+  WineryClawPluginReloadRegistration,
+  WineryClawPluginSecurityAuditCollector,
+  WineryClawPluginSecurityAuditContext,
+  WineryClawPluginService,
+  WineryClawPluginServiceContext,
+  WineryClawPluginToolContext,
+  WineryClawPluginToolFactory,
   PluginLogger,
   ProviderAugmentModelCatalogContext,
   ProviderAuthContext,
@@ -76,15 +76,15 @@ export type {
   AnyAgentTool,
   AgentHarness,
   MediaUnderstandingProviderPlugin,
-  OpenClawPluginApi,
-  OpenClawPluginNodeHostCommand,
-  OpenClawPluginReloadRegistration,
-  OpenClawPluginSecurityAuditCollector,
-  OpenClawPluginSecurityAuditContext,
-  OpenClawPluginToolContext,
-  OpenClawPluginToolFactory,
+  WineryClawPluginApi,
+  WineryClawPluginNodeHostCommand,
+  WineryClawPluginReloadRegistration,
+  WineryClawPluginSecurityAuditCollector,
+  WineryClawPluginSecurityAuditContext,
+  WineryClawPluginToolContext,
+  WineryClawPluginToolFactory,
   PluginCommandContext,
-  OpenClawPluginConfigSchema,
+  WineryClawPluginConfigSchema,
   ProviderDiscoveryContext,
   ProviderCatalogContext,
   ProviderCatalogResult,
@@ -130,19 +130,19 @@ export type {
   ProviderValidateReplayTurnsContext,
   ProviderWebSocketSessionPolicy,
   ProviderWrapStreamFnContext,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  WineryClawPluginService,
+  WineryClawPluginServiceContext,
   ProviderAuthContext,
   ProviderAuthDoctorHintContext,
   ProviderAuthMethodNonInteractiveContext,
   ProviderAuthMethod,
   ProviderAuthResult,
-  OpenClawPluginCommandDefinition,
-  OpenClawPluginDefinition,
+  WineryClawPluginCommandDefinition,
+  WineryClawPluginDefinition,
   PluginLogger,
 };
 export type { ProviderRuntimeModel } from "../plugins/provider-runtime-model.types.js";
-export type { OpenClawConfig };
+export type { WineryClawConfig };
 
 export { buildPluginConfigSchema, emptyPluginConfigSchema } from "../plugins/config-schema.js";
 
@@ -151,23 +151,23 @@ type DefinePluginEntryOptions = {
   id: string;
   name: string;
   description: string;
-  kind?: OpenClawPluginDefinition["kind"];
-  configSchema?: OpenClawPluginConfigSchema | (() => OpenClawPluginConfigSchema);
-  reload?: OpenClawPluginDefinition["reload"];
-  nodeHostCommands?: OpenClawPluginDefinition["nodeHostCommands"];
-  securityAuditCollectors?: OpenClawPluginDefinition["securityAuditCollectors"];
-  register: (api: OpenClawPluginApi) => void;
+  kind?: WineryClawPluginDefinition["kind"];
+  configSchema?: WineryClawPluginConfigSchema | (() => WineryClawPluginConfigSchema);
+  reload?: WineryClawPluginDefinition["reload"];
+  nodeHostCommands?: WineryClawPluginDefinition["nodeHostCommands"];
+  securityAuditCollectors?: WineryClawPluginDefinition["securityAuditCollectors"];
+  register: (api: WineryClawPluginApi) => void;
 };
 
-/** Normalized object shape that OpenClaw loads from a plugin entry module. */
+/** Normalized object shape that WineryClaw loads from a plugin entry module. */
 type DefinedPluginEntry = {
   id: string;
   name: string;
   description: string;
-  configSchema: OpenClawPluginConfigSchema;
-  register: NonNullable<OpenClawPluginDefinition["register"]>;
+  configSchema: WineryClawPluginConfigSchema;
+  register: NonNullable<WineryClawPluginDefinition["register"]>;
 } & Pick<
-  OpenClawPluginDefinition,
+  WineryClawPluginDefinition,
   "kind" | "reload" | "nodeHostCommands" | "securityAuditCollectors"
 >;
 

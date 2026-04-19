@@ -46,8 +46,8 @@ describe("matrix migration snapshots", () => {
 
   it("creates a backup marker after writing a pre-migration snapshot", async () => {
     await withTempHome(async (home) => {
-      fs.writeFileSync(path.join(home, ".openclaw", "openclaw.json"), "{}\n", "utf8");
-      fs.writeFileSync(path.join(home, ".openclaw", "state.txt"), "state\n", "utf8");
+      fs.writeFileSync(path.join(home, ".wineryclaw", "wineryclaw.json"), "{}\n", "utf8");
+      fs.writeFileSync(path.join(home, ".wineryclaw", "state.txt"), "state\n", "utf8");
 
       const result = await maybeCreateMatrixMigrationSnapshot({
         trigger: "unit-test",
@@ -69,7 +69,7 @@ describe("matrix migration snapshots", () => {
 
   it("treats resolvable Matrix legacy state as actionable", async () => {
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
+      const stateDir = path.join(home, ".wineryclaw");
       fs.mkdirSync(path.join(stateDir, "matrix"), { recursive: true });
       fs.writeFileSync(
         path.join(stateDir, "matrix", "bot-storage.json"),
@@ -96,7 +96,7 @@ describe("matrix migration snapshots", () => {
 
   it("treats legacy Matrix crypto as actionable when the extension inspector is present", async () => {
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
+      const stateDir = path.join(home, ".wineryclaw");
       const { rootDir } = resolveMatrixAccountStorageRoot({
         stateDir,
         homeserver: "https://matrix.example.org",
@@ -140,7 +140,7 @@ describe("matrix migration snapshots", () => {
     legacyCryptoInspectorAvailability.available = false;
 
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
+      const stateDir = path.join(home, ".wineryclaw");
       const { rootDir } = resolveMatrixAccountStorageRoot({
         stateDir,
         homeserver: "https://matrix.example.org",

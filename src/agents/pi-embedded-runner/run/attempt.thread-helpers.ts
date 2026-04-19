@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../../config/types.openclaw.js";
 import { joinPresentTextSegments } from "../../../shared/text/join-segments.js";
 import { normalizeStructuredPromptSection } from "../../prompt-cache-stability.js";
 
@@ -50,7 +50,7 @@ export function shouldUseOpenAIWebSocketTransport(params: {
 export function shouldAppendAttemptCacheTtl(params: {
   timedOutDuringCompaction: boolean;
   compactionOccurredThisAttempt: boolean;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   provider: string;
   modelId: string;
   modelApi?: string;
@@ -71,7 +71,7 @@ export function appendAttemptCacheTtlIfNeeded(params: {
   };
   timedOutDuringCompaction: boolean;
   compactionOccurredThisAttempt: boolean;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   provider: string;
   modelId: string;
   modelApi?: string;

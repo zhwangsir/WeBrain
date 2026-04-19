@@ -7,7 +7,7 @@ import type { AcpInitializeSessionInput } from "../acp/control-plane/manager.typ
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "../config/config.js";
 import * as sessionPaths from "../config/sessions/paths.js";
 import * as sessionStore from "../config/sessions/store.js";
@@ -24,7 +24,7 @@ import {
 import { resetTaskRegistryForTests } from "../tasks/task-registry.js";
 import * as acpSpawnParentStream from "./acp-spawn-parent-stream.js";
 
-function createDefaultSpawnConfig(): OpenClawConfig {
+function createDefaultSpawnConfig(): WineryClawConfig {
   return {
     acp: {
       enabled: true,
@@ -112,7 +112,7 @@ type CrossAgentWorkspaceFixture = {
   targetWorkspace: string;
 };
 
-function replaceSpawnConfig(next: OpenClawConfig): void {
+function replaceSpawnConfig(next: WineryClawConfig): void {
   const current = hoisted.state.cfg as Record<string, unknown>;
   for (const key of Object.keys(current)) {
     delete current[key];

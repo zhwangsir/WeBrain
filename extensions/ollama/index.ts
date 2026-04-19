@@ -1,6 +1,6 @@
 import {
   definePluginEntry,
-  type OpenClawPluginApi,
+  type WineryClawPluginApi,
   type ProviderAuthContext,
   type ProviderAuthMethodNonInteractiveContext,
   type ProviderAuthResult,
@@ -101,7 +101,7 @@ export default definePluginEntry({
   id: "ollama",
   name: "Ollama Provider",
   description: "Bundled Ollama provider plugin",
-  register(api: OpenClawPluginApi) {
+  register(api: WineryClawPluginApi) {
     api.registerMemoryEmbeddingProvider(ollamaMemoryEmbeddingProviderAdapter);
     const pluginConfig = (api.pluginConfig ?? {}) as OllamaPluginConfig;
     api.registerWebSearchProvider(createOllamaWebSearchProvider());

@@ -1,7 +1,7 @@
 import AVFAudio
-import OpenClawChatUI
-import OpenClawKit
-import OpenClawProtocol
+import WineryClawChatUI
+import WineryClawKit
+import WineryClawProtocol
 import Foundation
 import Observation
 import OSLog
@@ -35,7 +35,7 @@ final class TalkModeManager: NSObject {
     private static let defaultModelIdFallback = "eleven_v3"
     private static let defaultTalkProvider = "elevenlabs"
     private static let defaultSilenceTimeoutMs = TalkDefaults.silenceTimeoutMs
-    private static let redactedConfigSentinel = "__OPENCLAW_REDACTED__"
+    private static let redactedConfigSentinel = "__WINERYCLAW_REDACTED__"
     var isEnabled: Bool = false
     var isListening: Bool = false
     var isSpeaking: Bool = false
@@ -58,7 +58,7 @@ final class TalkModeManager: NSObject {
     private var resumeContinuousAfterPTT: Bool = false
     private var activePTTCaptureId: String?
     private var pttAutoStopEnabled: Bool = false
-    private var pttCompletion: CheckedContinuation<OpenClawTalkPTTStopPayload, Never>?
+    private var pttCompletion: CheckedContinuation<WineryClawTalkPTTStopPayload, Never>?
     private var pttTimeoutTask: Task<Void, Never>?
 
     private let allowSimulatorCapture: Bool
@@ -226,7 +226,7 @@ final class TalkModeManager: NSObject {
         self.pttTimeoutTask = nil
         self.pttAutoStopEnabled = false
         if pendingPTT {
-            let payload = OpenClawTalkPTTStopPayload(
+            let payload = WineryClawTalkPTTStopPayload(
                 captureId: pendingCaptureId,
                 transcript: nil,
                 status: "cancelled")
@@ -288,7 +288,7 @@ final class TalkModeManager: NSObject {
         self.stopSpeaking()
     }
 
-    func beginPushToTalk() async throws -> OpenClawTalkPTTStartPayload {
+    func beginPushToTalk() async throws -> WineryClawTalkPTTStartPayload {
         guard self.gatewayConnected else {
             self.statusText = "Offline"
             throw NSError(domain: "TalkMode", code: 7, userInfo: [
@@ -296,7 +296,7 @@ final class TalkModeManager: NSObject {
             ])
         }
         if self.isPushToTalkActive, let captureId = self.activePTTCaptureId {
-            return OpenClawTalkPTTStartPayload(captureId: captureId)
+            return WineryClawTalkPTTStartPayload(captureId: captureId)
         }
 
         self.stopSpeaking(storeInterruption: false)
@@ -350,13 +350,13 @@ final class TalkModeManager: NSObject {
             throw error
         }
 
-        return OpenClawTalkPTTStartPayload(captureId: captureId)
+        return WineryClawTalkPTTStartPayload(captureId: captureId)
     }
 
-    func endPushToTalk() async -> OpenClawTalkPTTStopPayload {
+    func endPushToTalk() async -> WineryClawTalkPTTStopPayload {
         let captureId = self.activePTTCaptureId ?? UUID().uuidString
         guard self.isPushToTalkActive else {
-            let payload = OpenClawTalkPTTStopPayload(
+            let payload = WineryClawTalkPTTStopPayload(
                 captureId: captureId,
                 transcript: nil,
                 status: "idle")
@@ -383,7 +383,7 @@ final class TalkModeManager: NSObject {
             }
             self.resumeContinuousAfterPTT = false
             self.activePTTCaptureId = nil
-            let payload = OpenClawTalkPTTStopPayload(
+            let payload = WineryClawTalkPTTStopPayload(
                 captureId: captureId,
                 transcript: nil,
                 status: "empty")
@@ -398,7 +398,7 @@ final class TalkModeManager: NSObject {
             }
             self.resumeContinuousAfterPTT = false
             self.activePTTCaptureId = nil
-            let payload = OpenClawTalkPTTStopPayload(
+            let payload = WineryClawTalkPTTStopPayload(
                 captureId: captureId,
                 transcript: transcript,
                 status: "offline")
@@ -412,7 +412,7 @@ final class TalkModeManager: NSObject {
         }
         self.resumeContinuousAfterPTT = false
         self.activePTTCaptureId = nil
-        let payload = OpenClawTalkPTTStopPayload(
+        let payload = WineryClawTalkPTTStopPayload(
             captureId: captureId,
             transcript: transcript,
             status: "queued")
@@ -420,14 +420,14 @@ final class TalkModeManager: NSObject {
         return payload
     }
 
-    func runPushToTalkOnce(maxDurationSeconds: TimeInterval = 12) async throws -> OpenClawTalkPTTStopPayload {
+    func runPushToTalkOnce(maxDurationSeconds: TimeInterval = 12) async throws -> WineryClawTalkPTTStopPayload {
         if self.pttCompletion != nil {
             _ = await self.cancelPushToTalk()
         }
 
         if self.isPushToTalkActive {
             let captureId = self.activePTTCaptureId ?? UUID().uuidString
-            return OpenClawTalkPTTStopPayload(
+            return WineryClawTalkPTTStopPayload(
                 captureId: captureId,
                 transcript: nil,
                 status: "busy")
@@ -443,10 +443,10 @@ final class TalkModeManager: NSObject {
         }
     }
 
-    func cancelPushToTalk() async -> OpenClawTalkPTTStopPayload {
+    func cancelPushToTalk() async -> WineryClawTalkPTTStopPayload {
         let captureId = self.activePTTCaptureId ?? UUID().uuidString
         guard self.isPushToTalkActive else {
-            let payload = OpenClawTalkPTTStopPayload(
+            let payload = WineryClawTalkPTTStopPayload(
                 captureId: captureId,
                 transcript: nil,
                 status: "idle")
@@ -473,7 +473,7 @@ final class TalkModeManager: NSObject {
         self.activePTTCaptureId = nil
         self.statusText = "Ready"
 
-        let payload = OpenClawTalkPTTStopPayload(
+        let payload = WineryClawTalkPTTStopPayload(
             captureId: captureId,
             transcript: nil,
             status: "cancelled")
@@ -749,7 +749,7 @@ final class TalkModeManager: NSObject {
         _ = await self.endPushToTalk()
     }
 
-    private func finishPTTOnce(_ payload: OpenClawTalkPTTStopPayload) {
+    private func finishPTTOnce(_ payload: WineryClawTalkPTTStopPayload) {
         guard let continuation = self.pttCompletion else { return }
         self.pttCompletion = nil
         continuation.resume(returning: payload)
@@ -1459,7 +1459,7 @@ final class TalkModeManager: NSObject {
             guard evt.event == "agent", let payload = evt.payload else { continue }
             guard let agentEvent = try? GatewayPayloadDecoding.decode(
                 payload,
-                as: OpenClawAgentEventPayload.self
+                as: WineryClawAgentEventPayload.self
             ) else {
                 continue
             }

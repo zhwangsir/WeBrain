@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { WineryClawConfig } from "../config/types.js";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { runCapability } from "./runner.js";
@@ -41,7 +41,7 @@ describe("runCapability video provider wiring", () => {
               },
             },
           },
-        } as unknown as OpenClawConfig;
+        } as unknown as WineryClawConfig;
 
         const result = await runCapability({
           capability: "video",
@@ -85,7 +85,7 @@ describe("runCapability video provider wiring", () => {
           GEMINI_API_KEY: undefined,
           GOOGLE_API_KEY: undefined,
           MOONSHOT_API_KEY: undefined,
-          OPENCLAW_AGENT_DIR: isolatedAgentDir,
+          WINERYCLAW_AGENT_DIR: isolatedAgentDir,
           PI_CODING_AGENT_DIR: isolatedAgentDir,
         },
         async () => {
@@ -107,7 +107,7 @@ describe("runCapability video provider wiring", () => {
                   },
                 },
               },
-            } as unknown as OpenClawConfig;
+            } as unknown as WineryClawConfig;
 
             const result = await runCapability({
               capability: "video",

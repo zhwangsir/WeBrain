@@ -43,8 +43,8 @@ const serviceReadCommand = vi.fn<
 >(async (_env?: NodeJS.ProcessEnv) => ({
   programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
   environment: {
-    OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon",
-    OPENCLAW_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
+    WINERYCLAW_STATE_DIR: "/tmp/openclaw-daemon",
+    WINERYCLAW_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
   },
 }));
 const resolveGatewayBindHost = vi.fn(
@@ -53,10 +53,10 @@ const resolveGatewayBindHost = vi.fn(
 const pickPrimaryTailnetIPv4 = vi.fn(() => "100.64.0.9");
 const resolveGatewayPort = vi.fn((_cfg?: unknown, _env?: unknown) => 18789);
 const resolveStateDir = vi.fn(
-  (env: NodeJS.ProcessEnv) => env.OPENCLAW_STATE_DIR ?? "/tmp/openclaw-cli",
+  (env: NodeJS.ProcessEnv) => env.WINERYCLAW_STATE_DIR ?? "/tmp/openclaw-cli",
 );
 const resolveConfigPath = vi.fn((env: NodeJS.ProcessEnv, stateDir: string) => {
-  return env.OPENCLAW_CONFIG_PATH ?? `${stateDir}/openclaw.json`;
+  return env.WINERYCLAW_CONFIG_PATH ?? `${stateDir}/openclaw.json`;
 });
 const readConfigFileSnapshotCalls = vi.fn((configPath: string) => configPath);
 const loadConfigCalls = vi.fn((configPath: string) => configPath);
@@ -153,17 +153,17 @@ describe("gatherDaemonStatus", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv([
-      "OPENCLAW_STATE_DIR",
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_GATEWAY_TOKEN",
-      "OPENCLAW_GATEWAY_PASSWORD",
+      "WINERYCLAW_STATE_DIR",
+      "WINERYCLAW_CONFIG_PATH",
+      "WINERYCLAW_GATEWAY_TOKEN",
+      "WINERYCLAW_GATEWAY_PASSWORD",
       "DAEMON_GATEWAY_TOKEN",
       "DAEMON_GATEWAY_PASSWORD",
     ]);
-    process.env.OPENCLAW_STATE_DIR = "/tmp/openclaw-cli";
-    process.env.OPENCLAW_CONFIG_PATH = "/tmp/openclaw-cli/openclaw.json";
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
-    delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+    process.env.WINERYCLAW_STATE_DIR = "/tmp/openclaw-cli";
+    process.env.WINERYCLAW_CONFIG_PATH = "/tmp/openclaw-cli/openclaw.json";
+    delete process.env.WINERYCLAW_GATEWAY_TOKEN;
+    delete process.env.WINERYCLAW_GATEWAY_PASSWORD;
     delete process.env.DAEMON_GATEWAY_TOKEN;
     delete process.env.DAEMON_GATEWAY_PASSWORD;
     callGatewayStatusProbe.mockClear();
@@ -311,14 +311,14 @@ describe("gatherDaemonStatus", () => {
     serviceReadCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
-        OPENCLAW_GATEWAY_PORT: "19001",
-        OPENCLAW_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon",
+        WINERYCLAW_GATEWAY_PORT: "19001",
+        WINERYCLAW_CONFIG_PATH: "/tmp/openclaw-daemon/openclaw.json",
+        WINERYCLAW_STATE_DIR: "/tmp/openclaw-daemon",
       } as Record<string, string>,
     });
     serviceReadRuntime.mockImplementationOnce(async (env?: NodeJS.ProcessEnv) => ({
-      status: env?.OPENCLAW_GATEWAY_PORT === "19001" ? "running" : "unknown",
-      detail: env?.OPENCLAW_GATEWAY_PORT ?? "missing-port",
+      status: env?.WINERYCLAW_GATEWAY_PORT === "19001" ? "running" : "unknown",
+      detail: env?.WINERYCLAW_GATEWAY_PORT ?? "missing-port",
     }));
 
     const status = await gatherDaemonStatus({
@@ -329,7 +329,7 @@ describe("gatherDaemonStatus", () => {
 
     expect(serviceReadRuntime).toHaveBeenCalledWith(
       expect.objectContaining({
-        OPENCLAW_GATEWAY_PORT: "19001",
+        WINERYCLAW_GATEWAY_PORT: "19001",
       }),
     );
     expect(status.service.runtime).toMatchObject({
@@ -513,8 +513,8 @@ describe("gatherDaemonStatus", () => {
         },
       },
     };
-    process.env.OPENCLAW_GATEWAY_TOKEN = "env-token";
-    process.env.OPENCLAW_GATEWAY_PASSWORD = "env-password"; // pragma: allowlist secret
+    process.env.WINERYCLAW_GATEWAY_TOKEN = "env-token";
+    process.env.WINERYCLAW_GATEWAY_PASSWORD = "env-password"; // pragma: allowlist secret
 
     await gatherDaemonStatus({
       rpc: {},

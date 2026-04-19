@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import type { Dirent } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { OpenClawConfig, OpenClawPluginApi } from "openclaw/plugin-sdk/memory-core";
+import type { WineryClawConfig, WineryClawPluginApi } from "openclaw/plugin-sdk/memory-core";
 import {
   buildSessionEntry,
   listSessionFilesForAgent,
@@ -28,7 +28,7 @@ import {
   type ShortTermRecallEntry,
 } from "./short-term-promotion.js";
 
-type Logger = Pick<OpenClawPluginApi["logger"], "info" | "warn" | "error">;
+type Logger = Pick<WineryClawPluginApi["logger"], "info" | "warn" | "error">;
 type DreamingPhaseStorageConfig = {
   timezone?: string;
   storage: { mode: "inline" | "separate" | "both"; separateReports: boolean };
@@ -37,7 +37,7 @@ type RunPhaseIfTriggeredParams = {
   cleanedBody: string;
   trigger?: string;
   workspaceDir?: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   logger: Logger;
   subagent?: Parameters<typeof generateAndAppendDreamNarrative>[0]["subagent"];
   eventText: string;
@@ -89,7 +89,7 @@ const MANAGED_DAILY_DREAMING_BLOCKS = [
 ] as const;
 
 function resolveWorkspaces(params: {
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   fallbackWorkspaceDir?: string;
 }): string[] {
   const workspaceCandidates = params.cfg
@@ -602,7 +602,7 @@ function buildSessionRenderedLine(params: {
 }
 
 function resolveSessionAgentsForWorkspace(
-  cfg: OpenClawConfig | undefined,
+  cfg: WineryClawConfig | undefined,
   workspaceDir: string,
 ): string[] {
   if (!cfg) {
@@ -666,7 +666,7 @@ async function appendSessionCorpusLines(params: {
 
 async function collectSessionIngestionBatches(params: {
   workspaceDir: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   lookbackDays: number;
   nowMs: number;
   timezone?: string;
@@ -943,7 +943,7 @@ async function collectSessionIngestionBatches(params: {
 
 async function ingestSessionTranscriptSignals(params: {
   workspaceDir: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   lookbackDays: number;
   nowMs: number;
   timezone?: string;
@@ -1458,7 +1458,7 @@ export function previewRemDreaming(params: {
 
 async function runLightDreaming(params: {
   workspaceDir: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   config: MemoryLightDreamingConfig & {
     timezone?: string;
     storage: { mode: "inline" | "separate" | "both"; separateReports: boolean };
@@ -1538,7 +1538,7 @@ async function runLightDreaming(params: {
 
 async function runRemDreaming(params: {
   workspaceDir: string;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   config: MemoryRemDreamingConfig & {
     timezone?: string;
     storage: { mode: "inline" | "separate" | "both"; separateReports: boolean };
@@ -1621,7 +1621,7 @@ async function runRemDreaming(params: {
 export async function runDreamingSweepPhases(params: {
   workspaceDir: string;
   pluginConfig?: Record<string, unknown>;
-  cfg?: OpenClawConfig;
+  cfg?: WineryClawConfig;
   logger: Logger;
   subagent?: Parameters<typeof generateAndAppendDreamNarrative>[0]["subagent"];
   nowMs?: number;
@@ -1712,7 +1712,7 @@ async function runPhaseIfTriggered(
 /**
  * @deprecated Unified dreaming registration lives in registerShortTermPromotionDreaming().
  */
-export function registerMemoryDreamingPhases(_api: OpenClawPluginApi): void {
+export function registerMemoryDreamingPhases(_api: WineryClawPluginApi): void {
   // LEGACY(memory-v1): kept as a no-op compatibility shim while the unified
   // dreaming controller owns startup reconciliation and heartbeat triggers.
 }

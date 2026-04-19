@@ -11,7 +11,7 @@ describe("canvas host state dir defaults", () => {
     ({ createCanvasHostHandler } = await import("./server.js"));
   });
 
-  it("uses OPENCLAW_STATE_DIR for the default canvas root", async () => {
+  it("uses WINERYCLAW_STATE_DIR for the default canvas root", async () => {
     await withStateDirEnv("openclaw-canvas-state-", async ({ stateDir }) => {
       const handler = await createCanvasHostHandler({
         runtime: defaultRuntime,
@@ -24,7 +24,7 @@ describe("canvas host state dir defaults", () => {
         expect(actualRoot).toBe(expectedRoot);
         const indexPath = path.join(expectedRoot, "index.html");
         const indexContents = await fs.readFile(indexPath, "utf8");
-        expect(indexContents).toContain("OpenClaw Canvas");
+        expect(indexContents).toContain("WineryClaw Canvas");
       } finally {
         await handler.close();
       }

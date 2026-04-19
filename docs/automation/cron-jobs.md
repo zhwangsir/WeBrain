@@ -2,7 +2,7 @@
 summary: "Scheduled jobs, webhooks, and Gmail PubSub triggers for the Gateway scheduler"
 read_when:
   - Scheduling background jobs or wakeups
-  - Wiring external triggers (webhooks, Gmail) into OpenClaw
+  - Wiring external triggers (webhooks, Gmail) into WineryClaw
   - Deciding between heartbeat and cron for scheduled tasks
 title: "Scheduled Tasks"
 ---
@@ -33,14 +33,14 @@ openclaw cron runs --id <job-id>
 ## How cron works
 
 - Cron runs **inside the Gateway** process (not inside the model).
-- Jobs persist at `~/.openclaw/cron/jobs.json` so restarts do not lose schedules.
+- Jobs persist at `~/.wineryclaw/cron/jobs.json` so restarts do not lose schedules.
 - All cron executions create [background task](/automation/tasks) records.
 - One-shot jobs (`--at`) auto-delete after success by default.
 - Isolated cron runs best-effort close tracked browser tabs/processes for their `cron:<jobId>` session when the run completes, so detached browser automation does not leave orphaned processes behind.
 - Isolated cron runs also guard against stale acknowledgement replies. If the
   first result is just an interim status update (`on it`, `pulling everything
 together`, and similar hints) and no descendant subagent run is still
-  responsible for the final answer, OpenClaw re-prompts once for the actual
+  responsible for the final answer, WineryClaw re-prompts once for the actual
   result before delivery.
 
 <a id="maintenance"></a>
@@ -72,7 +72,7 @@ Cron expressions are parsed by [croner](https://github.com/Hexagon/croner). When
 0 9 15 * 1
 ```
 
-This fires ~5–6 times per month instead of 0–1 times per month. OpenClaw uses Croner's default OR behavior here. To require both conditions, use Croner's `+` day-of-week modifier (`0 9 15 * +1`) or schedule on one field and guard the other in your job's prompt or command.
+This fires ~5–6 times per month instead of 0–1 times per month. WineryClaw uses Croner's default OR behavior here. To require both conditions, use Croner's `+` day-of-week modifier (`0 9 15 * +1`) or schedule on one field and guard the other in your job's prompt or command.
 
 ## Execution styles
 
@@ -89,7 +89,7 @@ For isolated jobs, runtime teardown now includes best-effort browser cleanup for
 
 When isolated cron runs orchestrate subagents, delivery also prefers the final
 descendant output over stale parent interim text. If descendants are still
-running, OpenClaw suppresses that partial parent update instead of announcing it.
+running, WineryClaw suppresses that partial parent update instead of announcing it.
 
 ### Payload options for isolated jobs
 
@@ -254,9 +254,9 @@ Custom hook names are resolved via `hooks.mappings` in config. Mappings can tran
 
 ## Gmail PubSub integration
 
-Wire Gmail inbox triggers to OpenClaw via Google PubSub.
+Wire Gmail inbox triggers to WineryClaw via Google PubSub.
 
-**Prerequisites**: `gcloud` CLI, `gog` (gogcli), OpenClaw hooks enabled, Tailscale for the public HTTPS endpoint.
+**Prerequisites**: `gcloud` CLI, `gog` (gogcli), WineryClaw hooks enabled, Tailscale for the public HTTPS endpoint.
 
 ### Wizard setup (recommended)
 
@@ -268,7 +268,7 @@ This writes `hooks.gmail` config, enables the Gmail preset, and uses Tailscale F
 
 ### Gateway auto-start
 
-When `hooks.enabled=true` and `hooks.gmail.account` is set, the Gateway starts `gog gmail watch serve` on boot and auto-renews the watch. Set `OPENCLAW_SKIP_GMAIL_WATCHER=1` to opt out.
+When `hooks.enabled=true` and `hooks.gmail.account` is set, the Gateway starts `gog gmail watch serve` on boot and auto-renews the watch. Set `WINERYCLAW_SKIP_GMAIL_WATCHER=1` to opt out.
 
 ### Manual one-time setup
 
@@ -354,7 +354,7 @@ Model override note:
 {
   cron: {
     enabled: true,
-    store: "~/.openclaw/cron/jobs.json",
+    store: "~/.wineryclaw/cron/jobs.json",
     maxConcurrentRuns: 1,
     retry: {
       maxAttempts: 3,
@@ -368,7 +368,7 @@ Model override note:
 }
 ```
 
-Disable cron: `cron.enabled: false` or `OPENCLAW_SKIP_CRON=1`.
+Disable cron: `cron.enabled: false` or `WINERYCLAW_SKIP_CRON=1`.
 
 **One-shot retry**: transient errors (rate limit, overload, network, server error) retry up to 3 times with exponential backoff. Permanent errors disable immediately.
 
@@ -393,7 +393,7 @@ openclaw doctor
 
 ### Cron not firing
 
-- Check `cron.enabled` and `OPENCLAW_SKIP_CRON` env var.
+- Check `cron.enabled` and `WINERYCLAW_SKIP_CRON` env var.
 - Confirm the Gateway is running continuously.
 - For `cron` schedules, verify timezone (`--tz`) vs the host timezone.
 - `reason: not-due` in run output means manual run was checked with `openclaw cron run <jobId> --due` and the job was not due yet.
@@ -404,7 +404,7 @@ openclaw doctor
 - Delivery target missing/invalid (`channel`/`to`) means outbound was skipped.
 - Channel auth errors (`unauthorized`, `Forbidden`) mean delivery was blocked by credentials.
 - If the isolated run returns only the silent token (`NO_REPLY` / `no_reply`),
-  OpenClaw suppresses direct outbound delivery and also suppresses the fallback
+  WineryClaw suppresses direct outbound delivery and also suppresses the fallback
   queued summary path, so nothing is posted back to chat.
 - For cron-owned isolated jobs, do not expect the agent to use the message tool
   as a fallback. The runner owns final delivery; `--no-deliver` keeps it

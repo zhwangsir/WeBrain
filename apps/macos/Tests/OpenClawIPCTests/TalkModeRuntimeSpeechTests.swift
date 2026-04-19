@@ -1,6 +1,6 @@
 import Speech
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct TalkModeRuntimeSpeechTests {
     @Test func `speech request uses dictation defaults`() {

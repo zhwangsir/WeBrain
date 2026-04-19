@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   collectTelegramInvalidAllowFromWarnings,
@@ -165,7 +165,7 @@ describe("telegram doctor", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig);
+    } as unknown as WineryClawConfig);
 
     expect(hits).toEqual([
       { path: "channels.telegram.allowFrom", entry: "@top" },
@@ -212,7 +212,7 @@ describe("telegram doctor", () => {
           allowFrom: ["@testuser"],
         },
       },
-    } as unknown as OpenClawConfig);
+    } as unknown as WineryClawConfig);
 
     expect(result.config.channels?.telegram?.allowFrom).toEqual(["111"]);
     expect(result.changes[0]).toContain("@testuser");
@@ -225,7 +225,7 @@ describe("telegram doctor", () => {
           allowFrom: [-1001234567890],
         },
       },
-    } as unknown as OpenClawConfig);
+    } as unknown as WineryClawConfig);
 
     expect(result.config.channels?.telegram?.allowFrom).toEqual([-1001234567890]);
     expect(result.changes).toEqual([
@@ -270,7 +270,7 @@ describe("telegram doctor", () => {
           },
         },
       },
-    } as unknown as OpenClawConfig);
+    } as unknown as WineryClawConfig);
 
     expect(result.config.channels?.telegram?.accounts?.inactive?.allowFrom).toEqual(["@testuser"]);
     expect(result.changes).toEqual([

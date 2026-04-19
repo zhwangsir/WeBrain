@@ -180,7 +180,7 @@ function createProps(overrides: Partial<ChatProps> = {}): ChatProps {
     error: null,
     sessions: createSessions(),
     focusMode: false,
-    assistantName: "OpenClaw",
+    assistantName: "WineryClaw",
     assistantAvatar: null,
     localMediaPreviewRoots: [],
     onRefresh: () => undefined,

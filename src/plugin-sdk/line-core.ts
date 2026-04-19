@@ -1,4 +1,4 @@
-export type { OpenClawConfig } from "../config/config.js";
+export type { WineryClawConfig } from "../config/config.js";
 export type { LineChannelData, LineConfig } from "./line-surface.js";
 export {
   createTopLevelChannelDmPolicy,

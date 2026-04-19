@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import {
   buildOutboundBaseSessionKey,
   normalizeOutboundThreadId,
@@ -8,7 +8,7 @@ import {
 import { parseDiscordTarget } from "./target-parsing.js";
 
 export type ResolveDiscordOutboundSessionRouteParams = {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   agentId: string;
   accountId?: string | null;
   target: string;

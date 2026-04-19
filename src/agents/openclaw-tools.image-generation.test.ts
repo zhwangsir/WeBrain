@@ -1,6 +1,6 @@
-import { describeOpenClawGenerationToolRegistration } from "./openclaw-tools.generation.test-support.js";
+import { describeWineryClawGenerationToolRegistration } from "./openclaw-tools.generation.test-support.js";
 
-describeOpenClawGenerationToolRegistration({
+describeWineryClawGenerationToolRegistration({
   suiteName: "openclaw tools image generation registration",
   toolName: "image_generate",
   toolLabel: "an image-generation tool",

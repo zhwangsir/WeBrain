@@ -3,12 +3,12 @@ package ai.openclaw.app.node
 import ai.openclaw.app.LocationMode
 import ai.openclaw.app.SecurePrefs
 import ai.openclaw.app.VoiceWakeMode
-import ai.openclaw.app.protocol.OpenClawCallLogCommand
-import ai.openclaw.app.protocol.OpenClawCameraCommand
-import ai.openclaw.app.protocol.OpenClawCapability
-import ai.openclaw.app.protocol.OpenClawLocationCommand
-import ai.openclaw.app.protocol.OpenClawMotionCommand
-import ai.openclaw.app.protocol.OpenClawSmsCommand
+import ai.openclaw.app.protocol.WineryClawCallLogCommand
+import ai.openclaw.app.protocol.WineryClawCameraCommand
+import ai.openclaw.app.protocol.WineryClawCapability
+import ai.openclaw.app.protocol.WineryClawLocationCommand
+import ai.openclaw.app.protocol.WineryClawMotionCommand
+import ai.openclaw.app.protocol.WineryClawSmsCommand
 import ai.openclaw.app.gateway.GatewayEndpoint
 import ai.openclaw.app.gateway.isLoopbackGatewayHost
 import ai.openclaw.app.gateway.isPrivateLanGatewayHost
@@ -372,9 +372,9 @@ class ConnectionManagerTest {
         smsSearchPossible = true,
       ).buildNodeConnectOptions()
 
-    assertTrue(options.commands.contains(OpenClawSmsCommand.Search.rawValue))
-    assertFalse(options.commands.contains(OpenClawSmsCommand.Send.rawValue))
-    assertFalse(options.caps.contains(OpenClawCapability.Sms.rawValue))
+    assertTrue(options.commands.contains(WineryClawSmsCommand.Search.rawValue))
+    assertFalse(options.commands.contains(WineryClawSmsCommand.Send.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.Sms.rawValue))
   }
 
   @Test
@@ -386,9 +386,9 @@ class ConnectionManagerTest {
         smsSearchPossible = false,
       ).buildNodeConnectOptions()
 
-    assertFalse(options.commands.contains(OpenClawSmsCommand.Search.rawValue))
-    assertFalse(options.commands.contains(OpenClawSmsCommand.Send.rawValue))
-    assertFalse(options.caps.contains(OpenClawCapability.Sms.rawValue))
+    assertFalse(options.commands.contains(WineryClawSmsCommand.Search.rawValue))
+    assertFalse(options.commands.contains(WineryClawSmsCommand.Send.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.Sms.rawValue))
   }
 
   @Test
@@ -400,8 +400,8 @@ class ConnectionManagerTest {
         smsSearchPossible = true,
       ).buildNodeConnectOptions()
 
-    assertTrue(options.commands.contains(OpenClawSmsCommand.Search.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.Sms.rawValue))
+    assertTrue(options.commands.contains(WineryClawSmsCommand.Search.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.Sms.rawValue))
   }
 
   @Test
@@ -413,9 +413,9 @@ class ConnectionManagerTest {
         smsSearchPossible = false,
       ).buildNodeConnectOptions()
 
-    assertTrue(options.commands.contains(OpenClawSmsCommand.Send.rawValue))
-    assertFalse(options.commands.contains(OpenClawSmsCommand.Search.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.Sms.rawValue))
+    assertTrue(options.commands.contains(WineryClawSmsCommand.Send.rawValue))
+    assertFalse(options.commands.contains(WineryClawSmsCommand.Search.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.Sms.rawValue))
   }
 
   @Test
@@ -430,15 +430,15 @@ class ConnectionManagerTest {
         hasRecordAudioPermission = true,
       ).buildNodeConnectOptions()
 
-    assertTrue(options.commands.contains(OpenClawCameraCommand.List.rawValue))
-    assertTrue(options.commands.contains(OpenClawLocationCommand.Get.rawValue))
-    assertTrue(options.commands.contains(OpenClawMotionCommand.Activity.rawValue))
-    assertTrue(options.commands.contains(OpenClawCallLogCommand.Search.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.Camera.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.Location.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.Motion.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.CallLog.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.VoiceWake.rawValue))
+    assertTrue(options.commands.contains(WineryClawCameraCommand.List.rawValue))
+    assertTrue(options.commands.contains(WineryClawLocationCommand.Get.rawValue))
+    assertTrue(options.commands.contains(WineryClawMotionCommand.Activity.rawValue))
+    assertTrue(options.commands.contains(WineryClawCallLogCommand.Search.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.Camera.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.Location.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.Motion.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.CallLog.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.VoiceWake.rawValue))
   }
 
   @Test
@@ -449,7 +449,7 @@ class ConnectionManagerTest {
         hasRecordAudioPermission = false,
       ).buildNodeConnectOptions()
 
-    assertFalse(options.caps.contains(OpenClawCapability.VoiceWake.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.VoiceWake.rawValue))
   }
 
   @Test
@@ -461,14 +461,14 @@ class ConnectionManagerTest {
         callLogAvailable = false,
       ).buildNodeConnectOptions()
 
-    assertFalse(options.commands.contains(OpenClawCameraCommand.List.rawValue))
-    assertFalse(options.commands.contains(OpenClawCameraCommand.Snap.rawValue))
-    assertFalse(options.commands.contains(OpenClawCameraCommand.Clip.rawValue))
-    assertFalse(options.commands.contains(OpenClawLocationCommand.Get.rawValue))
-    assertFalse(options.commands.contains(OpenClawCallLogCommand.Search.rawValue))
-    assertFalse(options.caps.contains(OpenClawCapability.Camera.rawValue))
-    assertFalse(options.caps.contains(OpenClawCapability.Location.rawValue))
-    assertFalse(options.caps.contains(OpenClawCapability.CallLog.rawValue))
+    assertFalse(options.commands.contains(WineryClawCameraCommand.List.rawValue))
+    assertFalse(options.commands.contains(WineryClawCameraCommand.Snap.rawValue))
+    assertFalse(options.commands.contains(WineryClawCameraCommand.Clip.rawValue))
+    assertFalse(options.commands.contains(WineryClawLocationCommand.Get.rawValue))
+    assertFalse(options.commands.contains(WineryClawCallLogCommand.Search.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.Camera.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.Location.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.CallLog.rawValue))
   }
 
   @Test
@@ -479,9 +479,9 @@ class ConnectionManagerTest {
         motionPedometerAvailable = true,
       ).buildNodeConnectOptions()
 
-    assertFalse(options.commands.contains(OpenClawMotionCommand.Activity.rawValue))
-    assertTrue(options.commands.contains(OpenClawMotionCommand.Pedometer.rawValue))
-    assertTrue(options.caps.contains(OpenClawCapability.Motion.rawValue))
+    assertFalse(options.commands.contains(WineryClawMotionCommand.Activity.rawValue))
+    assertTrue(options.commands.contains(WineryClawMotionCommand.Pedometer.rawValue))
+    assertTrue(options.caps.contains(WineryClawCapability.Motion.rawValue))
   }
 
   @Test
@@ -492,9 +492,9 @@ class ConnectionManagerTest {
         motionPedometerAvailable = false,
       ).buildNodeConnectOptions()
 
-    assertFalse(options.commands.contains(OpenClawMotionCommand.Activity.rawValue))
-    assertFalse(options.commands.contains(OpenClawMotionCommand.Pedometer.rawValue))
-    assertFalse(options.caps.contains(OpenClawCapability.Motion.rawValue))
+    assertFalse(options.commands.contains(WineryClawMotionCommand.Activity.rawValue))
+    assertFalse(options.commands.contains(WineryClawMotionCommand.Pedometer.rawValue))
+    assertFalse(options.caps.contains(WineryClawCapability.Motion.rawValue))
   }
 
   private fun newManager(

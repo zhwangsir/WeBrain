@@ -173,7 +173,7 @@ describe("bundled plugin postinstall", () => {
     await fs.writeFile(path.join(extensionsDir, "acpx", "package.json"), "{}\n");
 
     runBundledPluginPostinstall({
-      env: { OPENCLAW_DISABLE_BUNDLED_PLUGIN_POSTINSTALL: "1" },
+      env: { WINERYCLAW_DISABLE_BUNDLED_PLUGIN_POSTINSTALL: "1" },
       packageRoot,
       log: { log: vi.fn(), warn: vi.fn() },
     });

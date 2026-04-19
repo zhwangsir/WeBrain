@@ -6,7 +6,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { disposeRegisteredAgentHarnesses } from "openclaw/plugin-sdk/agent-harness";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";
 import {
   formatMemoryDreamingDay,
@@ -77,7 +77,7 @@ type QaSuiteEnvironment = {
   lab: QaLabServerHandle;
   mock: Awaited<ReturnType<typeof startQaMockOpenAiServer>> | null;
   gateway: Awaited<ReturnType<typeof startQaGatewayChild>>;
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   transport: QaTransportAdapter;
   repoRoot: string;
   providerMode: "mock-openai" | "live-frontier";
@@ -160,7 +160,7 @@ type QaRawSessionStoreEntry = {
 const DEFAULT_QA_SUITE_CONCURRENCY = 64;
 
 function normalizeQaSuiteConcurrency(value: number | undefined, scenarioCount: number) {
-  const envValue = Number(process.env.OPENCLAW_QA_SUITE_CONCURRENCY);
+  const envValue = Number(process.env.WINERYCLAW_QA_SUITE_CONCURRENCY);
   const raw =
     typeof value === "number" && Number.isFinite(value)
       ? value
@@ -497,11 +497,11 @@ async function runScenario(name: string, steps: QaSuiteStep[]): Promise<QaSuiteS
   const stepResults: QaReportCheck[] = [];
   for (const step of steps) {
     try {
-      if (process.env.OPENCLAW_QA_DEBUG === "1") {
+      if (process.env.WINERYCLAW_QA_DEBUG === "1") {
         console.error(`[qa-suite] start scenario="${name}" step="${step.name}"`);
       }
       const details = await step.run();
-      if (process.env.OPENCLAW_QA_DEBUG === "1") {
+      if (process.env.WINERYCLAW_QA_DEBUG === "1") {
         console.error(`[qa-suite] pass scenario="${name}" step="${step.name}"`);
       }
       stepResults.push({
@@ -511,7 +511,7 @@ async function runScenario(name: string, steps: QaSuiteStep[]): Promise<QaSuiteS
       });
     } catch (error) {
       const details = formatErrorMessage(error);
-      if (process.env.OPENCLAW_QA_DEBUG === "1") {
+      if (process.env.WINERYCLAW_QA_DEBUG === "1") {
         console.error(`[qa-suite] fail scenario="${name}" step="${step.name}" details=${details}`);
       }
       stepResults.push({
@@ -1340,7 +1340,7 @@ async function writeQaSuiteArtifacts(params: {
   concurrency: number;
 }) {
   const report = renderQaMarkdownReport({
-    title: "OpenClaw QA Scenario Suite",
+    title: "WineryClaw QA Scenario Suite",
     startedAt: params.startedAt,
     finishedAt: params.finishedAt,
     checks: [],
@@ -1595,7 +1595,7 @@ export async function runQaSuite(params?: QaSuiteRunParams): Promise<QaSuiteResu
     controlUiEnabled: params?.controlUiEnabled ?? true,
     enabledPluginIds,
     mutateConfig: gatewayConfigPatch
-      ? (cfg) => applyQaMergePatch(cfg, gatewayConfigPatch) as OpenClawConfig
+      ? (cfg) => applyQaMergePatch(cfg, gatewayConfigPatch) as WineryClawConfig
       : undefined,
   });
   lab.setControlUi({
@@ -1717,7 +1717,7 @@ export async function runQaSuite(params?: QaSuiteRunParams): Promise<QaSuiteResu
     preserveGatewayRuntimeDir = path.join(outputDir, "artifacts", "gateway-runtime");
     throw error;
   } finally {
-    const keepTemp = process.env.OPENCLAW_QA_KEEP_TEMP === "1" || false;
+    const keepTemp = process.env.WINERYCLAW_QA_KEEP_TEMP === "1" || false;
     await gateway.stop({
       keepTemp,
       preserveToDir: keepTemp ? undefined : preserveGatewayRuntimeDir,

@@ -40,7 +40,7 @@ function resolveStorePathFallback(store?: string, opts?: { agentId?: string }) {
     const agentId = normalizeLowercaseStringOrEmpty(opts?.agentId?.trim() || "main");
     return path.join(
       process.env.HOME ?? "/tmp",
-      ".openclaw",
+      ".wineryclaw",
       "agents",
       agentId,
       "sessions",

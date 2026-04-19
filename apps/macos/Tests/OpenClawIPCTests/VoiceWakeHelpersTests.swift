@@ -1,5 +1,5 @@
 import Testing
-@testable import OpenClaw
+@testable import WineryClaw
 
 struct VoiceWakeHelpersTests {
     @Test func `sanitize triggers trims and drops empty`() {

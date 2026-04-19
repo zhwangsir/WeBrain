@@ -1,7 +1,7 @@
 import { resolveNormalizedAccountEntry } from "openclaw/plugin-sdk/account-core";
 import type { BaseTokenResolution } from "openclaw/plugin-sdk/channel-contract";
 import { tryReadSecretFileSync } from "openclaw/plugin-sdk/channel-core";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import type { TelegramAccountConfig } from "openclaw/plugin-sdk/config-runtime";
 import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/routing";
 import { normalizeResolvedSecretInputString } from "openclaw/plugin-sdk/secret-input";
@@ -19,7 +19,7 @@ type ResolveTelegramTokenOpts = {
 };
 
 export function resolveTelegramToken(
-  cfg?: OpenClawConfig,
+  cfg?: WineryClawConfig,
   opts: ResolveTelegramTokenOpts = {},
 ): TelegramTokenResolution {
   const accountId = normalizeAccountId(opts.accountId);

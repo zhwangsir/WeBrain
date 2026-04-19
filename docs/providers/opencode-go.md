@@ -78,7 +78,7 @@ provider id `opencode-go` so upstream per-model routing stays correct.
 
 <AccordionGroup>
   <Accordion title="Routing behavior">
-    OpenClaw handles per-model routing automatically when the model ref uses
+    WineryClaw handles per-model routing automatically when the model ref uses
     `opencode-go/...`. No additional provider config is required.
   </Accordion>
 

@@ -4,7 +4,7 @@ import type { ThinkLevel } from "../../auto-reply/thinking.js";
 import type { CliSessionBinding } from "../../config/sessions.js";
 import type { SessionSystemPromptReport } from "../../config/sessions/types.js";
 import type { CliBackendConfig } from "../../config/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 import type { PromptImageOrderEntry } from "../../media/prompt-image-order.js";
 import type { ResolvedCliBackend } from "../cli-backends.js";
 import type { SkillSnapshot } from "../skills.js";
@@ -15,7 +15,7 @@ export type RunCliAgentParams = {
   agentId?: string;
   sessionFile: string;
   workspaceDir: string;
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   prompt: string;
   provider: string;
   model?: string;

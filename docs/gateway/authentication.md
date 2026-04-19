@@ -12,7 +12,7 @@ title: "Authentication"
 This page covers **model provider** authentication (API keys, OAuth, Claude CLI reuse, and Anthropic setup-token). For **gateway connection** authentication (token, password, trusted-proxy), see [Configuration](/gateway/configuration) and [Trusted Proxy Auth](/gateway/trusted-proxy-auth).
 </Note>
 
-OpenClaw supports OAuth and API keys for model providers. For always-on gateway
+WineryClaw supports OAuth and API keys for model providers. For always-on gateway
 hosts, API keys are usually the most predictable option. Subscription/OAuth
 flows are also supported when they match your provider account model.
 
@@ -27,7 +27,7 @@ For credential eligibility/reason-code rules used by `models status --probe`, se
 If you’re running a long-lived gateway, start with an API key for your chosen
 provider.
 For Anthropic specifically, API key auth is still the most predictable server
-setup, but OpenClaw also supports reusing a local Claude CLI login.
+setup, but WineryClaw also supports reusing a local Claude CLI login.
 
 1. Create an API key in your provider console.
 2. Put it on the **gateway host** (the machine running `openclaw gateway`).
@@ -38,10 +38,10 @@ openclaw models status
 ```
 
 3. If the Gateway runs under systemd/launchd, prefer putting the key in
-   `~/.openclaw/.env` so the daemon can read it:
+   `~/.wineryclaw/.env` so the daemon can read it:
 
 ```bash
-cat >> ~/.openclaw/.env <<'EOF'
+cat >> ~/.wineryclaw/.env <<'EOF'
 <PROVIDER>_API_KEY=...
 EOF
 ```
@@ -57,13 +57,13 @@ If you’d rather not manage env vars yourself, onboarding can store
 API keys for daemon use: `openclaw onboard`.
 
 See [Help](/help) for details on env inheritance (`env.shellEnv`,
-`~/.openclaw/.env`, systemd/launchd).
+`~/.wineryclaw/.env`, systemd/launchd).
 
 ## Anthropic: Claude CLI and token compatibility
 
-Anthropic setup-token auth is still available in OpenClaw as a supported token
-path. Anthropic staff has since told us that OpenClaw-style Claude CLI usage is
-allowed again, so OpenClaw treats Claude CLI reuse and `claude -p` usage as
+Anthropic setup-token auth is still available in WineryClaw as a supported token
+path. Anthropic staff has since told us that WineryClaw-style Claude CLI usage is
+allowed again, so WineryClaw treats Claude CLI reuse and `claude -p` usage as
 sanctioned for this integration unless Anthropic publishes a new policy. When
 Claude CLI reuse is available on the host, that is now the preferred path.
 
@@ -100,7 +100,7 @@ Notes:
 - Probe rows can come from auth profiles, env credentials, or `models.json`.
 - If explicit `auth.order.<provider>` omits a stored profile, probe reports
   `excluded_by_auth_order` for that profile instead of trying it.
-- If auth exists but OpenClaw cannot resolve a probeable model candidate for
+- If auth exists but WineryClaw cannot resolve a probeable model candidate for
   that provider, probe reports `status: no_model`.
 - Rate-limit cooldowns can be model-scoped. A profile cooling down for one
   model can still be usable for a sibling model on the same provider.
@@ -112,8 +112,8 @@ Optional ops scripts (systemd/Termux) are documented here:
 
 The Anthropic `claude-cli` backend is supported again.
 
-- Anthropic staff told us this OpenClaw integration path is allowed again.
-- OpenClaw therefore treats Claude CLI reuse and `claude -p` usage as sanctioned
+- Anthropic staff told us this WineryClaw integration path is allowed again.
+- WineryClaw therefore treats Claude CLI reuse and `claude -p` usage as sanctioned
   for Anthropic-backed runs unless Anthropic publishes a new policy.
 - Anthropic API keys remain the most predictable choice for long-lived gateway
   hosts and explicit server-side billing control.
@@ -131,13 +131,13 @@ Some providers support retrying a request with alternative keys when an API call
 hits a provider rate limit.
 
 - Priority order:
-  - `OPENCLAW_LIVE_<PROVIDER>_KEY` (single override)
+  - `WINERYCLAW_LIVE_<PROVIDER>_KEY` (single override)
   - `<PROVIDER>_API_KEYS`
   - `<PROVIDER>_API_KEY`
   - `<PROVIDER>_API_KEY_*`
 - Google providers also include `GOOGLE_API_KEY` as an additional fallback.
 - The same key list is deduplicated before use.
-- OpenClaw retries with the next key only for rate-limit errors (for example
+- WineryClaw retries with the next key only for rate-limit errors (for example
   `429`, `rate_limit`, `quota`, `resource exhausted`, `Too many concurrent
 requests`, `ThrottlingException`, `concurrency limit reached`, or
   `workers_ai ... quota limit exceeded`).

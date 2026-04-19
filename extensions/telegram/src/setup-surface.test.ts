@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { WineryClawConfig } from "openclaw/plugin-sdk/config-runtime";
 import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
 import { describe, expect, it, vi } from "vitest";
 import { resolveTelegramAllowFromEntries } from "./setup-core.js";
@@ -118,7 +118,7 @@ describe("telegramSetupDmPolicy", () => {
   });
 
   it("uses configured defaultAccount for omitted DM policy account context", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         telegram: {
           defaultAccount: "alerts",
@@ -146,7 +146,7 @@ describe("telegramSetupDmPolicy", () => {
   });
 
   it('writes open policy state to the named account and preserves inherited allowFrom with "*"', () => {
-    const cfg: OpenClawConfig = {
+    const cfg: WineryClawConfig = {
       channels: {
         telegram: {
           allowFrom: ["123"],

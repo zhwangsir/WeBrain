@@ -5,8 +5,8 @@ import { resolveBundledPluginsDir } from "./bundled-dir.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 const tempDirs: string[] = [];
-const originalBundledDir = process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
-const originalDisableBundledPlugins = process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+const originalBundledDir = process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
+const originalDisableBundledPlugins = process.env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS;
 const originalVitest = process.env.VITEST;
 const originalArgv1 = process.argv[1];
 const originalExecArgv = [...process.execArgv];
@@ -15,7 +15,7 @@ function makeRepoRoot(prefix: string): string {
   return makeTrackedTempDir(prefix, tempDirs);
 }
 
-function createOpenClawRoot(params: {
+function createWineryClawRoot(params: {
   prefix: string;
   hasExtensions?: boolean;
   hasSrc?: boolean;
@@ -81,14 +81,14 @@ function expectResolvedBundledDir(params: {
     process.env.VITEST = params.vitest;
   }
   if (params.bundledDirOverride === undefined) {
-    delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+    delete process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
   } else {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = params.bundledDirOverride;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = params.bundledDirOverride;
   }
   if (params.disableBundledPlugins === undefined) {
-    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+    delete process.env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS;
   } else {
-    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = params.disableBundledPlugins;
+    process.env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS = params.disableBundledPlugins;
   }
 
   expect(fs.realpathSync(resolveBundledPluginsDir() ?? "")).toBe(
@@ -144,14 +144,14 @@ function expectInstalledBundledDirScenarioCase(
 afterEach(() => {
   vi.restoreAllMocks();
   if (originalBundledDir === undefined) {
-    delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+    delete process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
   } else {
-    process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = originalBundledDir;
+    process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR = originalBundledDir;
   }
   if (originalDisableBundledPlugins === undefined) {
-    delete process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS;
+    delete process.env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS;
   } else {
-    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = originalDisableBundledPlugins;
+    process.env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS = originalDisableBundledPlugins;
   }
   if (originalVitest === undefined) {
     delete process.env.VITEST;
@@ -242,7 +242,7 @@ describe("resolveBundledPluginsDir", () => {
       },
     ],
   ] as const)("%s", (_name, layout, expectation) => {
-    const repoRoot = createOpenClawRoot(layout);
+    const repoRoot = createWineryClawRoot(layout);
     if (expectation.expectedRelativeDir === path.join("dist-runtime", "extensions")) {
       seedBundledPluginTree(repoRoot, path.join("dist", "extensions"));
       seedBundledPluginTree(repoRoot, path.join("dist-runtime", "extensions"));
@@ -258,7 +258,7 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("falls back to source extensions when dist trees exist but do not contain real plugin manifests", () => {
-    const repoRoot = createOpenClawRoot({
+    const repoRoot = createWineryClawRoot({
       prefix: "openclaw-bundled-dir-incomplete-built-",
       hasExtensions: true,
       hasSrc: true,
@@ -278,7 +278,7 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("returns a stable empty bundled plugin directory when bundled plugins are disabled", () => {
-    const repoRoot = createOpenClawRoot({
+    const repoRoot = createWineryClawRoot({
       prefix: "openclaw-bundled-dir-disabled-",
       hasExtensions: true,
       hasSrc: true,
@@ -286,8 +286,8 @@ describe("resolveBundledPluginsDir", () => {
     });
     vi.spyOn(process, "cwd").mockReturnValue(repoRoot);
     process.argv[1] = "/usr/bin/env";
-    process.env.OPENCLAW_DISABLE_BUNDLED_PLUGINS = "1";
-    delete process.env.OPENCLAW_BUNDLED_PLUGINS_DIR;
+    process.env.WINERYCLAW_DISABLE_BUNDLED_PLUGINS = "1";
+    delete process.env.WINERYCLAW_BUNDLED_PLUGINS_DIR;
 
     const bundledDir = resolveBundledPluginsDir();
 
@@ -300,12 +300,12 @@ describe("resolveBundledPluginsDir", () => {
     {
       name: "prefers the running CLI package root over an unrelated cwd checkout",
       createScenario: () => {
-        const installedRoot = createOpenClawRoot({
+        const installedRoot = createWineryClawRoot({
           prefix: "openclaw-bundled-dir-installed-",
           hasDistExtensions: true,
         });
         seedBundledPluginTree(installedRoot, path.join("dist", "extensions"));
-        const cwdRepoRoot = createOpenClawRoot({
+        const cwdRepoRoot = createWineryClawRoot({
           prefix: "openclaw-bundled-dir-cwd-",
           hasExtensions: true,
           hasSrc: true,
@@ -321,7 +321,7 @@ describe("resolveBundledPluginsDir", () => {
     {
       name: "falls back to the running installed package when the override path is stale",
       createScenario: () => {
-        const installedRoot = createOpenClawRoot({
+        const installedRoot = createWineryClawRoot({
           prefix: "openclaw-bundled-dir-override-",
           hasDistExtensions: true,
         });

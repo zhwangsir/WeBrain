@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import type { ChannelPlugin } from "../channels/plugins/types.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { WineryClawConfig } from "../config/config.js";
 import { collectChannelSecurityFindings } from "./audit-channel.js";
 
 function stubSlackPlugin(params: {
-  resolveAccount: (cfg: OpenClawConfig, accountId: string | null | undefined) => unknown;
-  inspectAccount?: (cfg: OpenClawConfig, accountId: string | null | undefined) => unknown;
-  isConfigured?: (account: unknown, cfg: OpenClawConfig) => boolean;
+  resolveAccount: (cfg: WineryClawConfig, accountId: string | null | undefined) => unknown;
+  inspectAccount?: (cfg: WineryClawConfig, accountId: string | null | undefined) => unknown;
+  isConfigured?: (account: unknown, cfg: WineryClawConfig) => boolean;
 }): ChannelPlugin {
   return {
     id: "slack",
@@ -83,7 +83,7 @@ describe("security audit channel source-config fallback slack", () => {
               slashCommand: { enabled: true },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         resolvedConfig: {
           channels: {
             slack: {
@@ -93,8 +93,8 @@ describe("security audit channel source-config fallback slack", () => {
               slashCommand: { enabled: true },
             },
           },
-        } as OpenClawConfig,
-        plugin: (sourceConfig: OpenClawConfig) =>
+        } as WineryClawConfig,
+        plugin: (sourceConfig: WineryClawConfig) =>
           stubSlackPlugin({
             inspectAccount: (cfg) => {
               const channel = cfg.channels?.slack ?? {};
@@ -138,7 +138,7 @@ describe("security audit channel source-config fallback slack", () => {
               slashCommand: { enabled: true },
             },
           },
-        } as OpenClawConfig,
+        } as WineryClawConfig,
         resolvedConfig: {
           channels: {
             slack: {
@@ -148,8 +148,8 @@ describe("security audit channel source-config fallback slack", () => {
               slashCommand: { enabled: true },
             },
           },
-        } as OpenClawConfig,
-        plugin: (sourceConfig: OpenClawConfig) =>
+        } as WineryClawConfig,
+        plugin: (sourceConfig: WineryClawConfig) =>
           stubSlackPlugin({
             inspectAccount: (cfg) => {
               const channel = cfg.channels?.slack ?? {};

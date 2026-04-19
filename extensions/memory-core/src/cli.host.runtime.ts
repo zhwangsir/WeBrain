@@ -17,7 +17,7 @@ export {
   resolveDefaultAgentId,
   resolveSessionTranscriptsDirForAgent,
   resolveStateDir,
-  type OpenClawConfig,
+  type WineryClawConfig,
 } from "openclaw/plugin-sdk/memory-core-host-runtime-core";
 export {
   listMemoryFiles,

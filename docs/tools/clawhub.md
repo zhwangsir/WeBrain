@@ -1,5 +1,5 @@
 ---
-summary: "ClawHub guide: public registry, native OpenClaw install flows, and ClawHub CLI workflows"
+summary: "ClawHub guide: public registry, native WineryClaw install flows, and ClawHub CLI workflows"
 read_when:
   - Introducing ClawHub to new users
   - Installing, searching, or publishing skills or plugins
@@ -9,7 +9,7 @@ title: "ClawHub"
 
 # ClawHub
 
-ClawHub is the public registry for **OpenClaw skills and plugins**.
+ClawHub is the public registry for **WineryClaw skills and plugins**.
 
 - Use native `openclaw` commands to search/install/update skills and install
   plugins from ClawHub.
@@ -18,7 +18,7 @@ ClawHub is the public registry for **OpenClaw skills and plugins**.
 
 Site: [clawhub.ai](https://clawhub.ai)
 
-## Native OpenClaw flows
+## Native WineryClaw flows
 
 Skills:
 
@@ -49,12 +49,12 @@ compatibility before archive install runs, so incompatible hosts fail closed
 early instead of partially installing the package.
 
 `openclaw plugins install clawhub:...` only accepts installable plugin families.
-If a ClawHub package is actually a skill, OpenClaw stops and points you at
+If a ClawHub package is actually a skill, WineryClaw stops and points you at
 `openclaw skills install <slug>` instead.
 
 ## What ClawHub is
 
-- A public registry for OpenClaw skills and plugins.
+- A public registry for WineryClaw skills and plugins.
 - A versioned store of skill bundles and metadata.
 - A discovery surface for search, tags, and usage signals.
 
@@ -63,7 +63,7 @@ If a ClawHub package is actually a skill, OpenClaw stops and points you at
 1. A user publishes a skill bundle (files + metadata).
 2. ClawHub stores the bundle, parses metadata, and assigns a version.
 3. The registry indexes the skill for search and discovery.
-4. Users browse, download, and install skills in OpenClaw.
+4. Users browse, download, and install skills in WineryClaw.
 
 ## What you can do
 
@@ -75,7 +75,7 @@ If a ClawHub package is actually a skill, OpenClaw stops and points you at
 
 ## Who this is for (beginner-friendly)
 
-If you want to add new capabilities to your OpenClaw agent, ClawHub is the easiest way to find and install skills. You do not need to know how the backend works. You can:
+If you want to add new capabilities to your WineryClaw agent, ClawHub is the easiest way to find and install skills. You do not need to know how the backend works. You can:
 
 - Search for skills by plain language.
 - Install a skill into your workspace.
@@ -88,7 +88,7 @@ If you want to add new capabilities to your OpenClaw agent, ClawHub is the easie
    - `openclaw skills search "calendar"`
 2. Install a skill:
    - `openclaw skills install <skill-slug>`
-3. Start a new OpenClaw session so it picks up the new skill.
+3. Start a new WineryClaw session so it picks up the new skill.
 4. If you want to publish or manage registry auth, install the separate
    `clawhub` CLI too.
 
@@ -104,29 +104,29 @@ npm i -g clawhub
 pnpm add -g clawhub
 ```
 
-## How it fits into OpenClaw
+## How it fits into WineryClaw
 
 Native `openclaw skills install` installs into the active workspace `skills/`
 directory. `openclaw plugins install clawhub:...` records a normal managed
 plugin install plus ClawHub source metadata for updates.
 
 Anonymous ClawHub plugin installs also fail closed for private packages.
-Community or other non-official channels can still install, but OpenClaw warns
+Community or other non-official channels can still install, but WineryClaw warns
 so operators can review source and verification before enabling them.
 
 The separate `clawhub` CLI also installs skills into `./skills` under your
-current working directory. If an OpenClaw workspace is configured, `clawhub`
+current working directory. If an WineryClaw workspace is configured, `clawhub`
 falls back to that workspace unless you override `--workdir` (or
-`CLAWHUB_WORKDIR`). OpenClaw loads workspace skills from `<workspace>/skills`
+`CLAWHUB_WORKDIR`). WineryClaw loads workspace skills from `<workspace>/skills`
 and will pick them up in the **next** session. If you already use
-`~/.openclaw/skills` or bundled skills, workspace skills take precedence.
+`~/.wineryclaw/skills` or bundled skills, workspace skills take precedence.
 
 For more detail on how skills are loaded, shared, and gated, see
 [Skills](/tools/skills).
 
 ## Skill system overview
 
-A skill is a versioned bundle of files that teaches OpenClaw how to perform a
+A skill is a versioned bundle of files that teaches WineryClaw how to perform a
 specific task. Each publish creates a new version, and the registry keeps a
 history of versions so users can audit changes.
 
@@ -165,14 +165,14 @@ Reporting and moderation:
 - Moderators can view hidden skills, unhide them, delete them, or ban users.
 - Abusing the report feature can result in account bans.
 
-Interested in becoming a moderator? Ask in the OpenClaw Discord and contact a
+Interested in becoming a moderator? Ask in the WineryClaw Discord and contact a
 moderator or maintainer.
 
 ## CLI commands and parameters
 
 Global options (apply to all commands):
 
-- `--workdir <dir>`: Working directory (default: current dir; falls back to OpenClaw workspace).
+- `--workdir <dir>`: Working directory (default: current dir; falls back to WineryClaw workspace).
 - `--dir <dir>`: Skills directory, relative to workdir (default: `skills`).
 - `--site <url>`: Site base URL (browser login).
 - `--registry <url>`: Registry API base URL.
@@ -289,7 +289,7 @@ clawhub package publish your-org/your-plugin@v1.0.0
 clawhub package publish https://github.com/your-org/your-plugin
 ```
 
-Code plugins must include the required OpenClaw metadata in `package.json`:
+Code plugins must include the required WineryClaw metadata in `package.json`:
 
 ```json
 {
@@ -324,7 +324,7 @@ Updates compare the local skill contents to registry versions using a content ha
 
 ### Sync scanning and fallback roots
 
-`clawhub sync` scans your current workdir first. If no skills are found, it falls back to known legacy locations (for example `~/openclaw/skills` and `~/.openclaw/skills`). This is designed to find older skill installs without extra flags.
+`clawhub sync` scans your current workdir first. If no skills are found, it falls back to known legacy locations (for example `~/openclaw/skills` and `~/.wineryclaw/skills`). This is designed to find older skill installs without extra flags.
 
 ### Storage and lockfile
 

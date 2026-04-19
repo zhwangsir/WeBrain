@@ -1,9 +1,9 @@
 ---
 name: openclaw-test-heap-leaks
-description: Investigate `pnpm test` memory growth, Vitest worker OOMs, and suspicious RSS increases in OpenClaw using the `scripts/test-parallel.mjs` heap snapshot tooling. Use when Codex needs to reproduce test-lane memory growth, collect repeated `.heapsnapshot` files, compare snapshots from the same worker PID, triage likely transformed-module retention versus likely runtime leaks, and fix or reduce the impact by patching cleanup logic or isolating hotspot tests.
+description: Investigate `pnpm test` memory growth, Vitest worker OOMs, and suspicious RSS increases in WineryClaw using the `scripts/test-parallel.mjs` heap snapshot tooling. Use when Codex needs to reproduce test-lane memory growth, collect repeated `.heapsnapshot` files, compare snapshots from the same worker PID, triage likely transformed-module retention versus likely runtime leaks, and fix or reduce the impact by patching cleanup logic or isolating hotspot tests.
 ---
 
-# OpenClaw Test Heap Leaks
+# WineryClaw Test Heap Leaks
 
 Use this skill for test-memory investigations. Do not guess from RSS alone when heap snapshots are available. Treat snapshot-name deltas as triage evidence, not proof, until retainers or dominators support the call.
 
@@ -11,8 +11,8 @@ Use this skill for test-memory investigations. Do not guess from RSS alone when 
 
 1. Reproduce the failing shape first.
    - Match the real entrypoint if possible. For Linux CI-style unit failures, start with:
-   - `pnpm canvas:a2ui:bundle && OPENCLAW_TEST_MEMORY_TRACE=1 OPENCLAW_TEST_HEAPSNAPSHOT_INTERVAL_MS=60000 OPENCLAW_TEST_HEAPSNAPSHOT_DIR=.tmp/heapsnap OPENCLAW_TEST_WORKERS=2 OPENCLAW_TEST_MAX_OLD_SPACE_SIZE_MB=6144 pnpm test`
-   - Keep `OPENCLAW_TEST_MEMORY_TRACE=1` enabled so the wrapper prints per-file RSS summaries alongside the snapshots.
+   - `pnpm canvas:a2ui:bundle && WINERYCLAW_TEST_MEMORY_TRACE=1 WINERYCLAW_TEST_HEAPSNAPSHOT_INTERVAL_MS=60000 WINERYCLAW_TEST_HEAPSNAPSHOT_DIR=.tmp/heapsnap WINERYCLAW_TEST_WORKERS=2 WINERYCLAW_TEST_MAX_OLD_SPACE_SIZE_MB=6144 pnpm test`
+   - Keep `WINERYCLAW_TEST_MEMORY_TRACE=1` enabled so the wrapper prints per-file RSS summaries alongside the snapshots.
    - If the report is about a specific shard or worker budget, preserve that shape.
    - Before you analyze snapshots, identify the real lane names from `[test-parallel] start ...` lines or `pnpm test --plan`. Do not assume a single `unit-fast` lane; local plans often split into `unit-fast-batch-*`.
 

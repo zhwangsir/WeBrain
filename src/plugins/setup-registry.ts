@@ -2,10 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeProviderId } from "../agents/provider-id.js";
-import type { OpenClawConfig } from "../config/types.openclaw.js";
+import type { WineryClawConfig } from "../config/types.openclaw.js";
 import { buildPluginApi } from "./api-builder.js";
 import { collectPluginConfigContractMatches } from "./config-contracts.js";
-import { discoverOpenClawPlugins } from "./discovery.js";
+import { discoverWineryClawPlugins } from "./discovery.js";
 import { getCachedPluginJitiLoader, type PluginJitiLoaderCache } from "./jiti-loader-cache.js";
 import { loadPluginManifestRegistry, type PluginManifestRecord } from "./manifest-registry.js";
 import { resolvePluginCacheInputs } from "./roots.js";
@@ -13,7 +13,7 @@ import type { PluginRuntime } from "./runtime/types.js";
 import { listSetupCliBackendIds, listSetupProviderIds } from "./setup-descriptors.js";
 import type {
   CliBackendPlugin,
-  OpenClawPluginModule,
+  WineryClawPluginModule,
   PluginConfigMigration,
   PluginLogger,
   PluginSetupAutoEnableProbe,
@@ -211,7 +211,7 @@ function resolveSetupApiPath(rootDir: string): string | null {
   return null;
 }
 
-function collectConfiguredPluginEntryIds(config: OpenClawConfig): string[] {
+function collectConfiguredPluginEntryIds(config: WineryClawConfig): string[] {
   const entries = config.plugins?.entries;
   if (!entries || typeof entries !== "object") {
     return [];
@@ -223,7 +223,7 @@ function collectConfiguredPluginEntryIds(config: OpenClawConfig): string[] {
 }
 
 function resolveRelevantSetupMigrationPluginIds(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): string[] {
@@ -253,7 +253,7 @@ function resolveRelevantSetupMigrationPluginIds(params: {
   return [...ids].toSorted();
 }
 
-function resolveRegister(mod: OpenClawPluginModule): {
+function resolveRegister(mod: WineryClawPluginModule): {
   definition?: { id?: string };
   register?: (api: ReturnType<typeof buildPluginApi>) => void | Promise<void>;
 } {
@@ -290,7 +290,7 @@ function matchesProvider(provider: ProviderPlugin, providerId: string): boolean 
 
 function loadSetupManifestRegistry(params?: { workspaceDir?: string; env?: NodeJS.ProcessEnv }) {
   const env = params?.env ?? process.env;
-  const discovery = discoverOpenClawPlugins({
+  const discovery = discoverWineryClawPlugins({
     workspaceDir: params?.workspaceDir,
     env,
     cache: true,
@@ -371,14 +371,14 @@ export function resolvePluginSetupRegistry(params?: {
       continue;
     }
 
-    let mod: OpenClawPluginModule;
+    let mod: WineryClawPluginModule;
     try {
-      mod = getJiti(setupSource)(setupSource) as OpenClawPluginModule;
+      mod = getJiti(setupSource)(setupSource) as WineryClawPluginModule;
     } catch {
       continue;
     }
 
-    const resolved = resolveRegister((mod as { default?: OpenClawPluginModule }).default ?? mod);
+    const resolved = resolveRegister((mod as { default?: WineryClawPluginModule }).default ?? mod);
     if (!resolved.register) {
       continue;
     }
@@ -394,7 +394,7 @@ export function resolvePluginSetupRegistry(params?: {
       source: setupSource,
       rootDir: record.rootDir,
       registrationMode: "setup-only",
-      config: {} as OpenClawConfig,
+      config: {} as WineryClawConfig,
       runtime: EMPTY_RUNTIME,
       logger: NOOP_LOGGER,
       resolvePath: (input) => input,
@@ -490,15 +490,15 @@ export function resolvePluginSetupProvider(params: {
     return undefined;
   }
 
-  let mod: OpenClawPluginModule;
+  let mod: WineryClawPluginModule;
   try {
-    mod = getJiti(setupSource)(setupSource) as OpenClawPluginModule;
+    mod = getJiti(setupSource)(setupSource) as WineryClawPluginModule;
   } catch {
     setCachedSetupValue(setupProviderCache, cacheKey, null);
     return undefined;
   }
 
-  const resolved = resolveRegister((mod as { default?: OpenClawPluginModule }).default ?? mod);
+  const resolved = resolveRegister((mod as { default?: WineryClawPluginModule }).default ?? mod);
   if (!resolved.register) {
     setCachedSetupValue(setupProviderCache, cacheKey, null);
     return undefined;
@@ -518,7 +518,7 @@ export function resolvePluginSetupProvider(params: {
     source: setupSource,
     rootDir: record.rootDir,
     registrationMode: "setup-only",
-    config: {} as OpenClawConfig,
+    config: {} as WineryClawConfig,
     runtime: EMPTY_RUNTIME,
     logger: NOOP_LOGGER,
     resolvePath: (input) => input,
@@ -590,14 +590,14 @@ export function resolvePluginSetupCliBackend(params: {
     return undefined;
   }
 
-  let mod: OpenClawPluginModule;
+  let mod: WineryClawPluginModule;
   try {
-    mod = getJiti(setupSource)(setupSource) as OpenClawPluginModule;
+    mod = getJiti(setupSource)(setupSource) as WineryClawPluginModule;
   } catch {
     setCachedSetupValue(setupCliBackendCache, cacheKey, null);
     return undefined;
   }
-  const resolved = resolveRegister((mod as { default?: OpenClawPluginModule }).default ?? mod);
+  const resolved = resolveRegister((mod as { default?: WineryClawPluginModule }).default ?? mod);
   if (!resolved.register) {
     setCachedSetupValue(setupCliBackendCache, cacheKey, null);
     return undefined;
@@ -617,7 +617,7 @@ export function resolvePluginSetupCliBackend(params: {
     source: setupSource,
     rootDir: record.rootDir,
     registrationMode: "setup-only",
-    config: {} as OpenClawConfig,
+    config: {} as WineryClawConfig,
     runtime: EMPTY_RUNTIME,
     logger: NOOP_LOGGER,
     resolvePath: (input) => input,
@@ -655,11 +655,11 @@ export function resolvePluginSetupCliBackend(params: {
 }
 
 export function runPluginSetupConfigMigrations(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   changes: string[];
 } {
   let next = params.config;
@@ -686,7 +686,7 @@ export function runPluginSetupConfigMigrations(params: {
 }
 
 export function resolvePluginSetupAutoEnableReasons(params: {
-  config: OpenClawConfig;
+  config: WineryClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): SetupAutoEnableReason[] {

@@ -5,7 +5,7 @@ import {
   runSetupWizardConfigure,
   type WizardPrompter,
 } from "../../../test/helpers/plugins/setup-wizard.js";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { WineryClawConfig } from "../runtime-api.js";
 import { nostrSetupWizard } from "./setup-surface.js";
 import {
   TEST_HEX_PRIVATE_KEY,
@@ -22,7 +22,7 @@ function normalizeNostrTestEntry(entry: string): string {
 }
 
 function resolveNostrTestDmPolicy(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   account: ReturnType<typeof resolveNostrAccount>;
 }) {
   return {
@@ -47,7 +47,7 @@ const nostrTestPlugin = {
   },
   config: {
     listAccountIds: listNostrAccountIds,
-    resolveAccount: (cfg: OpenClawConfig, accountId?: string | null) =>
+    resolveAccount: (cfg: WineryClawConfig, accountId?: string | null) =>
       resolveNostrAccount({ cfg, accountId }),
   },
   messaging: {
@@ -85,7 +85,7 @@ const nostrTestPlugin = {
       cfg,
       accountId,
     }: {
-      cfg: OpenClawConfig;
+      cfg: WineryClawConfig;
       accountId?: string;
       input: unknown;
     }) => accountId?.trim() || resolveDefaultNostrAccountId(cfg),
@@ -270,7 +270,7 @@ describe("nostr setup wizard", () => {
 
     const result = await runSetupWizardConfigure({
       configure: nostrConfigure,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       prompter,
       options: {},
     });
@@ -296,7 +296,7 @@ describe("nostr setup wizard", () => {
 
     const result = await runSetupWizardConfigure({
       configure: nostrConfigure,
-      cfg: {} as OpenClawConfig,
+      cfg: {} as WineryClawConfig,
       prompter,
       options: {},
       accountOverrides: {
@@ -312,7 +312,7 @@ describe("nostr setup wizard", () => {
   it("uses configured defaultAccount when setup accountId is omitted", () => {
     expect(
       nostrTestPlugin.setup?.resolveAccountId?.({
-        cfg: createConfiguredNostrCfg({ defaultAccount: "work" }) as OpenClawConfig,
+        cfg: createConfiguredNostrCfg({ defaultAccount: "work" }) as WineryClawConfig,
         accountId: undefined,
         input: {},
       } as never),

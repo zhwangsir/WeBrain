@@ -1,17 +1,17 @@
 import { expect } from "vitest";
-import type { OpenClawConfig } from "../api.js";
+import type { WineryClawConfig } from "../api.js";
 import { createMemoryGetTool, createMemorySearchTool } from "./tools.js";
 
-export function asOpenClawConfig(config: Partial<OpenClawConfig>): OpenClawConfig {
+export function asWineryClawConfig(config: Partial<WineryClawConfig>): WineryClawConfig {
   return config;
 }
 
-export function createDefaultMemoryToolConfig(): OpenClawConfig {
-  return asOpenClawConfig({ agents: { list: [{ id: "main", default: true }] } });
+export function createDefaultMemoryToolConfig(): WineryClawConfig {
+  return asWineryClawConfig({ agents: { list: [{ id: "main", default: true }] } });
 }
 
 export function createMemorySearchToolOrThrow(params?: {
-  config?: OpenClawConfig;
+  config?: WineryClawConfig;
   agentSessionKey?: string;
 }) {
   const tool = createMemorySearchTool({
@@ -25,7 +25,7 @@ export function createMemorySearchToolOrThrow(params?: {
 }
 
 export function createMemoryGetToolOrThrow(
-  config: OpenClawConfig = createDefaultMemoryToolConfig(),
+  config: WineryClawConfig = createDefaultMemoryToolConfig(),
 ) {
   const tool = createMemoryGetTool({ config });
   if (!tool) {
@@ -36,7 +36,7 @@ export function createMemoryGetToolOrThrow(
 
 export function createAutoCitationsMemorySearchTool(agentSessionKey: string) {
   return createMemorySearchToolOrThrow({
-    config: asOpenClawConfig({
+    config: asWineryClawConfig({
       memory: { citations: "auto" },
       agents: { list: [{ id: "main", default: true }] },
     }),

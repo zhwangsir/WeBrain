@@ -7,10 +7,10 @@ import {
 } from "../../config/sessions/reset.js";
 import { loadSessionStore } from "../../config/sessions/store.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { WineryClawConfig } from "../../config/types.openclaw.js";
 
 export function resolveCronSession(params: {
-  cfg: OpenClawConfig;
+  cfg: WineryClawConfig;
   sessionKey: string;
   nowMs: number;
   agentId: string;

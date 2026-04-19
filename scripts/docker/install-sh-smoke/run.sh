@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_URL="${OPENCLAW_INSTALL_URL:-https://openclaw.bot/install.sh}"
-SMOKE_MODE="${OPENCLAW_INSTALL_SMOKE_MODE:-install}"
-SMOKE_PREVIOUS_VERSION="${OPENCLAW_INSTALL_SMOKE_PREVIOUS:-}"
-SKIP_PREVIOUS="${OPENCLAW_INSTALL_SMOKE_SKIP_PREVIOUS:-0}"
+INSTALL_URL="${WINERYCLAW_INSTALL_URL:-https://openclaw.bot/install.sh}"
+SMOKE_MODE="${WINERYCLAW_INSTALL_SMOKE_MODE:-install}"
+SMOKE_PREVIOUS_VERSION="${WINERYCLAW_INSTALL_SMOKE_PREVIOUS:-}"
+SKIP_PREVIOUS="${WINERYCLAW_INSTALL_SMOKE_SKIP_PREVIOUS:-0}"
 DEFAULT_PACKAGE="openclaw"
-PACKAGE_NAME="${OPENCLAW_INSTALL_PACKAGE:-$DEFAULT_PACKAGE}"
-FRESH_VERSION="${OPENCLAW_INSTALL_FRESH_VERSION:-}"
-FRESH_TAG_URL="${OPENCLAW_INSTALL_FRESH_TAG_URL:-}"
-UPDATE_BASELINE_VERSION="${OPENCLAW_INSTALL_UPDATE_BASELINE:-2026.4.10}"
-UPDATE_BASELINE_TAG_URL="${OPENCLAW_INSTALL_UPDATE_BASELINE_TAG_URL:-}"
-UPDATE_EXPECT_VERSION="${OPENCLAW_INSTALL_UPDATE_EXPECT_VERSION:-}"
-UPDATE_TAG_URL="${OPENCLAW_INSTALL_UPDATE_TAG_URL:-}"
-HEARTBEAT_INTERVAL="${OPENCLAW_INSTALL_SMOKE_HEARTBEAT_INTERVAL:-60}"
+PACKAGE_NAME="${WINERYCLAW_INSTALL_PACKAGE:-$DEFAULT_PACKAGE}"
+FRESH_VERSION="${WINERYCLAW_INSTALL_FRESH_VERSION:-}"
+FRESH_TAG_URL="${WINERYCLAW_INSTALL_FRESH_TAG_URL:-}"
+UPDATE_BASELINE_VERSION="${WINERYCLAW_INSTALL_UPDATE_BASELINE:-2026.4.10}"
+UPDATE_BASELINE_TAG_URL="${WINERYCLAW_INSTALL_UPDATE_BASELINE_TAG_URL:-}"
+UPDATE_EXPECT_VERSION="${WINERYCLAW_INSTALL_UPDATE_EXPECT_VERSION:-}"
+UPDATE_TAG_URL="${WINERYCLAW_INSTALL_UPDATE_TAG_URL:-}"
+HEARTBEAT_INTERVAL="${WINERYCLAW_INSTALL_SMOKE_HEARTBEAT_INTERVAL:-60}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # shellcheck source=../install-sh-common/cli-verify.sh
@@ -117,8 +117,8 @@ run_install_smoke() {
     print_install_audit "fresh install"
 
     echo "==> Verify installed version"
-    if [[ -n "${OPENCLAW_INSTALL_LATEST_OUT:-}" ]]; then
-      printf "%s" "$FRESH_VERSION" > "${OPENCLAW_INSTALL_LATEST_OUT:-}"
+    if [[ -n "${WINERYCLAW_INSTALL_LATEST_OUT:-}" ]]; then
+      printf "%s" "$FRESH_VERSION" > "${WINERYCLAW_INSTALL_LATEST_OUT:-}"
     fi
     verify_installed_cli "$PACKAGE_NAME" "$FRESH_VERSION"
 
@@ -164,7 +164,7 @@ NODE
   echo "package=$PACKAGE_NAME latest=$LATEST_VERSION previous=$PREVIOUS_VERSION"
 
   if [[ "$SKIP_PREVIOUS" == "1" ]]; then
-    echo "==> Skip preinstall previous (OPENCLAW_INSTALL_SMOKE_SKIP_PREVIOUS=1)"
+    echo "==> Skip preinstall previous (WINERYCLAW_INSTALL_SMOKE_SKIP_PREVIOUS=1)"
   else
     echo "==> Preinstall previous (forces installer upgrade path)"
     run_with_heartbeat "preinstall previous release" \
@@ -176,8 +176,8 @@ NODE
   curl -fsSL "$INSTALL_URL" | bash -s -- --no-prompt
 
   echo "==> Verify installed version"
-  if [[ -n "${OPENCLAW_INSTALL_LATEST_OUT:-}" ]]; then
-    printf "%s" "$LATEST_VERSION" > "${OPENCLAW_INSTALL_LATEST_OUT:-}"
+  if [[ -n "${WINERYCLAW_INSTALL_LATEST_OUT:-}" ]]; then
+    printf "%s" "$LATEST_VERSION" > "${WINERYCLAW_INSTALL_LATEST_OUT:-}"
   fi
   verify_installed_cli "$PACKAGE_NAME" "$LATEST_VERSION"
 
@@ -186,11 +186,11 @@ NODE
 
 run_update_smoke() {
   if [[ -z "$UPDATE_EXPECT_VERSION" ]]; then
-    echo "ERROR: OPENCLAW_INSTALL_UPDATE_EXPECT_VERSION is required for update mode" >&2
+    echo "ERROR: WINERYCLAW_INSTALL_UPDATE_EXPECT_VERSION is required for update mode" >&2
     return 1
   fi
   if [[ -z "$UPDATE_TAG_URL" ]]; then
-    echo "ERROR: OPENCLAW_INSTALL_UPDATE_TAG_URL is required for update mode" >&2
+    echo "ERROR: WINERYCLAW_INSTALL_UPDATE_TAG_URL is required for update mode" >&2
     return 1
   fi
 
@@ -283,7 +283,7 @@ case "$SMOKE_MODE" in
     run_update_smoke
     ;;
   *)
-    echo "ERROR: unsupported OPENCLAW_INSTALL_SMOKE_MODE=$SMOKE_MODE" >&2
+    echo "ERROR: unsupported WINERYCLAW_INSTALL_SMOKE_MODE=$SMOKE_MODE" >&2
     exit 1
     ;;
 esac
