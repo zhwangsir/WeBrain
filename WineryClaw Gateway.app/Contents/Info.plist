@@ -5,7 +5,7 @@
     <key>CFBundleExecutable</key>
     <string>MacOS/Application</string>
     <key>CFBundleIconFile</key>
-    <string></string>
+    <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>com.wineryclaw.gateway</string>
     <key>CFBundleName</key>
