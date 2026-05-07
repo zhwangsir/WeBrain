@@ -26,6 +26,7 @@ import {
   WorkflowContext,
 } from "./workflow-engine.js";
 import { AgentSandbox, SandboxPolicy, SandboxSession, SandboxAuditLog } from "./agent-sandbox.js";
+import { AgentFileSystem, AGENTS_DIR } from "./agent-filesystem.js";
 
 export interface AgentCard {
   id: string;
@@ -68,8 +69,8 @@ export interface TaskExecutionOptions {
 }
 
 const AGENT_DIR = join(homedir(), ".webrain", "agents");
-const AGENTS_PATH = join(AGENT_DIR, "agents.json");
 const TASKS_PATH = join(AGENT_DIR, "tasks.json");
+const AGENTS_JSON_LEGACY = join(AGENT_DIR, "agents.json");
 
 export class AgentManager {
   private agents = new Map<string, AgentCard>();
@@ -77,6 +78,7 @@ export class AgentManager {
   private activeTimers = new Map<string, NodeJS.Timeout>();
   private harnesses = new Map<string, AgentHarness>();
   private options: TaskExecutionOptions;
+  private fs: AgentFileSystem;
 
   // Phase 2 engines
   collaboration: AgentCollaborationEngine;
@@ -89,6 +91,9 @@ export class AgentManager {
       mainBrainUrl: options.mainBrainUrl || "http://127.0.0.1:18790",
       subBrainUrl: options.subBrainUrl || "http://127.0.0.1:9797",
     };
+
+    // Initialize file system
+    this.fs = new AgentFileSystem();
 
     // Initialize engines
     this.collaboration = new AgentCollaborationEngine((id) => this.agents.get(id));
@@ -202,52 +207,61 @@ export class AgentManager {
   // ---- Persistence ----
 
   private load(): void {
+    // Migrate from legacy agents.json if present
+    if (existsSync(AGENTS_JSON_LEGACY)) {
+      const result = this.fs.migrateFromJson(AGENTS_JSON_LEGACY);
+      if (result.migrated > 0) {
+        console.log(`[agent] Migrated ${result.migrated} agents to folder structure`);
+      }
+      if (result.errors.length > 0) {
+        console.warn("[agent] Migration errors:", result.errors);
+      }
+    }
+
+    // Load from folder structure
     try {
-      if (existsSync(AGENTS_PATH)) {
-        const list: AgentCard[] = JSON.parse(readFileSync(AGENTS_PATH, "utf-8"));
-        for (const a of list) {
-          this.agents.set(a.id, a);
-          if (!this.sandbox.getPolicy(a.id)) {
-            this.sandbox.createDefaultPolicy(a.id);
-          }
+      const cards = this.fs.listAgents();
+      for (const card of cards) {
+        this.agents.set(card.id, card);
+        if (!this.sandbox.getPolicy(card.id)) {
+          this.sandbox.createDefaultPolicy(card.id);
         }
       }
+    } catch (err) {
+      console.error("[agent] Load from file system failed:", err);
+    }
+
+    // Load tasks (still JSON)
+    try {
       if (existsSync(TASKS_PATH)) {
         const list: AgentTask[] = JSON.parse(readFileSync(TASKS_PATH, "utf-8"));
         for (const t of list) this.tasks.set(t.taskId, t);
       }
     } catch (err) {
-      console.error("[agent] Load failed:", err);
+      console.error("[agent] Task load failed:", err);
     }
   }
 
-  private save(): void {
+  private saveTasks(): void {
     if (!existsSync(AGENT_DIR)) mkdirSync(AGENT_DIR, { recursive: true });
-    writeFileSync(AGENTS_PATH, JSON.stringify(Array.from(this.agents.values()), null, 2));
     writeFileSync(TASKS_PATH, JSON.stringify(Array.from(this.tasks.values()), null, 2));
   }
 
-  private createDefaultAgent(): void {
-    const agent: AgentCard = {
-      id: "agent-default",
-      name: "WeBrain Agent",
-      description: "Default general-purpose agent",
-      capabilities: ["chat", "reasoning", "tool_use", "memory"],
-      modelConfig: { baseUrl: "http://192.168.71.100:1234/v1", modelId: "minimax/minimax-m2.7" },
-      tools: ["shell", "file_read", "file_write", "http_request"],
-      channels: [],
-      owner: "user-default",
-      workspaceId: "default",
-      status: "idle",
-      role: "general",
-      systemPrompt: "You are a helpful AI assistant.",
-      maxSteps: 10,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+  private saveAgent(card: AgentCard): void {
+    const existing = this.fs.loadAgent(card.id);
+    const files = existing || {
+      card,
+      systemPrompt: this.fs.buildSystemPrompt(card.id, {}) || "",
+      tools: [],
     };
-    this.agents.set(agent.id, agent);
-    this.sandbox.createDefaultPolicy(agent.id);
-    this.save();
+    files.card = card;
+    this.fs.saveAgent(files);
+  }
+
+  private createDefaultAgent(): void {
+    const files = this.fs.createDefaultAgent();
+    this.agents.set(files.card.id, files.card);
+    this.sandbox.createDefaultPolicy(files.card.id);
   }
 
   // ---- Agent CRUD ----
@@ -262,10 +276,20 @@ export class AgentManager {
     };
     this.agents.set(agent.id, agent);
 
+    // Create folder with default system.md and tools
+    const defaultTools = [
+      { name: "execute_shell", enabled: true, description: "Execute local shell commands" },
+      { name: "read_file", enabled: true, description: "Read file contents" },
+      { name: "write_file", enabled: true, description: "Write files" },
+      { name: "http_request", enabled: true, description: "HTTP requests" },
+      { name: "browse_web", enabled: true, description: "Browse web pages" },
+    ];
+    const systemPrompt = `# ${agent.name}\n\n${agent.name} is a helpful AI assistant.\n\n## Available Tools\n{{tools}}\n\n## Relevant Memories\n{{memory}}\n`;
+    this.fs.saveAgent({ card: agent, systemPrompt, tools: defaultTools });
+
     // Auto-create sandbox policy for new agent
     this.sandbox.createDefaultPolicy(agent.id);
 
-    this.save();
     return agent;
   }
 
@@ -283,7 +307,7 @@ export class AgentManager {
     if (agent) {
       agent.status = status;
       agent.updatedAt = new Date().toISOString();
-      this.save();
+      this.saveAgent(agent);
     }
   }
 
@@ -291,11 +315,17 @@ export class AgentManager {
     const agent = this.agents.get(id);
     if (!agent) return undefined;
     Object.assign(agent, updates, { updatedAt: new Date().toISOString() });
-    this.save();
+    this.saveAgent(agent);
     return agent;
   }
 
   deleteAgent(id: string): boolean {
+    // Prevent deleting the last agent
+    if (this.agents.size <= 1) {
+      console.warn("[agent] Cannot delete the last agent");
+      return false;
+    }
+
     for (const task of this.tasks.values()) {
       if (task.agentId === id && task.status === "in_progress") {
         this.cancelTask(task.taskId);
@@ -303,10 +333,48 @@ export class AgentManager {
     }
     const ok = this.agents.delete(id);
     if (ok) {
+      this.fs.deleteAgent(id);
       this.sandbox.deletePolicy(id);
-      this.save();
+      this.saveTasks();
     }
     return ok;
+  }
+
+  // ---- Agent File System accessors ----
+
+  getAgentFiles(id: string) {
+    return this.fs.loadAgent(id);
+  }
+
+  updateAgentSystemPrompt(id: string, content: string): boolean {
+    const agent = this.agents.get(id);
+    if (!agent) return false;
+    const files = this.fs.loadAgent(id);
+    if (!files) return false;
+    files.systemPrompt = content;
+    this.fs.saveAgent(files);
+    agent.updatedAt = new Date().toISOString();
+    return true;
+  }
+
+  updateAgentTools(id: string, tools: { name: string; enabled: boolean; description?: string }[]): boolean {
+    const agent = this.agents.get(id);
+    if (!agent) return false;
+    const files = this.fs.loadAgent(id);
+    if (!files) return false;
+    files.tools = tools;
+    files.card.tools = tools.filter((t) => t.enabled).map((t) => t.name);
+    this.fs.saveAgent(files);
+    this.agents.set(id, files.card);
+    return true;
+  }
+
+  buildSystemPrompt(agentId: string, vars: { memory?: string; tools?: string } = {}): string | undefined {
+    return this.fs.buildSystemPrompt(agentId, vars);
+  }
+
+  getEnabledTools(agentId: string): string[] {
+    return this.fs.getEnabledTools(agentId);
   }
 
   // ---- Task Lifecycle ----
@@ -322,7 +390,7 @@ export class AgentManager {
       createdAt: new Date().toISOString(),
     };
     this.tasks.set(task.taskId, task);
-    this.save();
+    this.saveTasks();
     return task;
   }
 
@@ -333,7 +401,7 @@ export class AgentManager {
 
     task.status = "in_progress";
     task.startedAt = new Date().toISOString();
-    this.save();
+    this.saveTasks();
 
     this.updateAgentStatus(task.agentId, "running");
 
@@ -356,7 +424,7 @@ export class AgentManager {
 
     task.status = "cancelled";
     task.completedAt = new Date().toISOString();
-    this.save();
+    this.saveTasks();
 
     const agentTasks = this.listTasks(task.agentId);
     const hasActive = agentTasks.some(t => t.status === "in_progress");
@@ -373,7 +441,7 @@ export class AgentManager {
       task.status = "completed";
       task.result = result;
       task.completedAt = new Date().toISOString();
-      this.save();
+      this.saveTasks();
       this._clearTimer(taskId);
       this._maybeSetAgentIdle(task.agentId);
     }
@@ -386,7 +454,7 @@ export class AgentManager {
       task.error = error;
       task.result = { error };
       task.completedAt = new Date().toISOString();
-      this.save();
+      this.saveTasks();
       this._clearTimer(taskId);
       this.updateAgentStatus(task.agentId, "error");
     }

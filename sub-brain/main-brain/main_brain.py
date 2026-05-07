@@ -140,6 +140,7 @@ async def lifespan(app: FastAPI) -> None:
         memory_manager=_state["memory"],
         sub_brain_client=_state["sub_brain"],
         llm_config=llm_config,
+        sub_brain_url=sub_brain_url,
     )
 
     # Initialize Wiki
@@ -872,31 +873,35 @@ async def chat_endpoint(request: Dict[str, Any]):
     """End-to-end chat with multi-turn tool calling loop."""
     user_input = request.get("message", "")
     session_id = request.get("session_id", "default")
+    agent_id = request.get("agent_id", "agent-default")
     context = request.get("context", {})
-    result = await _state["chat"].chat(user_input, session_id, context)
+    result = await _state["chat"].chat(user_input, session_id, agent_id, context)
     return result
 
 
 # ========== Chat Sessions ==========
 @app.get("/chat/sessions")
 async def chat_sessions():
-    # Return sessions from memory L1 grouped by session_id
+    # Return sessions from memory L1 grouped by session_id, sorted by latest activity
     try:
         mems = await _state["memory"].get_recent(level="L1", limit=1000)
-        # Sort oldest first so first user message becomes title
-        mems = sorted(mems, key=lambda x: x.get("created_at", ""))
-        sessions = {}
+        sessions: Dict[str, Dict] = {}
         for m in mems:
             sid = m.get("session_id", "default")
             content = m.get("content", "")
+            created_at = m.get("created_at", "")
             # Skip assistant prefix for titles
             if content.startswith("Assistant: "):
                 content = content[11:]
             if sid not in sessions:
-                sessions[sid] = {"id": sid, "title": content[:20] or "新对话", "updatedAt": m.get("created_at", "")}
+                sessions[sid] = {"id": sid, "title": content[:20] or "新对话", "updatedAt": created_at}
             else:
-                sessions[sid]["updatedAt"] = m.get("created_at", "")
-        return {"sessions": list(sessions.values())}
+                # Keep the latest timestamp as updatedAt
+                if created_at > sessions[sid]["updatedAt"]:
+                    sessions[sid]["updatedAt"] = created_at
+        # Sort by updatedAt DESC (most recent first)
+        session_list = sorted(sessions.values(), key=lambda x: x.get("updatedAt", ""), reverse=True)
+        return {"sessions": session_list}
     except Exception:
         return {"sessions": []}
 
@@ -904,9 +909,9 @@ async def chat_sessions():
 # ========== Chat History ==========
 @app.get("/chat/history")
 async def chat_history(session_id: str = "default"):
-    """Get chat history for a session."""
+    """Get chat history for a session, sorted by time ascending (oldest first)."""
     try:
-        mems = await _state["memory"].get_recent(level="L1", limit=1000)
+        mems = await _state["memory"].get_recent(level="L1", limit=2000)
         messages = []
         for m in mems:
             if m.get("session_id", "default") == session_id:
@@ -926,8 +931,8 @@ async def chat_history(session_id: str = "default"):
                     "timestamp": m.get("created_at", ""),
                     "sessionId": session_id,
                 })
-        # Oldest first for display
-        messages.reverse()
+        # Sort by timestamp ascending (oldest first) for display
+        messages.sort(key=lambda x: x.get("timestamp", ""))
         return {"messages": messages}
     except Exception:
         return {"messages": []}
@@ -947,11 +952,11 @@ async def chat_session_delete(session_id: str):
 
 # ========== Chat Streaming (SSE) ==========
 @app.get("/chat/stream")
-async def chat_stream_endpoint(message: str, session_id: str = "default", tools_enabled: bool = True):
+async def chat_stream_endpoint(message: str, session_id: str = "default", agent_id: str = "agent-default", tools_enabled: bool = True):
     """Streaming chat endpoint — Server-Sent Events."""
     async def event_generator():
         context = {"tools_enabled": tools_enabled}
-        async for chunk in _state["chat"].chat_stream(message, session_id, context):
+        async for chunk in _state["chat"].chat_stream(message, session_id, agent_id, context):
             yield f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n"
         yield "data: [DONE]\n\n"
 
@@ -1234,8 +1239,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 # WebSocket-based streaming (alternative to SSE)
                 user_msg = message.get("message", "")
                 sid = message.get("session_id", "default")
+                aid = message.get("agent_id", "agent-default")
                 ctx = message.get("context", {})
-                async for chunk in _state["chat"].chat_stream(user_msg, sid, ctx):
+                async for chunk in _state["chat"].chat_stream(user_msg, sid, aid, ctx):
                     await websocket.send_json({"action": "chat.chunk", "data": chunk})
                 await websocket.send_json({"action": "chat.done"})
 

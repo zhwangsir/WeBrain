@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Tooltip, message } from "antd";
-import { UserOutlined, RobotOutlined, ToolOutlined, CopyOutlined, CheckOutlined } from "@ant-design/icons";
+import { UserOutlined, RobotOutlined, ToolOutlined, CopyOutlined, CheckOutlined, ThunderboltOutlined, DownOutlined } from "@ant-design/icons";
 import type { ChatMessage } from "../../api/types";
 import MarkdownRenderer from "../common/MarkdownRenderer";
 import StreamingText from "./StreamingText";
@@ -16,6 +16,7 @@ export default function MessageBubble({ msg, isDark, highlight }: MessageBubbleP
   const isUser = msg.role === "user";
   const isSystem = msg.role === "system";
   const [copied, setCopied] = useState(false);
+  const [showReasoning, setShowReasoning] = useState(true);
 
   const handleCopy = async () => {
     try {
@@ -113,6 +114,55 @@ export default function MessageBubble({ msg, isDark, highlight }: MessageBubbleP
             position: "relative",
           }}
         >
+          {/* Reasoning / thinking process */}
+          {msg.reasoning && (
+            <div style={{ marginBottom: 8 }}>
+              <button
+                onClick={() => setShowReasoning(!showReasoning)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "2px 0",
+                  fontSize: 12,
+                  color: isDark ? "#71717a" : "#a1a1aa",
+                  fontWeight: 500,
+                }}
+              >
+                <ThunderboltOutlined style={{ fontSize: 10 }} />
+                <span>思考过程</span>
+                <DownOutlined
+                  style={{
+                    fontSize: 10,
+                    transition: "transform 200ms",
+                    transform: showReasoning ? "rotate(180deg)" : "rotate(0deg)",
+                  }}
+                />
+              </button>
+              {showReasoning && (
+                <div
+                  style={{
+                    marginTop: 4,
+                    padding: "8px 12px",
+                    background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
+                    borderRadius: 8,
+                    borderLeft: `2px solid ${isDark ? "#52525b" : "#d4d4d8"}`,
+                    fontSize: 13,
+                    color: isDark ? "#a1a1aa" : "#71717a",
+                    lineHeight: 1.6,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {msg.reasoning}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* User messages: plain text with optional highlight; Assistant: Markdown or streaming text */}
           {isUser ? (
             <div style={{ whiteSpace: "pre-wrap" }}>

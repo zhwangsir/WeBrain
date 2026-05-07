@@ -44,6 +44,7 @@ export interface ChatMessage {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
+  reasoning?: string;
   toolCalls?: ToolCall[];
   toolResults?: ToolResult[];
   isStreaming?: boolean;
@@ -65,14 +66,28 @@ export interface Agent {
   id: string;
   name: string;
   description: string;
-  role: string;
-  model: string;
-  systemPrompt: string;
-  tools: string[];
+  role?: string;
+  systemPrompt?: string;
+  modelConfig?: {
+    baseUrl?: string;
+    modelId?: string;
+    temperature?: number;
+    maxTokens?: number;
+  };
+  capabilities?: string[];
+  tools?: string[];
+  maxSteps?: number;
+  status?: "idle" | "running" | "error";
   enabled: boolean;
+  isDefault?: boolean;
   createdAt: string;
   updatedAt: string;
-  isDefault?: boolean;
+}
+
+export interface AgentToolConfig {
+  name: string;
+  enabled: boolean;
+  description?: string;
 }
 
 export interface Memory {

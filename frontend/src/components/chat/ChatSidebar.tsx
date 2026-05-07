@@ -50,6 +50,11 @@ export default function ChatSidebar({
     accent: "var(--c-accent)",
   };
 
+  // Sort sessions by updatedAt DESC (most recent first)
+  const sortedSessions = [...sessions].sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
+
   return (
     <div
       style={{
@@ -94,13 +99,13 @@ export default function ChatSidebar({
       </div>
 
       <div style={{ flex: 1, overflow: "auto", padding: "8px 0" }}>
-        {sessions.length === 0 ? (
+        {sortedSessions.length === 0 ? (
           <div style={{ padding: 40, textAlign: "center" }}>
             <MessageOutlined style={{ fontSize: 24, color: C.text3 }} />
             <p style={{ color: C.text3, fontSize: 13, marginTop: 12 }}>暂无历史对话</p>
           </div>
         ) : (
-          sessions.map((s) => {
+          sortedSessions.map((s) => {
             const isActive = s.id === currentSessionId;
             return (
               <div

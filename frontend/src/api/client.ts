@@ -5,7 +5,7 @@
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 
-const BASE_URL = "";
+const BASE_URL = ""; // Use relative URLs — Vite dev proxy handles routing in dev, nginx/static serve in prod
 
 class ApiClient {
   private instance: AxiosInstance;
@@ -22,13 +22,18 @@ class ApiClient {
       (config) => {
         const token = localStorage.getItem("webrain-api-key");
         if (token) config.headers.Authorization = `Bearer ${token}`;
-        const key = `${config.method}_${config.url}_${JSON.stringify(config.params)}`;
-        if (this.pendingRequests.has(key)) {
-          this.pendingRequests.get(key)!.abort();
+        // Only deduplicate mutating requests (POST/PUT/DELETE/PATCH)
+        // GET requests are idempotent; cancelling them causes "Request cancelled" errors on re-mounts
+        const method = config.method?.toLowerCase();
+        if (method && method !== "get" && method !== "head") {
+          const key = `${config.method}_${config.url}_${JSON.stringify(config.params || {})}_${JSON.stringify(config.data || {})}`;
+          if (this.pendingRequests.has(key)) {
+            this.pendingRequests.get(key)!.abort();
+          }
+          const controller = new AbortController();
+          config.signal = controller.signal;
+          this.pendingRequests.set(key, controller);
         }
-        const controller = new AbortController();
-        config.signal = controller.signal;
-        this.pendingRequests.set(key, controller);
         return config;
       },
       (error) => Promise.reject(error)
@@ -37,15 +42,21 @@ class ApiClient {
     this.instance.interceptors.response.use(
       (response) => {
         const config = response.config;
-        const key = `${config.method}_${config.url}_${JSON.stringify(config.params)}`;
-        this.pendingRequests.delete(key);
+        const method = config.method?.toLowerCase();
+        if (method && method !== "get" && method !== "head") {
+          const key = `${config.method}_${config.url}_${JSON.stringify(config.params || {})}_${JSON.stringify(config.data || {})}`;
+          this.pendingRequests.delete(key);
+        }
         return response;
       },
       (error: AxiosError) => {
         const cfg = error.config;
         if (cfg) {
-          const key = `${cfg.method}_${cfg.url}_${JSON.stringify(cfg.params)}`;
-          this.pendingRequests.delete(key);
+          const method = cfg.method?.toLowerCase();
+          if (method && method !== "get" && method !== "head") {
+            const key = `${cfg.method}_${cfg.url}_${JSON.stringify(cfg.params || {})}_${JSON.stringify(cfg.data || {})}`;
+            this.pendingRequests.delete(key);
+          }
         }
         if (axios.isCancel(error)) {
           return Promise.reject(new Error("Request cancelled"));

@@ -18,8 +18,8 @@ interface ChatState {
   setStreaming: (v: boolean) => void;
   setToolEnabled: (v: boolean) => void;
   setHasNewMessage: (v: boolean) => void;
-  sendMessage: (text: string) => Promise<void>;
-  sendStream: (text: string) => Promise<void>;
+  sendMessage: (text: string, agentId?: string) => Promise<void>;
+  sendStream: (text: string, agentId?: string) => Promise<void>;
   stopStream: () => void;
   loadHistory: (sessionId: string) => Promise<void>;
   loadSessions: () => Promise<void>;
@@ -69,7 +69,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   setToolEnabled: (v) => set({ toolEnabled: v }),
   setHasNewMessage: (v) => set({ hasNewMessage: v }),
 
-  sendMessage: async (text) => {
+  sendMessage: async (text, agentId = "agent-default") => {
     const { currentSessionId, toolEnabled } = get();
     set({ loading: true });
     const userMsg: ChatMessage = {
@@ -80,7 +80,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     };
     set((s) => ({ messages: [...s.messages, userMsg] }));
     try {
-      const res = await chatApi.send(text, currentSessionId, toolEnabled);
+      const res = await chatApi.send(text, currentSessionId, agentId, toolEnabled);
       const assistantMsg: ChatMessage = {
         id: `a-${Date.now()}`,
         role: "assistant",
@@ -95,7 +95,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }
   },
 
-  sendStream: async (text) => {
+  sendStream: async (text, agentId = "agent-default") => {
     const { currentSessionId, toolEnabled } = get();
     set({ streaming: true, hasNewMessage: false });
 
@@ -123,7 +123,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set((s) => ({ messages: [...s.messages, assistantMsg] }));
 
     try {
-      const response = await chatApi.stream(text, currentSessionId, toolEnabled, streamAbortController.signal);
+      const response = await chatApi.stream(text, currentSessionId, agentId, toolEnabled, streamAbortController.signal);
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
       if (!reader) return;
@@ -147,6 +147,15 @@ export const useChatStore = create<ChatState>((set, get) => ({
                 const last = msgs[msgs.length - 1];
                 if (last.role === "assistant") {
                   msgs[msgs.length - 1] = { ...last, content: last.content + chunk.data };
+                }
+                return { messages: msgs };
+              });
+            } else if (chunk.type === "reasoning") {
+              set((s) => {
+                const msgs = [...s.messages];
+                const last = msgs[msgs.length - 1];
+                if (last.role === "assistant") {
+                  msgs[msgs.length - 1] = { ...last, reasoning: (last.reasoning || "") + chunk.data };
                 }
                 return { messages: msgs };
               });

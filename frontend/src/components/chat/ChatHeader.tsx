@@ -1,7 +1,8 @@
 import { Button, Popconfirm, Tooltip, Select, message } from "antd";
-import { SearchOutlined, FileTextOutlined, ToolOutlined, ClearOutlined } from "@ant-design/icons";
+import { SearchOutlined, FileTextOutlined, ToolOutlined, ClearOutlined, RobotOutlined } from "@ant-design/icons";
 import { useSystemStore } from "../../stores/systemStore";
 import { useConfigStore } from "../../stores/configStore";
+import { useAgentStore } from "../../stores/agentStore";
 import { configApi } from "../../api/config";
 
 interface ChatHeaderProps {
@@ -29,6 +30,7 @@ export default function ChatHeader({
 }: ChatHeaderProps) {
   const { modelHealth } = useSystemStore();
   const { modelConfig } = useConfigStore();
+  const { agents, currentAgentId, selectAgent } = useAgentStore();
 
   const C = {
     border: "var(--c-border)",
@@ -82,9 +84,28 @@ export default function ChatHeader({
         {streaming && <span style={{ fontSize: 12, color: C.success, fontWeight: 400 }}>生成中…</span>}
       </div>
 
-      {/* Model selector */}
-      {modelHealth && modelHealth.endpoints && Object.keys(modelHealth.endpoints).length > 0 && (
-        <div style={{ flex: 1, display: "flex", justifyContent: "center", minWidth: 0, padding: "0 16px" }}>
+      {/* Agent + Model selectors */}
+      <div style={{ flex: 1, display: "flex", justifyContent: "center", minWidth: 0, padding: "0 8px", gap: 8 }}>
+        <Select
+          size="small"
+          variant="borderless"
+          popupMatchSelectWidth={false}
+          style={{ minWidth: 120, color: C.text2 }}
+          value={currentAgentId}
+          onSelect={(value: string) => selectAgent(value)}
+          options={agents.map((a) => ({
+            label: (
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <RobotOutlined style={{ fontSize: 12, color: a.enabled ? C.success : C.error }} />
+                <span>{a.name}</span>
+                {a.isDefault && <span style={{ fontSize: 11, color: C.text3 }}>(默认)</span>}
+              </div>
+            ),
+            value: a.id,
+          }))}
+        />
+
+        {modelHealth && modelHealth.endpoints && Object.keys(modelHealth.endpoints).length > 0 && (
           <Select
             size="small"
             variant="borderless"
@@ -125,8 +146,8 @@ export default function ChatHeader({
               value: info.model_id,
             }))}
           />
-        </div>
-      )}
+        )}
+      </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
         {messagesCount > 0 && (

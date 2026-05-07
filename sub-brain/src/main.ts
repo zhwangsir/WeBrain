@@ -595,6 +595,33 @@ app.delete("/agents/:id", async (request) => {
   const ok = state.agentManager.deleteAgent(id);
   return { ok };
 });
+
+// ========== Agent File System (system.md, tools.yaml) ==========
+app.get("/agents/:id/system-prompt", async (request) => {
+  const { id } = request.params as any;
+  const files = state.agentManager.getAgentFiles(id);
+  if (!files) return { ok: false, error: "Agent not found" };
+  return { ok: true, content: files.systemPrompt };
+});
+app.put("/agents/:id/system-prompt", async (request) => {
+  const { id } = request.params as any;
+  const { content } = request.body as any;
+  const ok = state.agentManager.updateAgentSystemPrompt(id, content);
+  return { ok };
+});
+app.get("/agents/:id/tools", async (request) => {
+  const { id } = request.params as any;
+  const files = state.agentManager.getAgentFiles(id);
+  if (!files) return { ok: false, error: "Agent not found" };
+  return { ok: true, tools: files.tools };
+});
+app.put("/agents/:id/tools", async (request) => {
+  const { id } = request.params as any;
+  const { tools } = request.body as any;
+  const ok = state.agentManager.updateAgentTools(id, tools);
+  return { ok };
+});
+
 app.post("/agents/tasks/:taskId/cancel", async (request) => {
   const { taskId } = request.params as any;
   const ok = state.agentManager.cancelTask(taskId);

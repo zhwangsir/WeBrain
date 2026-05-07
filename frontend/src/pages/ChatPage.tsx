@@ -4,6 +4,7 @@ import { InboxOutlined, SearchOutlined } from "@ant-design/icons";
 import { useChatStore } from "../stores/chatStore";
 import { useSystemStore } from "../stores/systemStore";
 import { useConfigStore } from "../stores/configStore";
+import { useAgentStore } from "../stores/agentStore";
 import { useIsDark } from "../hooks/useTheme";
 import ChatSidebar from "../components/chat/ChatSidebar";
 import ChatHeader from "../components/chat/ChatHeader";
@@ -44,12 +45,14 @@ export default function ChatPage() {
     init();
   }, [init]);
 
-  // Fetch model health & config on mount
+  // Fetch model health, config, and agents on mount
   useEffect(() => {
     const { fetchModelHealth } = useSystemStore.getState();
     const { fetchModelConfig } = useConfigStore.getState();
+    const { fetchAgents } = useAgentStore.getState();
     fetchModelHealth();
     fetchModelConfig();
+    fetchAgents();
   }, []);
 
   // Smart auto-scroll with separated strategies
@@ -116,12 +119,14 @@ export default function ChatPage() {
     setShowScrollBtn(false);
   };
 
+  const { currentAgentId } = useAgentStore();
+
   const handleSend = useCallback(() => {
     const text = inputValue.trim();
     if (!text || streaming) return;
     setInputValue("");
-    sendStream(text);
-  }, [inputValue, streaming, sendStream]);
+    sendStream(text, currentAgentId);
+  }, [inputValue, streaming, sendStream, currentAgentId]);
 
   // Voice input
   const toggleVoiceInput = useCallback(() => {

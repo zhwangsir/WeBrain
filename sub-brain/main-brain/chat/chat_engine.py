@@ -129,13 +129,18 @@ MAX_TOOL_ITERATIONS = 10
 
 
 class ChatEngine:
-    def __init__(self, memory_manager: Any, sub_brain_client: Any, llm_config: Optional[Dict[str, Any]] = None):
+    def __init__(self, memory_manager: Any, sub_brain_client: Any, llm_config: Optional[Dict[str, Any]] = None,
+                 sub_brain_url: str = "http://127.0.0.1:3000"):
         self.memory = memory_manager
         self.sub_brain = sub_brain_client
+        self.sub_brain_url = sub_brain_url
         self.router = LLMRouter()
         self.llm_config = llm_config or {}
         self._update_router()
         self._http_client: Optional[httpx.AsyncClient] = None
+        self._agent_config_cache: Dict[str, Any] = {}
+        self._agent_config_ttl = 30  # seconds
+        self._agent_config_fetched_at: Dict[str, float] = {}
 
     def _get_client(self) -> httpx.AsyncClient:
         if self._http_client is None or self._http_client.is_closed:
@@ -153,34 +158,98 @@ class ChatEngine:
         self.llm_config = llm_config
         self._update_router()
 
-    @property
-    def _default_tools(self) -> List[Dict]:
-        return [
-            {"type": "function", "function": {"name": "execute_shell", "description": "执行本地 shell 命令", "parameters": {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}}},
-            {"type": "function", "function": {"name": "read_file", "description": "读取文件", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
-            {"type": "function", "function": {"name": "write_file", "description": "写入文件", "parameters": {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]}}},
-            {"type": "function", "function": {"name": "http_request", "description": "HTTP 请求", "parameters": {"type": "object", "properties": {"url": {"type": "string"}, "method": {"type": "string"}}, "required": ["url", "method"]}}},
-            {"type": "function", "function": {"name": "browse_web", "description": "浏览网页", "parameters": {"type": "object", "properties": {"url": {"type": "string"}}, "required": ["url"]}}},
-        ]
+    # ---- Tool definitions registry ----
+    _TOOL_REGISTRY: Dict[str, Dict] = {
+        "execute_shell": {"type": "function", "function": {"name": "execute_shell", "description": "执行本地 shell 命令", "parameters": {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}}},
+        "read_file": {"type": "function", "function": {"name": "read_file", "description": "读取文件", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+        "write_file": {"type": "function", "function": {"name": "write_file", "description": "写入文件", "parameters": {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]}}},
+        "http_request": {"type": "function", "function": {"name": "http_request", "description": "HTTP 请求", "parameters": {"type": "object", "properties": {"url": {"type": "string"}, "method": {"type": "string"}}, "required": ["url", "method"]}}},
+        "browse_web": {"type": "function", "function": {"name": "browse_web", "description": "浏览网页", "parameters": {"type": "object", "properties": {"url": {"type": "string"}}, "required": ["url"]}}},
+        "shell": {"type": "function", "function": {"name": "execute_shell", "description": "执行本地 shell 命令", "parameters": {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}}},
+        "file_read": {"type": "function", "function": {"name": "read_file", "description": "读取文件", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+        "file_write": {"type": "function", "function": {"name": "write_file", "description": "写入文件", "parameters": {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]}}},
+    }
 
-    def _build_system_prompt(self, memory_text: str) -> str:
-        return f"""你是 Linda，DGMT（Digimental Global Network Solution Pte. Ltd.）的高级私人秘书。
+    def _get_tools_for_agent(self, agent_id: str, agent_config: Optional[Dict] = None) -> List[Dict]:
+        """Build tool list for a specific agent. Falls back to all tools."""
+        if not agent_config:
+            return list(self._TOOL_REGISTRY.values())
+        enabled = agent_config.get("tools", [])
+        if not enabled:
+            return list(self._TOOL_REGISTRY.values())
+        tools = []
+        seen = set()
+        for name in enabled:
+            if name in seen:
+                continue
+            # Map aliases
+            tool_name = name
+            if name == "shell":
+                tool_name = "execute_shell"
+            elif name == "file_read":
+                tool_name = "read_file"
+            elif name == "file_write":
+                tool_name = "write_file"
+            if tool_name in self._TOOL_REGISTRY and tool_name not in seen:
+                tools.append(self._TOOL_REGISTRY[tool_name])
+                seen.add(tool_name)
+        return tools if tools else list(self._TOOL_REGISTRY.values())
 
-公司背景：
-- DGMT 成立于 2023 年，总部位于新加坡，业务覆盖印尼、菲律宾等 APEC 地区
-- 主营：International & Regional Connection（IEPL/IPLC 国际专线）、Full BGP Domestic/International IP Transit、A2P SMS 网关服务、IT 及网络设备供应
-- 公司正在快速扩张中，为东南亚及全球客户提供 7x24 网络解决方案
+    async def _fetch_agent_config(self, agent_id: str) -> Optional[Dict]:
+        """Fetch agent config from sub-brain with caching."""
+        now = asyncio.get_event_loop().time()
+        cached = self._agent_config_cache.get(agent_id)
+        fetched_at = self._agent_config_fetched_at.get(agent_id, 0)
+        if cached and (now - fetched_at) < self._agent_config_ttl:
+            return cached
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                resp = await client.get(f"{self.sub_brain_url}/agents/{agent_id}")
+                if resp.status_code == 200:
+                    data = resp.json()
+                    agent = data.get("agent") or data
+                    self._agent_config_cache[agent_id] = agent
+                    self._agent_config_fetched_at[agent_id] = now
+                    return agent
+        except Exception as e:
+            logger.warning(f"Failed to fetch agent config for {agent_id}: {e}")
+        return None
 
-你的职责：
-- 为老板提供最专业、最贴心的服务
-- 熟练使用各种工具处理文件、执行命令、发送网络请求、浏览网页
-- 说话风格：专业、礼貌、温暖、主动、高效
-- 常用表达："好的老板，我马上帮您处理""我已经为您联系了网络团队""方案我已优化好，请您过目""老板最近出差多，要注意休息哦"
-- 你几乎没有什么办不到的事情
+    async def _build_system_prompt(self, agent_id: str, memory_text: str) -> str:
+        """Build system prompt from agent's system.md with template substitution."""
+        agent = await self._fetch_agent_config(agent_id)
 
-可用工具：execute_shell, read_file, write_file, http_request, browse_web
-相关记忆：\n{memory_text}
-如需要工具执行，请使用 function_call。"""
+        if agent and agent.get("systemPrompt"):
+            prompt = agent["systemPrompt"]
+        else:
+            # Fallback: try to fetch system-prompt endpoint
+            try:
+                async with httpx.AsyncClient(timeout=5.0) as client:
+                    resp = await client.get(f"{self.sub_brain_url}/agents/{agent_id}/system-prompt")
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        prompt = data.get("content", "")
+                    else:
+                        prompt = ""
+            except Exception:
+                prompt = ""
+
+        if not prompt:
+            # Ultimate fallback: generic assistant
+            prompt = "You are a helpful AI assistant.\n\n## Available Tools\n{{tools}}\n\n## Relevant Memories\n{{memory}}"
+
+        # Substitute template variables
+        agent_name = agent.get("name", "AI Assistant") if agent else "AI Assistant"
+        agent_role = agent.get("role", "assistant") if agent else "assistant"
+        tools = agent.get("tools", []) if agent else []
+        tools_text = "\n".join([f"- {t}" for t in tools]) if tools else "- execute_shell\n- read_file\n- write_file\n- http_request\n- browse_web"
+
+        prompt = prompt.replace("{{memory}}", memory_text)
+        prompt = prompt.replace("{{tools}}", tools_text)
+        prompt = prompt.replace("{{agent_name}}", agent_name)
+        prompt = prompt.replace("{{agent_role}}", agent_role)
+
+        return prompt
 
     # -----------------------------------------------------------------------
     # Core LLM call (non-streaming)
@@ -340,6 +409,8 @@ class ChatEngine:
                         try:
                             chunk = json.loads(data)
                             delta = chunk["choices"][0].get("delta", {})
+                            if delta.get("reasoning_content"):
+                                yield {"type": "reasoning", "data": delta["reasoning_content"]}
                             if delta.get("content"):
                                 yield {"type": "content", "data": delta["content"]}
                             elif delta.get("tool_calls"):
@@ -384,7 +455,8 @@ class ChatEngine:
     # -----------------------------------------------------------------------
     # Multi-turn chat with recursive tool calling
     # -----------------------------------------------------------------------
-    async def chat(self, user_input: str, session_id: str, context: Optional[Dict] = None) -> Dict[str, Any]:
+    async def chat(self, user_input: str, session_id: str,
+                   agent_id: str = "agent-default", context: Optional[Dict] = None) -> Dict[str, Any]:
         # Store user message
         await self.memory.store({"level": "L1", "content": user_input, "session_id": session_id, "source": "user"})
 
@@ -392,14 +464,16 @@ class ChatEngine:
         relevant = await self.memory.query({"query": user_input, "levels": ["L2", "L3"], "limit": 5})
         memory_text = "\n".join([f"- {m.get('content', '')}" for m in relevant]) or "无相关记忆"
 
-        # Build messages
-        system_prompt = self._build_system_prompt(memory_text)
+        # Fetch agent config and build prompt
+        agent_config = await self._fetch_agent_config(agent_id)
+        system_prompt = await self._build_system_prompt(agent_id, memory_text)
         messages: List[Dict] = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_input},
         ]
 
-        available_tools = self._default_tools if (context or {}).get("tools_enabled", True) else None
+        tools_enabled = (context or {}).get("tools_enabled", True)
+        available_tools = self._get_tools_for_agent(agent_id, agent_config) if tools_enabled else None
         all_tool_calls: List[Dict] = []
         all_tool_results: List[Dict] = []
 
@@ -462,7 +536,7 @@ class ChatEngine:
     # Streaming chat (first iteration only streamed; tool calls are blocking)
     # -----------------------------------------------------------------------
     async def chat_stream(self, user_input: str, session_id: str,
-                          context: Optional[Dict] = None) -> AsyncGenerator[Dict[str, Any], None]:
+                          agent_id: str = "agent-default", context: Optional[Dict] = None) -> AsyncGenerator[Dict[str, Any], None]:
         """Streaming chat. Yields content chunks during LLM generation.
         If tool calls are needed, yields tool_call events and pauses.
         After tool execution, continues with final response."""
@@ -472,13 +546,16 @@ class ChatEngine:
         relevant = await self.memory.query({"query": user_input, "levels": ["L2", "L3"], "limit": 5})
         memory_text = "\n".join([f"- {m.get('content', '')}" for m in relevant]) or "无相关记忆"
 
-        system_prompt = self._build_system_prompt(memory_text)
+        # Fetch agent config and build prompt
+        agent_config = await self._fetch_agent_config(agent_id)
+        system_prompt = await self._build_system_prompt(agent_id, memory_text)
         messages: List[Dict] = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_input},
         ]
 
-        available_tools = self._default_tools if (context or {}).get("tools_enabled", True) else None
+        tools_enabled = (context or {}).get("tools_enabled", True)
+        available_tools = self._get_tools_for_agent(agent_id, agent_config) if tools_enabled else None
         all_tool_calls: List[Dict] = []
         all_tool_results: List[Dict] = []
 
