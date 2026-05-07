@@ -1,0 +1,10 @@
+{
+  "id": "skill-systemd",
+  "name": "Systemd Services",
+  "description": "Check and manage systemd services (macOS: launchctl, Linux: systemctl)",
+  "triggerPatterns": ["systemctl", "service status", "check service", "systemd", "launchctl"],
+  "code": "const { execSync } = require('child_process');\nconst platform = process.platform;\nconst service = params.service || '';\nconst action = params.action || 'status';\nif (platform === 'darwin') {\n  if (action === 'status') {\n    const result = execSync(`launchctl list | grep ${service} || true`, { encoding: 'utf-8', timeout: 10000 });\n    return { output: result || 'Service not found', platform: 'macOS' };\n  } else if (action === 'list') {\n    const result = execSync('launchctl list | head -30', { encoding: 'utf-8', timeout: 10000 });\n    return { output: result, platform: 'macOS' };\n  }\n} else {\n  const allowed = ['status', 'list-units', 'is-active', 'is-enabled'];\n  if (!allowed.includes(action)) {\n    throw new Error('Action not allowed: ' + action);\n  }\n  const cmd = service ? `systemctl ${action} ${service}` : `systemctl ${action}`;\n  const result = execSync(cmd, { encoding: 'utf-8', timeout: 10000 });\n  return { output: result, platform: 'Linux' };\n}\nthrow new Error('Unsupported action/platform');",
+  "language": "javascript",
+  "tags": ["system", "ops"],
+  "version": 1
+}

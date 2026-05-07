@@ -1,0 +1,41 @@
+/**
+ * WeBrain Constants — centralized magic numbers
+ */
+
+// Server
+export const DEFAULT_SUB_BRAIN_PORT = 3000;
+export const DEFAULT_MAIN_BRAIN_PORT = 18790;
+
+// Timeouts (milliseconds)
+export const TIMEOUT = {
+  HEALTH_CHECK: 10_000,
+  POLL_INTERVAL: 5_000,
+  BROWSER_NAVIGATION: 30_000,
+  BROWSER_WAIT: 5_000,
+  BROWSER_SCREENSHOT: 60_000,
+  TOOL_SHELL: 30_000,
+  TOOL_FILE_READ: 10_000,
+  TOOL_FILE_WRITE: 30_000,
+  TOOL_HTTP_REQUEST: 60_000,
+  TOOL_CODE_EXEC: 60_000,
+  LLM_REQUEST: 120_000,
+  LLM_STREAM: 300_000,
+  STT_SMALL_FILE: 5_000,
+  STT_LARGE_FILE: 300_000,
+  SKILL_EXEC: 30_000,
+  MCP_REQUEST: 30_000,
+  DOKOBOT_BROWSER: 60_000,
+} as const;
+
+// Collaboration
+export const DEFAULT_PROPOSAL_TIMEOUT_SEC = 300;
+export const DEFAULT_QUORUM = 1;
+
+// Limits
+export const MAX_AUDIT_LOGS = 5000;
+export const MAX_TEXT_LENGTH = 50000;
+export const MAX_RESPONSE_TEXT_LENGTH = 5000;
+
+// Ports
+export const DEFAULT_LLM_PORT = 1234;
+export const DEFAULT_SD_PORT = 7860;

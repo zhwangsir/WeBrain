@@ -1,0 +1,1264 @@
+"""
+WeBrain Main Brain - Hermes Core Service
+
+主脑模块，负责系统的核心智能功能：
+- 记忆管理 (L1-L4 分层记忆)
+- 推理引擎 (多步推理、问题分解)
+- 进化机制 (自我学习、技能优化)
+- 决策中心 (任务优先级、执行规划)
+- 多模型端点路由 (EXO集群 + LM Studio)
+- Streaming 流式输出
+- 心跳监控
+
+零安全限制，全程本地运行。
+"""
+
+import argparse
+import asyncio
+import json
+import os
+import logging
+from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import uvicorn
+from fastapi import FastAPI, WebSocket
+from fastapi.responses import JSONResponse, StreamingResponse
+
+from memory.memory_manager import MemoryManager
+from reasoning.reasoning_engine import ReasoningEngine
+from evolution.evolution_engine import EvolutionEngine
+from decision.decision_center import DecisionCenter
+from bridge.sub_brain_client import SubBrainClient
+from chat.chat_engine import ChatEngine
+from wiki.wiki_engine import WikiEngine
+from memory.dreaming_engine import DreamingEngine
+from media.media_engine import MediaEngine
+from canvas.canvas_engine import CanvasEngine
+from memory.knowledge_graph import KnowledgeGraph
+from memory.active_memory import ActiveMemory
+from cron.cron_engine import CronEngine
+from observability.metrics import MetricsCollector
+from observability.logger import setup_structured_logging, log_request, LogContext
+from dependency_check import check_on_startup
+from cache.cache_manager import cache
+
+# Configure logging
+LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(
+    level=getattr(logging, LOG_LEVEL, logging.INFO),
+    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+)
+logger = logging.getLogger("webrain.main-brain")
+
+# Global state
+_state: Dict[str, Any] = {}
+
+
+# ---------------------------------------------------------------------------
+# Multi-endpoint LLM config fetching
+# ---------------------------------------------------------------------------
+
+async def _fetch_llm_config(sub_brain_url: str) -> Dict[str, Any]:
+    """Fetch model config from sub-brain, with fallback to defaults."""
+    import httpx
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            resp = await client.get(f"{sub_brain_url}/config/model")
+            if resp.status_code == 200:
+                data = resp.json()
+                config = data.get("config", data)
+
+                # Check if multi-endpoint config exists
+                endpoints = config.get("endpoints")
+                if isinstance(endpoints, list) and len(endpoints) > 0:
+                    return {
+                        "endpoints": endpoints,
+                        "temperature": config.get("temperature", 0.7),
+                        "max_tokens": config.get("maxTokens", 4096),
+                    }
+
+                # Single endpoint fallback
+                return {
+                    "base_url": config.get("baseUrl", "http://192.168.71.100:1234/v1"),
+                    "model_id": config.get("modelId", "minimax/minimax-m2.7"),
+                    "api_key": config.get("apiKey"),
+                    "temperature": config.get("temperature", 0.7),
+                    "max_tokens": config.get("maxTokens", 4096),
+                }
+    except Exception as e:
+        logger.warning(f"Failed to fetch LLM config from sub-brain: {e}, using defaults")
+
+    # Default: include both local endpoints with failover priority
+    return {
+        "endpoints": [
+            {
+                "name": "lm-studio",
+                "base_url": "http://192.168.71.100:1234/v1",
+                "model_id": "minimax/minimax-m2.7",
+                "priority": 10,
+            },
+            {
+                "name": "exo-cluster",
+                "base_url": "http://192.168.71.53:52415/v1",
+                "model_id": "default",
+                "priority": 5,
+            },
+        ],
+        "temperature": 0.7,
+        "max_tokens": 4096,
+    }
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> None:
+    """Initialize and cleanup main brain services."""
+    data_dir = Path(__file__).parent.parent / "data" / "main-brain"
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    # Check dependencies on startup
+    deps_ok = check_on_startup()
+    if not deps_ok:
+        logger.error("Critical dependencies missing. Some features may be unavailable.")
+
+    # Fetch LLM config from sub-brain first (needed for memory manager)
+    sub_brain_url = os.environ.get("WEBRAIN_SUB_BRAIN_URL", "http://127.0.0.1:3000")
+    _state["sub_brain"] = SubBrainClient(base_url=sub_brain_url)
+    llm_config = await _fetch_llm_config(sub_brain_url)
+    logger.info(f"LLM config loaded with {len(llm_config.get('endpoints', []))} endpoint(s)")
+
+    _state["memory"] = MemoryManager(db_path=str(data_dir / "memory.db"), llm_config=llm_config)
+
+    _state["reasoning"] = ReasoningEngine(memory_manager=_state["memory"], llm_config=llm_config)
+    _state["evolution"] = EvolutionEngine(memory_manager=_state["memory"])
+    _state["decision"] = DecisionCenter(
+        memory_manager=_state["memory"],
+        reasoning_engine=_state["reasoning"],
+    )
+    _state["chat"] = ChatEngine(
+        memory_manager=_state["memory"],
+        sub_brain_client=_state["sub_brain"],
+        llm_config=llm_config,
+    )
+
+    # Initialize Wiki
+    _state["wiki"] = WikiEngine()
+    wiki_stats = _state["wiki"].get_stats()
+    logger.info(f"Wiki initialized: {wiki_stats['total_notes']} notes, {wiki_stats['total_words']} words")
+
+    # Initialize Dreaming Engine
+    _state["dreaming"] = DreamingEngine(memory_manager=_state["memory"], llm_config=llm_config)
+
+    # Initialize Media Engine
+    _state["media"] = MediaEngine()
+
+    # Initialize Canvas Engine
+    _state["canvas"] = CanvasEngine()
+
+    # Initialize Knowledge Graph
+    _state["kg"] = KnowledgeGraph(llm_config=llm_config)
+    logger.info(f"Knowledge Graph initialized: {_state['kg'].get_stats()}")
+
+    # Initialize Active Memory
+    _state["active_memory"] = ActiveMemory(memory_manager=_state["memory"], llm_config=llm_config)
+
+    # Initialize Cron Engine
+    _state["cron"] = CronEngine()
+    await _state["cron"].start()
+    _register_cron_handlers()
+    logger.info(f"Cron engine started: {len(_state['cron'].list_jobs())} job(s)")
+
+    # Initialize Metrics Collector
+    _state["metrics"] = MetricsCollector()
+    _state["_metrics_persist_task"] = asyncio.create_task(_metrics_persistence_loop())
+
+    # Start background tasks
+    _state["_heartbeat_task"] = asyncio.create_task(_heartbeat_monitor())
+    _state["_dreaming_task"] = asyncio.create_task(_dreaming_scheduler())
+
+    logger.info("Main Brain initialized. All systems online.")
+    yield
+
+    # Cleanup
+    if "_heartbeat_task" in _state:
+        _state["_heartbeat_task"].cancel()
+        try:
+            await _state["_heartbeat_task"]
+        except asyncio.CancelledError:
+            pass
+    if "_dreaming_task" in _state:
+        _state["_dreaming_task"].cancel()
+        try:
+            await _state["_dreaming_task"]
+        except asyncio.CancelledError:
+            pass
+    if "_metrics_persist_task" in _state:
+        _state["_metrics_persist_task"].cancel()
+        try:
+            await _state["_metrics_persist_task"]
+        except asyncio.CancelledError:
+            pass
+    if "cron" in _state:
+        await _state["cron"].stop()
+    for key in list(_state.keys()):
+        if key.startswith("_"):
+            continue
+        if hasattr(_state[key], "close"):
+            await _state[key].close()
+    _state.clear()
+    logger.info("Main Brain shutdown complete.")
+
+
+# ---------------------------------------------------------------------------
+# Heartbeat Monitor — checks model endpoints every 5 minutes
+# ---------------------------------------------------------------------------
+
+async def _heartbeat_monitor():
+    """Background task: health-check LLM endpoints every 5 minutes and log status."""
+    while True:
+        try:
+            await asyncio.sleep(300)  # 5 minutes
+            chat_engine = _state.get("chat")
+            metrics = _state.get("metrics")
+            if not chat_engine:
+                continue
+
+            health = await chat_engine.router.health_check_all()
+            healthy_count = sum(1 for v in health.values() if v.get("healthy"))
+            total_count = len(health)
+
+            logger.info(f"[HEARTBEAT] LLM endpoints: {healthy_count}/{total_count} healthy")
+            for name, info in health.items():
+                status = "✅" if info.get("healthy") else "❌"
+                logger.info(f"  {status} {name}: {info.get('base_url')} — {info.get('model_id')}")
+
+            # Record metrics
+            if metrics:
+                metrics.gauge("llm_endpoints_healthy", healthy_count)
+                metrics.gauge("llm_endpoints_total", total_count)
+                for name, info in health.items():
+                    metrics.gauge("llm_endpoint_latency_ms", info.get("latency_ms", 0), labels={"name": name})
+
+            # Auto-failover logging
+            if healthy_count == 0:
+                logger.error("[HEARTBEAT] CRITICAL: All LLM endpoints are down!")
+            elif healthy_count < total_count:
+                logger.warning(f"[HEARTBEAT] WARNING: {total_count - healthy_count} endpoint(s) unhealthy")
+
+        except asyncio.CancelledError:
+            break
+        except Exception as e:
+            logger.warning(f"[HEARTBEAT] Monitor error: {e}")
+
+
+async def _metrics_persistence_loop():
+    """Background task: persist metrics every 60 seconds."""
+    while True:
+        try:
+            await asyncio.sleep(60)
+            metrics = _state.get("metrics")
+            if metrics:
+                await metrics.persist()
+                # Collect system metrics
+                sys_metrics = metrics.collect_system()
+                for k, v in sys_metrics.items():
+                    metrics.gauge(f"system_{k}", v)
+        except asyncio.CancelledError:
+            break
+        except Exception as e:
+            logger.warning(f"[METRICS] Persistence error: {e}")
+
+
+def _register_cron_handlers():
+    """Register built-in cron task handlers."""
+    import httpx
+
+    async def cron_http_request(params: Dict[str, Any]):
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            method = params.get("method", "GET").upper()
+            url = params["url"]
+            if method == "GET":
+                resp = await client.get(url)
+            elif method == "POST":
+                resp = await client.post(url, json=params.get("body", {}))
+            else:
+                resp = await client.request(method, url)
+            return {"status": resp.status_code, "body": resp.text[:1000]}
+
+    async def cron_memory_query(params: Dict[str, Any]):
+        memory = _state.get("memory")
+        if memory:
+            results = await memory.query({"query": params.get("query", ""), "limit": params.get("limit", 5)})
+            return {"results": results}
+        return {"error": "Memory not available"}
+
+    async def cron_dreaming_run(_params: Dict[str, Any]):
+        dreaming = _state.get("dreaming")
+        if dreaming:
+            result = await dreaming.run_cycle()
+            return result
+        return {"error": "Dreaming not available"}
+
+    CronEngine.register_handler("http_request", cron_http_request)
+    CronEngine.register_handler("memory_query", cron_memory_query)
+    CronEngine.register_handler("dreaming_run", cron_dreaming_run)
+
+
+# ---------------------------------------------------------------------------
+# Dreaming Scheduler — runs memory consolidation every 6 hours
+# ---------------------------------------------------------------------------
+async def _dreaming_scheduler():
+    """Background task: run memory consolidation every 6 hours."""
+    # Wait 10 minutes before first run (let system stabilize)
+    await asyncio.sleep(600)
+
+    while True:
+        try:
+            dreaming = _state.get("dreaming")
+            if dreaming:
+                result = await dreaming.run_cycle()
+                logger.info(f"[DREAMING] Scheduled cycle complete: {result['phases']}")
+            else:
+                logger.warning("[DREAMING] Engine not available, skipping cycle")
+
+            # Sleep for 6 hours
+            await asyncio.sleep(21600)
+
+        except asyncio.CancelledError:
+            break
+        except Exception as e:
+            logger.warning(f"[DREAMING] Scheduler error: {e}")
+            await asyncio.sleep(3600)  # Retry in 1 hour on error
+
+
+# ─── Unified Error Response ────────────────────────────────────────
+
+class WeBrainError(Exception):
+    """Base exception with error code."""
+    def __init__(self, code: str, message: str, status_code: int = 500, details: Optional[Dict[str, Any]] = None):
+        self.code = code
+        self.message = message
+        self.status_code = status_code
+        self.details = details or {}
+        super().__init__(message)
+
+
+class LLMError(WeBrainError):
+    def __init__(self, message: str, details: Optional[Dict[str, Any]] = None):
+        super().__init__("ERR_LLM", message, 503, details)
+
+
+class DBError(WeBrainError):
+    def __init__(self, message: str, details: Optional[Dict[str, Any]] = None):
+        super().__init__("ERR_DB", message, 500, details)
+
+
+class ValidationError(WeBrainError):
+    def __init__(self, message: str, details: Optional[Dict[str, Any]] = None):
+        super().__init__("ERR_VALIDATION", message, 400, details)
+
+
+class NotFoundError(WeBrainError):
+    def __init__(self, message: str, details: Optional[Dict[str, Any]] = None):
+        super().__init__("ERR_NOT_FOUND", message, 404, details)
+
+
+def error_response(code: str, message: str, status_code: int = 500, details: Optional[Dict[str, Any]] = None) -> JSONResponse:
+    """Build standardized error JSONResponse."""
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "ok": False,
+            "error": {
+                "code": code,
+                "message": message,
+                "details": details or {},
+            },
+        },
+    )
+
+
+# ─── FastAPI App ───────────────────────────────────────────────────
+
+app = FastAPI(
+    title="WeBrain Main Brain (Hermes)",
+    description="Core intelligence engine - memory, reasoning, evolution, decision, multi-model routing",
+    version="1.5.0",
+    lifespan=lifespan,
+)
+
+
+# ─── Global Exception Handlers ─────────────────────────────────────
+
+@app.exception_handler(WeBrainError)
+async def webrain_error_handler(_request, exc: WeBrainError):
+    return error_response(exc.code, exc.message, exc.status_code, exc.details)
+
+
+@app.exception_handler(Exception)
+async def generic_error_handler(_request, exc: Exception):
+    logger.exception("Unhandled exception in request")
+    return error_response("ERR_INTERNAL", str(exc) or "Internal server error", 500)
+
+
+# ─── Request Logging Middleware ────────────────────────────────────
+
+@app.middleware("http")
+async def log_requests(request, call_next):
+    import time as time_mod
+    start = time_mod.perf_counter()
+    trace_id = request.headers.get("x-trace-id", "-")
+    try:
+        response = await call_next(request)
+        duration_ms = (time_mod.perf_counter() - start) * 1000
+        logger.info(f"[{trace_id}] {request.method} {request.url.path} {response.status_code} {duration_ms:.1f}ms")
+        return response
+    except Exception as e:
+        duration_ms = (time_mod.perf_counter() - start) * 1000
+        logger.error(f"[{trace_id}] {request.method} {request.url.path} FAILED {duration_ms:.1f}ms: {e}")
+        raise
+
+
+# ========== Identity & Agent Proxy Routes ==========
+@app.get("/identity/users")
+async def identity_users():
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_get("/identity/users")
+
+@app.get("/identity/user/{user_id}")
+async def identity_user(user_id: str):
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_get(f"/identity/user/{user_id}")
+
+@app.get("/agents")
+async def agents_list():
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_get("/agents")
+
+@app.get("/agents/{agent_id}")
+async def agents_get(agent_id: str):
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_get(f"/agents/{agent_id}")
+
+@app.post("/agents")
+async def agents_create(request: Dict[str, Any]):
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_post("/agents", request)
+
+@app.get("/agents/{agent_id}/tasks")
+async def agents_tasks(agent_id: str):
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_get(f"/agents/{agent_id}/tasks")
+
+@app.post("/agents/{agent_id}/tasks")
+async def agents_create_task(agent_id: str, request: Dict[str, Any]):
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_post(f"/agents/{agent_id}/tasks", request)
+
+@app.get("/a2a/tasks")
+async def a2a_tasks():
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_get("/a2a/tasks")
+
+@app.post("/a2a/task/send")
+async def a2a_task_send(request: Dict[str, Any]):
+    client: SubBrainClient = _state["sub_brain"]
+    return await client.proxy_post("/a2a/task/send", request)
+
+
+# ========== Config ==========
+@app.get("/config")
+async def get_config():
+    chat_engine = _state.get("chat")
+    if chat_engine and hasattr(chat_engine, "llm_config"):
+        return {"llm": chat_engine.llm_config}
+    return {"llm": {}}
+
+@app.post("/config/reload")
+async def reload_config():
+    sub_brain_url = os.environ.get("WEBRAIN_SUB_BRAIN_URL", "http://127.0.0.1:3000")
+    llm_config = await _fetch_llm_config(sub_brain_url)
+    logger.info(f"Config reloaded: {len(llm_config.get('endpoints', []))} endpoint(s)")
+
+    chat_engine = _state.get("chat")
+    if chat_engine and hasattr(chat_engine, "update_config"):
+        chat_engine.update_config(llm_config)
+
+    reasoning = _state.get("reasoning")
+    if reasoning and hasattr(reasoning, "llm_config"):
+        reasoning.llm_config = llm_config
+
+    return {"ok": True, "config": llm_config}
+
+
+# ========== Health ==========
+@app.get("/health")
+async def health():
+    chat_engine = _state.get("chat")
+    router_status = "ok"
+    if chat_engine and hasattr(chat_engine, "router"):
+        ep = chat_engine.router.get_primary()
+        router_status = "ok" if ep and ep.healthy else "degraded"
+
+    return {
+        "status": "ok",
+        "component": "main-brain",
+        "router": router_status,
+        "modules": {
+            "memory": _state.get("memory") is not None,
+            "reasoning": _state.get("reasoning") is not None,
+            "evolution": _state.get("evolution") is not None,
+            "decision": _state.get("decision") is not None,
+            "chat": _state.get("chat") is not None,
+        },
+    }
+
+
+@app.get("/health/models")
+async def health_models():
+    """Return real-time health status of all LLM endpoints."""
+    chat_engine = _state.get("chat")
+    if not chat_engine or not hasattr(chat_engine, "router"):
+        return {"status": "unknown", "endpoints": []}
+
+    health = await chat_engine.router.health_check_all()
+    healthy_count = sum(1 for v in health.values() if v.get("healthy"))
+    total_count = len(health)
+
+    return {
+        "status": "healthy" if healthy_count == total_count else "degraded" if healthy_count > 0 else "down",
+        "healthy_count": healthy_count,
+        "total_count": total_count,
+        "endpoints": health,
+    }
+
+
+# ========== Memory API ==========
+@app.post("/memory/store")
+async def memory_store(entry: Dict[str, Any]):
+    result = await _state["memory"].store(entry)
+    return result
+
+
+@app.post("/memory/query")
+async def memory_query(query: Dict[str, Any]):
+    results = await _state["memory"].query(query)
+    return {"results": results}
+
+
+@app.get("/memory/session/{session_id}")
+async def memory_session(session_id: str, limit: int = 50):
+    results = await _state["memory"].get_session_memories(session_id, limit)
+    return {"session_id": session_id, "memories": results}
+
+
+@app.get("/memory/recent")
+async def memory_recent(level: Optional[str] = None, limit: int = 20):
+    results = await _state["memory"].get_recent(level, limit)
+    return {"memories": results}
+
+
+@app.get("/memory/sync")
+async def memory_sync():
+    return await _state["memory"].get_stats()
+
+
+@app.post("/memory/archive/run")
+async def memory_archive_run():
+    """Manually trigger archiving of expired memories."""
+    result = await _state["memory"].archive_expired()
+    return result
+
+
+@app.get("/memory/archived")
+async def memory_archived(limit: int = 50, offset: int = 0):
+    results = await _state["memory"].list_archived(limit, offset)
+    return {"memories": results}
+
+
+@app.post("/memory/archived/{memory_id}/restore")
+async def memory_restore(memory_id: str):
+    result = await _state["memory"].restore_archived(memory_id)
+    return result
+
+
+# ========== Reasoning API ==========
+@app.post("/reasoning/analyze")
+async def reasoning_analyze(request: Dict[str, Any]):
+    problem = request.get("problem") or request.get("prompt", "")
+    context = request.get("context", {})
+    result = await _state["reasoning"].analyze(problem, context)
+    return result
+
+
+@app.post("/reasoning/decompose")
+async def reasoning_decompose(request: Dict[str, Any]):
+    problem = request.get("problem", "")
+    result = await _state["reasoning"].decompose(problem)
+    return result
+
+
+# ========== Evolution API ==========
+@app.post("/evolution/run")
+async def evolution_run(request: Dict[str, Any]):
+    agent_id = request.get("agent_id", "default")
+    focus_area = request.get("focus_area", "general")
+    result = await _state["evolution"].run_cycle(agent_id, focus_area)
+    return result
+
+
+@app.get("/evolution/stats")
+async def evolution_stats():
+    stats = await _state["evolution"].get_stats()
+    return stats
+
+
+# ========== Decision API ==========
+@app.post("/decision/plan")
+async def decision_plan(request: Dict[str, Any]):
+    task = request.get("task", "")
+    constraints = request.get("constraints", {})
+    plan = await _state["decision"].create_plan(task, constraints)
+    return plan
+
+
+@app.post("/decision/prioritize")
+async def decision_prioritize(request: Dict[str, Any]):
+    tasks = request.get("tasks", [])
+    prioritized = await _state["decision"].prioritize(tasks)
+    return {"tasks": prioritized}
+
+
+# ========== Context Compression ==========
+@app.post("/context/compress")
+async def context_compress(request: Dict[str, Any]):
+    messages = request.get("messages", [])
+    current_tokens = request.get("current_tokens", 0)
+    result = await _state["memory"].compress_context(messages, current_tokens)
+    return result
+
+
+@app.post("/context/should-compress")
+async def context_should_compress(request: Dict[str, Any]):
+    current_tokens = request.get("current_tokens", 0)
+    threshold = request.get("threshold", 0.75)
+    should = await _state["memory"].should_compress(current_tokens, threshold)
+    return {"should_compress": should}
+
+
+# ========== Knowledge API ==========
+@app.post("/knowledge/context")
+async def knowledge_context(request: Dict[str, Any]):
+    query = request.get("query", "")
+    session_id = request.get("session_id")
+    result = await _state["memory"].get_knowledge_context(query, session_id)
+    return result
+
+
+# ========== Semantic Memory ==========
+@app.post("/semantic/extract")
+async def semantic_extract(request: Dict[str, Any]):
+    text = request.get("text", "")
+    result = await _state["memory"].extract_semantic(text)
+    return result
+
+
+@app.get("/semantic/entities")
+async def semantic_entities(entity_type: Optional[str] = None, limit: int = 50):
+    result = await _state["memory"].get_entities(entity_type, limit)
+    return {"entities": result}
+
+
+# ========== Procedural Memory ==========
+@app.post("/procedural/extract")
+async def procedural_extract(request: Dict[str, Any]):
+    turn_text = request.get("turn_text", "")
+    assistant_response = request.get("assistant_response", "")
+    result = await _state["memory"].extract_procedural(turn_text, assistant_response)
+    return result
+
+
+@app.get("/procedural/skills")
+async def procedural_skills(limit: int = 50):
+    result = await _state["memory"].get_skills(limit)
+    return {"skills": result}
+
+
+# ========== Insights ==========
+@app.get("/insights")
+async def insights(days: int = 7):
+    result = await _state["memory"].get_insights(days)
+    return result
+
+
+# ========== Bridge Execution ==========
+@app.post("/brain/execute")
+async def brain_execute(request: Dict[str, Any]):
+    action = request.get("action", "")
+    params = request.get("params", {})
+    client: SubBrainClient = _state["sub_brain"]
+    if action.startswith("dokobot."):
+        result = await client.browse(params.get("url", ""), action.replace("dokobot.", ""))
+    elif action.startswith("tool."):
+        result = await client.execute_tool(action.replace("tool.", ""), params)
+    elif action == "channels.send":
+        result = await client.send_message(params.get("channel"), params.get("recipient"), params.get("content"))
+    elif action == "plugins.load":
+        result = await client.load_plugin(params.get("plugin_id"), params.get("config"))
+    else:
+        return {"ok": False, "error": f"Unknown action: {action}"}
+    return {"ok": True, "result": result}
+
+
+# ========== Wiki API ==========
+@app.post("/wiki/notes")
+async def wiki_create_note(request: Dict[str, Any]):
+    """Create a new wiki note."""
+    title = request.get("title", "")
+    content = request.get("content", "")
+    note_id = request.get("id")
+    if not title or not content:
+        return JSONResponse({"ok": False, "error": "title and content are required"}, status_code=400)
+    result = _state["wiki"].create_note(title, content, note_id)
+    return {"ok": True, "note": result}
+
+@app.get("/wiki/notes/{note_id}")
+async def wiki_get_note(note_id: str):
+    """Get a wiki note by ID."""
+    note = _state["wiki"].get_note(note_id)
+    if not note:
+        return JSONResponse({"ok": False, "error": "Note not found"}, status_code=404)
+    return {"ok": True, "note": note}
+
+@app.put("/wiki/notes/{note_id}")
+async def wiki_update_note(note_id: str, request: Dict[str, Any]):
+    """Update a wiki note."""
+    result = _state["wiki"].update_note(note_id, request.get("title"), request.get("content"))
+    return {"ok": True, "note": result}
+
+@app.delete("/wiki/notes/{note_id}")
+async def wiki_delete_note(note_id: str):
+    """Delete a wiki note."""
+    _state["wiki"].delete_note(note_id)
+    return {"ok": True}
+
+@app.get("/wiki/notes")
+async def wiki_list_notes(tag: Optional[str] = None, limit: int = 100):
+    """List wiki notes, optionally filtered by tag."""
+    notes = _state["wiki"].list_notes(tag=tag, limit=limit)
+    return {"ok": True, "notes": notes}
+
+@app.get("/wiki/search")
+async def wiki_search(q: str, limit: int = 20):
+    """Search wiki notes."""
+    results = _state["wiki"].search_notes(q, limit=limit)
+    return {"ok": True, "results": results}
+
+@app.get("/wiki/graph")
+async def wiki_graph():
+    """Get graph data for visualization."""
+    graph = _state["wiki"].get_graph()
+    return {"ok": True, "graph": graph}
+
+@app.post("/wiki/import/obsidian")
+async def wiki_import_obsidian(request: Dict[str, Any]):
+    """Import notes from an Obsidian vault."""
+    vault_path = request.get("vault_path", "")
+    if not vault_path:
+        return JSONResponse({"ok": False, "error": "vault_path is required"}, status_code=400)
+    result = _state["wiki"].import_obsidian(vault_path)
+    return result
+
+@app.post("/wiki/export/obsidian")
+async def wiki_export_obsidian(request: Dict[str, Any]):
+    """Export notes to Obsidian-compatible directory."""
+    export_path = request.get("export_path")
+    result = _state["wiki"].export_obsidian(export_path)
+    return result
+
+@app.get("/wiki/stats")
+async def wiki_stats():
+    """Get wiki statistics."""
+    stats = _state["wiki"].get_stats()
+    return {"ok": True, "stats": stats}
+
+
+# ========== Dreaming API ==========
+@app.post("/dreaming/run")
+async def dreaming_run():
+    """Manually trigger a dreaming consolidation cycle."""
+    dreaming = _state.get("dreaming")
+    if not dreaming:
+        return JSONResponse({"ok": False, "error": "Dreaming engine not initialized"}, status_code=500)
+    result = await dreaming.run_cycle()
+    return {"ok": True, "result": result}
+
+
+# ========== Media API ==========
+@app.post("/media/tts")
+async def media_tts(request: Dict[str, Any]):
+    """Text-to-speech via edge-tts."""
+    text = request.get("text", "")
+    voice = request.get("voice", "zh-CN-XiaoxiaoNeural")
+    if not text:
+        return JSONResponse({"ok": False, "error": "text is required"}, status_code=400)
+    result = await _state["media"].text_to_speech(text, voice)
+    return result
+
+@app.get("/media/tts/voices")
+async def media_tts_voices(locale: str = "zh"):
+    """List available TTS voices."""
+    return await _state["media"].list_voices(locale)
+
+@app.post("/media/image")
+async def media_image(request: Dict[str, Any]):
+    """Generate image via local Stable Diffusion."""
+    prompt = request.get("prompt", "")
+    width = request.get("width", 512)
+    height = request.get("height", 512)
+    steps = request.get("steps", 20)
+    sd_url = request.get("sd_url")
+    if not prompt:
+        return JSONResponse({"ok": False, "error": "prompt is required"}, status_code=400)
+    result = await _state["media"].generate_image(prompt, width, height, steps, sd_url)
+    return result
+
+@app.get("/media/files/{filename}")
+async def media_file(filename: str):
+    """Serve generated media file."""
+    from fastapi.responses import Response
+    data = _state["media"].get_media_file(filename)
+    if not data:
+        return JSONResponse({"ok": False, "error": "File not found"}, status_code=404)
+    content_type = "audio/mpeg" if filename.endswith(".mp3") else "image/png" if filename.endswith(".png") else "application/octet-stream"
+    return Response(content=data, media_type=content_type)
+
+
+# ========== Canvas API ==========
+@app.post("/canvas/create")
+async def canvas_create(request: Dict[str, Any]):
+    title = request.get("title", "Untitled")
+    content = request.get("content", "")
+    content_type = request.get("type", "html")
+    result = _state["canvas"].create(title, content, content_type)
+    return {"ok": True, "canvas": result}
+
+@app.get("/canvas/{cid}")
+async def canvas_get(cid: str):
+    canvas = _state["canvas"].get(cid)
+    if not canvas:
+        return JSONResponse({"ok": False, "error": "Not found"}, status_code=404)
+    return {"ok": True, "canvas": canvas}
+
+@app.get("/canvas")
+async def canvas_list(limit: int = 50):
+    return {"ok": True, "canvases": _state["canvas"].list(limit)}
+
+@app.put("/canvas/{cid}")
+async def canvas_update(cid: str, request: Dict[str, Any]):
+    result = _state["canvas"].update(cid, request.get("content", ""), request.get("title"))
+    return {"ok": True, "canvas": result}
+
+@app.delete("/canvas/{cid}")
+async def canvas_delete(cid: str):
+    _state["canvas"].delete(cid)
+    return {"ok": True}
+
+
+# ========== Chat Completion (Non-streaming with multi-turn tool calling) ==========
+@app.post("/chat")
+async def chat_endpoint(request: Dict[str, Any]):
+    """End-to-end chat with multi-turn tool calling loop."""
+    user_input = request.get("message", "")
+    session_id = request.get("session_id", "default")
+    context = request.get("context", {})
+    result = await _state["chat"].chat(user_input, session_id, context)
+    return result
+
+
+# ========== Chat Sessions ==========
+@app.get("/chat/sessions")
+async def chat_sessions():
+    # Return sessions from memory L1 grouped by session_id
+    try:
+        mems = await _state["memory"].get_recent(level="L1", limit=1000)
+        # Sort oldest first so first user message becomes title
+        mems = sorted(mems, key=lambda x: x.get("created_at", ""))
+        sessions = {}
+        for m in mems:
+            sid = m.get("session_id", "default")
+            content = m.get("content", "")
+            # Skip assistant prefix for titles
+            if content.startswith("Assistant: "):
+                content = content[11:]
+            if sid not in sessions:
+                sessions[sid] = {"id": sid, "title": content[:20] or "新对话", "updatedAt": m.get("created_at", "")}
+            else:
+                sessions[sid]["updatedAt"] = m.get("created_at", "")
+        return {"sessions": list(sessions.values())}
+    except Exception:
+        return {"sessions": []}
+
+
+# ========== Chat History ==========
+@app.get("/chat/history")
+async def chat_history(session_id: str = "default"):
+    """Get chat history for a session."""
+    try:
+        mems = await _state["memory"].get_recent(level="L1", limit=1000)
+        messages = []
+        for m in mems:
+            if m.get("session_id", "default") == session_id:
+                source = m.get("source", "")
+                role: str = "user"
+                if source == "assistant":
+                    role = "assistant"
+                elif source == "system":
+                    role = "system"
+                content = m.get("content", "")
+                if content.startswith("Assistant: "):
+                    content = content[11:]
+                messages.append({
+                    "id": m.get("id", ""),
+                    "role": role,
+                    "content": content,
+                    "timestamp": m.get("created_at", ""),
+                    "sessionId": session_id,
+                })
+        # Oldest first for display
+        messages.reverse()
+        return {"messages": messages}
+    except Exception:
+        return {"messages": []}
+
+
+# ========== Chat Session Delete ==========
+@app.delete("/chat/sessions/{session_id}")
+async def chat_session_delete(session_id: str):
+    """Delete a chat session and its memories."""
+    try:
+        # Mark session memories as archived
+        await _state["memory"].archive_session(session_id)
+        return {"ok": True}
+    except Exception:
+        return {"ok": True}
+
+
+# ========== Chat Streaming (SSE) ==========
+@app.get("/chat/stream")
+async def chat_stream_endpoint(message: str, session_id: str = "default", tools_enabled: bool = True):
+    """Streaming chat endpoint — Server-Sent Events."""
+    async def event_generator():
+        context = {"tools_enabled": tools_enabled}
+        async for chunk in _state["chat"].chat_stream(message, session_id, context):
+            yield f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
+
+
+# ========== Observability / Metrics ==========
+@app.get("/metrics")
+async def metrics_snapshot():
+    """Get current metrics snapshot."""
+    metrics = _state.get("metrics")
+    if not metrics:
+        return {"error": "Metrics not initialized"}
+    return metrics.snapshot()
+
+
+@app.get("/metrics/query")
+async def metrics_query(name: str, start: Optional[str] = None, end: Optional[str] = None):
+    """Query metric history."""
+    metrics = _state.get("metrics")
+    if not metrics:
+        return {"error": "Metrics not initialized"}
+    return {"name": name, "data": await metrics.query_range(name, start, end)}
+
+
+# ========== Knowledge Graph ==========
+@app.post("/kg/entities")
+async def kg_add_entity(request: Dict[str, Any]):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    eid = kg.add_entity(
+        name=request["name"],
+        entity_type=request.get("type", "unknown"),
+        description=request.get("description", ""),
+        properties=request.get("properties", {}),
+        source=request.get("source", ""),
+        confidence=request.get("confidence", 1.0),
+    )
+    return {"ok": True, "entity_id": eid}
+
+
+@app.get("/kg/entities/{eid}")
+async def kg_get_entity(eid: str):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    entity = kg.get_entity(eid)
+    if not entity:
+        return {"error": "Entity not found"}
+    return {"entity": entity, "relations": kg.get_relations(eid, "both")}
+
+
+@app.get("/kg/entities")
+async def kg_list_entities(entity_type: Optional[str] = None, limit: int = 100):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    return {"entities": kg.list_entities(entity_type, limit)}
+
+
+@app.post("/kg/relations")
+async def kg_add_relation(request: Dict[str, Any]):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    rid = kg.add_relation(
+        source_id=request["source_id"],
+        target_id=request["target_id"],
+        relation_type=request["type"],
+        properties=request.get("properties", {}),
+        confidence=request.get("confidence", 1.0),
+    )
+    return {"ok": True, "relation_id": rid}
+
+
+@app.get("/kg/search")
+async def kg_search(q: str, limit: int = 10):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    return {"results": kg.search(q, limit)}
+
+
+@app.get("/kg/subgraph")
+async def kg_subgraph(center_id: str, depth: int = 2):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    return kg.get_subgraph(center_id, depth)
+
+
+@app.post("/kg/extract")
+async def kg_extract(request: Dict[str, Any]):
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    result = await kg.extract_from_text(request.get("text", ""))
+    return result
+
+
+@app.get("/kg/stats")
+async def kg_stats():
+    kg = _state.get("kg")
+    if not kg:
+        return {"error": "Knowledge Graph not initialized"}
+    return kg.get_stats()
+
+
+# ========== Active Memory ==========
+@app.post("/active-memory/process")
+async def active_memory_process(request: Dict[str, Any]):
+    am = _state.get("active_memory")
+    if not am:
+        return {"error": "Active Memory not initialized"}
+    result = await am.process_conversation(
+        session_id=request.get("session_id", "default"),
+        messages=request.get("messages", []),
+    )
+    return result
+
+
+@app.get("/active-memory/rules")
+async def active_memory_rules():
+    am = _state.get("active_memory")
+    if not am:
+        return {"error": "Active Memory not initialized"}
+    return {"rules": am.list_rules()}
+
+
+@app.post("/active-memory/rules")
+async def active_memory_add_rule(request: Dict[str, Any]):
+    am = _state.get("active_memory")
+    if not am:
+        return {"error": "Active Memory not initialized"}
+    rule_id = am.add_rule(
+        name=request["name"],
+        pattern=request["pattern"],
+        prompt_template=request["prompt_template"],
+        target_level=request.get("target_level", "L2"),
+        priority=request.get("priority", 5),
+    )
+    return {"ok": True, "rule_id": rule_id}
+
+
+@app.get("/active-memory/history")
+async def active_memory_history(session_id: Optional[str] = None, limit: int = 50):
+    am = _state.get("active_memory")
+    if not am:
+        return {"error": "Active Memory not initialized"}
+    return {"history": am.get_history(session_id, limit)}
+
+
+# ========== Cron ==========
+@app.post("/cron/jobs")
+async def cron_create_job(request: Dict[str, Any]):
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    job = cron.create_job(
+        name=request["name"],
+        cron_expr=request["cron_expr"],
+        task_type=request["task_type"],
+        task_params=request.get("task_params", {}),
+        enabled=request.get("enabled", True),
+        max_retries=request.get("max_retries", 3),
+        webhook_url=request.get("webhook_url"),
+    )
+    return {"ok": True, "job": job.to_dict()}
+
+
+@app.get("/cron/jobs")
+async def cron_list_jobs():
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    return {"jobs": cron.list_jobs()}
+
+
+@app.get("/cron/jobs/{job_id}")
+async def cron_get_job(job_id: str):
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    job = cron.get_job(job_id)
+    if not job:
+        return {"error": "Job not found"}
+    return {"job": job.to_dict()}
+
+
+@app.post("/cron/jobs/{job_id}/enable")
+async def cron_enable_job(job_id: str):
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    return {"ok": cron.enable_job(job_id)}
+
+
+@app.post("/cron/jobs/{job_id}/disable")
+async def cron_disable_job(job_id: str):
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    return {"ok": cron.disable_job(job_id)}
+
+
+@app.delete("/cron/jobs/{job_id}")
+async def cron_delete_job(job_id: str):
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    return {"ok": cron.delete_job(job_id)}
+
+
+@app.get("/cron/runs")
+async def cron_run_history(job_id: Optional[str] = None, limit: int = 50):
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    return {"runs": cron.get_run_history(job_id, limit)}
+
+
+@app.get("/cron/stats")
+async def cron_stats():
+    cron = _state.get("cron")
+    if not cron:
+        return {"error": "Cron engine not initialized"}
+    return cron.get_stats()
+
+
+# ========== Cache ==========
+@app.get("/cache/stats")
+async def cache_stats():
+    return cache.get_stats()
+
+
+@app.post("/cache/clear")
+async def cache_clear():
+    cache.embedding.clear()
+    cache.llm_response.clear()
+    cache.memory_query.clear()
+    cache.web_fetch.clear()
+    return {"ok": True}
+
+
+# ========== WebSocket for Real-time Communication ==========
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            message = await websocket.receive_json()
+            action = message.get("action")
+
+            if action == "memory.store":
+                result = await _state["memory"].store(message.get("data", {}))
+                await websocket.send_json({"action": "memory.stored", "data": result})
+
+            elif action == "reasoning.analyze":
+                result = await _state["reasoning"].analyze(
+                    message.get("problem", ""), message.get("context", {})
+                )
+                await websocket.send_json({"action": "reasoning.result", "data": result})
+
+            elif action == "decision.plan":
+                result = await _state["decision"].create_plan(
+                    message.get("task", ""), message.get("constraints", {})
+                )
+                await websocket.send_json({"action": "decision.plan", "data": result})
+
+            elif action == "chat.stream":
+                # WebSocket-based streaming (alternative to SSE)
+                user_msg = message.get("message", "")
+                sid = message.get("session_id", "default")
+                ctx = message.get("context", {})
+                async for chunk in _state["chat"].chat_stream(user_msg, sid, ctx):
+                    await websocket.send_json({"action": "chat.chunk", "data": chunk})
+                await websocket.send_json({"action": "chat.done"})
+
+            elif action == "ping":
+                await websocket.send_json({"action": "pong"})
+
+            else:
+                await websocket.send_json({"error": f"Unknown action: {action}"})
+
+    except Exception as e:
+        logger.warning(f"WebSocket error: {e}")
+    finally:
+        await websocket.close()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=18790)
+    parser.add_argument("--uds", default="", help="Unix domain socket path (e.g. /tmp/webrain-main.sock)")
+    args = parser.parse_args()
+
+    if args.uds:
+        uvicorn.run(app, uds=args.uds, log_level="info")
+    else:
+        uvicorn.run(app, host=args.host, port=args.port, log_level="info")

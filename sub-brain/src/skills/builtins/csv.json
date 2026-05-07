@@ -1,0 +1,10 @@
+{
+  "id": "skill-csv",
+  "name": "CSV Processor",
+  "description": "Read, parse, and analyze CSV files",
+  "triggerPatterns": ["parse csv", "read csv", "csv file", "analyze csv", "csv data"],
+  "code": "const fs = require('fs');\nconst path = params.path || '';\nif (!path) throw new Error('Path is required');\nconst content = fs.readFileSync(path, 'utf-8');\nconst lines = content.split('\\n').filter(l => l.trim());\nconst headers = lines[0].split(',').map(h => h.trim());\nconst rows = lines.slice(1).map(line => {\n  const values = line.split(',').map(v => v.trim());\n  const obj = {};\n  headers.forEach((h, i) => obj[h] = values[i]);\n  return obj;\n});\nreturn { headers, rows: rows.slice(0, 100), totalRows: rows.length };",
+  "language": "javascript",
+  "tags": ["data", "csv"],
+  "version": 1
+}

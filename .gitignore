@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Coverage & test
+.coverage
+htmlcov/
+.nyc_output/
+
+# Runtime data
+data/**/*.db
+sub-brain/data/**/*.db
+*.db
+
+# Build outputs (keep source, ignore builds)
+frontend/dist/
+frontend/node_modules/
+sub-brain/dist/
+sub-brain/node_modules/
+
+# Electron / app builds
+build/
+*.app/
+*.dmg
+
+# Temporary files
+.tmp/
+temp/

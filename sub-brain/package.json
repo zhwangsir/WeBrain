@@ -1,0 +1,40 @@
+{
+  "name": "@webrain/sub-brain",
+  "version": "1.0.0",
+  "description": "WeBrain Sub Brain - OpenClaw Execution Layer",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/static": "^7.0.4",
+    "@fastify/websocket": "^8.3.0",
+    "@slack/bolt": "^3.17.0",
+    "axios": "^1.6.0",
+    "discord.js": "^14.14.0",
+    "dokobot": "^0.1.0",
+    "fastify": "^4.26.0",
+    "node-pty": "^1.0.0",
+    "pino": "^8.19.0",
+    "playwright": "^1.42.0",
+    "prom-client": "^15.1.3",
+    "sqlite3": "^5.1.0",
+    "telegraf": "^4.16.0",
+    "uuid": "^9.0.0",
+    "whatsapp-web.js": "^1.23.0",
+    "ws": "^8.16.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/uuid": "^9.0.0",
+    "@types/ws": "^8.5.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.3.0"
+  }
+}

@@ -1,0 +1,20 @@
+import { api } from "./client";
+import type { ChatMessage } from "./types";
+
+export const chatApi = {
+  send: (text: string, sessionId: string, toolsEnabled = true) =>
+    api.post<{ reply: string; toolCalls?: any[] }>("/brain/chat", {
+      message: text,
+      session_id: sessionId,
+      tools_enabled: toolsEnabled,
+    }),
+  stream: (text: string, sessionId: string, toolsEnabled = true, signal?: AbortSignal) =>
+    api.stream("/brain/chat/stream", { message: text, session_id: sessionId, tools_enabled: toolsEnabled }, signal),
+  getHistory: (sessionId: string) =>
+    api.get<{ messages: ChatMessage[] }>(`/brain/chat/history?session_id=${sessionId}`).then((r) => r.messages || []),
+  getSessions: () =>
+    api
+      .get<{ sessions: { id: string; title: string; updatedAt: string }[] }>("/brain/chat/sessions")
+      .then((r) => r.sessions || []),
+  deleteSession: (sessionId: string) => api.delete(`/brain/chat/sessions/${sessionId}`),
+};

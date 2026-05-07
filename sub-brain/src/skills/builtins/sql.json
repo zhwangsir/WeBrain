@@ -1,0 +1,10 @@
+{
+  "id": "skill-sql",
+  "name": "SQL Query",
+  "description": "Execute safe SELECT queries against SQLite databases",
+  "triggerPatterns": ["query database", "sql query", "run sql", "select from", "database query"],
+  "code": "const sqlite3 = require('sqlite3');\nconst dbPath = params.dbPath || process.env.HOME + '/.webrain/memory.db';\nconst query = params.query || '';\nif (!query.trim().toLowerCase().startsWith('select')) {\n  throw new Error('Only SELECT queries are allowed for safety');\n}\nconst db = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY);\nconst rows = await new Promise((resolve, reject) => {\n  db.all(query, [], (err, rows) => {\n    if (err) reject(err);\n    else resolve(rows);\n  });\n});\ndb.close();\nreturn { rows, count: rows.length };",
+  "language": "javascript",
+  "tags": ["data", "sql", "database"],
+  "version": 1
+}

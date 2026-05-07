@@ -1,0 +1,10 @@
+{
+  "id": "skill-json",
+  "name": "JSON Processor",
+  "description": "Format, validate, and query JSON data",
+  "triggerPatterns": ["format json", "parse json", "json query", "pretty print json", "validate json"],
+  "code": "const fs = require('fs');\nlet data = params.data;\nconst path = params.path;\nif (path) {\n  data = fs.readFileSync(path, 'utf-8');\n}\nif (typeof data === 'string') {\n  data = JSON.parse(data);\n}\nconst pretty = JSON.stringify(data, null, 2);\nconst keys = Object.keys(data);\nreturn { pretty, keys, type: Array.isArray(data) ? 'array' : typeof data, length: Array.isArray(data) ? data.length : keys.length };",
+  "language": "javascript",
+  "tags": ["data", "json"],
+  "version": 1
+}

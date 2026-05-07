@@ -1,0 +1,195 @@
+import { useState, useEffect } from "react";
+import { Card, List, Button, Empty, Drawer, Tooltip } from "antd";
+import { GlobalOutlined, LinkOutlined, DisconnectOutlined, MessageOutlined, ReloadOutlined } from "@ant-design/icons";
+import { PageShell } from "../components/common/PageShell";
+import { useChannelStore } from "../stores/channelStore";
+import { StatusBadge } from "../components/common/StatusBadge";
+
+function formatChannelTime(ts: string | undefined): string {
+  if (!ts) return "—";
+  try {
+    const d = new Date(ts);
+    return d.toLocaleString("zh-CN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  } catch {
+    return String(ts);
+  }
+}
+
+function formatMessageContent(m: any): string {
+  if (typeof m.content === "string") return m.content;
+  if (typeof m.text === "string") return m.text;
+  if (m.message && typeof m.message === "string") return m.message;
+  try {
+    return JSON.stringify(m, null, 2).slice(0, 500);
+  } catch {
+    return String(m);
+  }
+}
+
+export default function ChannelsPage() {
+  const { channels, loading, fetchChannels, disconnectChannel, toggleChannel, fetchMessages, messages } =
+    useChannelStore();
+
+  const [msgDrawerOpen, setMsgDrawerOpen] = useState(false);
+  const [msgChannelId, setMsgChannelId] = useState<string>("");
+
+  useEffect(() => {
+    fetchChannels();
+  }, [fetchChannels]);
+
+  const openMessages = async (id: string) => {
+    setMsgChannelId(id);
+    await fetchMessages(id);
+    setMsgDrawerOpen(true);
+  };
+
+  return (
+    <PageShell title="通道" subtitle="多平台消息通道管理" icon={<GlobalOutlined />}>
+      <div style={{ marginBottom: 32 }}>
+        <Tooltip title="刷新通道列表">
+          <Button icon={<ReloadOutlined />} onClick={fetchChannels} style={{ height: 40 }}>
+            刷新
+          </Button>
+        </Tooltip>
+      </div>
+
+      {loading && channels.length === 0 ? (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 24 }}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              style={{
+                padding: 32,
+                borderRadius: 12,
+                border: "1px solid var(--c-border)",
+                background: "var(--c-card)",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+                <div style={{ width: 80, height: 16, background: "var(--c-hover)", borderRadius: 4 }} />
+                <div style={{ width: 40, height: 16, background: "var(--c-hover)", borderRadius: 4 }} />
+              </div>
+              <div style={{ width: "60%", height: 14, background: "var(--c-hover)", borderRadius: 4 }} />
+            </div>
+          ))}
+        </div>
+      ) : channels.length === 0 ? (
+        <Empty
+          description={<span style={{ color: "var(--c-text-3)", fontSize: 14, fontWeight: 300 }}>暂无通道</span>}
+        />
+      ) : (
+        <List
+          grid={{ gutter: 24, xs: 1, sm: 1, md: 2, lg: 3 }}
+          dataSource={channels}
+          renderItem={(ch) => (
+            <List.Item>
+              <Card
+                style={{ borderRadius: 12, border: "1px solid var(--c-border)", boxShadow: "var(--shadow)" }}
+                bodyStyle={{ padding: 32 }}
+                title={
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <StatusBadge status={ch.connected ? "connected" : "disconnected"} />
+                    <span style={{ fontWeight: 600, fontSize: 15, color: "var(--c-text)" }}>{ch.name}</span>
+                  </div>
+                }
+                headStyle={{ padding: "20px 24px", borderBottom: "1px solid var(--c-border)" }}
+                actions={[
+                  ch.connected ? (
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<DisconnectOutlined />}
+                      onClick={() => disconnectChannel(ch.id)}
+                      style={{ color: "var(--c-text-3)" }}
+                    >
+                      断开
+                    </Button>
+                  ) : (
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<LinkOutlined />}
+                      onClick={() => toggleChannel(ch.id)}
+                      style={{ color: "var(--c-accent)" }}
+                    >
+                      连接
+                    </Button>
+                  ),
+                  <Button
+                    type="text"
+                    size="small"
+                    icon={<MessageOutlined />}
+                    onClick={() => openMessages(ch.id)}
+                    style={{ color: "var(--c-text-2)" }}
+                  >
+                    消息
+                  </Button>,
+                ]}
+              >
+                <div style={{ fontSize: 13, color: "var(--c-text-2)", fontWeight: 300, marginBottom: 8 }}>
+                  类型:{" "}
+                  <span
+                    style={{
+                      background: "var(--c-hover)",
+                      border: "1px solid var(--c-border)",
+                      padding: "2px 8px",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  >
+                    {ch.type}
+                  </span>
+                </div>
+                <div style={{ fontSize: 12, color: "var(--c-text-3)", fontWeight: 300 }}>ID: {ch.id}</div>
+              </Card>
+            </List.Item>
+          )}
+        />
+      )}
+
+      <Drawer
+        title={<span style={{ fontWeight: 600, fontSize: 16, color: "var(--c-text)" }}>通道消息: {msgChannelId}</span>}
+        open={msgDrawerOpen}
+        onClose={() => setMsgDrawerOpen(false)}
+        width={480}
+      >
+        {messages.length === 0 ? (
+          <Empty
+            description={<span style={{ color: "var(--c-text-3)", fontSize: 14, fontWeight: 300 }}>暂无消息</span>}
+          />
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {messages.map((m: any, i: number) => (
+              <div
+                key={i}
+                style={{
+                  padding: 14,
+                  borderRadius: 10,
+                  background: "var(--c-card)",
+                  border: "1px solid var(--c-border)",
+                  boxShadow: "var(--shadow)",
+                }}
+              >
+                <div style={{ fontSize: 11, color: "var(--c-text-3)", fontWeight: 300, marginBottom: 4 }}>
+                  {formatChannelTime(m.timestamp || m.time)}
+                </div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: "var(--c-text)",
+                    fontWeight: 400,
+                    lineHeight: 1.6,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {formatMessageContent(m)}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Drawer>
+    </PageShell>
+  );
+}

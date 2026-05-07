@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  main-brain:
+    build: ./sub-brain/main-brain
+    # Main Brain uses UDS by default; TCP port 18790 only when WEBRAIN_MAIN_BRAIN_UDS=0
+    # ports: ["18790:18790"]
+    volumes:
+      - ./data/sub-brain/main-brain:/data
+      - ./data/shared:/shared
+    environment:
+      - WEBRAIN_MODE=local
+      - WEBRAIN_MAIN_BRAIN_PORT=18790
+      - WEBRAIN_SUB_BRAIN_URL=http://sub-brain:3000
+    networks: [webrain-net]
+
+  sub-brain:
+    build: ./sub-brain
+    ports: ["3000:3000"]
+    volumes:
+      - ./data/sub-brain:/data
+      - ./data/shared:/shared
+    environment:
+      - WEBRAIN_MODE=local
+      - WEBRAIN_SUB_BRAIN_PORT=3000
+      - WEBRAIN_MAIN_BRAIN_URL=http://main-brain:18790
+      - WEBRAIN_MAIN_BRAIN_UDS=/tmp/webrain-main.sock
+    networks: [webrain-net]
+
+  frontend:
+    build: ./frontend
+    ports: ["8587:8587"]
+    environment:
+      - WEBRAIN_API_URL=http://localhost:9797
+    networks: [webrain-net]
+
+  dokobot:
+    build: ./dokobot
+    ports: ["9222:9222"]
+    environment:
+      - DOKOBOT_PORT=9222
+    networks: [webrain-net]
+
+networks:
+  webrain-net:
+    driver: bridge

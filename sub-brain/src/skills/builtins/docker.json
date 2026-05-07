@@ -1,0 +1,10 @@
+{
+  "id": "skill-docker",
+  "name": "Docker Operations",
+  "description": "Execute safe docker commands: ps, logs, images, inspect",
+  "triggerPatterns": ["docker ", "docker ps", "docker logs", "docker images", "check containers"],
+  "code": "const { execSync } = require('child_process');\nconst cmd = params.command || 'ps';\nconst allowed = ['ps', 'logs', 'images', 'inspect', 'stats', 'version', 'info'];\nconst base = cmd.split(' ')[0];\nif (!allowed.includes(base)) {\n  throw new Error('Docker command not allowed: ' + base);\n}\nconst result = execSync('docker ' + cmd, { encoding: 'utf-8', timeout: 30000 });\nreturn { output: result };",
+  "language": "javascript",
+  "tags": ["dev", "ops", "docker"],
+  "version": 1
+}

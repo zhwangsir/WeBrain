@@ -1,0 +1,10 @@
+{
+  "id": "skill-git",
+  "name": "Git Operations",
+  "description": "Execute common git commands: status, log, diff, branch, commit",
+  "triggerPatterns": ["git ", "check git", "git status", "git log", "git diff", "git commit", "git branch"],
+  "code": "const { execSync } = require('child_process');\nconst cmd = params.command || 'status';\nconst cwd = params.cwd || '.';\nconst allowed = ['status', 'log', 'diff', 'branch', 'show', 'remote', 'config'];\nif (!allowed.includes(cmd.split(' ')[0])) {\n  throw new Error('Command not allowed: ' + cmd);\n}\nconst result = execSync('git ' + cmd, { cwd, encoding: 'utf-8', timeout: 30000 });\nreturn { output: result };",
+  "language": "javascript",
+  "tags": ["dev", "vcs"],
+  "version": 1
+}

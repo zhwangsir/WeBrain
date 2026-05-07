@@ -1,0 +1,10 @@
+{
+  "id": "skill-nginx",
+  "name": "Nginx Tools",
+  "description": "Check nginx config and status",
+  "triggerPatterns": ["nginx ", "nginx config", "check nginx", "nginx status"],
+  "code": "const { execSync } = require('child_process');\nconst action = params.action || 'configtest';\nif (action === 'configtest') {\n  const result = execSync('nginx -t 2>&1 || true', { encoding: 'utf-8', timeout: 10000 });\n  return { output: result };\n} else if (action === 'version') {\n  const result = execSync('nginx -v 2>&1', { encoding: 'utf-8', timeout: 10000 });\n  return { output: result };\n} else if (action === 'sites') {\n  const fs = require('fs');\n  const sitesDir = params.sitesDir || '/etc/nginx/sites-enabled';\n  if (!fs.existsSync(sitesDir)) {\n    return { output: 'Sites directory not found', sites: [] };\n  }\n  const sites = fs.readdirSync(sitesDir).filter(f => f.endsWith('.conf') || !f.includes('.'));\n  return { sites };\n} else {\n  throw new Error('Unknown action: ' + action);\n}",
+  "language": "javascript",
+  "tags": ["system", "web", "nginx"],
+  "version": 1
+}

@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: |
+          pip install -r sub-brain/main-brain/requirements.txt
+      - name: Syntax check
+        run: |
+          python -m py_compile sub-brain/main-brain/main_brain.py
+          python -m py_compile sub-brain/main-brain/memory/memory_manager.py
+          python -m py_compile sub-brain/main-brain/chat/chat_engine.py
+      - name: Run tests
+        run: |
+          cd sub-brain/main-brain && python -m pytest tests/ -q --tb=short
+
+  typescript-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Install sub-brain deps
+        run: |
+          cd sub-brain && pnpm install
+      - name: Type check sub-brain
+        run: |
+          cd sub-brain && pnpm exec tsc --noEmit
+      - name: Install frontend deps
+        run: |
+          cd frontend && pnpm install
+      - name: Type check frontend
+        run: |
+          cd frontend && pnpm exec tsc --noEmit
+      - name: Lint frontend
+        run: |
+          cd frontend && pnpm lint
+      - name: Format check frontend
+        run: |
+          cd frontend && pnpm format
+      - name: Run frontend tests
+        run: |
+          cd frontend && pnpm vitest run
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Install frontend deps
+        run: |
+          cd frontend && pnpm install
+      - name: Build frontend
+        run: |
+          cd frontend && pnpm build
+
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Install root deps
+        run: pnpm install
+      - name: Install sub-brain deps
+        run: cd sub-brain && pnpm install
+      - name: Run integration tests
+        run: pnpm test
+        env:
+          CI: true

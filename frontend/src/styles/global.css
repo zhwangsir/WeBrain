@@ -1,0 +1,534 @@
+/**
+ * WeBrain Global Styles — Monochrome Editorial
+ * Black & white base. Red (#dc2626) for errors/destructive.
+ * Green (#16a34a) for success/online/active. No purple.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+
+/* ═══════════════════════════════════════
+   LIGHT THEME
+   ═══════════════════════════════════════ */
+:root {
+  /* Surfaces */
+  --c-page: #ffffff;
+  --c-card: #fafafa;
+  --c-elevated: #ffffff;
+  --c-hover: #f5f5f5;
+
+  /* Text */
+  --c-text: #000000;
+  --c-text-2: #666666;
+  --c-text-3: #999999;
+  --c-text-inv: #ffffff;
+
+  /* Borders */
+  --c-border: #e5e5e5;
+  --c-border-light: #f5f5f5;
+
+  /* Primary accent — black in light mode */
+  --c-accent: #000000;
+  --c-accent-hover: #333333;
+  --c-accent-active: #111111;
+  --c-accent-soft: rgba(0, 0, 0, 0.06);
+
+  /* Status */
+  --c-success: #16a34a;
+  --c-success-bg: #f0fdf4;
+  --c-error: #dc2626;
+  --c-error-bg: #fef2f2;
+  --c-warning: #ca8a04;
+
+  /* Shadows */
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Misc */
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+  --t-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Scrollbar */
+  --scrollbar: #d4d4d4;
+  --scrollbar-hover: #a3a3a3;
+}
+
+/* ═══════════════════════════════════════
+   DARK THEME
+   ═══════════════════════════════════════ */
+[data-theme="dark"] {
+  --c-page: #0a0a0a;
+  --c-card: #141414;
+  --c-elevated: #1a1a1a;
+  --c-hover: #1f1f1f;
+
+  --c-text: #f5f5f5;
+  --c-text-2: #a1a1aa;
+  --c-text-3: #71717a;
+  --c-text-inv: #0a0a0a;
+
+  --c-border: #27272a;
+  --c-border-light: #3f3f46;
+
+  /* Primary accent — white in dark mode */
+  --c-accent: #f5f5f5;
+  --c-accent-hover: #ffffff;
+  --c-accent-active: #e5e5e5;
+  --c-accent-soft: rgba(255, 255, 255, 0.08);
+
+  /* Status */
+  --c-success: #22c55e;
+  --c-success-bg: #14532d;
+  --c-error: #ef4444;
+  --c-error-bg: #450a0a;
+  --c-warning: #eab308;
+
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  --scrollbar: #3f3f46;
+  --scrollbar-hover: #52525b;
+}
+
+/* ─── Reset ─── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  background: var(--c-page);
+  color: var(--c-text);
+  line-height: 1.6;
+  font-size: 14px;
+  font-weight: 400;
+  overflow-x: hidden;
+  transition:
+    background 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth theme transitions for all theme-dependent elements */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable transition for elements that need instant feedback */
+button,
+a,
+input,
+textarea,
+[role="button"] {
+  transition:
+    background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* ─── Ant Design Overrides (theme-aware via CSS vars) ─── */
+
+.ant-layout {
+  background: var(--c-page) !important;
+}
+.ant-layout-sider {
+  background: var(--c-card) !important;
+  border-right: 1px solid var(--c-border) !important;
+}
+
+.ant-menu {
+  background: transparent !important;
+  border: none !important;
+  font-family: "Inter", sans-serif !important;
+}
+.ant-menu-item {
+  border-radius: var(--r-md) !important;
+  margin: 2px 12px !important;
+  padding-left: 16px !important;
+  color: var(--c-text-2) !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  transition:
+    color var(--t-base),
+    background var(--t-base) !important;
+}
+.ant-menu-item:hover {
+  background: var(--c-hover) !important;
+  color: var(--c-text) !important;
+}
+.ant-menu-item-selected {
+  background: var(--c-hover) !important;
+  color: var(--c-accent) !important;
+  font-weight: 600 !important;
+}
+.ant-menu-item-selected::after {
+  display: none !important;
+}
+.ant-menu-item .anticon {
+  font-size: 16px !important;
+  color: inherit !important;
+}
+
+.ant-card {
+  border-radius: var(--r-lg) !important;
+  border: 1px solid var(--c-border) !important;
+  box-shadow: var(--shadow) !important;
+  transition:
+    box-shadow var(--t-base),
+    border-color var(--t-base) !important;
+  background: var(--c-card) !important;
+}
+.ant-card:hover {
+  box-shadow: var(--shadow-hover) !important;
+}
+.ant-card-head {
+  border-bottom: 1px solid var(--c-border-light) !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  color: var(--c-text) !important;
+  padding: 20px 32px !important;
+  min-height: 64px !important;
+}
+.ant-card-body {
+  padding: 32px !important;
+}
+
+.ant-btn {
+  border-radius: var(--r-md) !important;
+  font-family: "Inter", sans-serif !important;
+  font-weight: 400 !important;
+  height: 40px !important;
+  padding: 0 20px !important;
+  transition: all var(--t-fast) !important;
+}
+.ant-btn-primary {
+  background: var(--c-accent) !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+  color: var(--c-text-inv) !important;
+}
+.ant-btn-primary:hover {
+  background: var(--c-accent-hover) !important;
+}
+.ant-btn-default {
+  border-color: var(--c-border) !important;
+  color: var(--c-text) !important;
+  background: var(--c-card) !important;
+}
+.ant-btn-default:hover {
+  border-color: var(--c-text-2) !important;
+  color: var(--c-text) !important;
+  background: var(--c-hover) !important;
+}
+.ant-btn-text {
+  color: var(--c-text-2) !important;
+}
+.ant-btn-text:hover {
+  color: var(--c-text) !important;
+  background: var(--c-hover) !important;
+}
+.ant-btn-dangerous {
+  background: var(--c-error) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.ant-input,
+.ant-input-textarea,
+.ant-select-selector {
+  border-radius: var(--r-md) !important;
+  border-color: var(--c-border) !important;
+  background: var(--c-card) !important;
+  color: var(--c-text) !important;
+  font-family: "Inter", sans-serif !important;
+  transition:
+    border-color var(--t-fast),
+    box-shadow var(--t-fast) !important;
+}
+.ant-input::placeholder,
+.ant-input-textarea::placeholder {
+  color: var(--c-text-3) !important;
+}
+.ant-input:focus,
+.ant-input-textarea:focus,
+.ant-select-focused .ant-select-selector {
+  border-color: var(--c-accent) !important;
+  box-shadow: 0 0 0 3px var(--c-accent-soft) !important;
+}
+.ant-input:hover,
+.ant-input-textarea:hover,
+.ant-select:hover .ant-select-selector {
+  border-color: var(--c-text-3) !important;
+}
+
+.ant-tag {
+  border-radius: var(--r-sm) !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  padding: 2px 10px !important;
+  border: 1px solid var(--c-border) !important;
+  background: var(--c-hover) !important;
+  color: var(--c-text-2) !important;
+}
+
+.ant-table {
+  font-size: 14px !important;
+  font-family: "Inter", sans-serif !important;
+  background: var(--c-card) !important;
+}
+.ant-table-thead > tr > th {
+  background: var(--c-page) !important;
+  color: var(--c-text-2) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--c-border) !important;
+  padding: 14px 20px !important;
+}
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--c-border-light) !important;
+  padding: 14px 20px !important;
+  color: var(--c-text) !important;
+}
+.ant-table-tbody > tr:hover > td {
+  background: var(--c-hover) !important;
+}
+
+.ant-statistic-title {
+  color: var(--c-text-2) !important;
+  font-size: 12px !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px !important;
+}
+.ant-statistic-content {
+  color: var(--c-text) !important;
+  font-weight: 600 !important;
+  font-size: 32px !important;
+  line-height: 1.2 !important;
+}
+
+.ant-divider {
+  border-color: var(--c-border-light) !important;
+}
+
+.ant-list-item {
+  border-bottom: 1px solid var(--c-border-light) !important;
+  padding: 16px 0 !important;
+}
+
+.ant-empty-description {
+  color: var(--c-text-3) !important;
+  font-weight: 300 !important;
+}
+
+.ant-form-item-label > label {
+  color: var(--c-text-2) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+}
+
+.ant-select-dropdown {
+  border-radius: var(--r-lg) !important;
+  box-shadow: var(--shadow-hover) !important;
+  border: 1px solid var(--c-border) !important;
+  background: var(--c-card) !important;
+}
+.ant-select-item {
+  color: var(--c-text) !important;
+}
+.ant-select-item-option-selected {
+  background: var(--c-hover) !important;
+  font-weight: 600 !important;
+  color: var(--c-accent) !important;
+}
+
+.ant-switch {
+  background: var(--c-border) !important;
+}
+.ant-switch-checked {
+  background: var(--c-success) !important;
+}
+
+.ant-tabs-tab {
+  font-weight: 400 !important;
+  color: var(--c-text-2) !important;
+}
+.ant-tabs-tab-active {
+  font-weight: 600 !important;
+  color: var(--c-accent) !important;
+}
+.ant-tabs-ink-bar {
+  background: var(--c-accent) !important;
+  height: 2px !important;
+}
+
+.ant-modal-content {
+  border-radius: var(--r-xl) !important;
+  box-shadow: var(--shadow-hover) !important;
+  background: var(--c-card) !important;
+}
+.ant-modal-header {
+  border-bottom: 1px solid var(--c-border-light) !important;
+  background: var(--c-card) !important;
+}
+.ant-modal-title {
+  color: var(--c-text) !important;
+}
+
+.ant-drawer-content {
+  background: var(--c-card) !important;
+}
+.ant-drawer-header {
+  border-bottom: 1px solid var(--c-border) !important;
+  background: var(--c-card) !important;
+}
+.ant-drawer-title {
+  color: var(--c-text) !important;
+}
+
+.ant-segmented {
+  background: var(--c-hover) !important;
+  color: var(--c-text-2) !important;
+}
+.ant-segmented-item-selected {
+  background: var(--c-card) !important;
+  color: var(--c-text) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.ant-dropdown-menu {
+  background: var(--c-card) !important;
+  border: 1px solid var(--c-border) !important;
+  border-radius: var(--r-lg) !important;
+}
+.ant-dropdown-menu-item {
+  color: var(--c-text) !important;
+}
+.ant-dropdown-menu-item:hover {
+  background: var(--c-hover) !important;
+}
+
+.ant-popover-inner {
+  background: var(--c-card) !important;
+  border: 1px solid var(--c-border) !important;
+}
+.ant-popover-title {
+  color: var(--c-text) !important;
+}
+
+.ant-message-notice-content {
+  background: var(--c-card) !important;
+  border: 1px solid var(--c-border) !important;
+  border-radius: var(--r-lg) !important;
+  color: var(--c-text) !important;
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.ant-badge-count {
+  background: var(--c-error) !important;
+}
+
+/* ─── Utility ─── */
+.text-primary {
+  color: var(--c-text);
+}
+.text-secondary {
+  color: var(--c-text-2);
+}
+.text-muted {
+  color: var(--c-text-3);
+}
+
+/* ─── Responsive Layout ─── */
+@media (max-width: 1024px) {
+  .sidebar-desktop {
+    display: none !important;
+  }
+  .layout-content {
+    margin-left: 0 !important;
+  }
+}
+@media (min-width: 1025px) {
+  .sidebar-mobile-overlay {
+    display: none !important;
+  }
+  .sidebar-mobile-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .ant-card-body {
+    padding: 20px !important;
+  }
+  .ant-card-head {
+    padding: 16px 20px !important;
+  }
+  .page-content {
+    padding: 24px !important;
+  }
+}
+
+/* ─── Focus ring (accessibility) ─── */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+/* ─── Selection color ─── */
+::selection {
+  background: var(--c-accent-soft);
+  color: var(--c-text);
+}

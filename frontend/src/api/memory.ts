@@ -1,0 +1,11 @@
+import { api } from "./client";
+import type { Memory } from "./types";
+
+export const memoryApi = {
+  list: () => api.get<{ memories: Memory[] }>("/brain/memory/recent").then((r) => r.memories),
+  store: (data: Partial<Memory>) => api.post<Memory>("/brain/memory/store", data),
+  search: (query: string, levels?: string[]) =>
+    api.post<{ results: Memory[] }>("/brain/memory/query", { query, levels }).then((r) => r.results),
+  query: (query: string) =>
+    api.post<{ memories: Memory[]; entities: any[]; facts: any[] }>("/brain/memory/query", { query }),
+};
