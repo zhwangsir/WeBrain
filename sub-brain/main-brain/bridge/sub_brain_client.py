@@ -1,7 +1,7 @@
 """
 WeBrain Main Brain → Sub Brain Communication Bridge.
 
-Handles all communication from Hermes (main brain) to OpenClaw (sub brain).
+Handles all communication from Main Brain to Sub Brain.
 """
 
 import asyncio
@@ -15,7 +15,7 @@ logger = logging.getLogger("webrain.bridge")
 
 
 class SubBrainClient:
-    """HTTP client for communicating with the sub-brain (OpenClaw execution layer)."""
+    """HTTP client for communicating with the Sub Brain execution layer."""
 
     def __init__(self, base_url: str = "http://sub-brain:9797", timeout: float = 30.0):
         self.base_url = base_url.rstrip("/")

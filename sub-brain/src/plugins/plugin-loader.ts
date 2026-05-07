@@ -1,6 +1,6 @@
 /**
  * Plugin Loader — Manifest 验证 + 动态导入 + SQLite 持久化
- * 对标 OpenClaw 插件标准
+ * Plugin loader and registry
  */
 
 import { subBrainDB } from "../db/sub-brain-db.js";

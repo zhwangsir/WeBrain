@@ -1,6 +1,6 @@
 /**
  * Skills System — Agent 自主技能创建与改进
- * 参考 Hermes 的 skills 系统：Agent 可以从经验中创建技能并自我改进
+ * Skills system: Agents can create skills from experience and self-improve
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "fs";

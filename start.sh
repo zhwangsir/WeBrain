@@ -1,78 +1,92 @@
 #!/bin/bash
-# WeBrain Integration Platform - One-Command Launcher
-# Zero security, full local mode
-
 set -e
 
-echo "======================================"
-echo "  WeBrain Integration Platform"
-echo "  Main Brain (Hermes) + Sub Brain (OpenClaw) + Dokobot"
-echo "======================================"
+echo "========================================"
+echo "     WeBrain 启动脚本"
+echo "========================================"
 echo ""
 
-# Create data directories
-mkdir -p data/{main-brain,sub-brain,dokobot,shared}
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
-# Check if Docker is available
-if command -v docker-compose &> /dev/null; then
-    echo "[+] Starting with Docker Compose..."
-    docker-compose up --build -d
-    echo ""
-    echo "Services started:"
-    echo "  Main Brain:  http://localhost:18790"
-    echo "  Sub Brain:   http://localhost:9797"
-    echo "  Frontend:    http://localhost:8587"
-    echo "  Dokobot:     http://localhost:9222"
-    echo ""
-    echo "Logs: docker-compose logs -f"
-    exit 0
+# Check if we're in the right directory
+if [ ! -f "docker-compose.yml" ]; then
+    echo "Error: Please run this script from the project root directory"
+    exit 1
 fi
 
-# Fallback: start services directly
-echo "[+] Docker not found, starting services directly..."
+echo -e "${BLUE}[1/4]${NC} 检查环境..."
 
-# Start Main Brain (Python)
-echo "[+] Starting Main Brain (Hermes) on port 18790..."
+# Check Python
+if ! command -v python3 &> /dev/null; then
+    echo "Error: Python3 is not installed"
+    exit 1
+fi
+
+# Check Node.js
+if ! command -v node &> /dev/null; then
+    echo "Error: Node.js is not installed"
+    exit 1
+fi
+
+echo -e "${GREEN}✓${NC} 环境检查通过"
+echo ""
+
+echo -e "${BLUE}[2/4]${NC} 启动主脑 (Main Brain)..."
 cd sub-brain/main-brain
-pip install -r requirements.txt -q 2>/dev/null || true
-python -m main_brain --host 127.0.0.1 --port 18790 &
-MAIN_PID=$!
+if [ ! -d "venv" ]; then
+    echo "创建 Python 虚拟环境..."
+    python3 -m venv venv
+fi
+source venv/bin/activate
+pip install -r requirements.txt -q
+nohup python main_brain.py > ../../logs/main-brain.log 2>&1 &
+echo $! > ../../logs/main-brain.pid
 cd ../..
+echo -e "${GREEN}✓${NC} 主脑已启动"
+echo ""
 
-sleep 3
-
-# Start Sub Brain (Node.js)
-echo "[+] Starting Sub Brain (OpenClaw) on port 9797..."
+echo -e "${BLUE}[3/4]${NC} 启动副脑 (Sub Brain)..."
 cd sub-brain
-npm install -g pnpm 2>/dev/null || true
-pnpm install 2>/dev/null || true
-pnpm build 2>/dev/null || true
-pnpm start &
-SUB_PID=$!
+if [ ! -d "node_modules" ]; then
+    echo "安装依赖..."
+    npm install
+fi
+npm run build
+nohup npm start > ../logs/sub-brain.log 2>&1 &
+echo $! > ../logs/sub-brain.pid
 cd ..
+echo -e "${GREEN}✓${NC} 副脑已启动"
+echo ""
 
-sleep 3
-
-# Start Frontend
-echo "[+] Starting Frontend on port 8587..."
+echo -e "${BLUE}[4/4]${NC} 启动前端..."
 cd frontend
-pnpm install 2>/dev/null || true
-pnpm dev &
-FRONT_PID=$!
+if [ ! -d "node_modules" ]; then
+    echo "安装依赖..."
+    npm install
+fi
+npm run dev &
+echo $! > ../logs/frontend.pid
 cd ..
-
+echo -e "${GREEN}✓${NC} 前端已启动"
 echo ""
-echo "======================================"
-echo "  All services started!"
-echo "======================================"
-echo "  Main Brain:  http://localhost:18790"
-echo "  Sub Brain:   http://localhost:9797"
-echo "  Frontend:    http://localhost:8587"
+
+echo "========================================"
+echo -e "${GREEN}所有服务已启动!${NC}"
+echo "========================================"
 echo ""
-echo "  Press Ctrl+C to stop all services"
-echo "======================================"
-
-# Graceful shutdown
-trap 'echo ""; echo "[+] Stopping services..."; kill $MAIN_PID $SUB_PID $FRONT_PID 2>/dev/null; exit 0' INT TERM
-
-wait
+echo -e "${YELLOW}服务地址:${NC}"
+echo "  前端:     http://localhost:8587"
+echo "  副脑 API: http://localhost:3000"
+echo "  主脑 API: http://localhost:18790"
+echo ""
+echo -e "${YELLOW}日志文件:${NC}"
+echo "  主脑:     logs/main-brain.log"
+echo "  副脑:     logs/sub-brain.log"
+echo ""
+echo -e "${YELLOW}停止服务:${NC}"
+echo "  ./stop.sh"
+echo ""

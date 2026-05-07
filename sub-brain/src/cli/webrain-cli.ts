@@ -1,6 +1,6 @@
 /**
  * WeBrain CLI — 命令行界面
- * 参考 Hermes 的 cli.py 和 OpenClaw 的 openclaw CLI
+ * WeBrain CLI interface
  * 提供快速操作入口，无需启动前端
  */
 

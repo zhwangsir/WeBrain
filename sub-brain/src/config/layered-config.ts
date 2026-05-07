@@ -1,6 +1,6 @@
 /**
  * Layered Configuration — Global / Workspace / Agent 三层配置 + 热重载
- * 对标 OpenClaw config 标准
+ * Layered configuration system
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync, watch } from "fs";

@@ -1,6 +1,6 @@
 /**
  * Plugin SDK — Lifecycle Hooks
- * 参考 Hermes 的 plugin lifecycle: pre/post tool call, pre/post llm call
+ * Plugin lifecycle hooks: pre/post tool call, pre/post llm call
  */
 
 export type HookType =

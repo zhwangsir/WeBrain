@@ -1,6 +1,6 @@
 /**
  * Tool Registry — 自注册工具系统
- * 灵感来自 Hermes Agent 的 tools/registry.py
+ * Tool registry for managing available tools
  */
 
 export interface ToolParameter {

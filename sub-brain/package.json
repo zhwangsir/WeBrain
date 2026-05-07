@@ -1,7 +1,7 @@
 {
   "name": "@webrain/sub-brain",
   "version": "1.0.0",
-  "description": "WeBrain Sub Brain - OpenClaw Execution Layer",
+  "description": "WeBrain Sub Brain - Execution Layer",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/main.ts",

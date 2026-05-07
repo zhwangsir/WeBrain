@@ -1,4 +1,4 @@
-"""Unit tests for Main Brain (Hermes) core modules."""
+"""Unit tests for Main Brain core modules."""
 
 import asyncio
 import os

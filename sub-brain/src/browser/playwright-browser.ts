@@ -1,7 +1,7 @@
 /**
  * Playwright Browser Automation
  * 替代 CDP 预留，提供完整的浏览器控制能力
- * 参考 Hermes 的 browser tools (navigate, click, type, scroll, vision, dialog)
+ * Browser automation tools (navigate, click, type, scroll, vision, dialog)
  */
 
 import { chromium, Browser, Page, BrowserContext } from "playwright";

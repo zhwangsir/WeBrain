@@ -23,7 +23,7 @@ const presets: Record<string, Record<string, unknown>> = {
   system_info: {},
   datetime: { format: "iso", timezone: "" },
   calculator: { expression: "2 + 2 * 3" },
-  url_parse: { url: "https://github.com/openclaw/webrain" },
+  url_parse: { url: "https://github.com/zhwangsir/WeBrain" },
   json_parse: { text: '{"name":"WeBrain","version":"1.0.0"}', pretty: true },
 };
 

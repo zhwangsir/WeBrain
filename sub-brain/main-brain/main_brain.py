@@ -1,5 +1,5 @@
 """
-WeBrain Main Brain - Hermes Core Service
+WeBrain Main Brain - Core Service
 
 主脑模块，负责系统的核心智能功能：
 - 记忆管理 (L1-L4 分层记忆)
@@ -382,7 +382,7 @@ def error_response(code: str, message: str, status_code: int = 500, details: Opt
 # ─── FastAPI App ───────────────────────────────────────────────────
 
 app = FastAPI(
-    title="WeBrain Main Brain (Hermes)",
+    title="WeBrain Main Brain",
     description="Core intelligence engine - memory, reasoning, evolution, decision, multi-model routing",
     version="1.5.0",
     lifespan=lifespan,

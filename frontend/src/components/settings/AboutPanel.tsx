@@ -31,12 +31,12 @@ export default function AboutPanel() {
         </Descriptions.Item>
         <Descriptions.Item label="仓库">
           <a
-            href="https://github.com/openclaw/webrain"
+            href="https://github.com/zhwangsir/WeBrain"
             target="_blank"
             rel="noreferrer"
             style={{ color: "var(--c-accent)", fontWeight: 400 }}
           >
-            github.com/openclaw/webrain
+            github.com/zhwangsir/WeBrain
           </a>
         </Descriptions.Item>
       </Descriptions>

@@ -1,6 +1,6 @@
 /**
  * WeBrain Plugin SDK v1 — Core Types
- * Based on OpenClaw concepts, enhanced for dual-brain architecture
+ * Plugin SDK types for dual-brain architecture
  */
 
 export interface PluginManifest {

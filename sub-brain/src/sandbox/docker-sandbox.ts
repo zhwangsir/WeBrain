@@ -1,6 +1,6 @@
 /**
  * Docker Sandbox — 隔离执行环境
- * 参考 OpenClaw 的 Docker sandbox 和 Hermes 的多后端 terminal
+ * Docker sandbox for secure code execution
  */
 
 import { execSync } from "child_process";

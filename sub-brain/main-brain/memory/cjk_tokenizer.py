@@ -1,7 +1,7 @@
 """
 CJK FTS5 Tokenizer Helper
 为 SQLite FTS5 提供中文/日文/韩文 trigram 分词支持
-参考 Hermes 的 FTS5 trigram tokenizer 实现
+FTS5 trigram tokenizer 实现
 """
 
 import re

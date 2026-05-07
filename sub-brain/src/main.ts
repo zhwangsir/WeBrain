@@ -875,9 +875,9 @@ app.get("/skillhub/search", async (request) => {
         ...process.env,
         SKILLHUB_HOME: `${process.env.HOME}/.webrain/skillhub`,
         SKILLHUB_INSTALL_ROOT: `${process.env.HOME}/.webrain/skills`,
-        OPENCLAW_CONFIG_PATH: `${process.env.HOME}/.webrain/webrain.json`,
-        OPENCLAW_WORKSPACE_PATH: `${process.env.HOME}/.webrain/workspace`,
-        OPENCLAW_PLUGIN_DIR: `${process.env.HOME}/.webrain/extensions/skillhub`,
+        WEBRAIN_CONFIG_PATH: `${process.env.HOME}/.webrain/webrain.json`,
+        WEBRAIN_WORKSPACE_PATH: `${process.env.HOME}/.webrain/workspace`,
+        WEBRAIN_PLUGIN_DIR: `${process.env.HOME}/.webrain/extensions/skillhub`,
       },
     });
     return { ok: true, results: output };
@@ -897,9 +897,9 @@ app.post("/skillhub/install", async (request) => {
         ...process.env,
         SKILLHUB_HOME: `${process.env.HOME}/.webrain/skillhub`,
         SKILLHUB_INSTALL_ROOT: `${process.env.HOME}/.webrain/skills`,
-        OPENCLAW_CONFIG_PATH: `${process.env.HOME}/.webrain/webrain.json`,
-        OPENCLAW_WORKSPACE_PATH: `${process.env.HOME}/.webrain/workspace`,
-        OPENCLAW_PLUGIN_DIR: `${process.env.HOME}/.webrain/extensions/skillhub`,
+        WEBRAIN_CONFIG_PATH: `${process.env.HOME}/.webrain/webrain.json`,
+        WEBRAIN_WORKSPACE_PATH: `${process.env.HOME}/.webrain/workspace`,
+        WEBRAIN_PLUGIN_DIR: `${process.env.HOME}/.webrain/extensions/skillhub`,
       },
     });
     return { ok: true, output };
@@ -918,9 +918,9 @@ app.get("/skillhub/list", async () => {
         ...process.env,
         SKILLHUB_HOME: `${process.env.HOME}/.webrain/skillhub`,
         SKILLHUB_INSTALL_ROOT: `${process.env.HOME}/.webrain/skills`,
-        OPENCLAW_CONFIG_PATH: `${process.env.HOME}/.webrain/webrain.json`,
-        OPENCLAW_WORKSPACE_PATH: `${process.env.HOME}/.webrain/workspace`,
-        OPENCLAW_PLUGIN_DIR: `${process.env.HOME}/.webrain/extensions/skillhub`,
+        WEBRAIN_CONFIG_PATH: `${process.env.HOME}/.webrain/webrain.json`,
+        WEBRAIN_WORKSPACE_PATH: `${process.env.HOME}/.webrain/workspace`,
+        WEBRAIN_PLUGIN_DIR: `${process.env.HOME}/.webrain/extensions/skillhub`,
       },
     });
     return { ok: true, skills: output };

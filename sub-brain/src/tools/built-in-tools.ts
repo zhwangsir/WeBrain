@@ -1,6 +1,6 @@
 /**
  * Built-in Tools — 扩展工具集
- * 参考 Hermes 40+ 工具，选取核心实用工具
+ * Core built-in tools for the system
  */
 
 import { execSync, spawn } from "child_process";
@@ -170,7 +170,7 @@ async function pythonExecExecute(params: Record<string, unknown>) {
   return { output: result };
 }
 
-// ─── Code Execution (Hermes-style: write script then run) ───
+// ─── Code Execution (write script then run) ───
 
 const executeCodeDef: ToolDefinition = {
   name: "execute_code",
