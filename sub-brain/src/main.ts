@@ -11,7 +11,8 @@ import staticPlugin from "@fastify/static";
 import { spawn, ChildProcess } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, join, resolve as pathResolve } from "path";
-import { existsSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { homedir } from "os";
 import { ToolExecutor } from "./tools/tool-executor.js";
 import { ChannelManager } from "./channels/channel-manager.js";
 import { PluginLoader } from "./plugins/plugin-loader.js";
@@ -193,6 +194,27 @@ app.get("/health", async () => ({
     hooks: true,
   },
 }));
+
+// ========== File Upload ==========
+const UPLOADS_DIR = join(homedir(), ".webrain", "uploads");
+if (!existsSync(UPLOADS_DIR)) mkdirSync(UPLOADS_DIR, { recursive: true });
+
+app.post("/upload", async (request) => {
+  const { filename, data, type } = request.body as any;
+  if (!filename || !data) return { ok: false, error: "Missing filename or data" };
+  const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const uniqueName = `${Date.now()}_${safeName}`;
+  const filePath = join(UPLOADS_DIR, uniqueName);
+  const buffer = Buffer.from(data, "base64");
+  writeFileSync(filePath, buffer);
+  return { ok: true, url: `/uploads/${uniqueName}`, name: uniqueName, size: buffer.length, type: type || "application/octet-stream" };
+});
+app.get("/uploads/:name", async (request, reply) => {
+  const { name } = request.params as any;
+  const filePath = join(UPLOADS_DIR, name);
+  if (!existsSync(filePath)) return reply.code(404).send({ error: "File not found" });
+  return reply.sendFile(name, UPLOADS_DIR);
+});
 
 // ========== Model Config (Multi-endpoint support) ==========
 app.get("/config/model", async () => state.modelConfig.get());

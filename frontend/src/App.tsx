@@ -19,6 +19,8 @@ const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const ChatPage = lazy(() => import("./pages/ChatPage"));
 const AgentsPage = lazy(() => import("./pages/AgentsPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
+const PluginsPage = lazy(() => import("./pages/PluginsPage"));
+const SkillsPage = lazy(() => import("./pages/SkillsPage"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const WikiPage = lazy(() => import("./pages/WikiPage"));
 const KnowledgeGraphPage = lazy(() => import("./pages/KnowledgeGraphPage"));
@@ -31,6 +33,8 @@ const commands = [
   { label: "Chat", action: (nav: ReturnType<typeof useNavigate>) => nav("/chat") },
   { label: "Agents", action: (nav: ReturnType<typeof useNavigate>) => nav("/agents") },
   { label: "Tools", action: (nav: ReturnType<typeof useNavigate>) => nav("/tools") },
+  { label: "Plugins", action: (nav: ReturnType<typeof useNavigate>) => nav("/plugins") },
+  { label: "Skills", action: (nav: ReturnType<typeof useNavigate>) => nav("/skills") },
   { label: "Memory", action: (nav: ReturnType<typeof useNavigate>) => nav("/memory") },
   { label: "Wiki", action: (nav: ReturnType<typeof useNavigate>) => nav("/wiki") },
   { label: "Knowledge Graph", action: (nav: ReturnType<typeof useNavigate>) => nav("/kg") },
@@ -104,6 +108,8 @@ Cmd/Ctrl + /    Shortcuts help`}
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/agents" element={<AgentsPage />} />
                 <Route path="/tools" element={<ToolsPage />} />
+                <Route path="/plugins" element={<PluginsPage />} />
+                <Route path="/skills" element={<SkillsPage />} />
                 <Route path="/memory" element={<MemoryPage />} />
                 <Route path="/wiki" element={<WikiPage />} />
                 <Route path="/kg" element={<KnowledgeGraphPage />} />

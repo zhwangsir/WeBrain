@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Row, Col, Card, List, Skeleton, Button } from "antd";
-import { TeamOutlined, ToolOutlined, GlobalOutlined, RobotOutlined, ReloadOutlined } from "@ant-design/icons";
+import { TeamOutlined, ToolOutlined, GlobalOutlined, RobotOutlined, ReloadOutlined, SafetyOutlined } from "@ant-design/icons";
 import { useSystemStore } from "../stores/systemStore";
 import { useAgentStore } from "../stores/agentStore";
 import { useToolStore } from "../stores/toolStore";
@@ -29,11 +29,13 @@ export default function DashboardPage() {
   const healthyEndpoints = endpointEntries.filter(([, e]) => e.healthy);
   const totalEndpoints = endpointEntries.length;
 
+  const sandboxAvailable = modules.sandbox as boolean;
   const statCards = [
     { title: "智能体", value: agents.length, icon: <TeamOutlined /> },
     { title: "工具", value: tools.length, icon: <ToolOutlined /> },
     { title: "通道", value: channels.length, icon: <GlobalOutlined /> },
     { title: "模型端点", value: `${healthyEndpoints.length}/${totalEndpoints}`, icon: <RobotOutlined />, accent: true },
+    { title: "沙箱", value: sandboxAvailable ? "就绪" : "未就绪", icon: <SafetyOutlined />, accent: sandboxAvailable },
   ];
 
   const handleRefresh = () => {

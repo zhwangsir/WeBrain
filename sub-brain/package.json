@@ -1,6 +1,6 @@
 {
   "name": "@webrain/sub-brain",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "WeBrain Sub Brain - Execution Layer",
   "type": "module",
   "scripts": {

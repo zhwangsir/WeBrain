@@ -955,10 +955,15 @@ async def chat_session_delete(session_id: str):
 async def chat_stream_endpoint(message: str, session_id: str = "default", agent_id: str = "agent-default", tools_enabled: bool = True):
     """Streaming chat endpoint — Server-Sent Events."""
     async def event_generator():
-        context = {"tools_enabled": tools_enabled}
-        async for chunk in _state["chat"].chat_stream(message, session_id, agent_id, context):
-            yield f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n"
-        yield "data: [DONE]\n\n"
+        try:
+            context = {"tools_enabled": tools_enabled}
+            async for chunk in _state["chat"].chat_stream(message, session_id, agent_id, context):
+                yield f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n"
+        except Exception as e:
+            logger.error(f"Stream error: {e}")
+            yield f"data: {json.dumps({'type': 'error', 'data': str(e)}, ensure_ascii=False)}\n\n"
+        finally:
+            yield "data: [DONE]\n\n"
 
     return StreamingResponse(
         event_generator(),

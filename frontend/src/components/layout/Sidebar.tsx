@@ -10,6 +10,8 @@ import {
   SettingOutlined,
   GlobalOutlined,
   HistoryOutlined,
+  AppstoreOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
 
 const menuItems = [
@@ -17,6 +19,8 @@ const menuItems = [
   { key: "/chat", icon: <MessageOutlined />, label: "对话" },
   { key: "/agents", icon: <TeamOutlined />, label: "智能体" },
   { key: "/tools", icon: <ToolOutlined />, label: "工具" },
+  { key: "/plugins", icon: <AppstoreOutlined />, label: "插件" },
+  { key: "/skills", icon: <ThunderboltOutlined />, label: "技能" },
   { key: "/memory", icon: <HistoryOutlined />, label: "记忆" },
   { key: "/wiki", icon: <BookOutlined />, label: "知识库" },
   { key: "/kg", icon: <ApartmentOutlined />, label: "知识图谱" },
@@ -180,7 +184,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           letterSpacing: "0.02em",
         }}
       >
-        v1.0.0
+        v1.0.1
       </div>
     </aside>
   );

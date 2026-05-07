@@ -10,6 +10,7 @@ import ChatSidebar from "../components/chat/ChatSidebar";
 import ChatHeader from "../components/chat/ChatHeader";
 import MessageList from "../components/chat/MessageList";
 import ChatInput from "../components/chat/ChatInput";
+import { uploadApi } from "../api/upload";
 
 export default function ChatPage() {
   const isDark = useIsDark();
@@ -184,16 +185,14 @@ export default function ChatPage() {
     setDragOver(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     const files = Array.from(e.dataTransfer.files);
     if (files.length === 0) return;
 
-    // For now, read text files and append content to input
-    // TODO: upload binary files to server
-    files.forEach((file) => {
-      if (file.type.startsWith("text/") || file.name.endsWith(".md") || file.name.endsWith(".json")) {
+    for (const file of files) {
+      if (file.type.startsWith("text/") || file.name.endsWith(".md") || file.name.endsWith(".json") || file.name.endsWith(".txt")) {
         const reader = new FileReader();
         reader.onload = (ev) => {
           const content = ev.target?.result as string;
@@ -201,9 +200,21 @@ export default function ChatPage() {
         };
         reader.readAsText(file);
       } else {
-        message.info(`文件 "${file.name}" 已收到（${(file.size / 1024).toFixed(1)} KB），暂不支持此格式解析`);
+        // Upload binary files to server
+        message.loading({ content: `Uploading "${file.name}"...`, key: `upload-${file.name}` });
+        try {
+          const result = await uploadApi.upload(file);
+          if (result.ok && result.url) {
+            message.success({ content: `"${file.name}" uploaded (${(result.size! / 1024).toFixed(1)} KB)`, key: `upload-${file.name}` });
+            setInputValue((prev) => prev + (prev ? "\n\n" : "") + `[📎 ${file.name}](${result.url})`);
+          } else {
+            message.error({ content: `Upload failed: ${result.error}`, key: `upload-${file.name}` });
+          }
+        } catch (err: any) {
+          message.error({ content: `Upload error: ${err.message}`, key: `upload-${file.name}` });
+        }
       }
-    });
+    }
   };
 
   const activeSession = sessions.find((s) => s.id === currentSessionId);
