@@ -1,31 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Button, Input, Popconfirm, Empty, Tooltip, message, Select } from "antd";
-import {
-  SendOutlined,
-  StopOutlined,
-  PlusOutlined,
-  DeleteOutlined,
-  ClearOutlined,
-  ToolOutlined,
-  UserOutlined,
-  RobotOutlined,
-  MessageOutlined,
-  ClockCircleOutlined,
-  CopyOutlined,
-  CheckOutlined,
-  DownOutlined,
-  AudioOutlined,
-  AudioMutedOutlined,
-  InboxOutlined,
-  SearchOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
+import { Input, message } from "antd";
+import { InboxOutlined, SearchOutlined } from "@ant-design/icons";
 import { useChatStore } from "../stores/chatStore";
 import { useSystemStore } from "../stores/systemStore";
 import { useConfigStore } from "../stores/configStore";
-import { configApi } from "../api/config";
 import { useIsDark } from "../hooks/useTheme";
-import MarkdownRenderer from "../components/common/MarkdownRenderer";
+import ChatSidebar from "../components/chat/ChatSidebar";
+import ChatHeader from "../components/chat/ChatHeader";
+import MessageList from "../components/chat/MessageList";
+import ChatInput from "../components/chat/ChatInput";
 
 export default function ChatPage() {
   const isDark = useIsDark();
@@ -45,19 +28,13 @@ export default function ChatPage() {
     init,
   } = useChatStore();
 
-  const { modelHealth } = useSystemStore();
-  const { modelConfig } = useConfigStore();
-
   const [inputValue, setInputValue] = useState("");
-  const [hoveredSession, setHoveredSession] = useState<string | null>(null);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [msgSearch, setMsgSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<any>(null);
   const recognitionRef = useRef<any>(null);
   const prevMessagesLengthRef = useRef(0);
   const scrollRafRef = useRef<number>(0);
@@ -137,7 +114,6 @@ export default function ChatPage() {
       container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
     }
     setShowScrollBtn(false);
-
   };
 
   const handleSend = useCallback(() => {
@@ -146,13 +122,6 @@ export default function ChatPage() {
     setInputValue("");
     sendStream(text);
   }, [inputValue, streaming, sendStream]);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
 
   // Voice input
   const toggleVoiceInput = useCallback(() => {
@@ -286,146 +255,20 @@ export default function ChatPage() {
         fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
       }}
     >
-      {/* ═══ Sidebar ═══ */}
-      <div
-        style={{
-          width: 280,
-          flexShrink: 0,
-          display: "flex",
-          flexDirection: "column",
-          borderRight: `1px solid ${C.border}`,
-          background: C.cardBg,
+      <ChatSidebar
+        sessions={sessions}
+        currentSessionId={currentSessionId}
+        onSelectSession={(id) => {
+          loadHistory(id);
+          setInputValue("");
         }}
-      >
-        <div style={{ padding: "20px 16px 16px", borderBottom: `1px solid ${C.border}` }}>
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: C.text,
-              letterSpacing: "0.5px",
-              textTransform: "uppercase",
-              marginBottom: 12,
-            }}
-          >
-            对话历史
-          </div>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            block
-            onClick={() => {
-              newSession();
-              setInputValue("");
-            }}
-            style={{
-              height: 36,
-              borderRadius: 6,
-              background: C.accent,
-              border: "none",
-              fontWeight: 500,
-              fontSize: 13,
-              color: C.textInv,
-            }}
-          >
-            新对话
-          </Button>
-        </div>
+        onNewSession={() => {
+          newSession();
+          setInputValue("");
+        }}
+        onDeleteSession={(id) => deleteSession(id)}
+      />
 
-        <div style={{ flex: 1, overflow: "auto", padding: "8px 0" }}>
-          {sessions.length === 0 ? (
-            <div style={{ padding: 40, textAlign: "center" }}>
-              <MessageOutlined style={{ fontSize: 24, color: C.text3 }} />
-              <p style={{ color: C.text3, fontSize: 13, marginTop: 12 }}>暂无历史对话</p>
-            </div>
-          ) : (
-            sessions.map((s) => {
-              const isActive = s.id === currentSessionId;
-              return (
-                <div
-                  key={s.id}
-                  onMouseEnter={() => setHoveredSession(s.id)}
-                  onMouseLeave={() => setHoveredSession(null)}
-                  onClick={() => {
-                    loadHistory(s.id);
-                    setInputValue("");
-                  }}
-                  style={{
-                    margin: "0 8px 2px",
-                    padding: "10px 12px",
-                    borderRadius: 6,
-                    cursor: "pointer",
-                    background: isActive ? C.accent : "transparent",
-                    transition: "background 120ms ease",
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div
-                      style={{
-                        fontSize: 13,
-                        fontWeight: isActive ? 500 : 400,
-                        color: isActive ? C.textInv : C.text,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {s.title || "新对话"}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 11,
-                        color: isActive ? (isDark ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)") : C.text3,
-                        marginTop: 2,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 4,
-                      }}
-                    >
-                      <ClockCircleOutlined style={{ fontSize: 10 }} />
-                      {formatTime(s.updatedAt)}
-                    </div>
-                  </div>
-                  {(hoveredSession === s.id || isActive) && (
-                    <Popconfirm
-                      title="删除会话"
-                      description="确定要删除这条对话记录吗？"
-                      onConfirm={(e) => {
-                        e?.stopPropagation();
-                        deleteSession(s.id);
-                      }}
-                      onCancel={(e) => e?.stopPropagation()}
-                      okText="删除"
-                      cancelText="取消"
-                      okButtonProps={{ danger: true, size: "small" }}
-                    >
-                      <Button
-                        type="text"
-                        size="small"
-                        icon={<DeleteOutlined />}
-                        onClick={(e) => e.stopPropagation()}
-                        style={{
-                          color: isActive ? (isDark ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.6)") : C.text3,
-                          padding: "0 4px",
-                          minWidth: 24,
-                          height: 24,
-                        }}
-                      />
-                    </Popconfirm>
-                  )}
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div>
-
-      {/* ═══ Chat Area ═══ */}
       <div
         style={{
           flex: 1,
@@ -465,148 +308,17 @@ export default function ChatPage() {
           </div>
         )}
 
-        {/* Chat Header */}
-        <div
-          style={{
-            height: 52,
-            borderBottom: `1px solid ${C.border}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 24px",
-            flexShrink: 0,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-            {streaming && (
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: C.success,
-                  display: "inline-block",
-                  animation: "chatPulse 1.5s ease-in-out infinite",
-                  flexShrink: 0,
-                }}
-              />
-            )}
-            <span
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: C.text,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {activeSession?.title || "新对话"}
-            </span>
-            {streaming && <span style={{ fontSize: 12, color: C.success, fontWeight: 400 }}>生成中…</span>}
-          </div>
-
-          {/* Model selector */}
-          {modelHealth && modelHealth.endpoints && Object.keys(modelHealth.endpoints).length > 0 && (
-            <div style={{ flex: 1, display: "flex", justifyContent: "center", minWidth: 0, padding: "0 16px" }}>
-              <Select
-                size="small"
-                variant="borderless"
-                popupMatchSelectWidth={false}
-                style={{ minWidth: 140, color: C.text2 }}
-                value={modelConfig?.modelId || ""}
-                onSelect={async (value: string) => {
-                  const ep = Object.entries(modelHealth.endpoints as Record<string, any>).find(
-                    ([, v]) => v.model_id === value
-                  );
-                  if (ep) {
-                    const [, info] = ep;
-                    try {
-                      await configApi.setModel({ baseUrl: info.base_url, modelId: info.model_id });
-                      message.success(`已切换模型: ${info.model_id}`);
-                      useConfigStore.getState().fetchModelConfig?.();
-                    } catch (e: any) {
-                      message.error(e.message || "切换模型失败");
-                    }
-                  }
-                }}
-                options={Object.entries(modelHealth.endpoints as Record<string, any>).map(([name, info]) => ({
-                  label: (
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span
-                        style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: "50%",
-                          background: info.healthy ? C.success : C.error,
-                          display: "inline-block",
-                        }}
-                      />
-                      <span>{info.model_id}</span>
-                      <span style={{ fontSize: 11, color: C.text3, marginLeft: 4 }}>{name}</span>
-                    </div>
-                  ),
-                  value: info.model_id,
-                }))}
-              />
-            </div>
-          )}
-
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-            {messages.length > 0 && (
-              <>
-                <Tooltip title="搜索消息">
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<SearchOutlined />}
-                    onClick={() => setShowSearch((v) => !v)}
-                    style={{ color: showSearch ? C.accent : C.text3, height: 28, padding: "0 8px" }}
-                  />
-                </Tooltip>
-                <Tooltip title="导出对话">
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<FileTextOutlined />}
-                    onClick={handleExport}
-                    style={{ color: C.text3, height: 28, padding: "0 8px" }}
-                  />
-                </Tooltip>
-              </>
-            )}
-            <Tooltip title={toolEnabled ? "工具调用已开启" : "工具调用已关闭"}>
-              <Button
-                type="text"
-                size="small"
-                icon={<ToolOutlined />}
-                onClick={() => setToolEnabled(!toolEnabled)}
-                style={{ color: toolEnabled ? C.success : C.text3, fontSize: 13, height: 28, padding: "0 8px" }}
-              >
-                {toolEnabled ? "ON" : "OFF"}
-              </Button>
-            </Tooltip>
-            {messages.length > 0 && (
-              <Popconfirm
-                title="清空对话"
-                description="清空当前对话内容？"
-                onConfirm={() => clearCurrentChat()}
-                okText="清空"
-                cancelText="取消"
-                okButtonProps={{ danger: true, size: "small" }}
-              >
-                <Button
-                  type="text"
-                  size="small"
-                  icon={<ClearOutlined />}
-                  style={{ color: C.text3, height: 28, padding: "0 8px" }}
-                >
-                  清空
-                </Button>
-              </Popconfirm>
-            )}
-          </div>
-        </div>
+        <ChatHeader
+          title={activeSession?.title || "新对话"}
+          streaming={streaming}
+          toolEnabled={toolEnabled}
+          onToggleTool={() => setToolEnabled(!toolEnabled)}
+          showSearch={showSearch}
+          onToggleSearch={() => setShowSearch((v) => !v)}
+          onExport={handleExport}
+          onClear={() => clearCurrentChat()}
+          messagesCount={messages.length}
+        />
 
         {/* Message search bar */}
         {showSearch && (
@@ -628,185 +340,26 @@ export default function ChatPage() {
           </div>
         )}
 
-        {/* Messages */}
-        <div
-          ref={messagesContainerRef}
+        <MessageList
+          messages={filteredMessages}
+          highlight={msgSearch}
+          streaming={streaming}
+          showScrollBtn={showScrollBtn}
           onScroll={handleScroll}
-          className="chat-scroll-container"
-          style={{ flex: 1, overflow: "auto", padding: "24px 32px", display: "flex", flexDirection: "column", gap: 20, minHeight: 0 }}
-        >
-          {filteredMessages.length === 0 ? (
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={
-                  <span style={{ color: C.text3, fontSize: 14, fontWeight: 300 }}>
-                    输入消息开始对话，或拖拽文件到此处
-                  </span>
-                }
-              />
-            </div>
-          ) : (
-            filteredMessages.map((msg) => (
-              <MessageBubble key={msg.id} msg={msg} isDark={isDark} highlight={msgSearch} />
-            ))
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Scroll-to-bottom button */}
-        <Button
-          type="primary"
-          shape="circle"
-          size="small"
-          icon={<DownOutlined />}
-          onClick={scrollToBottom}
-          className="chat-scroll-btn"
-          style={{
-            position: "absolute",
-            right: 32,
-            bottom: 120,
-            zIndex: 10,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-            background: C.accent,
-            borderColor: C.accent,
-            color: C.textInv,
-            opacity: showScrollBtn ? 1 : 0,
-            transform: showScrollBtn ? "translateY(0)" : "translateY(8px)",
-            pointerEvents: showScrollBtn ? "auto" : "none",
-            transition: "opacity 250ms ease, transform 250ms ease",
-          }}
+          onScrollToBottom={scrollToBottom}
+          containerRef={messagesContainerRef}
         />
 
-        {/* Input */}
-        <div
-          style={{ borderTop: `1px solid ${C.border}`, padding: "16px 32px 24px", flexShrink: 0, background: C.pageBg }}
-        >
-          <div style={{ display: "flex", alignItems: "flex-end", gap: 10, maxWidth: 800, margin: "0 auto" }}>
-            {/* Voice input button */}
-            <Tooltip title={isRecording ? "停止录音" : "语音输入"}>
-              <Button
-                type="text"
-                onClick={toggleVoiceInput}
-                style={{
-                  height: 44,
-                  width: 36,
-                  borderRadius: 8,
-                  color: isRecording ? C.error : C.text3,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 0,
-                  flexShrink: 0,
-                  animation: isRecording ? "pulse 1.5s infinite" : undefined,
-                }}
-                icon={
-                  isRecording ? (
-                    <AudioOutlined style={{ fontSize: 16 }} />
-                  ) : (
-                    <AudioMutedOutlined style={{ fontSize: 16 }} />
-                  )
-                }
-              />
-            </Tooltip>
-
-            <div style={{ flex: 1, position: "relative" }}>
-              <Input.TextArea
-                ref={textareaRef}
-                placeholder="输入消息…"
-                autoSize={{ minRows: 1, maxRows: 6 }}
-                disabled={streaming}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                style={{
-                  borderRadius: 8,
-                  padding: "12px 16px",
-                  paddingRight: 44,
-                  background: C.hoverBg,
-                  border: `1px solid ${C.border}`,
-                  color: C.text,
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                  resize: "none",
-                  transition: "border-color 150ms ease, background 150ms ease",
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = C.accent;
-                  e.target.style.background = C.pageBg;
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = C.border;
-                  e.target.style.background = C.hoverBg;
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  right: 8,
-                  bottom: 8,
-                  fontSize: 11,
-                  color: C.text3,
-                  pointerEvents: "none",
-                }}
-              >
-                ↵
-              </div>
-            </div>
-            {streaming ? (
-              <Button
-                onClick={stopStream}
-                style={{
-                  height: 44,
-                  width: 44,
-                  borderRadius: 8,
-                  background: C.error,
-                  border: "none",
-                  color: "#ffffff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 0,
-                  flexShrink: 0,
-                }}
-                icon={<StopOutlined style={{ fontSize: 16 }} />}
-              />
-            ) : (
-              <Button
-                type="primary"
-                style={{
-                  height: 44,
-                  width: 44,
-                  borderRadius: 8,
-                  background: inputValue.trim() ? C.accent : C.hoverBg,
-                  border: inputValue.trim() ? "none" : `1px solid ${C.border}`,
-                  color: inputValue.trim() ? C.textInv : C.text3,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 0,
-                  flexShrink: 0,
-                  transition: "background 150ms ease, color 150ms ease",
-                }}
-                icon={<SendOutlined style={{ fontSize: 16 }} />}
-                onClick={handleSend}
-                disabled={!inputValue.trim()}
-              />
-            )}
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: 6,
-              fontSize: 11,
-              color: C.text3,
-              maxWidth: 800,
-              margin: "6px auto 0",
-            }}
-          >
-            Shift + Enter 换行 · Enter 发送 · 拖拽文件上传
-          </div>
-        </div>
+        <ChatInput
+          value={inputValue}
+          onChange={setInputValue}
+          onSend={handleSend}
+          onStop={stopStream}
+          streaming={streaming}
+          isRecording={isRecording}
+          onToggleVoice={toggleVoiceInput}
+          dragOver={dragOver}
+        />
       </div>
 
       <style>{`
@@ -854,236 +407,4 @@ export default function ChatPage() {
       `}</style>
     </div>
   );
-}
-
-/* ─── Highlighted Text ─── */
-function HighlightedText({ text, highlight }: { text: string; highlight: string }) {
-  if (!highlight.trim()) return <>{text}</>;
-  const parts = text.split(new RegExp(`(${highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"));
-  return (
-    <>
-      {parts.map((part, i) =>
-        part.toLowerCase() === highlight.toLowerCase() ? (
-          <mark
-            key={i}
-            style={{
-              background: "rgba(22, 163, 74, 0.25)",
-              color: "inherit",
-              borderRadius: 3,
-              padding: "0 2px",
-            }}
-          >
-            {part}
-          </mark>
-        ) : (
-          <span key={i}>{part}</span>
-        )
-      )}
-    </>
-  );
-}
-
-/* ─── Message Bubble ─── */
-function MessageBubble({ msg, isDark, highlight }: { msg: any; isDark: boolean; highlight?: string }) {
-  const isUser = msg.role === "user";
-  const isSystem = msg.role === "system";
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(msg.content);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      message.error("复制失败");
-    }
-  };
-
-  const bubbleBg = isUser
-    ? isDark
-      ? "#f5f5f5"
-      : "#000000"
-    : isSystem
-      ? isDark
-        ? "#27272a"
-        : "#f0f0f0"
-      : isDark
-        ? "#1f1f1f"
-        : "#f5f5f5";
-
-  const bubbleText = isUser ? (isDark ? "#0a0a0a" : "#ffffff") : isDark ? "#f5f5f5" : "#000000";
-
-  const bubbleBorder = isUser
-    ? "none"
-    : isSystem
-      ? isDark
-        ? "1px dashed #3f3f46"
-        : "1px dashed #cccccc"
-      : isDark
-        ? "1px solid #27272a"
-        : "1px solid #e5e5e5";
-
-  const avatarBg = isUser ? (isDark ? "#f5f5f5" : "#000000") : isSystem ? "#666666" : isDark ? "#27272a" : "#f5f5f5";
-
-  const avatarIconColor = isUser
-    ? isDark
-      ? "#0a0a0a"
-      : "#ffffff"
-    : isSystem
-      ? "#ffffff"
-      : isDark
-        ? "#a1a1aa"
-        : "#666666";
-
-  const timeStr = msg.timestamp
-    ? new Date(msg.timestamp).toLocaleString("zh-CN", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : "";
-
-  return (
-    <div style={{ display: "flex", gap: 12, flexDirection: isUser ? "row-reverse" : "row", alignItems: "flex-start", minWidth: 0, maxWidth: "100%" }}>
-      {/* Avatar */}
-      <div
-        style={{
-          width: 28,
-          height: 28,
-          borderRadius: "50%",
-          background: avatarBg,
-          border: isUser ? "none" : isDark ? "1px solid #27272a" : "1px solid #e5e5e5",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-          marginTop: 2,
-        }}
-      >
-        {isUser ? (
-          <UserOutlined style={{ fontSize: 12, color: avatarIconColor }} />
-        ) : isSystem ? (
-          <RobotOutlined style={{ fontSize: 12, color: avatarIconColor }} />
-        ) : (
-          <RobotOutlined style={{ fontSize: 12, color: avatarIconColor }} />
-        )}
-      </div>
-
-      {/* Bubble */}
-      <div style={{ maxWidth: "min(720px, 85%)", display: "flex", flexDirection: "column", gap: 4 }}>
-        <div
-          style={{
-            padding: "12px 16px",
-            borderRadius: isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-            background: bubbleBg,
-            border: bubbleBorder,
-            color: bubbleText,
-            fontSize: 14,
-            lineHeight: 1.7,
-            wordBreak: "break-word",
-            position: "relative",
-          }}
-        >
-          {/* User messages: plain text with optional highlight; Assistant: Markdown */}
-          {isUser ? (
-            <div style={{ whiteSpace: "pre-wrap" }}>
-              {highlight ? <HighlightedText text={msg.content} highlight={highlight} /> : msg.content}
-            </div>
-          ) : (
-            <div className="chat-markdown">
-              <MarkdownRenderer content={msg.content || ""} />
-            </div>
-          )}
-
-          {msg.isStreaming && (
-            <span
-              style={{
-                display: "inline-block",
-                width: 2,
-                height: 16,
-                background: "var(--c-success)",
-                marginLeft: 4,
-                verticalAlign: "middle",
-                animation: "chatPulse 1s infinite",
-              }}
-            />
-          )}
-
-          {/* Tool calls */}
-          {msg.toolCalls && msg.toolCalls.length > 0 && (
-            <div style={{ marginTop: 10, display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {msg.toolCalls.map((tc: any, i: number) => (
-                <span
-                  key={i}
-                  style={{
-                    fontSize: 11,
-                    color: isDark ? "#a1a1aa" : "#666666",
-                    background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
-                    border: isDark ? "1px solid #27272a" : "1px solid #e5e5e5",
-                    borderRadius: 4,
-                    padding: "2px 8px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 4,
-                  }}
-                >
-                  <ToolOutlined style={{ fontSize: 10 }} />
-                  {tc.function?.name}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Meta row: timestamp + copy */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            justifyContent: isUser ? "flex-end" : "flex-start",
-            padding: "0 4px",
-          }}
-        >
-          {timeStr && (
-            <span style={{ fontSize: 11, color: isDark ? "#52525b" : "#a3a3a3", fontWeight: 300 }}>{timeStr}</span>
-          )}
-          {!msg.isStreaming && msg.content && (
-            <Tooltip title={copied ? "已复制" : "复制"}>
-              <button
-                onClick={handleCopy}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  color: copied ? "var(--c-success)" : isDark ? "#52525b" : "#a3a3a3",
-                  fontSize: 12,
-                  transition: "color 150ms",
-                }}
-              >
-                {copied ? <CheckOutlined /> : <CopyOutlined />}
-              </button>
-            </Tooltip>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Time formatter ─── */
-function formatTime(iso: string): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const now = new Date();
-  const diff = now.getTime() - d.getTime();
-  const days = Math.floor(diff / 86400000);
-  if (days === 0) return d.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
-  if (days === 1) return "昨天";
-  if (days < 7) return `${days}天前`;
-  return d.toLocaleDateString("zh-CN", { month: "short", day: "numeric" });
 }

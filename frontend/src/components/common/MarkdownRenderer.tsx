@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -126,145 +126,149 @@ function CodeBlock({
 export default function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
   const isDark = useIsDark();
 
+  const components = useMemo(
+    () => ({
+      code: CodeBlock,
+      p({ children }: { children?: React.ReactNode }) {
+        return <p style={{ margin: "0.5em 0", lineHeight: 1.7 }}>{children}</p>;
+      },
+      ul({ children }: { children?: React.ReactNode }) {
+        return <ul style={{ margin: "0.5em 0", paddingLeft: 20 }}>{children}</ul>;
+      },
+      ol({ children }: { children?: React.ReactNode }) {
+        return <ol style={{ margin: "0.5em 0", paddingLeft: 20 }}>{children}</ol>;
+      },
+      li({ children }: { children?: React.ReactNode }) {
+        return <li style={{ margin: "0.25em 0" }}>{children}</li>;
+      },
+      h1({ children }: { children?: React.ReactNode }) {
+        return (
+          <h1 style={{ fontSize: 20, fontWeight: 600, margin: "0.8em 0 0.4em", lineHeight: 1.3 }}>{children}</h1>
+        );
+      },
+      h2({ children }: { children?: React.ReactNode }) {
+        return (
+          <h2 style={{ fontSize: 17, fontWeight: 600, margin: "0.7em 0 0.35em", lineHeight: 1.3 }}>{children}</h2>
+        );
+      },
+      h3({ children }: { children?: React.ReactNode }) {
+        return (
+          <h3 style={{ fontSize: 15, fontWeight: 600, margin: "0.6em 0 0.3em", lineHeight: 1.3 }}>{children}</h3>
+        );
+      },
+      blockquote({ children }: { children?: React.ReactNode }) {
+        return (
+          <blockquote
+            style={{
+              margin: "0.5em 0",
+              padding: "8px 16px",
+              borderLeft: `3px solid ${isDark ? "#3f3f46" : "#d4d4d8"}`,
+              background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
+              borderRadius: "0 6px 6px 0",
+              color: isDark ? "#a1a1aa" : "#666666",
+            }}
+          >
+            {children}
+          </blockquote>
+        );
+      },
+      table({ children }: { children?: React.ReactNode }) {
+        return (
+          <div style={{ overflowX: "auto", margin: "0.5em 0" }}>
+            <table
+              style={{
+                borderCollapse: "collapse",
+                width: "100%",
+                fontSize: 13,
+                border: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
+                borderRadius: 6,
+              }}
+            >
+              {children}
+            </table>
+          </div>
+        );
+      },
+      thead({ children }: { children?: React.ReactNode }) {
+        return <thead style={{ background: isDark ? "#1f1f1f" : "#f5f5f5" }}>{children}</thead>;
+      },
+      th({ children }: { children?: React.ReactNode }) {
+        return (
+          <th
+            style={{
+              padding: "8px 12px",
+              textAlign: "left",
+              fontWeight: 600,
+              fontSize: 12,
+              borderBottom: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
+              color: isDark ? "#a1a1aa" : "#666666",
+            }}
+          >
+            {children}
+          </th>
+        );
+      },
+      td({ children }: { children?: React.ReactNode }) {
+        return (
+          <td
+            style={{
+              padding: "8px 12px",
+              borderBottom: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
+            }}
+          >
+            {children}
+          </td>
+        );
+      },
+      hr() {
+        return (
+          <hr
+            style={{
+              border: "none",
+              borderTop: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
+              margin: "1em 0",
+            }}
+          />
+        );
+      },
+      a({ children, href }: { children?: React.ReactNode; href?: string }) {
+        return (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "var(--c-accent)",
+              textDecoration: "underline",
+              textUnderlineOffset: 2,
+            }}
+          >
+            {children}
+          </a>
+        );
+      },
+      img({ src, alt }: { src?: string; alt?: string }) {
+        return (
+          <img
+            src={src}
+            alt={alt}
+            style={{
+              maxWidth: "100%",
+              borderRadius: 8,
+              margin: "0.5em 0",
+            }}
+          />
+        );
+      },
+    }),
+    [isDark]
+  );
+
+  const remarkPlugins = useMemo(() => [remarkGfm], []);
+
   return (
     <div className={className}>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          code: CodeBlock,
-          p({ children }) {
-            return <p style={{ margin: "0.5em 0", lineHeight: 1.7 }}>{children}</p>;
-          },
-          ul({ children }) {
-            return <ul style={{ margin: "0.5em 0", paddingLeft: 20 }}>{children}</ul>;
-          },
-          ol({ children }) {
-            return <ol style={{ margin: "0.5em 0", paddingLeft: 20 }}>{children}</ol>;
-          },
-          li({ children }) {
-            return <li style={{ margin: "0.25em 0" }}>{children}</li>;
-          },
-          h1({ children }) {
-            return (
-              <h1 style={{ fontSize: 20, fontWeight: 600, margin: "0.8em 0 0.4em", lineHeight: 1.3 }}>{children}</h1>
-            );
-          },
-          h2({ children }) {
-            return (
-              <h2 style={{ fontSize: 17, fontWeight: 600, margin: "0.7em 0 0.35em", lineHeight: 1.3 }}>{children}</h2>
-            );
-          },
-          h3({ children }) {
-            return (
-              <h3 style={{ fontSize: 15, fontWeight: 600, margin: "0.6em 0 0.3em", lineHeight: 1.3 }}>{children}</h3>
-            );
-          },
-          blockquote({ children }) {
-            return (
-              <blockquote
-                style={{
-                  margin: "0.5em 0",
-                  padding: "8px 16px",
-                  borderLeft: `3px solid ${isDark ? "#3f3f46" : "#d4d4d8"}`,
-                  background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)",
-                  borderRadius: "0 6px 6px 0",
-                  color: isDark ? "#a1a1aa" : "#666666",
-                }}
-              >
-                {children}
-              </blockquote>
-            );
-          },
-          table({ children }) {
-            return (
-              <div style={{ overflowX: "auto", margin: "0.5em 0" }}>
-                <table
-                  style={{
-                    borderCollapse: "collapse",
-                    width: "100%",
-                    fontSize: 13,
-                    border: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
-                    borderRadius: 6,
-                  }}
-                >
-                  {children}
-                </table>
-              </div>
-            );
-          },
-          thead({ children }) {
-            return <thead style={{ background: isDark ? "#1f1f1f" : "#f5f5f5" }}>{children}</thead>;
-          },
-          th({ children }) {
-            return (
-              <th
-                style={{
-                  padding: "8px 12px",
-                  textAlign: "left",
-                  fontWeight: 600,
-                  fontSize: 12,
-                  borderBottom: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
-                  color: isDark ? "#a1a1aa" : "#666666",
-                }}
-              >
-                {children}
-              </th>
-            );
-          },
-          td({ children }) {
-            return (
-              <td
-                style={{
-                  padding: "8px 12px",
-                  borderBottom: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
-                }}
-              >
-                {children}
-              </td>
-            );
-          },
-          hr() {
-            return (
-              <hr
-                style={{
-                  border: "none",
-                  borderTop: `1px solid ${isDark ? "#27272a" : "#e5e5e5"}`,
-                  margin: "1em 0",
-                }}
-              />
-            );
-          },
-          a({ children, href }) {
-            return (
-              <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: "var(--c-accent)",
-                  textDecoration: "underline",
-                  textUnderlineOffset: 2,
-                }}
-              >
-                {children}
-              </a>
-            );
-          },
-          img({ src, alt }) {
-            return (
-              <img
-                src={src}
-                alt={alt}
-                style={{
-                  maxWidth: "100%",
-                  borderRadius: 8,
-                  margin: "0.5em 0",
-                }}
-              />
-            );
-          },
-        }}
-      >
+      <ReactMarkdown remarkPlugins={remarkPlugins} components={components}>
         {content}
       </ReactMarkdown>
     </div>

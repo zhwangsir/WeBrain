@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { message } from "antd";
 import { channelsApi } from "../api/channels";
-import type { ChannelInfo } from "../api/channels";
+import type { ChannelInfo } from "../api/types";
 
 interface ChannelState {
   channels: ChannelInfo[];

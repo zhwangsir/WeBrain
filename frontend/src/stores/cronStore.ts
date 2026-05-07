@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { message } from "antd";
 import { cronApi } from "../api/cron";
-import type { CronJob, CronJobData } from "../api/cron";
+import type { CronJob, CronJobData } from "../api/types";
 
 interface CronState {
   jobs: CronJob[];

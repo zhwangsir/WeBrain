@@ -1,10 +1,11 @@
 import { api } from "./client";
+import type { Tool } from "./types";
 
 export const toolsApi = {
   list: () =>
     api
-      .get<{ tools: Array<{ name: string; description: string; enabled: boolean; category: string }> }>("/tools/list")
-      .then((r) => r.tools.map((t) => ({ ...t, id: t.name }))),
+      .get<{ tools: Omit<Tool, "id">[] }>("/tools/list")
+      .then((r) => r.tools.map((t) => ({ ...t, id: t.name } as Tool))),
   execute: (tool: string, params: unknown) =>
     api.post<{ ok: boolean; result?: unknown; error?: string }>("/tools/execute", { tool, params }),
   enable: (tool: string) => api.post("/tools/enable", { tool }),

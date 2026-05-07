@@ -1,16 +1,5 @@
 import { api } from "./client";
-import type { ModelConfig } from "./types";
-
-export interface GlobalConfig {
-  version: string;
-  debug: boolean;
-  logLevel: string;
-  maxConcurrentTools: number;
-  toolTimeoutMs: number;
-  requireConfirmation: boolean;
-  whitelistMode: "strict" | "permissive";
-  defaultWorkspace: string;
-}
+import type { ModelConfig, GlobalConfig } from "./types";
 
 export const configApi = {
   getModel: () => api.get<ModelConfig>("/config/model"),

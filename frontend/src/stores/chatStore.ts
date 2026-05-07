@@ -245,18 +245,28 @@ export const useChatStore = create<ChatState>((set, get) => ({
   },
 
   init: async () => {
-    const { currentSessionId, loadHistory, loadSessions } = get();
+    const { loadHistory, loadSessions } = get();
     await loadSessions();
     const storedId = getStoredSessionId();
-    const idToRestore = storedId || currentSessionId;
-    if (idToRestore && !idToRestore.startsWith("session-")) {
-      const sessionExists = get().sessions.some((s) => s.id === idToRestore);
+    if (storedId) {
+      const sessionExists = get().sessions.some((s) => s.id === storedId);
       if (sessionExists) {
-        await loadHistory(idToRestore);
+        await loadHistory(storedId);
       } else {
-        // Session no longer exists on server, start fresh
-        setStoredSessionId(null);
-        set({ currentSessionId: `session-${Date.now()}` });
+        // Session may have messages but not in sessions list yet (new session)
+        // Try loading history anyway — backend will return messages if any
+        try {
+          const msgs = await chatApi.getHistory(storedId);
+          if (msgs.length > 0) {
+            set({ messages: msgs, currentSessionId: storedId });
+          } else {
+            setStoredSessionId(null);
+            set({ currentSessionId: `session-${Date.now()}` });
+          }
+        } catch {
+          setStoredSessionId(null);
+          set({ currentSessionId: `session-${Date.now()}` });
+        }
       }
     }
   },

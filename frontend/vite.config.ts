@@ -7,8 +7,25 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // react-syntax-highlighter 语言定义
+          if (id.includes('react-syntax-highlighter/dist/esm/languages/')) return 'syntax-highlighter-langs';
+          // react-syntax-highlighter 核心 + 样式
+          if (id.includes('react-syntax-highlighter')) return 'syntax-highlighter';
+          // Markdown 渲染生态
+          if (id.includes('react-markdown') || id.includes('remark-gfm')) return 'markdown';
+          // i18n
+          if (id.includes('i18next') || id.includes('react-i18next')) return 'i18n';
           // React 生态核心 — 最底层，不依赖任何其他 chunk
-          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'react-core';
+          // 使用 /node_modules/<pkg>/ 精确匹配，防止 pnpm 路径中的 react@ / react-dom@ 误命中
+          if (
+            id.includes('/node_modules/react/') ||
+            id.includes('/node_modules/react-dom/') ||
+            id.includes('/node_modules/react-router-dom/') ||
+            id.includes('/node_modules/react-router/') ||
+            id.includes('/node_modules/react-is/') ||
+            id.includes('/node_modules/scheduler/') ||
+            id.includes('/node_modules/use-sync-external-store/')
+          ) return 'react-core';
           // Ant Design 全家桶 — 只依赖 react-core
           if (id.includes('antd') || id.includes('@ant-design') || id.includes('/rc-') || id.includes('dayjs')) return 'antd';
           // 动画库 — 只依赖 react-core

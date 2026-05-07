@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { message } from "antd";
 import { configApi } from "../api/config";
-import type { ModelConfig } from "../api/types";
-import type { GlobalConfig } from "../api/config";
+import type { ModelConfig, GlobalConfig } from "../api/types";
 
 interface ConfigState {
   modelConfig: ModelConfig | null;

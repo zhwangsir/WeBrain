@@ -1,17 +1,9 @@
+import { useState, useEffect } from "react";
 import { Input, Empty, Skeleton } from "antd";
 import { HistoryOutlined } from "@ant-design/icons";
 import { PageShell } from "../components/common/PageShell";
 import { useMemoryStore } from "../stores/memoryStore";
-import { useState, useEffect } from "react";
-
-function useDebounce<T>(value: T, delay = 400) {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-  return debounced;
-}
+import { useDebounce } from "../hooks/useDebounce";
 
 export default function MemoryPage() {
   const { memories, search, fetchMemories, loading } = useMemoryStore();

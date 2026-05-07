@@ -1,31 +1,5 @@
 import { api } from "./client";
-
-export interface CronJobData {
-  id?: string;
-  name: string;
-  cron_expr: string;
-  task_type: string;
-  task_params?: Record<string, unknown>;
-  enabled?: boolean;
-  max_retries?: number;
-  webhook_url?: string;
-}
-
-export interface CronJob {
-  id: string;
-  name: string;
-  cron_expr: string;
-  task_type: string;
-  task_params: Record<string, unknown>;
-  enabled: boolean;
-  max_retries: number;
-  webhook_url?: string;
-  created_at: string;
-  updated_at: string;
-  last_run?: string;
-  next_run?: string;
-  run_count: number;
-}
+import type { CronJob, CronJobData } from "./types";
 
 export const cronApi = {
   list: () => api.get<{ jobs: CronJob[] }>("/brain/cron/jobs").then((r) => r.jobs),

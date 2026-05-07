@@ -1,12 +1,5 @@
 import { api } from "./client";
-
-export interface ChannelInfo {
-  id: string;
-  name: string;
-  type: string;
-  connected: boolean;
-  config?: Record<string, unknown>;
-}
+import type { ChannelInfo } from "./types";
 
 export const channelsApi = {
   list: () => api.get<{ channels: ChannelInfo[] }>("/channels/list").then((r) => r.channels),

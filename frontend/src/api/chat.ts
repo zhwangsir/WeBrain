@@ -1,9 +1,9 @@
 import { api } from "./client";
-import type { ChatMessage } from "./types";
+import type { ChatMessage, ToolCall } from "./types";
 
 export const chatApi = {
   send: (text: string, sessionId: string, toolsEnabled = true) =>
-    api.post<{ reply: string; toolCalls?: any[] }>("/brain/chat", {
+    api.post<{ reply: string; toolCalls?: ToolCall[] }>("/brain/chat", {
       message: text,
       session_id: sessionId,
       tools_enabled: toolsEnabled,

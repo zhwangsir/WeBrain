@@ -85,6 +85,14 @@ export interface Memory {
   vectorScore?: number;
 }
 
+export interface ChannelInfo {
+  id: string;
+  name: string;
+  type: string;
+  connected: boolean;
+  config?: Record<string, unknown>;
+}
+
 export interface Channel {
   id: string;
   name: string;
@@ -129,15 +137,42 @@ export interface KgRelation {
   confidence: number;
 }
 
+export interface CronJobData {
+  id?: string;
+  name: string;
+  cron_expr: string;
+  task_type: string;
+  task_params?: Record<string, unknown>;
+  enabled?: boolean;
+  max_retries?: number;
+  webhook_url?: string;
+}
+
 export interface CronJob {
   id: string;
   name: string;
-  schedule: string;
-  command: string;
+  cron_expr: string;
+  task_type: string;
+  task_params: Record<string, unknown>;
   enabled: boolean;
-  lastRun?: string;
-  nextRun?: string;
-  runCount: number;
+  max_retries: number;
+  webhook_url?: string;
+  created_at: string;
+  updated_at: string;
+  last_run?: string;
+  next_run?: string;
+  run_count: number;
+}
+
+export interface GlobalConfig {
+  version: string;
+  debug: boolean;
+  logLevel: string;
+  maxConcurrentTools: number;
+  toolTimeoutMs: number;
+  requireConfirmation: boolean;
+  whitelistMode: "strict" | "permissive";
+  defaultWorkspace: string;
 }
 
 export interface Notification {

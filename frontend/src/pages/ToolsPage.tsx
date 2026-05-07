@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useDebounce } from "../hooks/useDebounce";
 import { Switch, Input, Segmented, Skeleton } from "antd";
 import {
   ToolOutlined,
@@ -12,15 +13,6 @@ import { PageShell } from "../components/common/PageShell";
 import { useToolStore } from "../stores/toolStore";
 import { EmptyState } from "../components/common/EmptyState";
 import ToolExecutorModal from "../components/tools/ToolExecutorModal";
-
-function useDebounce<T>(value: T, delay = 300) {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-  return debounced;
-}
 
 const categoryMeta: Record<string, { label: string; icon: React.ReactNode }> = {
   system: { label: "系统", icon: <SettingOutlined /> },
