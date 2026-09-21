@@ -1,0 +1,134 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img "thunderbolt" [ref=e10]:
+          - img [ref=e11]
+        - generic [ref=e13]: WeBrain
+      - menu [ref=e15]:
+        - menuitem "dashboard Dashboard" [ref=e16] [cursor=pointer]:
+          - img "dashboard" [ref=e17]:
+            - img [ref=e18]
+          - link "Dashboard" [ref=e21]:
+            - /url: /
+        - menuitem "message Chat 3" [ref=e22] [cursor=pointer]:
+          - img "message" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]:
+            - link "Chat" [ref=e27]:
+              - /url: /chat
+            - superscript [ref=e30]:
+              - generic [ref=e32]: "3"
+        - menuitem "database Memory" [ref=e33] [cursor=pointer]:
+          - img "database" [ref=e34]:
+            - img [ref=e35]
+          - link "Memory" [ref=e38]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e39] [cursor=pointer]:
+          - img "bulb" [ref=e40]:
+            - img [ref=e41]
+          - link "Reasoning" [ref=e44]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e45] [cursor=pointer]:
+          - img "experiment" [ref=e46]:
+            - img [ref=e47]
+          - link "Evolution" [ref=e50]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e51] [cursor=pointer]:
+          - img "tool" [ref=e52]:
+            - img [ref=e53]
+          - link "Tools" [ref=e56]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e57] [cursor=pointer]:
+          - img "global" [ref=e58]:
+            - img [ref=e59]
+          - link "Channels" [ref=e62]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e63] [cursor=pointer]:
+          - img "setting" [ref=e64]:
+            - img [ref=e65]
+          - link "Settings" [ref=e68]:
+            - /url: /settings
+      - generic [ref=e71]: System Online
+  - generic [ref=e72]:
+    - banner [ref=e73]:
+      - generic [ref=e74]:
+        - button "menu-fold" [ref=e75] [cursor=pointer]:
+          - img "menu-fold" [ref=e77]:
+            - img [ref=e78]
+        - generic [ref=e80]:
+          - heading "Settings" [level=2] [ref=e81]:
+            - link "Settings" [ref=e82] [cursor=pointer]:
+              - /url: /settings
+          - paragraph [ref=e83]: AI Agent Integration Platform
+      - generic [ref=e85]:
+        - generic [ref=e86]: WB
+        - superscript [ref=e87]
+    - main [ref=e88]:
+      - generic [ref=e91]:
+        - generic [ref=e92]:
+          - heading "Settings" [level=1] [ref=e93]
+          - paragraph [ref=e94]: 系统配置 — 模型参数、API 设置与个性化选项
+        - generic [ref=e95]:
+          - generic [ref=e98]:
+            - generic [ref=e102]:
+              - img "bulb" [ref=e103]:
+                - img [ref=e104]
+              - generic [ref=e106]: 模型配置
+            - generic [ref=e110]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: 提供商
+                - generic [ref=e114] [cursor=pointer]:
+                  - generic [ref=e116]:
+                    - combobox [ref=e118]
+                    - generic "MiniMax" [ref=e119]
+                  - generic:
+                    - img:
+                      - img
+              - generic [ref=e121]:
+                - generic [ref=e122]: 模型
+                - textbox "模型名称" [ref=e123]: minimax-m2.7
+              - generic [ref=e125]:
+                - generic [ref=e126]: API Base URL
+                - generic [ref=e127]:
+                  - img "api" [ref=e129]:
+                    - img [ref=e130]
+                  - textbox "http://localhost:1234/v1" [ref=e132]: http://192.168.71.100:1234/v1
+              - generic [ref=e134]:
+                - generic [ref=e135]: API Key
+                - generic [ref=e136]:
+                  - textbox "sk-..." [ref=e137]
+                  - img "eye-invisible" [ref=e139] [cursor=pointer]:
+                    - img [ref=e140]
+              - generic [ref=e144]:
+                - generic [ref=e145]: Temperature
+                - spinbutton [ref=e146]: "0.7"
+              - generic [ref=e148]:
+                - generic [ref=e149]: Max Tokens
+                - spinbutton [ref=e150]: "2000"
+          - generic [ref=e153]:
+            - generic [ref=e157]:
+              - img "desktop" [ref=e158]:
+                - img [ref=e159]
+              - generic [ref=e161]: 系统信息
+            - generic [ref=e163]:
+              - generic [ref=e164]:
+                - generic [ref=e165]: Frontend
+                - generic [ref=e166]: 前端框架
+                - generic [ref=e167]: React 18 + Vite
+              - generic [ref=e168]:
+                - generic [ref=e169]: Main Brain
+                - generic [ref=e170]: 主脑引擎
+                - generic [ref=e171]: Python FastAPI
+              - generic [ref=e172]:
+                - generic [ref=e173]: Sub Brain
+                - generic [ref=e174]: 副脑引擎
+                - generic [ref=e175]: Node.js Fastify
+              - generic [ref=e176]:
+                - generic [ref=e177]: Version
+                - generic [ref=e178]: 版本
+                - generic [ref=e179]: 1.0.0
+          - button "save 保存配置" [ref=e182] [cursor=pointer]:
+            - img "save" [ref=e184]:
+              - img [ref=e185]
+            - generic [ref=e187]: 保存配置

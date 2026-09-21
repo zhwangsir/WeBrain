@@ -1,0 +1,267 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img "thunderbolt" [ref=e10]:
+          - img [ref=e11]
+        - generic [ref=e278]: WeBrain
+      - menu [ref=e15]:
+        - menuitem "dashboard Dashboard" [ref=e16] [cursor=pointer]:
+          - img "dashboard" [ref=e17]:
+            - img [ref=e18]
+          - link "Dashboard" [ref=e21]:
+            - /url: /
+        - menuitem "message Chat 3" [ref=e22] [cursor=pointer]:
+          - img "message" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]:
+            - link "Chat" [ref=e27]:
+              - /url: /chat
+            - superscript [ref=e30]:
+              - generic [ref=e32]: "3"
+        - menuitem "database Memory" [ref=e33] [cursor=pointer]:
+          - img "database" [ref=e34]:
+            - img [ref=e35]
+          - link "Memory" [ref=e38]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e39] [cursor=pointer]:
+          - img "bulb" [ref=e40]:
+            - img [ref=e41]
+          - link "Reasoning" [ref=e44]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e45] [cursor=pointer]:
+          - img "experiment" [ref=e46]:
+            - img [ref=e47]
+          - link "Evolution" [ref=e50]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e51] [cursor=pointer]:
+          - img "tool" [ref=e52]:
+            - img [ref=e53]
+          - link "Tools" [active] [ref=e56]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e57] [cursor=pointer]:
+          - img "global" [ref=e58]:
+            - img [ref=e59]
+          - link "Channels" [ref=e62]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e63] [cursor=pointer]:
+          - img "setting" [ref=e64]:
+            - img [ref=e65]
+          - link "Settings" [ref=e68]:
+            - /url: /settings
+      - generic [ref=e279]: System Online
+  - generic [ref=e72]:
+    - banner [ref=e73]:
+      - generic [ref=e74]:
+        - button "menu-fold" [ref=e75] [cursor=pointer]:
+          - img "menu-fold" [ref=e280]:
+            - img [ref=e281]
+        - generic [ref=e80]:
+          - heading "Tools" [level=2] [ref=e646]:
+            - link "Tools" [ref=e647] [cursor=pointer]:
+              - /url: /tools
+          - paragraph [ref=e83]: AI Agent Integration Platform
+      - generic [ref=e85]:
+        - generic [ref=e86]: WB
+        - superscript [ref=e87]
+    - main [ref=e88]:
+      - generic [ref=e650]:
+        - generic [ref=e651]:
+          - heading "Tools" [level=1] [ref=e652]
+          - paragraph [ref=e653]: 工具箱 — 13 个内置工具，支持代码执行、文件操作、网络请求等
+        - generic [ref=e654]:
+          - generic [ref=e658]:
+            - img "search" [ref=e660]:
+              - img [ref=e661]
+            - textbox "搜索工具..." [ref=e663]
+          - generic [ref=e666]:
+            - generic [ref=e670]:
+              - img "tool" [ref=e671]:
+                - img [ref=e672]
+              - generic [ref=e674]: system
+              - generic [ref=e675]: "2"
+            - list [ref=e680]:
+              - listitem [ref=e681]:
+                - generic [ref=e683]:
+                  - generic [ref=e684]:
+                    - img "code" [ref=e686]:
+                      - img [ref=e687]
+                    - generic [ref=e689]:
+                      - generic [ref=e690]: shell
+                      - generic [ref=e691]: Execute a shell command on the local system
+                  - button "play-circle 执行" [ref=e693] [cursor=pointer]:
+                    - img "play-circle" [ref=e695]:
+                      - img [ref=e696]
+                    - generic [ref=e699]: 执行
+              - listitem [ref=e700]:
+                - generic [ref=e702]:
+                  - generic [ref=e703]:
+                    - img "info-circle" [ref=e705]:
+                      - img [ref=e706]
+                    - generic [ref=e709]:
+                      - generic [ref=e710]: system_info
+                      - generic [ref=e711]: Get system information (OS, CPU, memory, disk)
+                  - button "play-circle 执行" [ref=e713] [cursor=pointer]:
+                    - img "play-circle" [ref=e715]:
+                      - img [ref=e716]
+                    - generic [ref=e719]: 执行
+          - generic [ref=e722]:
+            - generic [ref=e726]:
+              - img "tool" [ref=e727]:
+                - img [ref=e728]
+              - generic [ref=e730]: filesystem
+              - generic [ref=e731]: "4"
+            - list [ref=e736]:
+              - listitem [ref=e737]:
+                - generic [ref=e739]:
+                  - generic [ref=e740]:
+                    - img "file" [ref=e742]:
+                      - img [ref=e743]
+                    - generic [ref=e745]:
+                      - generic [ref=e746]: file_read
+                      - generic [ref=e747]: Read contents of a file
+                  - button "play-circle 执行" [ref=e749] [cursor=pointer]:
+                    - img "play-circle" [ref=e751]:
+                      - img [ref=e752]
+                    - generic [ref=e755]: 执行
+              - listitem [ref=e756]:
+                - generic [ref=e758]:
+                  - generic [ref=e759]:
+                    - img "file-text" [ref=e761]:
+                      - img [ref=e762]
+                    - generic [ref=e764]:
+                      - generic [ref=e765]: file_write
+                      - generic [ref=e766]: Write content to a file (creates directories if needed)
+                  - button "play-circle 执行" [ref=e768] [cursor=pointer]:
+                    - img "play-circle" [ref=e770]:
+                      - img [ref=e771]
+                    - generic [ref=e774]: 执行
+              - listitem [ref=e775]:
+                - generic [ref=e777]:
+                  - generic [ref=e778]:
+                    - img "database" [ref=e780]:
+                      - img [ref=e781]
+                    - generic [ref=e783]:
+                      - generic [ref=e784]: file_list
+                      - generic [ref=e785]: List files in a directory
+                  - button "play-circle 执行" [ref=e787] [cursor=pointer]:
+                    - img "play-circle" [ref=e789]:
+                      - img [ref=e790]
+                    - generic [ref=e793]: 执行
+              - listitem [ref=e794]:
+                - generic [ref=e796]:
+                  - generic [ref=e797]:
+                    - img "search" [ref=e799]:
+                      - img [ref=e800]
+                    - generic [ref=e802]:
+                      - generic [ref=e803]: file_search
+                      - generic [ref=e804]: Search for text inside files (grep-like)
+                  - button "play-circle 执行" [ref=e806] [cursor=pointer]:
+                    - img "play-circle" [ref=e808]:
+                      - img [ref=e809]
+                    - generic [ref=e812]: 执行
+          - generic [ref=e815]:
+            - generic [ref=e819]:
+              - img "tool" [ref=e820]:
+                - img [ref=e821]
+              - generic [ref=e823]: network
+              - generic [ref=e824]: "1"
+            - list [ref=e829]:
+              - listitem [ref=e830]:
+                - generic [ref=e832]:
+                  - generic [ref=e833]:
+                    - img "global" [ref=e835]:
+                      - img [ref=e836]
+                    - generic [ref=e838]:
+                      - generic [ref=e839]: http_request
+                      - generic [ref=e840]: Make an HTTP request
+                  - button "play-circle 执行" [ref=e842] [cursor=pointer]:
+                    - img "play-circle" [ref=e844]:
+                      - img [ref=e845]
+                    - generic [ref=e848]: 执行
+          - generic [ref=e851]:
+            - generic [ref=e855]:
+              - img "tool" [ref=e856]:
+                - img [ref=e857]
+              - generic [ref=e859]: code
+              - generic [ref=e860]: "2"
+            - list [ref=e865]:
+              - listitem [ref=e866]:
+                - generic [ref=e868]:
+                  - generic [ref=e869]:
+                    - img "code" [ref=e871]:
+                      - img [ref=e872]
+                    - generic [ref=e874]:
+                      - generic [ref=e875]: python_exec
+                      - generic [ref=e876]: Execute Python code and return the output
+                  - button "play-circle 执行" [ref=e878] [cursor=pointer]:
+                    - img "play-circle" [ref=e880]:
+                      - img [ref=e881]
+                    - generic [ref=e884]: 执行
+              - listitem [ref=e885]:
+                - generic [ref=e887]:
+                  - generic [ref=e888]:
+                    - img "code" [ref=e890]:
+                      - img [ref=e891]
+                    - generic [ref=e893]:
+                      - generic [ref=e894]: execute_code
+                      - generic [ref=e895]: Write a Python script to a temp file and execute it. The script can use TOOL_CALL helper to invoke other tools programmatically.
+                  - button "play-circle 执行" [ref=e897] [cursor=pointer]:
+                    - img "play-circle" [ref=e899]:
+                      - img [ref=e900]
+                    - generic [ref=e903]: 执行
+          - generic [ref=e906]:
+            - generic [ref=e910]:
+              - img "tool" [ref=e911]:
+                - img [ref=e912]
+              - generic [ref=e914]: utility
+              - generic [ref=e915]: "4"
+            - list [ref=e920]:
+              - listitem [ref=e921]:
+                - generic [ref=e923]:
+                  - generic [ref=e924]:
+                    - img "clock-circle" [ref=e926]:
+                      - img [ref=e927]
+                    - generic [ref=e930]:
+                      - generic [ref=e931]: datetime
+                      - generic [ref=e932]: Get current date and time in various formats
+                  - button "play-circle 执行" [ref=e934] [cursor=pointer]:
+                    - img "play-circle" [ref=e936]:
+                      - img [ref=e937]
+                    - generic [ref=e940]: 执行
+              - listitem [ref=e941]:
+                - generic [ref=e943]:
+                  - generic [ref=e944]:
+                    - img "calculator" [ref=e946]:
+                      - img [ref=e947]
+                    - generic [ref=e949]:
+                      - generic [ref=e950]: calculator
+                      - generic [ref=e951]: Evaluate a mathematical expression safely
+                  - button "play-circle 执行" [ref=e953] [cursor=pointer]:
+                    - img "play-circle" [ref=e955]:
+                      - img [ref=e956]
+                    - generic [ref=e959]: 执行
+              - listitem [ref=e960]:
+                - generic [ref=e962]:
+                  - generic [ref=e963]:
+                    - img "link" [ref=e965]:
+                      - img [ref=e966]
+                    - generic [ref=e968]:
+                      - generic [ref=e969]: url_parse
+                      - generic [ref=e970]: Parse a URL into components
+                  - button "play-circle 执行" [ref=e972] [cursor=pointer]:
+                    - img "play-circle" [ref=e974]:
+                      - img [ref=e975]
+                    - generic [ref=e978]: 执行
+              - listitem [ref=e979]:
+                - generic [ref=e981]:
+                  - generic [ref=e982]:
+                    - img "branches" [ref=e984]:
+                      - img [ref=e985]
+                    - generic [ref=e987]:
+                      - generic [ref=e988]: json_parse
+                      - generic [ref=e989]: Parse and validate JSON, with pretty-print option
+                  - button "play-circle 执行" [ref=e991] [cursor=pointer]:
+                    - img "play-circle" [ref=e993]:
+                      - img [ref=e994]
+                    - generic [ref=e997]: 执行

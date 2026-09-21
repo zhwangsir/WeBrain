@@ -1,0 +1,124 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img "thunderbolt" [ref=e10]:
+          - img [ref=e11]
+        - generic [ref=e278]: WeBrain
+      - menu [ref=e15]:
+        - menuitem "dashboard Dashboard" [ref=e16] [cursor=pointer]:
+          - img "dashboard" [ref=e17]:
+            - img [ref=e18]
+          - link "Dashboard" [ref=e21]:
+            - /url: /
+        - menuitem "message Chat 3" [ref=e22] [cursor=pointer]:
+          - img "message" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]:
+            - link "Chat" [ref=e27]:
+              - /url: /chat
+            - superscript [ref=e30]:
+              - generic [ref=e32]: "3"
+        - menuitem "database Memory" [ref=e33] [cursor=pointer]:
+          - img "database" [ref=e34]:
+            - img [ref=e35]
+          - link "Memory" [active] [ref=e38]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e39] [cursor=pointer]:
+          - img "bulb" [ref=e40]:
+            - img [ref=e41]
+          - link "Reasoning" [ref=e44]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e45] [cursor=pointer]:
+          - img "experiment" [ref=e46]:
+            - img [ref=e47]
+          - link "Evolution" [ref=e50]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e51] [cursor=pointer]:
+          - img "tool" [ref=e52]:
+            - img [ref=e53]
+          - link "Tools" [ref=e56]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e57] [cursor=pointer]:
+          - img "global" [ref=e58]:
+            - img [ref=e59]
+          - link "Channels" [ref=e62]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e63] [cursor=pointer]:
+          - img "setting" [ref=e64]:
+            - img [ref=e65]
+          - link "Settings" [ref=e68]:
+            - /url: /settings
+      - generic [ref=e279]: System Online
+  - generic [ref=e72]:
+    - banner [ref=e73]:
+      - generic [ref=e74]:
+        - button "menu-fold" [ref=e75] [cursor=pointer]:
+          - img "menu-fold" [ref=e280]:
+            - img [ref=e281]
+        - generic [ref=e80]:
+          - heading "Memory" [level=2] [ref=e511]:
+            - link "Memory" [ref=e512] [cursor=pointer]:
+              - /url: /memory
+          - paragraph [ref=e83]: AI Agent Integration Platform
+      - generic [ref=e85]:
+        - generic [ref=e86]: WB
+        - superscript [ref=e87]
+    - main [ref=e88]:
+      - generic [ref=e515]:
+        - generic [ref=e516]:
+          - heading "Memory" [level=1] [ref=e517]
+          - paragraph [ref=e518]: 分层记忆系统 — L1 会话 / L2 短期 / L3 实体 / L4 技能
+        - generic [ref=e519]:
+          - generic [ref=e520]:
+            - generic [ref=e525]:
+              - img "database" [ref=e527]:
+                - img [ref=e528]
+              - generic [ref=e532]: "2"
+              - generic [ref=e533]: 总记忆数
+            - generic [ref=e538]:
+              - img "branches" [ref=e540]:
+                - img [ref=e541]
+              - generic [ref=e545]: "0"
+              - generic [ref=e546]: 实体数
+            - generic [ref=e551]:
+              - img "file-text" [ref=e553]:
+                - img [ref=e554]
+              - generic [ref=e558]: "0"
+              - generic [ref=e559]: 事实数
+            - generic [ref=e564]:
+              - img "search" [ref=e566]:
+                - img [ref=e567]
+              - generic [ref=e571]: "0"
+              - generic [ref=e572]: 向量数
+          - generic [ref=e574]:
+            - generic [ref=e577]: 存储记忆
+            - generic [ref=e579]:
+              - generic [ref=e585] [cursor=pointer]:
+                - generic [ref=e587]:
+                  - combobox [ref=e589]
+                  - generic "L1 会话" [ref=e590]
+                - generic:
+                  - img:
+                    - img
+              - textbox "记忆内容" [ref=e596]
+              - textbox "来源" [ref=e602]: manual
+              - button "plus 存储" [ref=e608] [cursor=pointer]:
+                - img "plus" [ref=e610]:
+                  - img [ref=e611]
+                - generic [ref=e614]: 存储
+          - generic [ref=e616]:
+            - generic [ref=e619]: 记忆列表
+            - table [ref=e627]:
+              - rowgroup [ref=e633]:
+                - row "层级 内容 来源 会话" [ref=e634]:
+                  - columnheader "层级" [ref=e635]
+                  - columnheader "内容" [ref=e636]
+                  - columnheader "来源" [ref=e637]
+                  - columnheader "会话" [ref=e638]
+              - rowgroup [ref=e639]:
+                - row [ref=e640]:
+                  - cell [ref=e641]
+                  - cell [ref=e643]
+                  - cell [ref=e644]
+                  - cell [ref=e645]

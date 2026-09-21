@@ -1,0 +1,21 @@
+{
+  "project": "WeBrain",
+  "updated_at": "2026-08-27T02:10:00+08:00",
+  "docs": {
+    "canonical": [
+      "README.md",
+      "AGENTS.md",
+      "DEVELOPMENT.md",
+      "STATE.json",
+      "TEST_LOG.md"
+    ],
+    "cluster_source": "ALLProject/ToIV/AGENTS.md",
+    "legacy_archive": "ALLProject/.archive/docs-legacy-20260827"
+  },
+  "health": {
+    "docs_normalized": {
+      "status": "done",
+      "verified_at": "2026-08-27T02:10:00+08:00"
+    }
+  }
+}

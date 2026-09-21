@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "axis4-frontend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "/Users/wangzhenyu/Documents/Project/WeBrain/webrain-integration/.claude/worktrees/axis4-visionos/frontend", "dev"],
+      "port": 8588
+    }
+  ]
+}

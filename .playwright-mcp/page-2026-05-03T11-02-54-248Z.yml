@@ -1,0 +1,108 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: WeBrain
+      - menu [ref=e7]:
+        - menuitem "dashboard Dashboard" [ref=e8] [cursor=pointer]:
+          - img "dashboard" [ref=e9]:
+            - img [ref=e10]
+          - link "Dashboard" [ref=e13]:
+            - /url: /
+        - menuitem "message Chat" [ref=e14] [cursor=pointer]:
+          - img "message" [ref=e15]:
+            - img [ref=e16]
+          - link "Chat" [ref=e19]:
+            - /url: /chat
+        - menuitem "database Memory" [ref=e20] [cursor=pointer]:
+          - img "database" [ref=e21]:
+            - img [ref=e22]
+          - link "Memory" [ref=e25]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e26] [cursor=pointer]:
+          - img "bulb" [ref=e27]:
+            - img [ref=e28]
+          - link "Reasoning" [ref=e31]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e32] [cursor=pointer]:
+          - img "experiment" [ref=e33]:
+            - img [ref=e34]
+          - link "Evolution" [ref=e37]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e38] [cursor=pointer]:
+          - img "tool" [ref=e39]:
+            - img [ref=e40]
+          - link "Tools" [ref=e43]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e44] [cursor=pointer]:
+          - img "global" [ref=e45]:
+            - img [ref=e46]
+          - link "Channels" [ref=e49]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e50] [cursor=pointer]:
+          - img "setting" [ref=e51]:
+            - img [ref=e52]
+          - link "Settings" [ref=e55]:
+            - /url: /settings
+  - generic [ref=e56]:
+    - banner [ref=e57]:
+      - heading "WeBrain Integration Platform" [level=2] [ref=e58]
+    - main [ref=e59]:
+      - generic [ref=e60]:
+        - heading "Dashboard" [level=1] [ref=e61]
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e66]:
+              - generic [ref=e69]:
+                - img "api" [ref=e70]:
+                  - img [ref=e71]
+                - text: 主脑 (Hermes)
+              - generic [ref=e73]:
+                - generic [ref=e74]: ok
+                - generic [ref=e75]:
+                  - generic [ref=e76]: memory
+                  - generic [ref=e78]: reasoning
+                  - generic [ref=e80]: evolution
+                  - generic [ref=e82]: decision
+            - generic [ref=e85]:
+              - generic [ref=e88]:
+                - img "database" [ref=e89]:
+                  - img [ref=e90]
+                - text: 副脑 (OpenClaw)
+              - generic [ref=e92]:
+                - generic [ref=e93]: ok
+                - generic [ref=e94]:
+                  - generic [ref=e95]: tools
+                  - generic [ref=e97]: channels
+                  - generic [ref=e99]: plugins
+                  - generic [ref=e101]: ecosystem
+                  - generic [ref=e103]: dokobot
+                  - generic [ref=e105]: modelConfig
+                  - generic [ref=e107]: layeredConfig
+                  - generic [ref=e109]: identity
+                  - generic [ref=e111]: agents
+                  - generic [ref=e113]: browser
+                  - generic [ref=e115]: sandbox
+                  - generic [ref=e117]: skills
+                  - generic [ref=e119]: mcp
+                  - generic [ref=e121]: cli
+                  - generic [ref=e123]: hooks
+          - generic [ref=e125]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: 工具数量
+              - generic [ref=e131]:
+                - img "tool" [ref=e133]:
+                  - img [ref=e134]
+                - generic [ref=e136]: "5"
+            - generic [ref=e140]:
+              - generic [ref=e141]: 渠道数量
+              - generic [ref=e142]:
+                - img "global" [ref=e144]:
+                  - img [ref=e145]
+                - generic [ref=e147]: "3"
+            - generic [ref=e151]:
+              - generic [ref=e152]: 安全层级
+              - generic [ref=e153]:
+                - img "safety" [ref=e155]:
+                  - img [ref=e156]
+                - generic [ref=e159]: "3"
+                - generic [ref=e160]: 层

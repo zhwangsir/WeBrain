@@ -1,0 +1,98 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - generic [ref=e10]: W
+        - generic [ref=e11]: WeBrain
+      - menu [ref=e13]:
+        - menuitem "dashboard Dashboard" [ref=e14] [cursor=pointer]:
+          - img "dashboard" [ref=e15]:
+            - img [ref=e16]
+          - link "Dashboard" [ref=e19]:
+            - /url: /
+        - menuitem "message Chat" [ref=e20] [cursor=pointer]:
+          - img "message" [ref=e21]:
+            - img [ref=e22]
+          - link "Chat" [ref=e25]:
+            - /url: /chat
+        - menuitem "database Memory" [ref=e26] [cursor=pointer]:
+          - img "database" [ref=e27]:
+            - img [ref=e28]
+          - link "Memory" [ref=e31]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e32] [cursor=pointer]:
+          - img "bulb" [ref=e33]:
+            - img [ref=e34]
+          - link "Reasoning" [ref=e37]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e38] [cursor=pointer]:
+          - img "experiment" [ref=e39]:
+            - img [ref=e40]
+          - link "Evolution" [ref=e43]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e44] [cursor=pointer]:
+          - img "tool" [ref=e45]:
+            - img [ref=e46]
+          - link "Tools" [ref=e49]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e50] [cursor=pointer]:
+          - img "global" [ref=e51]:
+            - img [ref=e52]
+          - link "Channels" [ref=e55]:
+            - /url: /channels
+        - menuitem "appstore-add Plugins" [ref=e56] [cursor=pointer]:
+          - img "appstore-add" [ref=e57]:
+            - img [ref=e58]
+          - link "Plugins" [ref=e61]:
+            - /url: /plugins
+        - menuitem "robot Agents" [ref=e62] [cursor=pointer]:
+          - img "robot" [ref=e63]:
+            - img [ref=e64]
+          - link "Agents" [ref=e67]:
+            - /url: /agents
+        - menuitem "thunderbolt Skills" [ref=e68] [cursor=pointer]:
+          - img "thunderbolt" [ref=e69]:
+            - img [ref=e70]
+          - link "Skills" [ref=e73]:
+            - /url: /skills
+        - menuitem "team Identity" [ref=e74] [cursor=pointer]:
+          - img "team" [ref=e75]:
+            - img [ref=e76]
+          - link "Identity" [ref=e79]:
+            - /url: /identity
+        - menuitem "setting Settings" [ref=e80] [cursor=pointer]:
+          - img "setting" [ref=e81]:
+            - img [ref=e82]
+          - link "Settings" [ref=e85]:
+            - /url: /settings
+      - generic [ref=e88]: Online
+  - generic [ref=e89]:
+    - banner [ref=e90]:
+      - generic [ref=e91]:
+        - button "menu-fold" [ref=e92] [cursor=pointer]:
+          - img "menu-fold" [ref=e94]:
+            - img [ref=e95]
+        - heading "Skills" [level=2] [ref=e98]
+      - generic [ref=e100]:
+        - generic [ref=e101]: WB
+        - superscript [ref=e102]
+    - main [ref=e103]:
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - heading "Skills" [level=1] [ref=e108]
+          - paragraph [ref=e109]: Create and manage reusable skills for agents to execute
+        - generic [ref=e110]:
+          - generic [ref=e114]:
+            - generic [ref=e115]: 0 Skills
+            - generic [ref=e116]:
+              - button "reload Refresh" [ref=e118] [cursor=pointer]:
+                - img "reload" [ref=e120]:
+                  - img [ref=e121]
+                - generic [ref=e123]: Refresh
+              - button "plus New Skill" [ref=e125] [cursor=pointer]:
+                - img "plus" [ref=e127]:
+                  - img [ref=e128]
+                - generic [ref=e131]: New Skill
+          - generic [ref=e132]:
+            - img "No data" [ref=e134]
+            - generic [ref=e146]: No skills created

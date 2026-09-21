@@ -1,0 +1,112 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - generic [ref=e10]: W
+        - generic [ref=e11]: WeBrain
+      - menu [ref=e13]:
+        - menuitem "dashboard Dashboard" [ref=e14] [cursor=pointer]:
+          - img "dashboard" [ref=e15]:
+            - img [ref=e16]
+          - link "Dashboard" [ref=e19]:
+            - /url: /
+        - menuitem "message Chat" [ref=e20] [cursor=pointer]:
+          - img "message" [ref=e21]:
+            - img [ref=e22]
+          - link "Chat" [ref=e25]:
+            - /url: /chat
+        - menuitem "database Memory" [ref=e26] [cursor=pointer]:
+          - img "database" [ref=e27]:
+            - img [ref=e28]
+          - link "Memory" [ref=e31]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e32] [cursor=pointer]:
+          - img "bulb" [ref=e33]:
+            - img [ref=e34]
+          - link "Reasoning" [ref=e37]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e38] [cursor=pointer]:
+          - img "experiment" [ref=e39]:
+            - img [ref=e40]
+          - link "Evolution" [ref=e43]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e44] [cursor=pointer]:
+          - img "tool" [ref=e45]:
+            - img [ref=e46]
+          - link "Tools" [ref=e49]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e50] [cursor=pointer]:
+          - img "global" [ref=e51]:
+            - img [ref=e52]
+          - link "Channels" [ref=e55]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - link "Settings" [ref=e61]:
+            - /url: /settings
+      - generic [ref=e64]: Online
+  - generic [ref=e65]:
+    - banner [ref=e66]:
+      - generic [ref=e67]:
+        - button "menu-fold" [ref=e68] [cursor=pointer]:
+          - img "menu-fold" [ref=e70]:
+            - img [ref=e71]
+        - heading "Settings" [level=2] [ref=e74]
+      - generic [ref=e76]:
+        - generic [ref=e77]: WB
+        - superscript [ref=e78]
+    - main [ref=e79]:
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - heading "Settings" [level=1] [ref=e84]
+          - paragraph [ref=e85]: Model configuration and preferences
+        - generic [ref=e86]:
+          - generic [ref=e89]:
+            - generic [ref=e93]:
+              - img "bulb" [ref=e94]:
+                - img [ref=e95]
+              - generic [ref=e97]: Model Configuration
+            - generic [ref=e101]:
+              - generic [ref=e103]:
+                - generic [ref=e104]: Provider
+                - generic [ref=e105] [cursor=pointer]:
+                  - generic [ref=e107]:
+                    - combobox [ref=e109]
+                    - generic "MiniMax" [ref=e110]
+                  - generic:
+                    - img:
+                      - img
+              - generic [ref=e112]:
+                - generic [ref=e113]: Model
+                - textbox "Model name" [ref=e114]: minimax-m2.7
+              - generic [ref=e116]:
+                - generic [ref=e117]: API Base URL
+                - generic [ref=e118]:
+                  - img "api" [ref=e120]:
+                    - img [ref=e121]
+                  - textbox "http://localhost:1234/v1" [ref=e123]: http://192.168.71.100:1234/v1
+              - generic [ref=e125]:
+                - generic [ref=e126]: API Key
+                - generic [ref=e127]:
+                  - textbox "sk-..." [ref=e128]
+                  - img "eye-invisible" [ref=e130] [cursor=pointer]:
+                    - img [ref=e131]
+              - generic [ref=e135]:
+                - generic [ref=e136]: Temperature
+                - spinbutton [ref=e137]: "0.7"
+              - generic [ref=e139]:
+                - generic [ref=e140]: Max Tokens
+                - spinbutton [ref=e141]: "2000"
+          - generic [ref=e144]:
+            - generic [ref=e149]: About WeBrain
+            - generic [ref=e151]:
+              - generic [ref=e152]: W
+              - generic [ref=e153]:
+                - generic [ref=e154]: WeBrain
+                - generic [ref=e155]: AI Agent Integration Platform
+              - generic [ref=e156]: v1.0.0
+          - button "save Save Configuration" [ref=e159] [cursor=pointer]:
+            - img "save" [ref=e161]:
+              - img [ref=e162]
+            - generic [ref=e164]: Save Configuration

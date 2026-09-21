@@ -1,0 +1,90 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img "thunderbolt" [ref=e10]:
+          - img [ref=e11]
+        - generic [ref=e278]: WeBrain
+      - menu [ref=e15]:
+        - menuitem "dashboard Dashboard" [ref=e16] [cursor=pointer]:
+          - img "dashboard" [ref=e17]:
+            - img [ref=e18]
+          - link "Dashboard" [ref=e21]:
+            - /url: /
+        - menuitem "message Chat 3" [ref=e22] [cursor=pointer]:
+          - img "message" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]:
+            - link "Chat" [active] [ref=e27]:
+              - /url: /chat
+            - superscript [ref=e30]:
+              - generic [ref=e32]: "3"
+        - menuitem "database Memory" [ref=e33] [cursor=pointer]:
+          - img "database" [ref=e34]:
+            - img [ref=e35]
+          - link "Memory" [ref=e38]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e39] [cursor=pointer]:
+          - img "bulb" [ref=e40]:
+            - img [ref=e41]
+          - link "Reasoning" [ref=e44]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e45] [cursor=pointer]:
+          - img "experiment" [ref=e46]:
+            - img [ref=e47]
+          - link "Evolution" [ref=e50]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e51] [cursor=pointer]:
+          - img "tool" [ref=e52]:
+            - img [ref=e53]
+          - link "Tools" [ref=e56]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e57] [cursor=pointer]:
+          - img "global" [ref=e58]:
+            - img [ref=e59]
+          - link "Channels" [ref=e62]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e63] [cursor=pointer]:
+          - img "setting" [ref=e64]:
+            - img [ref=e65]
+          - link "Settings" [ref=e68]:
+            - /url: /settings
+      - generic [ref=e279]: System Online
+  - generic [ref=e72]:
+    - banner [ref=e73]:
+      - generic [ref=e74]:
+        - button "menu-fold" [ref=e75] [cursor=pointer]:
+          - img "menu-fold" [ref=e280]:
+            - img [ref=e281]
+        - generic [ref=e80]:
+          - heading "Chat" [level=2] [ref=e472]:
+            - link "Chat" [ref=e473] [cursor=pointer]:
+              - /url: /chat
+          - paragraph [ref=e83]: AI Agent Integration Platform
+      - generic [ref=e85]:
+        - generic [ref=e86]: WB
+        - superscript [ref=e87]
+    - main [ref=e88]:
+      - generic [ref=e476]:
+        - generic [ref=e478]:
+          - generic [ref=e479]:
+            - heading "AI 助手" [level=1] [ref=e480]
+            - paragraph [ref=e481]: 与 WeBrain 智能体进行多轮对话
+          - generic [ref=e482]:
+            - generic [ref=e484]:
+              - img "tool" [ref=e485]:
+                - img [ref=e486]
+              - text: 工具调用 开
+            - switch [checked] [ref=e489] [cursor=pointer]
+            - button "clear 清空" [ref=e493] [cursor=pointer]:
+              - img "clear" [ref=e495]:
+                - img [ref=e496]
+              - generic [ref=e498]: 清空
+        - generic [ref=e500]:
+          - separator [ref=e502]
+          - generic [ref=e503]:
+            - textbox "输入消息... (Enter 发送, Shift+Enter 换行)" [ref=e504]
+            - button "send 发送" [ref=e505] [cursor=pointer]:
+              - img "send" [ref=e507]:
+                - img [ref=e508]
+              - generic [ref=e510]: 发送

@@ -1,0 +1,82 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - generic [ref=e10]: W
+        - generic [ref=e11]: WeBrain
+      - menu [ref=e13]:
+        - menuitem "dashboard Dashboard" [ref=e14] [cursor=pointer]:
+          - img "dashboard" [ref=e15]:
+            - img [ref=e16]
+          - link "Dashboard" [ref=e19]:
+            - /url: /
+        - menuitem "message Chat" [ref=e20] [cursor=pointer]:
+          - img "message" [ref=e21]:
+            - img [ref=e22]
+          - link "Chat" [ref=e25]:
+            - /url: /chat
+        - menuitem "database Memory" [ref=e26] [cursor=pointer]:
+          - img "database" [ref=e27]:
+            - img [ref=e28]
+          - link "Memory" [ref=e31]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e32] [cursor=pointer]:
+          - img "bulb" [ref=e33]:
+            - img [ref=e34]
+          - link "Reasoning" [ref=e37]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e38] [cursor=pointer]:
+          - img "experiment" [ref=e39]:
+            - img [ref=e40]
+          - link "Evolution" [ref=e43]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e44] [cursor=pointer]:
+          - img "tool" [ref=e45]:
+            - img [ref=e46]
+          - link "Tools" [ref=e49]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e50] [cursor=pointer]:
+          - img "global" [ref=e51]:
+            - img [ref=e52]
+          - link "Channels" [ref=e55]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e56] [cursor=pointer]:
+          - img "setting" [ref=e57]:
+            - img [ref=e58]
+          - link "Settings" [ref=e61]:
+            - /url: /settings
+      - generic [ref=e64]: Online
+  - generic [ref=e65]:
+    - banner [ref=e66]:
+      - generic [ref=e67]:
+        - button "menu-fold" [ref=e68] [cursor=pointer]:
+          - img "menu-fold" [ref=e70]:
+            - img [ref=e71]
+        - heading "Chat" [level=2] [ref=e74]
+      - generic [ref=e76]:
+        - generic [ref=e77]: WB
+        - superscript [ref=e78]
+    - main [ref=e79]:
+      - generic [ref=e82]:
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - heading "Chat" [level=1] [ref=e86]
+            - paragraph [ref=e87]: Have a conversation with WeBrain
+          - generic [ref=e88]:
+            - generic [ref=e90]:
+              - img "tool" [ref=e91]:
+                - img [ref=e92]
+              - text: Tools on
+            - switch [checked] [ref=e95] [cursor=pointer]
+            - button "clear Clear" [ref=e99] [cursor=pointer]:
+              - img "clear" [ref=e101]:
+                - img [ref=e102]
+              - generic [ref=e104]: Clear
+        - generic [ref=e106]:
+          - separator [ref=e108]
+          - generic [ref=e109]:
+            - textbox "Type a message..." [ref=e110]
+            - button "send Send" [ref=e111] [cursor=pointer]:
+              - img "send" [ref=e113]:
+                - img [ref=e114]
+              - generic [ref=e116]: Send

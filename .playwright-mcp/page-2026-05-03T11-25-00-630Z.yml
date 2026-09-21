@@ -1,0 +1,164 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img "thunderbolt" [ref=e10]:
+          - img [ref=e11]
+        - generic [ref=e13]: WeBrain
+      - menu [ref=e15]:
+        - menuitem "dashboard Dashboard" [ref=e16] [cursor=pointer]:
+          - img "dashboard" [ref=e17]:
+            - img [ref=e18]
+          - link "Dashboard" [ref=e21]:
+            - /url: /
+        - menuitem "message Chat 3" [ref=e22] [cursor=pointer]:
+          - img "message" [ref=e23]:
+            - img [ref=e24]
+          - generic [ref=e26]:
+            - link "Chat" [ref=e27]:
+              - /url: /chat
+            - superscript [ref=e30]:
+              - generic [ref=e32]: "3"
+        - menuitem "database Memory" [ref=e33] [cursor=pointer]:
+          - img "database" [ref=e34]:
+            - img [ref=e35]
+          - link "Memory" [ref=e38]:
+            - /url: /memory
+        - menuitem "bulb Reasoning" [ref=e39] [cursor=pointer]:
+          - img "bulb" [ref=e40]:
+            - img [ref=e41]
+          - link "Reasoning" [ref=e44]:
+            - /url: /reasoning
+        - menuitem "experiment Evolution" [ref=e45] [cursor=pointer]:
+          - img "experiment" [ref=e46]:
+            - img [ref=e47]
+          - link "Evolution" [ref=e50]:
+            - /url: /evolution
+        - menuitem "tool Tools" [ref=e51] [cursor=pointer]:
+          - img "tool" [ref=e52]:
+            - img [ref=e53]
+          - link "Tools" [ref=e56]:
+            - /url: /tools
+        - menuitem "global Channels" [ref=e57] [cursor=pointer]:
+          - img "global" [ref=e58]:
+            - img [ref=e59]
+          - link "Channels" [ref=e62]:
+            - /url: /channels
+        - menuitem "setting Settings" [ref=e63] [cursor=pointer]:
+          - img "setting" [ref=e64]:
+            - img [ref=e65]
+          - link "Settings" [ref=e68]:
+            - /url: /settings
+      - generic [ref=e71]: System Online
+  - generic [ref=e72]:
+    - banner [ref=e73]:
+      - generic [ref=e74]:
+        - button "menu-fold" [ref=e75] [cursor=pointer]:
+          - img "menu-fold" [ref=e77]:
+            - img [ref=e78]
+        - generic [ref=e80]:
+          - heading "Dashboard" [level=2] [ref=e81]:
+            - link "Dashboard" [ref=e82] [cursor=pointer]:
+              - /url: /
+          - paragraph [ref=e83]: AI Agent Integration Platform
+      - generic [ref=e85]:
+        - generic [ref=e86]: WB
+        - superscript [ref=e87]
+    - main [ref=e88]:
+      - generic [ref=e91]:
+        - generic [ref=e92]:
+          - heading "Dashboard" [level=1] [ref=e93]
+          - paragraph [ref=e94]: 系统概览与实时状态监控
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - img "api" [ref=e107]:
+                  - img [ref=e108]
+                - generic [ref=e110]:
+                  - generic [ref=e111]: 主脑 (Hermes)
+                  - generic [ref=e112]: 核心智能引擎
+              - generic [ref=e113]:
+                - img "check-circle" [ref=e114]:
+                  - img [ref=e115]
+                - text: 运行正常
+              - generic [ref=e118]:
+                - generic [ref=e121]: memory
+                - generic [ref=e124]: reasoning
+                - generic [ref=e127]: evolution
+                - generic [ref=e130]: decision
+            - generic [ref=e136]:
+              - generic [ref=e137]:
+                - img "database" [ref=e139]:
+                  - img [ref=e140]
+                - generic [ref=e142]:
+                  - generic [ref=e143]: 副脑 (OpenClaw)
+                  - generic [ref=e144]: 执行与工具层
+              - generic [ref=e145]:
+                - img "check-circle" [ref=e146]:
+                  - img [ref=e147]
+                - text: 运行正常
+              - generic [ref=e150]:
+                - generic [ref=e153]: tools
+                - generic [ref=e156]: channels
+                - generic [ref=e159]: plugins
+                - generic [ref=e162]: ecosystem
+                - generic [ref=e165]: dokobot
+                - generic [ref=e168]: modelConfig
+                - generic [ref=e171]: layeredConfig
+                - generic [ref=e174]: identity
+                - generic [ref=e177]: agents
+                - generic [ref=e180]: browser
+                - generic [ref=e183]: sandbox
+                - generic [ref=e186]: skills
+                - generic [ref=e189]: mcp
+                - generic [ref=e192]: cli
+                - generic [ref=e195]: hooks
+          - generic [ref=e196]:
+            - generic [ref=e201]:
+              - img "tool" [ref=e203]:
+                - img [ref=e204]
+              - generic [ref=e208]: "13"
+              - generic [ref=e209]: 工具数量
+              - generic [ref=e210]: 已注册工具
+            - generic [ref=e215]:
+              - img "global" [ref=e217]:
+                - img [ref=e218]
+              - generic [ref=e222]: "3"
+              - generic [ref=e223]: 渠道数量
+              - generic [ref=e224]: 支持平台
+            - generic [ref=e229]:
+              - img "robot" [ref=e231]:
+                - img [ref=e232]
+              - generic [ref=e236]: "1"
+              - generic [ref=e237]: Agent 数
+              - generic [ref=e238]: 活跃 Agent
+            - generic [ref=e243]:
+              - img "thunderbolt" [ref=e245]:
+                - img [ref=e246]
+              - generic [ref=e250]: "15"
+              - generic [ref=e251]: 系统模块
+              - generic [ref=e252]: 在线模块
+          - generic [ref=e256]:
+            - generic [ref=e259]: 快速操作
+            - generic [ref=e261]:
+              - link "message 开始对话" [ref=e262] [cursor=pointer]:
+                - /url: /chat
+                - img "message" [ref=e263]:
+                  - img [ref=e264]
+                - text: 开始对话
+              - link "tool 执行工具" [ref=e266] [cursor=pointer]:
+                - /url: /tools
+                - img "tool" [ref=e267]:
+                  - img [ref=e268]
+                - text: 执行工具
+              - link "database 查看记忆" [ref=e270] [cursor=pointer]:
+                - /url: /memory
+                - img "database" [ref=e271]:
+                  - img [ref=e272]
+                - text: 查看记忆
+              - link "global 管理渠道" [ref=e274] [cursor=pointer]:
+                - /url: /channels
+                - img "global" [ref=e275]:
+                  - img [ref=e276]
+                - text: 管理渠道

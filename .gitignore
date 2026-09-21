@@ -1,0 +1,25 @@
+# 依赖与构建产物
+node_modules/
+venv/
+.venv/
+target/
+htmlcov/
+dist/
+build/
+__pycache__/
+*.pyc
+
+# 日志与本地数据
+logs/
+*.log
+*.db
+captures/
+
+# 密钥
+.env
+.env.*
+!.env.example
+.envrc
+
+# 系统文件
+.DS_Store
